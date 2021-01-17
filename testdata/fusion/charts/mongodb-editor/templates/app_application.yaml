@@ -1,0 +1,5 @@
+{{- with .Values.resources }}
+{{- with .appApplication }}
+{{- . | toYaml }}
+{{- end }}
+{{- end }}
