@@ -31,7 +31,7 @@ require (
 	k8s.io/component-base v0.18.9
 	k8s.io/kubectl v0.18.9
 	kmodules.xyz/apply v0.0.0-20210116151714-fd7ceb3d27af
-	kmodules.xyz/client-go v0.0.0-20210117055448-ac3622fe26e7
+	kmodules.xyz/client-go v0.0.0-20210118094617-273ba20ad7ca
 	kmodules.xyz/resource-metadata v0.4.8-0.20210113000222-d15533e4bb66
 	kubepack.dev/chart-doc-gen v0.3.1
 	kubepack.dev/kubepack v0.3.2

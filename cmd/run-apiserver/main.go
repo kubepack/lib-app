@@ -785,7 +785,7 @@ func GetPackageFile(ctx *macaron.Context, params v1alpha1.ChartRepoRef) {
 	}
 
 	filename := ctx.Params("*")
-	format := meta_util.NewDataFormat(ctx.QueryTrim("format"), meta_util.JsonFormat)
+	format := meta_util.NewDataFormat(ctx.QueryTrim("format"), meta_util.KeepFormat)
 	for _, f := range chrt.Raw {
 		if f.Name == filename {
 			out, ct, err := converter.Convert(f.Name, f.Data, format)
