@@ -25,7 +25,7 @@ import (
 	"strconv"
 
 	"kubepack.dev/kubepack/apis/kubepack/v1alpha1"
-	api "kubepack.dev/lib-app/api/v1alpha1"
+	appapi "kubepack.dev/lib-app/api/v1alpha1"
 	libchart "kubepack.dev/lib-helm/chart"
 	"kubepack.dev/lib-helm/repo"
 
@@ -60,8 +60,8 @@ type TemplateRenderer struct {
 	PublicURL string
 	//W         io.Writer
 
-	CRDs     []api.BucketFile
-	Manifest *api.BucketFile
+	CRDs     []appapi.BucketFile
+	Manifest *appapi.BucketFile
 }
 
 func (x *TemplateRenderer) Do() error {
@@ -167,7 +167,7 @@ func (x *TemplateRenderer) Do() error {
 			}
 
 			objectKey := "/" + path.Join(x.UID, "crds", crd.Name+".yaml")
-			x.CRDs = append(x.CRDs, api.BucketFile{
+			x.CRDs = append(x.CRDs, appapi.BucketFile{
 				URL:      x.PublicURL + objectKey,
 				Key:      objectKey,
 				Filename: crd.Filename,
@@ -243,7 +243,7 @@ func (x *TemplateRenderer) Do() error {
 
 	{
 		objectKey := "/" + path.Join(x.UID, "manifests", x.ReleaseName+".yaml")
-		x.Manifest = &api.BucketFile{
+		x.Manifest = &appapi.BucketFile{
 			URL:      x.PublicURL + objectKey,
 			Key:      objectKey,
 			Filename: "manifest.yaml",
@@ -269,7 +269,7 @@ func (x *TemplateRenderer) Do() error {
 	return nil
 }
 
-func (x *TemplateRenderer) Result() (crds []api.BucketFile, manifest *api.BucketFile) {
+func (x *TemplateRenderer) Result() (crds []appapi.BucketFile, manifest *appapi.BucketFile) {
 	crds = x.CRDs
 	manifest = x.Manifest
 

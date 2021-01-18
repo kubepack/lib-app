@@ -24,7 +24,7 @@ import (
 
 	"kubepack.dev/kubepack/apis"
 	"kubepack.dev/kubepack/pkg/lib"
-	api "kubepack.dev/lib-app/api/v1alpha1"
+	appapi "kubepack.dev/lib-app/api/v1alpha1"
 	"kubepack.dev/lib-app/pkg/editor"
 
 	"github.com/gabriel-vasile/mimetype"
@@ -173,7 +173,7 @@ func decodeReleaseFromApp(app *v1beta1.Application, di dynamic.Interface, cl dis
 	rls.Info.FirstDeployed, _ = helmtime.Parse(time.RFC3339, app.Annotations[apis.LabelChartFirstDeployed])
 	rls.Info.LastDeployed, _ = helmtime.Parse(time.RFC3339, app.Annotations[apis.LabelChartLastDeployed])
 
-	rlm := api.ObjectMeta{
+	rlm := appapi.ObjectMeta{
 		Name:      rls.Name,
 		Namespace: rls.Namespace,
 	}

@@ -20,7 +20,7 @@ import (
 	"errors"
 
 	"kubepack.dev/kubepack/pkg/lib"
-	api "kubepack.dev/lib-app/api/v1alpha1"
+	appapi "kubepack.dev/lib-app/api/v1alpha1"
 	"kubepack.dev/lib-app/pkg/lib/action"
 
 	"helm.sh/helm/v3/pkg/release"
@@ -32,7 +32,7 @@ import (
 )
 
 func ApplyResource(f cmdutil.Factory, model unstructured.Unstructured, skipCRds bool) (*release.Release, error) {
-	var tm api.ModelMetadata
+	var tm appapi.ModelMetadata
 	err := meta_util.DecodeObject(model.Object, &tm)
 	if err != nil {
 		return nil, errors.New("failed to parse Metadata for values")
@@ -80,7 +80,7 @@ func ApplyResource(f cmdutil.Factory, model unstructured.Unstructured, skipCRds 
 	return applier.Run()
 }
 
-func DeleteResource(f cmdutil.Factory, release api.ObjectMeta) (*release.UninstallReleaseResponse, error) {
+func DeleteResource(f cmdutil.Factory, release appapi.ObjectMeta) (*release.UninstallReleaseResponse, error) {
 	cmd, err := action.NewUninstaller(f, release.Namespace, "applications")
 	if err != nil {
 		return nil, err

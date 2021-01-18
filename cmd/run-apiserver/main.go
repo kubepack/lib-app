@@ -29,7 +29,7 @@ import (
 	"kubepack.dev/kubepack/apis/kubepack/v1alpha1"
 	"kubepack.dev/kubepack/artifacts/products"
 	"kubepack.dev/kubepack/pkg/lib"
-	api "kubepack.dev/lib-app/api/v1alpha1"
+	appapi "kubepack.dev/lib-app/api/v1alpha1"
 	"kubepack.dev/lib-app/pkg/editor"
 	"kubepack.dev/lib-app/pkg/handler"
 	"kubepack.dev/lib-helm/getter"
@@ -86,15 +86,15 @@ func main() {
 	m.Group("/packageview", func() {
 		m.Get("", binding.Json(v1alpha1.ChartRepoRef{}), GetPackageViewForChart)
 
+		// PUBLIC
+		m.Get("/files", binding.Json(v1alpha1.ChartRepoRef{}), ListPackageFiles)
+
+		// PUBLIC
+		m.Get("/files/*", binding.Json(v1alpha1.ChartRepoRef{}), GetPackageFile)
+
 		// Generate Order for a Editor PackageView / Chart
-		m.Post("/orders", binding.Json(api.ChartOrder{}), CreateOrderForPackage)
+		m.Post("/orders", binding.Json(appapi.ChartOrder{}), CreateOrderForPackage)
 	})
-
-	// PUBLIC
-	m.Get("/packageview/files", binding.Json(v1alpha1.ChartRepoRef{}), ListPackageFiles)
-
-	// PUBLIC
-	m.Get("/packageview/files/*", binding.Json(v1alpha1.ChartRepoRef{}), GetPackageFile)
 
 	m.Group("/editor", func() {
 		// PUBLIC
@@ -428,15 +428,15 @@ func main() {
 			m.Delete("/namespaces/:namespace/releases/:releaseName", DeleteResource(f))
 
 			// POST Model from Existing Installations
-			m.Put("/model", binding.Json(api.Model{}), LoadEditorModel)
+			m.Put("/model", binding.Json(appapi.Model{}), LoadEditorModel)
 
 			// redundant apis
 			// can be replaced by getting the model, then using the /editor apis
-			m.Put("/manifest", binding.Json(api.Model{}), LoadEditorManifest)
+			m.Put("/manifest", binding.Json(appapi.Model{}), LoadEditorManifest)
 
 			// redundant apis
 			// can be replaced by getting the model, then using the /editor apis
-			m.Put("/resources", binding.Json(api.Model{}), LoadEditorResources)
+			m.Put("/resources", binding.Json(appapi.Model{}), LoadEditorResources)
 		})
 
 		m.Post("/deploy/:id", func(ctx *macaron.Context) {
@@ -514,14 +514,14 @@ func main() {
 	m.Run()
 }
 
-func LoadEditorResources(ctx *macaron.Context, model api.Model) {
+func LoadEditorResources(ctx *macaron.Context, model appapi.Model) {
 	cfg, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	tpl, err := editor.LoadEditorModel(cfg, lib.DefaultRegistry, api.ModelMetadata{
+	tpl, err := editor.LoadEditorModel(cfg, lib.DefaultRegistry, appapi.ModelMetadata{
 		Metadata: model.Metadata,
 	})
 	if err != nil {
@@ -529,7 +529,7 @@ func LoadEditorResources(ctx *macaron.Context, model api.Model) {
 		return
 	}
 
-	var out api.ResourceOutput
+	var out appapi.ResourceOutput
 	format := meta_util.NewDataFormat(ctx.QueryTrim("format"), meta_util.YAMLFormat)
 
 	for _, r := range tpl.Resources {
@@ -543,14 +543,14 @@ func LoadEditorResources(ctx *macaron.Context, model api.Model) {
 	ctx.JSON(http.StatusOK, out)
 }
 
-func LoadEditorManifest(ctx *macaron.Context, model api.Model) {
+func LoadEditorManifest(ctx *macaron.Context, model appapi.Model) {
 	cfg, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	tpl, err := editor.LoadEditorModel(cfg, lib.DefaultRegistry, api.ModelMetadata{
+	tpl, err := editor.LoadEditorModel(cfg, lib.DefaultRegistry, appapi.ModelMetadata{
 		Metadata: model.Metadata,
 	})
 	if err != nil {
@@ -560,14 +560,14 @@ func LoadEditorManifest(ctx *macaron.Context, model api.Model) {
 	_, _ = ctx.Write(tpl.Manifest)
 }
 
-func LoadEditorModel(ctx *macaron.Context, model api.Model) {
+func LoadEditorModel(ctx *macaron.Context, model appapi.Model) {
 	cfg, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	tpl, err := editor.LoadEditorModel(cfg, lib.DefaultRegistry, api.ModelMetadata{
+	tpl, err := editor.LoadEditorModel(cfg, lib.DefaultRegistry, appapi.ModelMetadata{
 		Metadata: model.Metadata,
 	})
 	if err != nil {
@@ -586,7 +586,7 @@ func LoadEditorModel(ctx *macaron.Context, model api.Model) {
 
 func DeleteResource(f cmdutil.Factory) func(ctx *macaron.Context) {
 	return func(ctx *macaron.Context) {
-		release := api.ObjectMeta{
+		release := appapi.ObjectMeta{
 			Name:      ctx.Params(":releaseName"),
 			Namespace: ctx.Params(":namespace"),
 		}
@@ -726,7 +726,7 @@ func PreviewEditorResources(ctx *macaron.Context, opts unstructured.Unstructured
 		tpls.CRDs = nil
 	}
 
-	var out api.ResourceOutput
+	var out appapi.ResourceOutput
 	format := meta_util.NewDataFormat(ctx.QueryTrim("format"), meta_util.YAMLFormat)
 
 	for _, crd := range tpls.CRDs {
@@ -790,7 +790,7 @@ func GetPackageFile(ctx *macaron.Context, params v1alpha1.ChartRepoRef) {
 		if f.Name == filename {
 			out, ct, err := converter.Convert(f.Name, f.Data, format)
 			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
+				ctx.Error(http.StatusInternalServerError, "ConvertFormat", err.Error())
 				return
 			}
 
@@ -820,7 +820,7 @@ func ListPackageFiles(ctx *macaron.Context, params v1alpha1.ChartRepoRef) {
 	ctx.JSON(http.StatusOK, files)
 }
 
-func CreateOrderForPackage(ctx *macaron.Context, params api.ChartOrder) {
+func CreateOrderForPackage(ctx *macaron.Context, params appapi.ChartOrder) {
 	order, err := editor.CreateChartOrder(lib.DefaultRegistry, params)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "CreateChartOrder", err.Error())

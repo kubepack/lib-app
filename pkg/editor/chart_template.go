@@ -25,7 +25,7 @@ import (
 
 	"kubepack.dev/kubepack/apis/kubepack/v1alpha1"
 	"kubepack.dev/kubepack/pkg/lib"
-	api "kubepack.dev/lib-app/api/v1alpha1"
+	appapi "kubepack.dev/lib-app/api/v1alpha1"
 	"kubepack.dev/lib-helm/repo"
 
 	"github.com/google/uuid"
@@ -50,9 +50,9 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func RenderOrderTemplate(bs *lib.BlobStore, reg *repo.Registry, order v1alpha1.Order) (string, []api.ChartTemplate, error) {
+func RenderOrderTemplate(bs *lib.BlobStore, reg *repo.Registry, order v1alpha1.Order) (string, []appapi.ChartTemplate, error) {
 	var buf bytes.Buffer
-	var tpls []api.ChartTemplate
+	var tpls []appapi.ChartTemplate
 
 	for _, pkg := range order.Spec.Packages {
 		if pkg.Chart == nil {
@@ -77,7 +77,7 @@ func RenderOrderTemplate(bs *lib.BlobStore, reg *repo.Registry, order v1alpha1.O
 			return "", nil, err
 		}
 
-		tpl := api.ChartTemplate{
+		tpl := appapi.ChartTemplate{
 			ChartRef:    pkg.Chart.ChartRef,
 			Version:     pkg.Chart.Version,
 			ReleaseName: pkg.Chart.ReleaseName,
@@ -92,7 +92,7 @@ func RenderOrderTemplate(bs *lib.BlobStore, reg *repo.Registry, order v1alpha1.O
 			if len(resources) != 1 {
 				return "", nil, fmt.Errorf("%d crds found in %s", len(resources), crd.Filename)
 			}
-			tpl.CRDs = append(tpl.CRDs, api.BucketJsonFile{
+			tpl.CRDs = append(tpl.CRDs, appapi.BucketJsonFile{
 				URL:      crd.URL,
 				Key:      crd.Key,
 				Filename: crd.Filename,
@@ -100,7 +100,7 @@ func RenderOrderTemplate(bs *lib.BlobStore, reg *repo.Registry, order v1alpha1.O
 			})
 		}
 		if manifestFile != nil {
-			tpl.Manifest = &api.BucketObject{
+			tpl.Manifest = &appapi.BucketObject{
 				URL: manifestFile.URL,
 				Key: manifestFile.Key,
 			}
@@ -128,7 +128,7 @@ func RenderOrderTemplate(bs *lib.BlobStore, reg *repo.Registry, order v1alpha1.O
 	return buf.String(), tpls, nil
 }
 
-func LoadEditorModel(cfg *rest.Config, reg *repo.Registry, opts api.ModelMetadata) (*api.EditorTemplate, error) {
+func LoadEditorModel(cfg *rest.Config, reg *repo.Registry, opts appapi.ModelMetadata) (*appapi.EditorTemplate, error) {
 	rd, err := hub.NewRegistryOfKnownResources().LoadByGVR(schema.GroupVersionResource{
 		Group:    opts.Resource.Group,
 		Version:  opts.Resource.Version,
@@ -165,7 +165,7 @@ func LoadEditorModel(cfg *rest.Config, reg *repo.Registry, opts api.ModelMetadat
 	return EditorChartValueManifest(app, mapper, dc, opts.Metadata.Release, chrt.Chart)
 }
 
-func EditorChartValueManifest(app *v1beta1.Application, mapper *restmapper.DeferredDiscoveryRESTMapper, dc dynamic.Interface, mt api.ObjectMeta, chrt *chart.Chart) (*api.EditorTemplate, error) {
+func EditorChartValueManifest(app *v1beta1.Application, mapper *restmapper.DeferredDiscoveryRESTMapper, dc dynamic.Interface, mt appapi.ObjectMeta, chrt *chart.Chart) (*appapi.EditorTemplate, error) {
 	selector, err := metav1.LabelSelectorAsSelector(app.Spec.Selector)
 	if err != nil {
 		return nil, err
@@ -245,7 +245,7 @@ func EditorChartValueManifest(app *v1beta1.Application, mapper *restmapper.Defer
 		}
 	}
 
-	tpl := api.EditorTemplate{
+	tpl := appapi.EditorTemplate{
 		Manifest: buf.Bytes(),
 		Values: &unstructured.Unstructured{
 			Object: map[string]interface{}{
@@ -263,7 +263,7 @@ func EditorChartValueManifest(app *v1beta1.Application, mapper *restmapper.Defer
 }
 
 func GenerateEditorModel(reg *repo.Registry, opts unstructured.Unstructured) (*unstructured.Unstructured, error) {
-	var spec api.ModelMetadata
+	var spec appapi.ModelMetadata
 	err := meta_util.DecodeObject(opts.Object, &spec)
 	if err != nil {
 		return nil, err
@@ -318,8 +318,8 @@ func GenerateEditorModel(reg *repo.Registry, opts unstructured.Unstructured) (*u
 	}, err
 }
 
-func RenderChartTemplate(reg *repo.Registry, opts unstructured.Unstructured) (string, *api.ChartTemplate, error) {
-	var spec api.ModelMetadata
+func RenderChartTemplate(reg *repo.Registry, opts unstructured.Unstructured) (string, *appapi.ChartTemplate, error) {
+	var spec appapi.ModelMetadata
 	err := meta_util.DecodeObject(opts.Object, &spec)
 	if err != nil {
 		return "", nil, err
@@ -351,7 +351,7 @@ func RenderChartTemplate(reg *repo.Registry, opts unstructured.Unstructured) (st
 		return "", nil, err
 	}
 
-	tpl := api.ChartTemplate{
+	tpl := appapi.ChartTemplate{
 		ChartRef:    f1.ChartRef,
 		Version:     f1.Version,
 		ReleaseName: f1.ReleaseName,
@@ -367,7 +367,7 @@ func RenderChartTemplate(reg *repo.Registry, opts unstructured.Unstructured) (st
 		if len(resources) != 1 {
 			return "", nil, fmt.Errorf("%d crds found in %s", len(resources), crd.Name)
 		}
-		tpl.CRDs = append(tpl.CRDs, api.BucketJsonFile{
+		tpl.CRDs = append(tpl.CRDs, appapi.BucketJsonFile{
 			Filename: crd.Name,
 			Data:     resources[0],
 		})
@@ -381,7 +381,7 @@ func RenderChartTemplate(reg *repo.Registry, opts unstructured.Unstructured) (st
 	return string(manifest), &tpl, nil
 }
 
-func CreateChartOrder(reg *repo.Registry, opts api.ChartOrder) (*v1alpha1.Order, error) {
+func CreateChartOrder(reg *repo.Registry, opts appapi.ChartOrder) (*v1alpha1.Order, error) {
 	// editor chart
 	chrt, err := reg.GetChart(opts.URL, opts.Name, opts.Version)
 	if err != nil {

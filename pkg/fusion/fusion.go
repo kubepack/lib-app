@@ -27,7 +27,7 @@ import (
 	"text/template"
 
 	docapi "kubepack.dev/chart-doc-gen/api"
-	api "kubepack.dev/lib-app/api/v1alpha1"
+	appapi "kubepack.dev/lib-app/api/v1alpha1"
 	"kubepack.dev/lib-app/pkg/editor"
 
 	"github.com/Masterminds/sprig"
@@ -93,7 +93,7 @@ func NewCmdFuse() *cobra.Command {
 				// values
 				cp := obj.DeepCopy()
 				delete(cp.Object, "status")
-				cp.Object["metadata"] = api.ObjectMeta{
+				cp.Object["metadata"] = appapi.ObjectMeta{
 					Name:      obj.GetName(),
 					Namespace: obj.GetNamespace(),
 				}
@@ -173,7 +173,7 @@ func NewCmdFuse() *cobra.Command {
 				}
 				defer f.Close()
 
-				objModel := api.ObjectModel{
+				objModel := appapi.ObjectModel{
 					Key:    rsKey,
 					Object: obj,
 				}
@@ -241,9 +241,9 @@ func NewCmdFuse() *cobra.Command {
 				}
 
 				values := map[string]interface{}{
-					"metadata": api.Metadata{
+					"metadata": appapi.Metadata{
 						Resource: rd.Spec.Resource,
-						Release: api.ObjectMeta{
+						Release: appapi.ObjectMeta{
 							Name:      "RELEASE-NAME",
 							Namespace: "default",
 						},
