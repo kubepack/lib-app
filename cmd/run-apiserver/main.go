@@ -76,140 +76,25 @@ func main() {
 
 	// PUBLIC
 	m.Group("/bundleview", func() {
-		m.Get("", binding.Json(v1alpha1.ChartRepoRef{}), func(ctx *macaron.Context, params v1alpha1.ChartRepoRef) {
-			// TODO: verify params
-
-			bv, err := lib.CreateBundleViewForChart(lib.DefaultRegistry, &params)
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-
-			ctx.JSON(http.StatusOK, bv)
-		})
+		m.Get("", binding.Json(v1alpha1.ChartRepoRef{}), GetBundleViewForChart)
 
 		// Generate Order for a BundleView
-		m.Post("/orders", binding.Json(v1alpha1.BundleView{}), func(ctx *macaron.Context, params v1alpha1.BundleView) {
-			order, err := lib.CreateOrder(lib.DefaultRegistry, params)
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-
-			data, err := yaml.Marshal(order)
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-
-			bs, err := lib.NewTestBlobStore()
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-
-			err = bs.WriteFile(ctx.Req.Context(), path.Join(string(order.UID), "order.yaml"), data)
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-			ctx.JSON(http.StatusOK, order)
-		})
+		m.Post("/orders", binding.Json(v1alpha1.BundleView{}), CreateOrderForBundle)
 	})
 
 	// PUBLIC
 	m.Group("/packageview", func() {
-		m.Get("", binding.Json(v1alpha1.ChartRepoRef{}), func(ctx *macaron.Context, params v1alpha1.ChartRepoRef) {
-			// TODO: verify params
-
-			chrt, err := lib.DefaultRegistry.GetChart(params.URL, params.Name, params.Version)
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-
-			pv, err := lib.CreatePackageView(params.URL, chrt.Chart)
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-
-			ctx.JSON(http.StatusOK, pv)
-		})
+		m.Get("", binding.Json(v1alpha1.ChartRepoRef{}), GetPackageViewForChart)
 
 		// Generate Order for a Editor PackageView / Chart
-		m.Post("/orders", binding.Json(api.ChartOrder{}), func(ctx *macaron.Context, params api.ChartOrder) {
-			order, err := editor.CreateChartOrder(lib.DefaultRegistry, params)
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-
-			data, err := yaml.Marshal(order)
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-
-			bs, err := lib.NewTestBlobStore()
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-
-			err = bs.WriteFile(ctx.Req.Context(), path.Join(string(order.UID), "order.yaml"), data)
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-			ctx.JSON(http.StatusOK, order)
-		})
+		m.Post("/orders", binding.Json(api.ChartOrder{}), CreateOrderForPackage)
 	})
 
 	// PUBLIC
-	m.Get("/packageview/files", binding.Json(v1alpha1.ChartRepoRef{}), func(ctx *macaron.Context, params v1alpha1.ChartRepoRef) {
-		// TODO: verify params
-
-		chrt, err := lib.DefaultRegistry.GetChart(params.URL, params.Name, params.Version)
-		if err != nil {
-			ctx.Error(http.StatusInternalServerError, err.Error())
-			return
-		}
-
-		files := make([]string, 0, len(chrt.Raw))
-		for _, f := range chrt.Raw {
-			files = append(files, f.Name)
-		}
-		sort.Strings(files)
-
-		ctx.JSON(http.StatusOK, files)
-	})
+	m.Get("/packageview/files", binding.Json(v1alpha1.ChartRepoRef{}), ListPackageFiles)
 
 	// PUBLIC
-	m.Get("/packageview/files/*", binding.Json(v1alpha1.ChartRepoRef{}), func(ctx *macaron.Context, params v1alpha1.ChartRepoRef) {
-		chrt, err := lib.DefaultRegistry.GetChart(params.URL, params.Name, params.Version)
-		if err != nil {
-			ctx.Error(http.StatusInternalServerError, err.Error())
-			return
-		}
-
-		filename := ctx.Params("*")
-		format := meta_util.NewDataFormat(ctx.QueryTrim("format"), meta_util.JsonFormat)
-		for _, f := range chrt.Raw {
-			if f.Name == filename {
-				out, ct, err := converter.Convert(f.Name, f.Data, format)
-				if err != nil {
-					ctx.Error(http.StatusInternalServerError, err.Error())
-					return
-				}
-
-				ctx.Header().Set("Content-Type", ct)
-				_, _ = ctx.Write(out)
-				return
-			}
-		}
-		ctx.WriteHeader(http.StatusNotFound)
-	})
+	m.Get("/packageview/files/*", binding.Json(v1alpha1.ChartRepoRef{}), GetPackageFile)
 
 	m.Group("/editor", func() {
 		// PUBLIC
@@ -217,64 +102,9 @@ func main() {
 		// GET vs POST (Get makes more sense, but do we send so much data via query string?)
 		// With POST, we can send large payloads without any non-standard limits
 		// https://stackoverflow.com/a/812962
-		m.Put("/model", binding.Json(unstructured.Unstructured{}), func(ctx *macaron.Context, opts unstructured.Unstructured) {
-			model, err := editor.GenerateEditorModel(lib.DefaultRegistry, opts)
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-
-			format := meta_util.NewDataFormat(ctx.QueryTrim("format"), meta_util.JsonFormat)
-			if format == meta_util.YAMLFormat {
-				out, err := yaml.Marshal(model)
-				if err != nil {
-					ctx.Error(http.StatusInternalServerError, err.Error())
-					return
-				}
-				_, _ = ctx.Write(out)
-				return
-			}
-			ctx.JSON(http.StatusOK, model)
-		})
-		m.Put("/manifest", binding.Json(unstructured.Unstructured{}), func(ctx *macaron.Context, opts unstructured.Unstructured) {
-			manifest, _, err := editor.RenderChartTemplate(lib.DefaultRegistry, opts)
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-			_, _ = ctx.Write([]byte(manifest))
-		})
-		m.Put("/resources", binding.Json(unstructured.Unstructured{}), func(ctx *macaron.Context, opts unstructured.Unstructured) {
-			_, tpls, err := editor.RenderChartTemplate(lib.DefaultRegistry, opts)
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-			if ctx.QueryBool("skipCRDs") {
-				tpls.CRDs = nil
-			}
-
-			var out api.ResourceOutput
-			format := meta_util.NewDataFormat(ctx.QueryTrim("format"), meta_util.YAMLFormat)
-
-			for _, crd := range tpls.CRDs {
-				data, err := meta_util.Marshal(crd, format)
-				if err != nil {
-					ctx.Error(http.StatusInternalServerError, err.Error())
-					return
-				}
-				out.CRDs = append(out.CRDs, string(data))
-			}
-			for _, r := range tpls.Resources {
-				data, err := meta_util.Marshal(r, format)
-				if err != nil {
-					ctx.Error(http.StatusInternalServerError, err.Error())
-					return
-				}
-				out.Resources = append(out.Resources, string(data))
-			}
-			ctx.JSON(http.StatusOK, &out)
-		})
+		m.Put("/model", binding.Json(unstructured.Unstructured{}), GenerateEditorModelFromOptions)
+		m.Put("/manifest", binding.Json(unstructured.Unstructured{}), PreviewEditorManifest)
+		m.Put("/resources", binding.Json(unstructured.Unstructured{}), PreviewEditorResources)
 	})
 
 	// PUBLIC
@@ -501,109 +331,9 @@ func main() {
 	// Should we store Order UID in a table per User?
 	m.Group("/deploy/orders", func() {
 		// Generate Order for a single chart and optional values patch
-		m.Post("", binding.Json(v1alpha1.Order{}), func(ctx *macaron.Context, order v1alpha1.Order) {
-			if len(order.Spec.Packages) == 0 {
-				ctx.Error(http.StatusBadRequest, "missing package selection for order")
-				return
-			}
-
-			order.TypeMeta = metav1.TypeMeta{
-				APIVersion: v1alpha1.SchemeGroupVersion.String(),
-				Kind:       v1alpha1.ResourceKindOrder,
-			}
-			order.ObjectMeta = metav1.ObjectMeta{
-				UID:               types.UID(uuid.New().String()),
-				CreationTimestamp: metav1.NewTime(time.Now()),
-			}
-			if order.Name == "" {
-				order.Name = order.Spec.Packages[0].Chart.ReleaseName
-			}
-
-			data, err := yaml.Marshal(order)
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-
-			bs, err := lib.NewTestBlobStore()
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-
-			err = bs.WriteFile(ctx.Req.Context(), path.Join(string(order.UID), "order.yaml"), data)
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-			ctx.JSON(http.StatusOK, order)
-		})
-		m.Get("/:id/render/manifest", func(ctx *macaron.Context) {
-			bs, err := lib.NewTestBlobStore()
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-
-			data, err := bs.ReadFile(ctx.Req.Context(), path.Join(ctx.Params(":id"), "order.yaml"))
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-
-			var order v1alpha1.Order
-			err = yaml.Unmarshal(data, &order)
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-
-			manifest, _, err := editor.RenderOrderTemplate(bs, lib.DefaultRegistry, order)
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-			_, _ = ctx.Write([]byte(manifest))
-		})
-		m.Get("/:id/render/resources", func(ctx *macaron.Context) {
-			bs, err := lib.NewTestBlobStore()
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-
-			data, err := bs.ReadFile(ctx.Req.Context(), path.Join(ctx.Params(":id"), "order.yaml"))
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-
-			var order v1alpha1.Order
-			err = yaml.Unmarshal(data, &order)
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-
-			_, tpls, err := editor.RenderOrderTemplate(bs, lib.DefaultRegistry, order)
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-			if ctx.QueryBool("skipCRDs") {
-				for i := range tpls {
-					tpls[i].CRDs = nil
-				}
-			}
-
-			format := meta_util.NewDataFormat(ctx.QueryTrim("format"), meta_util.YAMLFormat)
-			out, err := editor.ConvertChartTemplates(tpls, format)
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-			ctx.JSON(http.StatusOK, out)
-		})
+		m.Post("", binding.Json(v1alpha1.Order{}), CreateOrder)
+		m.Get("/:id/render/manifest", PreviewOrderManifest)
+		m.Get("/:id/render/resources", PreviewOrderResources)
 		m.Get("/:id/helm2", func(ctx *macaron.Context) {
 			bs, err := lib.NewTestBlobStore()
 			if err != nil {
@@ -693,102 +423,20 @@ func main() {
 	m.Group("/clusters/:cluster", func() {
 		m.Group("/editor", func() {
 			// create / update / apply / install
-			m.Put("", binding.Json(unstructured.Unstructured{}), func(ctx *macaron.Context, model unstructured.Unstructured) {
-				rls, err := handler.ApplyResource(f, model, !ctx.QueryBool("installCRDs"))
-				if err != nil {
-					ctx.Error(http.StatusInternalServerError, err.Error())
-					return
-				}
-				ctx.JSON(http.StatusOK, rls.Info)
-			})
+			m.Put("", binding.Json(unstructured.Unstructured{}), ApplyResource(f))
 
-			m.Delete("/namespaces/:namespace/releases/:releaseName", func(ctx *macaron.Context) {
-				release := api.ObjectMeta{
-					Name:      ctx.Params(":releaseName"),
-					Namespace: ctx.Params(":namespace"),
-				}
-				rls, err := handler.DeleteResource(f, release)
-				if err != nil {
-					ctx.Error(http.StatusInternalServerError, err.Error())
-					return
-				}
-				_, _ = ctx.Write([]byte(rls.Info))
-			})
+			m.Delete("/namespaces/:namespace/releases/:releaseName", DeleteResource(f))
 
 			// POST Model from Existing Installations
-			m.Put("/model", binding.Json(api.Model{}), func(ctx *macaron.Context, model api.Model) {
-				cfg, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
-				if err != nil {
-					ctx.Error(http.StatusInternalServerError, err.Error())
-					return
-				}
-
-				tpl, err := editor.LoadEditorModel(cfg, lib.DefaultRegistry, api.ModelMetadata{
-					Metadata: model.Metadata,
-				})
-				if err != nil {
-					ctx.Error(http.StatusInternalServerError, err.Error())
-					return
-				}
-
-				format := meta_util.NewDataFormat(ctx.QueryTrim("format"), meta_util.JsonFormat)
-				out, err := meta_util.Marshal(tpl.Values, format)
-				if err != nil {
-					ctx.Error(http.StatusInternalServerError, err.Error())
-					return
-				}
-				_, _ = ctx.Write(out)
-			})
+			m.Put("/model", binding.Json(api.Model{}), LoadEditorModel)
 
 			// redundant apis
 			// can be replaced by getting the model, then using the /editor apis
-			m.Put("/manifest", binding.Json(api.Model{}), func(ctx *macaron.Context, model api.Model) {
-				cfg, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
-				if err != nil {
-					ctx.Error(http.StatusInternalServerError, err.Error())
-					return
-				}
-
-				tpl, err := editor.LoadEditorModel(cfg, lib.DefaultRegistry, api.ModelMetadata{
-					Metadata: model.Metadata,
-				})
-				if err != nil {
-					ctx.Error(http.StatusInternalServerError, err.Error())
-					return
-				}
-				_, _ = ctx.Write(tpl.Manifest)
-			})
+			m.Put("/manifest", binding.Json(api.Model{}), LoadEditorManifest)
 
 			// redundant apis
 			// can be replaced by getting the model, then using the /editor apis
-			m.Put("/resources", binding.Json(api.Model{}), func(ctx *macaron.Context, model api.Model) {
-				cfg, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
-				if err != nil {
-					ctx.Error(http.StatusInternalServerError, err.Error())
-					return
-				}
-
-				tpl, err := editor.LoadEditorModel(cfg, lib.DefaultRegistry, api.ModelMetadata{
-					Metadata: model.Metadata,
-				})
-				if err != nil {
-					ctx.Error(http.StatusInternalServerError, err.Error())
-					return
-				}
-
-				var out api.ResourceOutput
-				format := meta_util.NewDataFormat(ctx.QueryTrim("format"), meta_util.YAMLFormat)
-
-				for _, r := range tpl.Resources {
-					data, err := meta_util.Marshal(r, format)
-					if err != nil {
-						ctx.Error(http.StatusInternalServerError, err.Error())
-						return
-					}
-					out.Resources = append(out.Resources, string(data))
-				}
-				ctx.JSON(http.StatusOK, out)
-			})
+			m.Put("/resources", binding.Json(api.Model{}), LoadEditorResources)
 		})
 
 		m.Post("/deploy/:id", func(ctx *macaron.Context) {
@@ -864,4 +512,394 @@ func main() {
 		return "Hello world!"
 	})
 	m.Run()
+}
+
+func LoadEditorResources(ctx *macaron.Context, model api.Model) {
+	cfg, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	tpl, err := editor.LoadEditorModel(cfg, lib.DefaultRegistry, api.ModelMetadata{
+		Metadata: model.Metadata,
+	})
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "LoadEditorModel", err.Error())
+		return
+	}
+
+	var out api.ResourceOutput
+	format := meta_util.NewDataFormat(ctx.QueryTrim("format"), meta_util.YAMLFormat)
+
+	for _, r := range tpl.Resources {
+		data, err := meta_util.Marshal(r, format)
+		if err != nil {
+			ctx.Error(http.StatusInternalServerError, "MarshalResource", err.Error())
+			return
+		}
+		out.Resources = append(out.Resources, string(data))
+	}
+	ctx.JSON(http.StatusOK, out)
+}
+
+func LoadEditorManifest(ctx *macaron.Context, model api.Model) {
+	cfg, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	tpl, err := editor.LoadEditorModel(cfg, lib.DefaultRegistry, api.ModelMetadata{
+		Metadata: model.Metadata,
+	})
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "LoadEditorModel", err.Error())
+		return
+	}
+	_, _ = ctx.Write(tpl.Manifest)
+}
+
+func LoadEditorModel(ctx *macaron.Context, model api.Model) {
+	cfg, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	tpl, err := editor.LoadEditorModel(cfg, lib.DefaultRegistry, api.ModelMetadata{
+		Metadata: model.Metadata,
+	})
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "LoadEditorModel", err.Error())
+		return
+	}
+
+	format := meta_util.NewDataFormat(ctx.QueryTrim("format"), meta_util.JsonFormat)
+	out, err := meta_util.Marshal(tpl.Values, format)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "MarshalModel", err.Error())
+		return
+	}
+	_, _ = ctx.Write(out)
+}
+
+func DeleteResource(f cmdutil.Factory) func(ctx *macaron.Context) {
+	return func(ctx *macaron.Context) {
+		release := api.ObjectMeta{
+			Name:      ctx.Params(":releaseName"),
+			Namespace: ctx.Params(":namespace"),
+		}
+		rls, err := handler.DeleteResource(f, release)
+		if err != nil {
+			ctx.Error(http.StatusInternalServerError, "DeleteResource", err.Error())
+			return
+		}
+		_, _ = ctx.Write([]byte(rls.Info))
+	}
+}
+
+func ApplyResource(f cmdutil.Factory) func(ctx *macaron.Context, model unstructured.Unstructured) {
+	return func(ctx *macaron.Context, model unstructured.Unstructured) {
+		rls, err := handler.ApplyResource(f, model, !ctx.QueryBool("installCRDs"))
+		if err != nil {
+			ctx.Error(http.StatusInternalServerError, "ApplyResource", err.Error())
+			return
+		}
+		ctx.JSON(http.StatusOK, rls.Info)
+	}
+}
+
+func PreviewOrderResources(ctx *macaron.Context) {
+	bs, err := lib.NewTestBlobStore()
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	data, err := bs.ReadFile(ctx.Req.Context(), path.Join(ctx.Params(":id"), "order.yaml"))
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "BlobStoreReadFile", err.Error())
+		return
+	}
+
+	var order v1alpha1.Order
+	err = yaml.Unmarshal(data, &order)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "UnmarshalOrder", err.Error())
+		return
+	}
+
+	_, tpls, err := editor.RenderOrderTemplate(bs, lib.DefaultRegistry, order)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "RenderOrderTemplate", err.Error())
+		return
+	}
+	if ctx.QueryBool("skipCRDs") {
+		for i := range tpls {
+			tpls[i].CRDs = nil
+		}
+	}
+
+	format := meta_util.NewDataFormat(ctx.QueryTrim("format"), meta_util.YAMLFormat)
+	out, err := editor.ConvertChartTemplates(tpls, format)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "ConvertChartTemplates", err.Error())
+		return
+	}
+	ctx.JSON(http.StatusOK, out)
+}
+
+func PreviewOrderManifest(ctx *macaron.Context) {
+	bs, err := lib.NewTestBlobStore()
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	data, err := bs.ReadFile(ctx.Req.Context(), path.Join(ctx.Params(":id"), "order.yaml"))
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "BlobStoreReadFile", err.Error())
+		return
+	}
+
+	var order v1alpha1.Order
+	err = yaml.Unmarshal(data, &order)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "UnmarshalOrder", err.Error())
+		return
+	}
+
+	manifest, _, err := editor.RenderOrderTemplate(bs, lib.DefaultRegistry, order)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "RenderOrderTemplate", err.Error())
+		return
+	}
+	_, _ = ctx.Write([]byte(manifest))
+}
+
+func CreateOrder(ctx *macaron.Context, order v1alpha1.Order) {
+	if len(order.Spec.Packages) == 0 {
+		ctx.Error(http.StatusBadRequest, "missing package selection for order")
+		return
+	}
+
+	order.TypeMeta = metav1.TypeMeta{
+		APIVersion: v1alpha1.SchemeGroupVersion.String(),
+		Kind:       v1alpha1.ResourceKindOrder,
+	}
+	order.ObjectMeta = metav1.ObjectMeta{
+		UID:               types.UID(uuid.New().String()),
+		CreationTimestamp: metav1.NewTime(time.Now()),
+	}
+	if order.Name == "" {
+		order.Name = order.Spec.Packages[0].Chart.ReleaseName
+	}
+
+	data, err := yaml.Marshal(order)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "MarshalOrder", err.Error())
+		return
+	}
+
+	bs, err := lib.NewTestBlobStore()
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	err = bs.WriteFile(ctx.Req.Context(), path.Join(string(order.UID), "order.yaml"), data)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "BlobStoreWriteFile", err.Error())
+		return
+	}
+	ctx.JSON(http.StatusOK, order)
+}
+
+func PreviewEditorResources(ctx *macaron.Context, opts unstructured.Unstructured) {
+	_, tpls, err := editor.RenderChartTemplate(lib.DefaultRegistry, opts)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "RenderChartTemplate", err.Error())
+		return
+	}
+	if ctx.QueryBool("skipCRDs") {
+		tpls.CRDs = nil
+	}
+
+	var out api.ResourceOutput
+	format := meta_util.NewDataFormat(ctx.QueryTrim("format"), meta_util.YAMLFormat)
+
+	for _, crd := range tpls.CRDs {
+		data, err := meta_util.Marshal(crd, format)
+		if err != nil {
+			ctx.Error(http.StatusInternalServerError, "MarshalCRD", err.Error())
+			return
+		}
+		out.CRDs = append(out.CRDs, string(data))
+	}
+	for _, r := range tpls.Resources {
+		data, err := meta_util.Marshal(r, format)
+		if err != nil {
+			ctx.Error(http.StatusInternalServerError, "MarshalResource", err.Error())
+			return
+		}
+		out.Resources = append(out.Resources, string(data))
+	}
+	ctx.JSON(http.StatusOK, &out)
+}
+
+func PreviewEditorManifest(ctx *macaron.Context, opts unstructured.Unstructured) {
+	manifest, _, err := editor.RenderChartTemplate(lib.DefaultRegistry, opts)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "RenderChartTemplate", err.Error())
+		return
+	}
+	_, _ = ctx.Write([]byte(manifest))
+}
+
+func GenerateEditorModelFromOptions(ctx *macaron.Context, opts unstructured.Unstructured) {
+	model, err := editor.GenerateEditorModel(lib.DefaultRegistry, opts)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "GetChart", err.Error())
+		return
+	}
+
+	format := meta_util.NewDataFormat(ctx.QueryTrim("format"), meta_util.JsonFormat)
+	if format == meta_util.YAMLFormat {
+		out, err := yaml.Marshal(model)
+		if err != nil {
+			ctx.Error(http.StatusInternalServerError, err.Error())
+			return
+		}
+		_, _ = ctx.Write(out)
+		return
+	}
+	ctx.JSON(http.StatusOK, model)
+}
+
+func GetPackageFile(ctx *macaron.Context, params v1alpha1.ChartRepoRef) {
+	chrt, err := lib.DefaultRegistry.GetChart(params.URL, params.Name, params.Version)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "GetChart", err.Error())
+		return
+	}
+
+	filename := ctx.Params("*")
+	format := meta_util.NewDataFormat(ctx.QueryTrim("format"), meta_util.JsonFormat)
+	for _, f := range chrt.Raw {
+		if f.Name == filename {
+			out, ct, err := converter.Convert(f.Name, f.Data, format)
+			if err != nil {
+				ctx.Error(http.StatusInternalServerError, err.Error())
+				return
+			}
+
+			ctx.Header().Set("Content-Type", ct)
+			_, _ = ctx.Write(out)
+			return
+		}
+	}
+	ctx.WriteHeader(http.StatusNotFound)
+}
+
+func ListPackageFiles(ctx *macaron.Context, params v1alpha1.ChartRepoRef) {
+	// TODO: verify params
+
+	chrt, err := lib.DefaultRegistry.GetChart(params.URL, params.Name, params.Version)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "GetChart", err.Error())
+		return
+	}
+
+	files := make([]string, 0, len(chrt.Raw))
+	for _, f := range chrt.Raw {
+		files = append(files, f.Name)
+	}
+	sort.Strings(files)
+
+	ctx.JSON(http.StatusOK, files)
+}
+
+func CreateOrderForPackage(ctx *macaron.Context, params api.ChartOrder) {
+	order, err := editor.CreateChartOrder(lib.DefaultRegistry, params)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "CreateChartOrder", err.Error())
+		return
+	}
+
+	data, err := yaml.Marshal(order)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "MarshalOrder", err.Error())
+		return
+	}
+
+	bs, err := lib.NewTestBlobStore()
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	err = bs.WriteFile(ctx.Req.Context(), path.Join(string(order.UID), "order.yaml"), data)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "BlobStoreWriteFile", err.Error())
+		return
+	}
+	ctx.JSON(http.StatusOK, order)
+}
+
+func GetPackageViewForChart(ctx *macaron.Context, params v1alpha1.ChartRepoRef) {
+	// TODO: verify params
+
+	chrt, err := lib.DefaultRegistry.GetChart(params.URL, params.Name, params.Version)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "GetChart", err.Error())
+		return
+	}
+
+	pv, err := lib.CreatePackageView(params.URL, chrt.Chart)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "CreatePackageView", err.Error())
+		return
+	}
+
+	ctx.JSON(http.StatusOK, pv)
+}
+
+func CreateOrderForBundle(ctx *macaron.Context, params v1alpha1.BundleView) {
+	order, err := lib.CreateOrder(lib.DefaultRegistry, params)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "CreateDeployOrder", err.Error())
+		return
+	}
+
+	data, err := yaml.Marshal(order)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "MarshalDeployOrder", err.Error())
+		return
+	}
+
+	bs, err := lib.NewTestBlobStore()
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	err = bs.WriteFile(ctx.Req.Context(), path.Join(string(order.UID), "order.yaml"), data)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "BlobStoreWriteFile", err.Error())
+		return
+	}
+	ctx.JSON(http.StatusOK, order)
+}
+
+func GetBundleViewForChart(ctx *macaron.Context, params v1alpha1.ChartRepoRef) {
+	// TODO: verify params
+
+	bv, err := lib.CreateBundleViewForChart(lib.DefaultRegistry, &params)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "CreateBundleViewForChart", err.Error())
+		return
+	}
+
+	ctx.JSON(http.StatusOK, bv)
 }
