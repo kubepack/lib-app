@@ -538,7 +538,10 @@ func LoadEditorResources(ctx *macaron.Context, model appapi.Model) {
 			ctx.Error(http.StatusInternalServerError, "MarshalResource", err.Error())
 			return
 		}
-		out.Resources = append(out.Resources, string(data))
+		out.Resources = append(out.Resources, appapi.ResourceFile{
+			Filename: r.Filename + "." + string(format),
+			Data:     string(data),
+		})
 	}
 	ctx.JSON(http.StatusOK, out)
 }
@@ -730,20 +733,26 @@ func PreviewEditorResources(ctx *macaron.Context, opts unstructured.Unstructured
 	format := meta_util.NewDataFormat(ctx.QueryTrim("format"), meta_util.YAMLFormat)
 
 	for _, crd := range tpls.CRDs {
-		data, err := meta_util.Marshal(crd, format)
+		data, err := meta_util.Marshal(crd.Data, format)
 		if err != nil {
 			ctx.Error(http.StatusInternalServerError, "MarshalCRD", err.Error())
 			return
 		}
-		out.CRDs = append(out.CRDs, string(data))
+		out.CRDs = append(out.CRDs, appapi.ResourceFile{
+			Filename: crd.Filename + "." + string(format),
+			Data:     string(data),
+		})
 	}
 	for _, r := range tpls.Resources {
-		data, err := meta_util.Marshal(r, format)
+		data, err := meta_util.Marshal(r.Data, format)
 		if err != nil {
 			ctx.Error(http.StatusInternalServerError, "MarshalResource", err.Error())
 			return
 		}
-		out.Resources = append(out.Resources, string(data))
+		out.Resources = append(out.Resources, appapi.ResourceFile{
+			Filename: r.Filename + "." + string(format),
+			Data:     string(data),
+		})
 	}
 	ctx.JSON(http.StatusOK, &out)
 }

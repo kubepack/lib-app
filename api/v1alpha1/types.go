@@ -58,16 +58,15 @@ type BucketFile struct {
 	Data     []byte `json:"data"`
 }
 
-type BucketJsonFile struct {
+type BucketObject struct {
 	// URL of the file in bucket
 	URL string `json:"url,omitempty"`
 	// Bucket key for this file
-	Key      string                     `json:"key,omitempty"`
-	Filename string                     `json:"filename,omitempty"`
-	Data     *unstructured.Unstructured `json:"data,omitempty"`
+	Key            string `json:"key,omitempty"`
+	ResourceObject `json:",inline"`
 }
 
-type BucketObject struct {
+type BucketFileRef struct {
 	// URL of the file in bucket
 	URL string `json:"url"`
 	// Bucket key for this file
@@ -76,12 +75,12 @@ type BucketObject struct {
 
 type ChartTemplate struct {
 	v1alpha1.ChartRef `json:",inline"`
-	Version           string                       `json:"version,omitempty"`
-	ReleaseName       string                       `json:"releaseName,omitempty"`
-	Namespace         string                       `json:"namespace,omitempty"`
-	CRDs              []BucketJsonFile             `json:"crds,omitempty"`
-	Manifest          *BucketObject                `json:"manifest,omitempty"`
-	Resources         []*unstructured.Unstructured `json:"resources,omitempty"`
+	Version           string           `json:"version,omitempty"`
+	ReleaseName       string           `json:"releaseName,omitempty"`
+	Namespace         string           `json:"namespace,omitempty"`
+	CRDs              []BucketObject   `json:"crds,omitempty"`
+	Manifest          *BucketFileRef   `json:"manifest,omitempty"`
+	Resources         []ResourceObject `json:"resources,omitempty"`
 }
 
 type BucketFileOutput struct {
@@ -99,22 +98,32 @@ type ChartTemplateOutput struct {
 	ReleaseName       string             `json:"releaseName,omitempty"`
 	Namespace         string             `json:"namespace,omitempty"`
 	CRDs              []BucketFileOutput `json:"crds,omitempty"`
-	Manifest          *BucketObject      `json:"manifest,omitempty"`
-	Resources         []string           `json:"resources,omitempty"`
+	Manifest          *BucketFileRef     `json:"manifest,omitempty"`
+	Resources         []ResourceFile     `json:"resources,omitempty"`
 }
 
 type EditorTemplate struct {
-	Manifest  []byte                       `json:"manifest,omitempty"`
-	Values    *unstructured.Unstructured   `json:"values,omitempty"`
-	Resources []*unstructured.Unstructured `json:"resources,omitempty"`
+	Manifest  []byte                     `json:"manifest,omitempty"`
+	Values    *unstructured.Unstructured `json:"values,omitempty"`
+	Resources []ResourceObject           `json:"resources,omitempty"`
 }
 
 type ResourceOutput struct {
-	CRDs      []string `json:"crds,omitempty"`
-	Resources []string `json:"resources,omitempty"`
+	CRDs      []ResourceFile `json:"crds,omitempty"`
+	Resources []ResourceFile `json:"resources,omitempty"`
 }
 
 type ObjectModel struct {
 	Key    string                     `json:"key"`
 	Object *unstructured.Unstructured `json:"object"`
+}
+
+type ResourceObject struct {
+	Filename string                     `json:"filename,omitempty"`
+	Data     *unstructured.Unstructured `json:"data,omitempty"`
+}
+
+type ResourceFile struct {
+	Filename string `json:"filename,omitempty"`
+	Data     string `json:"data,omitempty"`
 }

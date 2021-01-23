@@ -17,10 +17,16 @@ limitations under the License.
 package editor
 
 import (
+	"sort"
 	"strings"
 
+	appapi "kubepack.dev/lib-app/api/v1alpha1"
+
 	"github.com/gobuffalo/flect"
+	core "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"kmodules.xyz/client-go/tools/parser"
 )
 
 func ResourceKey(apiVersion, kind, chartName, name string) (string, error) {
@@ -65,4 +71,69 @@ func ResourceFilename(apiVersion, kind, chartName, name string) (string, string,
 	nameSuffix = flect.Pascalize(nameSuffix)
 
 	return flect.Underscore(kind), flect.Underscore(kind + nameSuffix), flect.Underscore(groupPrefix + kind + nameSuffix)
+}
+
+func ListResources(chartName string, data []byte) ([]appapi.ResourceObject, error) {
+	s1map := map[string]int{}
+	s2map := map[string]int{}
+	s3map := map[string]int{}
+
+	err := parser.ProcessResources(data, func(obj *unstructured.Unstructured) error {
+		s1, s2, s3 := ResourceFilename(obj.GetAPIVersion(), obj.GetKind(), chartName, obj.GetName())
+		if v, ok := s1map[s1]; !ok {
+			s1map[s1] = 1
+		} else {
+			s1map[s1] = v + 1
+		}
+		if v, ok := s2map[s2]; !ok {
+			s2map[s2] = 1
+		} else {
+			s2map[s2] = v + 1
+		}
+		if v, ok := s3map[s3]; !ok {
+			s3map[s3] = 1
+		} else {
+			s3map[s3] = v + 1
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var resources []appapi.ResourceObject
+
+	err = parser.ProcessResources(data, func(obj *unstructured.Unstructured) error {
+		if obj.GetNamespace() == "" {
+			obj.SetNamespace(core.NamespaceDefault)
+		}
+
+		s1, s2, s3 := ResourceFilename(obj.GetAPIVersion(), obj.GetKind(), chartName, obj.GetName())
+		name := s1
+		if s1map[s1] > 1 {
+			if s2map[s2] > 1 {
+				name = s3
+			} else {
+				name = s2
+			}
+		}
+
+		resources = append(resources, appapi.ResourceObject{
+			Filename: name,
+			Data:     obj,
+		})
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	sort.Slice(resources, func(i, j int) bool {
+		if resources[i].Data.GetAPIVersion() == resources[j].Data.GetAPIVersion() {
+			return resources[i].Data.GetKind() < resources[j].Data.GetKind()
+		}
+		return resources[i].Data.GetAPIVersion() < resources[j].Data.GetAPIVersion()
+	})
+
+	return resources, nil
 }
