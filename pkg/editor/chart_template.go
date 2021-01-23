@@ -85,26 +85,28 @@ func RenderOrderTemplate(bs *lib.BlobStore, reg *repo.Registry, order v1alpha1.O
 		}
 		crds, manifestFile := f1.Result()
 		for _, crd := range crds {
-			resources, err := parser.ListResources(crd.Data)
+			resources, err := ListResources(pkg.Chart.ReleaseName, crd.Data)
 			if err != nil {
 				return "", nil, err
 			}
 			if len(resources) != 1 {
 				return "", nil, fmt.Errorf("%d crds found in %s", len(resources), crd.Filename)
 			}
-			tpl.CRDs = append(tpl.CRDs, appapi.BucketJsonFile{
-				URL:      crd.URL,
-				Key:      crd.Key,
-				Filename: crd.Filename,
-				Data:     resources[0],
+			tpl.CRDs = append(tpl.CRDs, appapi.BucketObject{
+				URL: crd.URL,
+				Key: crd.Key,
+				ResourceObject: appapi.ResourceObject{
+					Filename: crd.Filename,
+					Data:     resources[0].Data,
+				},
 			})
 		}
 		if manifestFile != nil {
-			tpl.Manifest = &appapi.BucketObject{
+			tpl.Manifest = &appapi.BucketFileRef{
 				URL: manifestFile.URL,
 				Key: manifestFile.Key,
 			}
-			tpl.Resources, err = parser.ListResources(manifestFile.Data)
+			tpl.Resources, err = ListResources(pkg.Chart.ReleaseName, manifestFile.Data)
 			if err != nil {
 				return "", nil, err
 			}
@@ -245,6 +247,45 @@ func EditorChartValueManifest(app *v1beta1.Application, mapper *restmapper.Defer
 		}
 	}
 
+	s1map := map[string]int{}
+	s2map := map[string]int{}
+	s3map := map[string]int{}
+	for _, obj := range resources {
+		s1, s2, s3 := ResourceFilename(obj.GetAPIVersion(), obj.GetKind(), mt.Name, obj.GetName())
+		if v, ok := s1map[s1]; !ok {
+			s1map[s1] = 1
+		} else {
+			s1map[s1] = v + 1
+		}
+		if v, ok := s2map[s2]; !ok {
+			s2map[s2] = 1
+		} else {
+			s2map[s2] = v + 1
+		}
+		if v, ok := s3map[s3]; !ok {
+			s3map[s3] = 1
+		} else {
+			s3map[s3] = v + 1
+		}
+	}
+
+	rsfiles := make([]appapi.ResourceObject, 0, len(resources))
+	for _, obj := range resources {
+		s1, s2, s3 := ResourceFilename(obj.GetAPIVersion(), obj.GetKind(), mt.Name, obj.GetName())
+		name := s1
+		if s1map[s1] > 1 {
+			if s2map[s2] > 1 {
+				name = s3
+			} else {
+				name = s2
+			}
+		}
+		rsfiles = append(rsfiles, appapi.ResourceObject{
+			Filename: name,
+			Data:     obj,
+		})
+	}
+
 	tpl := appapi.EditorTemplate{
 		Manifest: buf.Bytes(),
 		Values: &unstructured.Unstructured{
@@ -256,7 +297,7 @@ func EditorChartValueManifest(app *v1beta1.Application, mapper *restmapper.Defer
 				"resources": resourceMap,
 			},
 		},
-		Resources: resources,
+		Resources: rsfiles,
 	}
 
 	return &tpl, nil
@@ -367,13 +408,15 @@ func RenderChartTemplate(reg *repo.Registry, opts unstructured.Unstructured) (st
 		if len(resources) != 1 {
 			return "", nil, fmt.Errorf("%d crds found in %s", len(resources), crd.Name)
 		}
-		tpl.CRDs = append(tpl.CRDs, appapi.BucketJsonFile{
-			Filename: crd.Name,
-			Data:     resources[0],
+		tpl.CRDs = append(tpl.CRDs, appapi.BucketObject{
+			ResourceObject: appapi.ResourceObject{
+				Filename: crd.Name,
+				Data:     resources[0],
+			},
 		})
 	}
 	if manifest != nil {
-		tpl.Resources, err = parser.ListResources(manifest)
+		tpl.Resources, err = ListResources(spec.Release.Name, manifest)
 		if err != nil {
 			return "", nil, err
 		}

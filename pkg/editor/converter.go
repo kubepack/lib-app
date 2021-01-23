@@ -47,11 +47,14 @@ func ConvertChartTemplates(tpls []appapi.ChartTemplate, format meta_util.DataFor
 			})
 		}
 		for _, r := range tpl.Resources {
-			data, err := meta_util.Marshal(r, format)
+			data, err := meta_util.Marshal(r.Data, format)
 			if err != nil {
 				return nil, err
 			}
-			entry.Resources = append(entry.Resources, string(data))
+			entry.Resources = append(entry.Resources, appapi.ResourceFile{
+				Filename: r.Filename,
+				Data:     string(data),
+			})
 		}
 		out = append(out, entry)
 	}
