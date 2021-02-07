@@ -428,7 +428,7 @@ func main() {
 			m.Delete("/namespaces/:namespace/releases/:releaseName", DeleteResource(f))
 
 			// POST Model from Existing Installations
-			m.Put("/model", binding.Json(appapi.Model{}), LoadEditorModel)
+			m.Put("/model", binding.Json(appapi.ModelMetadata{}), LoadEditorModel)
 
 			// redundant apis
 			// can be replaced by getting the model, then using the /editor apis
@@ -563,16 +563,14 @@ func LoadEditorManifest(ctx *macaron.Context, model appapi.Model) {
 	_, _ = ctx.Write(tpl.Manifest)
 }
 
-func LoadEditorModel(ctx *macaron.Context, model appapi.Model) {
+func LoadEditorModel(ctx *macaron.Context, model appapi.ModelMetadata) {
 	cfg, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	tpl, err := editor.LoadEditorModel(cfg, lib.DefaultRegistry, appapi.ModelMetadata{
-		Metadata: model.Metadata,
-	})
+	tpl, err := editor.LoadEditorModel(cfg, lib.DefaultRegistry, model)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "LoadEditorModel", err.Error())
 		return

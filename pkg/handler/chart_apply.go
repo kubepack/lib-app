@@ -17,12 +17,15 @@ limitations under the License.
 package handler
 
 import (
+	"encoding/json"
 	"errors"
 
 	"kubepack.dev/kubepack/pkg/lib"
 	appapi "kubepack.dev/lib-app/api/v1alpha1"
+	"kubepack.dev/lib-app/pkg/editor"
 	"kubepack.dev/lib-app/pkg/lib/action"
 
+	jsonpatch "github.com/evanphx/json-patch"
 	"helm.sh/helm/v3/pkg/release"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -57,9 +60,47 @@ func ApplyResource(f cmdutil.Factory, model unstructured.Unstructured, skipCRds 
 	opts2.ChartURL = rd.Spec.UI.Editor.URL
 	opts2.ChartName = rd.Spec.UI.Editor.Name
 	opts2.Version = rd.Spec.UI.Editor.Version
-	opts2.Values = model.Object
-	//opts2.ValuesFile =               "values.yaml"
-	//opts2.ValuesPatch =              nil
+	if _, ok := model.Object["patch"]; ok {
+		// NOTE: Makes an assumption that this is a "edit" apply
+		cfg, err := f.ToRESTConfig()
+		if err != nil {
+			return nil, err
+		}
+		tpl, err := editor.LoadEditorModel(cfg, lib.DefaultRegistry, appapi.ModelMetadata{
+			Metadata: tm.Metadata,
+		})
+		if err != nil {
+			return nil, err
+		}
+
+		p3 := struct {
+			Patch jsonpatch.Patch `json:"patch"`
+		}{}
+		err = meta_util.DecodeObject(model.Object, &p3)
+		if err != nil {
+			return nil, err
+		}
+
+		original, err := json.Marshal(tpl.Values.Object)
+		if err != nil {
+			return nil, err
+		}
+
+		modified, err := p3.Patch.Apply(original)
+		if err != nil {
+			return nil, err
+		}
+
+		var mod map[string]interface{}
+		err = json.Unmarshal(modified, &mod)
+		if err != nil {
+			return nil, err
+		}
+		opts2.Values = mod
+	} else {
+		opts2.Values = model.Object
+	}
+
 	opts2.CreateNamespace = true // TODO?
 	opts2.DryRun = false
 	opts2.DisableHooks = false
