@@ -82,7 +82,7 @@ func NewCmdFuse() *cobra.Command {
 				return err
 			}
 
-			err = parser.ProcessDir(filepath.Join(sampleDir, chartName), func(obj *unstructured.Unstructured) error {
+			err = parser.ProcessDir(sampleDir, func(obj *unstructured.Unstructured) error {
 				rsKey, err := editor.ResourceKey(obj.GetAPIVersion(), obj.GetKind(), chartName, obj.GetName())
 				if err != nil {
 					return err

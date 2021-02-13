@@ -4,8 +4,8 @@
 
 ```console
 $ go run cmd/fuse-chart/*.go \
-  --sample-dir=./testdata/fusion/samples \
-  --chart-dir=./testdata/fusion/charts \
+  --sample-dir=/home/tamal/go/src/github.com/appscode/kubedb-samples/mongodb/standalone/prometheus.io/backupconfiguration/stash/tls/custom-auth/standalone \
+  --chart-dir=/home/tamal/go/src/go.bytebuilders.dev/ui-wizards/charts \
   --chart-name=mongodb-editor \
   --resource.group=kubedb.com \
   --resource.version=v1alpha2 \
