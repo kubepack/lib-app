@@ -37,5 +37,5 @@ type ModelMetadata struct {
 
 type Model struct {
 	Metadata  `json:"metadata,omitempty"`
-	Resources *unstructured.Unstructured `json:"resources"`
+	Resources *unstructured.Unstructured `json:"resources,omitempty"`
 }
