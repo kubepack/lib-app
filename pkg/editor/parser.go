@@ -43,7 +43,7 @@ func ResourceKey(apiVersion, kind, chartName, name string) (string, error) {
 	groupPrefix = flect.Pascalize(groupPrefix)
 
 	var nameSuffix string
-	nameSuffix = strings.TrimPrefix(chartName, name)
+	nameSuffix = strings.TrimPrefix(name, chartName)
 	nameSuffix = strings.Replace(nameSuffix, ".", "-", -1)
 	nameSuffix = strings.Trim(nameSuffix, "-")
 	nameSuffix = flect.Pascalize(nameSuffix)
@@ -65,7 +65,7 @@ func ResourceFilename(apiVersion, kind, chartName, name string) (string, string,
 	groupPrefix = flect.Pascalize(groupPrefix)
 
 	var nameSuffix string
-	nameSuffix = strings.TrimPrefix(chartName, name)
+	nameSuffix = strings.TrimPrefix(name, chartName)
 	nameSuffix = strings.Replace(nameSuffix, ".", "-", -1)
 	nameSuffix = strings.Trim(nameSuffix, "-")
 	nameSuffix = flect.Pascalize(nameSuffix)
