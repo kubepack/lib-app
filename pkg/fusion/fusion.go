@@ -316,9 +316,9 @@ func NewCmdFuse() *cobra.Command {
 	cmd.Flags().StringVar(&chartDir, "chart-dir", chartDir, "Charts dir")
 	cmd.Flags().StringVar(&chartName, "chart-name", chartName, "Charts name")
 
-	cmd.Flags().StringVar(&gvr.Group, "resource.group", chartName, "Resource api group")
-	cmd.Flags().StringVar(&gvr.Version, "resource.version", chartName, "Resource api version")
-	cmd.Flags().StringVar(&gvr.Resource, "resource.name", chartName, "Resource plural")
+	cmd.Flags().StringVar(&gvr.Group, "resource.group", gvr.Group, "Resource api group")
+	cmd.Flags().StringVar(&gvr.Version, "resource.version", gvr.Version, "Resource api version")
+	cmd.Flags().StringVar(&gvr.Resource, "resource.name", gvr.Resource, "Resource plural")
 
 	return cmd
 }
