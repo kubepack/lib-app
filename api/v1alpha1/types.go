@@ -130,6 +130,6 @@ type ResourceFile struct {
 }
 
 type SimpleValue struct {
-	metav1.TypeMeta   `json:",inline,omitempty"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.TypeMeta `json:",inline,omitempty"`
+	ObjectMeta      ObjectMeta `json:"metadata,omitempty"`
 }

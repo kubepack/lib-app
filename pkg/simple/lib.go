@@ -38,8 +38,11 @@ import (
 
 func NewCmdSimple() *cobra.Command {
 	var (
-		chartDir = ""
-		gvr      schema.GroupVersionResource
+		descriptorDir = "/home/tamal/go/src/kmodules.xyz/resource-metadata/hub/resourcedescriptors/"
+		chartDir      = "/home/tamal/go/src/go.bytebuilders.dev/ui-wizards/c2"
+		gvr           schema.GroupVersionResource
+		all           bool
+		skipExisting  bool
 
 		registry = hub.NewRegistryOfKnownResources()
 	)
@@ -48,11 +51,24 @@ func NewCmdSimple() *cobra.Command {
 		Short:             `Generate simple chart`,
 		DisableAutoGenTag: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return GenerateSimpleEditorChart(chartDir, gvr, registry)
+			if !all {
+				return GenerateSimpleEditorChart(chartDir, descriptorDir, gvr, registry, skipExisting)
+			}
+
+			registry.Visit(func(key string, rd *v1alpha1.ResourceDescriptor) {
+				err := GenerateSimpleEditorChart(chartDir, descriptorDir, rd.Spec.Resource.GroupVersionResource(), registry, skipExisting)
+				if err != nil {
+					panic(err)
+				}
+			})
+			return nil
 		},
 	}
 
 	cmd.Flags().StringVar(&chartDir, "chart-dir", chartDir, "Charts dir")
+	cmd.Flags().BoolVar(&all, "all", all, "Generate editor charts for all")
+	cmd.Flags().BoolVar(&skipExisting, "skipExisting", skipExisting, "Skip existing chart")
+	cmd.Flags().StringVar(&descriptorDir, "descriptor-dir", descriptorDir, "Resource descriptor dir")
 
 	cmd.Flags().StringVar(&gvr.Group, "resource.group", gvr.Group, "Resource api group")
 	cmd.Flags().StringVar(&gvr.Version, "resource.version", gvr.Version, "Resource api version")
@@ -61,13 +77,17 @@ func NewCmdSimple() *cobra.Command {
 	return cmd
 }
 
-func GenerateSimpleEditorChart(chartDir string, gvr schema.GroupVersionResource, registry *hub.Registry) error {
+func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupVersionResource, registry *hub.Registry, skipExisting bool) error {
 	rd, err := registry.LoadByGVR(gvr)
 	if err != nil {
 		return err
 	}
 
 	chartName := fmt.Sprintf("%s-%s-editor", safeGroupName(rd.Spec.Resource.Group), strings.ToLower(rd.Spec.Resource.Kind))
+
+	if _, err := os.Stat(filepath.Join(chartDir, chartName)); !os.IsNotExist(err) && skipExisting {
+		return fmt.Errorf("%s chart already exists", chartName)
+	}
 
 	tplDir := filepath.Join(chartDir, chartName, "templates")
 	err = os.MkdirAll(tplDir, 0755)
@@ -81,7 +101,7 @@ func GenerateSimpleEditorChart(chartDir string, gvr schema.GroupVersionResource,
 		return err
 	}
 
-	err = GenerateChartMetadata(chartName, chartDir)
+	err = GenerateChartMetadata(chartDir, chartName, rd)
 	if err != nil {
 		return err
 	}
@@ -182,14 +202,16 @@ func GenerateSimpleEditorChart(chartDir string, gvr schema.GroupVersionResource,
 	}
 
 	{
-		data3, err := yaml.Marshal(rd.Spec.Validation.OpenAPIV3Schema)
-		if err != nil {
-			return err
-		}
-		schemaFilename := filepath.Join(chartDir, chartName, "values.openapiv3_schema.yaml")
-		err = ioutil.WriteFile(schemaFilename, data3, 0644)
-		if err != nil {
-			return err
+		if rd.Spec.Validation != nil && rd.Spec.Validation.OpenAPIV3Schema != nil {
+			data3, err := yaml.Marshal(rd.Spec.Validation.OpenAPIV3Schema)
+			if err != nil {
+				return err
+			}
+			schemaFilename := filepath.Join(chartDir, chartName, "values.openapiv3_schema.yaml")
+			err = ioutil.WriteFile(schemaFilename, data3, 0644)
+			if err != nil {
+				return err
+			}
 		}
 	}
 
@@ -199,7 +221,7 @@ func GenerateSimpleEditorChart(chartDir string, gvr schema.GroupVersionResource,
 				APIVersion: fmt.Sprintf("%s/%s", rd.Spec.Resource.Group, rd.Spec.Resource.Version),
 				Kind:       rd.Spec.Resource.Kind,
 			},
-			ObjectMeta: metav1.ObjectMeta{
+			ObjectMeta: appapi.ObjectMeta{
 				Name: strings.ToLower(rd.Spec.Resource.Kind),
 			},
 		}
@@ -260,17 +282,25 @@ func GenerateSimpleEditorChart(chartDir string, gvr schema.GroupVersionResource,
 		}
 	}
 
-	return nil
+	rd.Spec.UI = &v1alpha1.UIParameters{
+		Options: nil,
+		Editor: &v1alpha1.ChartRepoRef{
+			URL:     "https://bundles.byte.builders/ui/",
+			Name:    chartName,
+			Version: "v0.1.0",
+		},
+	}
+	return UpdateDescriptor(rd, descriptorDir)
 }
 
-func GenerateChartMetadata(chartName, chartDir string) error {
+func GenerateChartMetadata(chartDir, chartName string, rd *v1alpha1.ResourceDescriptor) error {
 	chartMeta := chart.Metadata{
 		Name:        chartName,
 		Home:        "https://byte.builders",
 		Sources:     nil,
 		Version:     "v0.1.0",
 		AppVersion:  "v0.1.0",
-		Description: "Ui Wizard Chart",
+		Description: fmt.Sprintf("%s Editor", rd.Spec.Resource.Kind),
 		Keywords:    []string{"appscode"},
 		Maintainers: []*chart.Maintainer{
 			{
@@ -294,6 +324,9 @@ func GenerateChartMetadata(chartName, chartDir string) error {
 }
 
 func safeGroupName(group string) string {
+	if group == "" {
+		group = "core"
+	}
 	group = strings.ReplaceAll(group, ".", "")
 	group = strings.ReplaceAll(group, "-", "")
 	return group
@@ -308,4 +341,19 @@ func IsCRD(group string) bool {
 		group != "" &&
 		!strings.HasSuffix(group, ".k8s.io") &&
 		!strings.HasSuffix(group, ".kubernetes.io")
+}
+
+func UpdateDescriptor(rd *v1alpha1.ResourceDescriptor, dir string) error {
+	data, err := yaml.Marshal(rd)
+	if err != nil {
+		return err
+	}
+
+	group := rd.Spec.Resource.Group
+	if group == "" {
+		group = "core"
+	}
+	baseDir := filepath.Join(dir, group, rd.Spec.Resource.Version)
+	filename := filepath.Join(baseDir, rd.Spec.Resource.Name+".yaml")
+	return ioutil.WriteFile(filename, data, 0644)
 }
