@@ -282,15 +282,19 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 		}
 	}
 
-	rd.Spec.UI = &v1alpha1.UIParameters{
-		Options: nil,
-		Editor: &v1alpha1.ChartRepoRef{
-			URL:     "https://bundles.byte.builders/ui/",
-			Name:    chartName,
-			Version: "v0.1.0",
-		},
+	if rd.Spec.UI == nil {
+		rd.Spec.UI = &v1alpha1.UIParameters{
+			Options: nil,
+			Editor: &v1alpha1.ChartRepoRef{
+				URL:     "https://bundles.byte.builders/ui/",
+				Name:    chartName,
+				Version: "v0.1.0",
+			},
+		}
+		return UpdateDescriptor(rd, descriptorDir)
 	}
-	return UpdateDescriptor(rd, descriptorDir)
+
+	return nil
 }
 
 func GenerateChartMetadata(chartDir, chartName string, rd *v1alpha1.ResourceDescriptor) error {
