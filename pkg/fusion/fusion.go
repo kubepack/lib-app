@@ -31,7 +31,6 @@ import (
 	"kubepack.dev/lib-app/pkg/editor"
 
 	"github.com/Masterminds/sprig"
-	"github.com/gobuffalo/flect"
 	"github.com/spf13/cobra"
 	y3 "gopkg.in/yaml.v3"
 	"helm.sh/helm/v3/pkg/chart"
@@ -47,8 +46,10 @@ import (
 
 var (
 	sampleDir      = ""
+	sampleName     = ""
 	chartDir       = ""
 	chartName      = ""
+	gvr            schema.GroupVersionResource
 	resourceSchema = crdv1.JSONSchemaProps{
 		Type:       "object",
 		Properties: map[string]crdv1.JSONSchemaProps{},
@@ -56,7 +57,6 @@ var (
 	resourceValues = map[string]*unstructured.Unstructured{}
 	registry       = hub.NewRegistryOfKnownResources()
 	resourceKeys   = sets.NewString()
-	gvr            schema.GroupVersionResource
 )
 
 func NewCmdFuse() *cobra.Command {
@@ -65,8 +65,15 @@ func NewCmdFuse() *cobra.Command {
 		Short:             `Fuse YAMLs`,
 		DisableAutoGenTag: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
+			rd, err := registry.LoadByGVR(gvr)
+			if err != nil {
+				return err
+			}
+
+			chartName = fmt.Sprintf("%s-%s-editor", safeGroupName(rd.Spec.Resource.Group), strings.ToLower(rd.Spec.Resource.Kind))
+
 			tplDir := filepath.Join(chartDir, chartName, "templates")
-			err := os.MkdirAll(tplDir, 0755)
+			err = os.MkdirAll(tplDir, 0755)
 			if err != nil {
 				return err
 			}
@@ -83,12 +90,12 @@ func NewCmdFuse() *cobra.Command {
 			}
 
 			err = parser.ProcessDir(sampleDir, func(obj *unstructured.Unstructured) error {
-				rsKey, err := editor.ResourceKey(obj.GetAPIVersion(), obj.GetKind(), chartName, obj.GetName())
+				rsKey, err := editor.ResourceKey(obj.GetAPIVersion(), obj.GetKind(), sampleName, obj.GetName())
 				if err != nil {
 					return err
 				}
 				resourceKeys.Insert(rsKey)
-				_, _, rsFilename := editor.ResourceFilename(obj.GetAPIVersion(), obj.GetKind(), chartName, obj.GetName())
+				_, _, rsFilename := editor.ResourceFilename(obj.GetAPIVersion(), obj.GetKind(), sampleName, obj.GetName())
 
 				// values
 				cp := obj.DeepCopy()
@@ -268,7 +275,7 @@ func NewCmdFuse() *cobra.Command {
 			}
 
 			{
-				desc := flect.Titleize(strings.ReplaceAll(chartName, "-", " "))
+				desc := fmt.Sprintf("%s Editor", rd.Spec.Resource.Kind)
 				doc := docapi.DocInfo{
 					Project: docapi.ProjectInfo{
 						Name:        fmt.Sprintf("%s by AppsCode", desc),
@@ -313,8 +320,8 @@ func NewCmdFuse() *cobra.Command {
 	}
 
 	cmd.Flags().StringVar(&sampleDir, "sample-dir", sampleDir, "Sample dir")
+	cmd.Flags().StringVar(&sampleName, "sample-name", sampleName, "Sample name used in yamls")
 	cmd.Flags().StringVar(&chartDir, "chart-dir", chartDir, "Charts dir")
-	cmd.Flags().StringVar(&chartName, "chart-name", chartName, "Charts name")
 
 	cmd.Flags().StringVar(&gvr.Group, "resource.group", gvr.Group, "Resource api group")
 	cmd.Flags().StringVar(&gvr.Version, "resource.version", gvr.Version, "Resource api version")
@@ -449,4 +456,10 @@ func IsCRD(group string) bool {
 		group != "" &&
 		!strings.HasSuffix(group, ".k8s.io") &&
 		!strings.HasSuffix(group, ".kubernetes.io")
+}
+
+func safeGroupName(group string) string {
+	group = strings.ReplaceAll(group, ".", "")
+	group = strings.ReplaceAll(group, "-", "")
+	return group
 }

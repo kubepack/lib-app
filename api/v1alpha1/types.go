@@ -19,6 +19,7 @@ package v1alpha1
 import (
 	"kubepack.dev/kubepack/apis/kubepack/v1alpha1"
 
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 )
@@ -126,4 +127,9 @@ type ResourceObject struct {
 type ResourceFile struct {
 	Filename string `json:"filename,omitempty"`
 	Data     string `json:"data,omitempty"`
+}
+
+type SimpleValue struct {
+	metav1.TypeMeta   `json:",inline,omitempty"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 }
