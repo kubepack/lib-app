@@ -410,7 +410,7 @@ func (in *ResourceOutput) DeepCopy() *ResourceOutput {
 func (in *SimpleValue) DeepCopyInto(out *SimpleValue) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	in.ObjectMeta.DeepCopyInto(&out.ObjectMeta)
+	out.ObjectMeta = in.ObjectMeta
 	return
 }
 

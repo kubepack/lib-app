@@ -190,10 +190,14 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 	}
 
 	{
-		data := fmt.Sprintf(`Get the Stash BackupConfiguration by running the following command:
+		fqdn := gvr.Resource
+		if IsCRD(gvr.Group) {
+			fqdn = fmt.Sprintf("%s.%s", gvr.Resource, gvr.Group)
+		}
+		data := fmt.Sprintf(`Get the %s by running the following command:
 
-  kubectl --namespace {{ .Release.Namespace }} get %s.%s {{ .Release.Name }}
-`, gvr.Resource, gvr.Group)
+  kubectl --namespace {{ .Release.Namespace }} get %s {{ .Release.Name }}
+`, rd.Spec.Resource.Kind, fqdn)
 		schemaFilename := filepath.Join(chartDir, chartName, "templates", "NOTES.txt")
 		err = ioutil.WriteFile(schemaFilename, []byte(data), 0644)
 		if err != nil {

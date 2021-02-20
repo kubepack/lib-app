@@ -40,6 +40,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"kmodules.xyz/client-go/tools/parser"
+	"kmodules.xyz/resource-metadata/apis/meta/v1alpha1"
 	"kmodules.xyz/resource-metadata/hub"
 	"sigs.k8s.io/yaml"
 )
@@ -84,7 +85,7 @@ func NewCmdFuse() *cobra.Command {
 				return err
 			}
 
-			err = GenerateChartMetadata()
+			err = GenerateChartMetadata(rd)
 			if err != nil {
 				return err
 			}
@@ -330,14 +331,14 @@ func NewCmdFuse() *cobra.Command {
 	return cmd
 }
 
-func GenerateChartMetadata() error {
+func GenerateChartMetadata(rd *v1alpha1.ResourceDescriptor) error {
 	chartMeta := chart.Metadata{
 		Name:        chartName,
 		Home:        "https://byte.builders",
 		Sources:     nil,
 		Version:     "v0.1.0",
 		AppVersion:  "v0.1.0",
-		Description: "Ui Wizard Chart",
+		Description: fmt.Sprintf("%s Editor", rd.Spec.Resource.Kind),
 		Keywords:    []string{"appscode"},
 		Maintainers: []*chart.Maintainer{
 			{
