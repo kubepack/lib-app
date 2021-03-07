@@ -118,6 +118,12 @@ func NewCmdFuse() *cobra.Command {
 				}
 
 				if IsCRD(gvr.Group) {
+					if descriptor.Spec.Validation != nil && descriptor.Spec.Validation.OpenAPIV3Schema != nil {
+						descriptor.Spec.Validation.OpenAPIV3Schema.Properties["metadata"] = crdv1.JSONSchemaProps{
+							Type: "object",
+						}
+					}
+
 					crd := crdv1.CustomResourceDefinition{
 						TypeMeta: metav1.TypeMeta{
 							APIVersion: crdv1.SchemeGroupVersion.String(),

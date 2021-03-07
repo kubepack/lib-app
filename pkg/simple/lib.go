@@ -107,6 +107,12 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 	}
 
 	if IsCRD(gvr.Group) {
+		if rd.Spec.Validation != nil && rd.Spec.Validation.OpenAPIV3Schema != nil {
+			rd.Spec.Validation.OpenAPIV3Schema.Properties["metadata"] = crdv1.JSONSchemaProps{
+				Type: "object",
+			}
+		}
+
 		crd := crdv1.CustomResourceDefinition{
 			TypeMeta: metav1.TypeMeta{
 				APIVersion: crdv1.SchemeGroupVersion.String(),
