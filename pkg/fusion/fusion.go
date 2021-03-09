@@ -117,6 +117,11 @@ func NewCmdFuse() *cobra.Command {
 					return err
 				}
 
+				if descriptor.Spec.Validation != nil && descriptor.Spec.Validation.OpenAPIV3Schema != nil {
+					delete(descriptor.Spec.Validation.OpenAPIV3Schema.Properties, "status")
+					resourceSchema.Properties[rsKey] = *descriptor.Spec.Validation.OpenAPIV3Schema.DeepCopy()
+				}
+
 				if IsCRD(gvr.Group) {
 					if descriptor.Spec.Validation != nil && descriptor.Spec.Validation.OpenAPIV3Schema != nil {
 						descriptor.Spec.Validation.OpenAPIV3Schema.Properties["metadata"] = crdv1.JSONSchemaProps{
@@ -172,11 +177,6 @@ func NewCmdFuse() *cobra.Command {
 					if err != nil {
 						return err
 					}
-				}
-
-				if descriptor.Spec.Validation != nil && descriptor.Spec.Validation.OpenAPIV3Schema != nil {
-					delete(descriptor.Spec.Validation.OpenAPIV3Schema.Properties, "status")
-					resourceSchema.Properties[rsKey] = *descriptor.Spec.Validation.OpenAPIV3Schema
 				}
 
 				// templates
