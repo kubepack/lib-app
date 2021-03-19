@@ -31,8 +31,8 @@ require (
 	k8s.io/component-base v0.18.9
 	k8s.io/kubectl v0.18.9
 	kmodules.xyz/apply v0.0.0-20210116151714-fd7ceb3d27af
-	kmodules.xyz/client-go v0.0.0-20210218100652-8f345ddfe801
-	kmodules.xyz/resource-metadata v0.4.17
+	kmodules.xyz/client-go v0.0.0-20210315112949-a05d2cc96f28
+	kmodules.xyz/resource-metadata v0.4.18-0.20210315120400-254abb0fa3ed
 	kubepack.dev/chart-doc-gen v0.3.3
 	kubepack.dev/kubepack v0.3.2
 	kubepack.dev/lib-helm v0.2.2

@@ -10,6 +10,8 @@ $ go run cmd/fuse-chart/*.go \
   --resource.group=kubedb.com \
   --resource.version=v1alpha2 \
   --resource.name=mongodbs
+
+$ go run cmd/gen-simple-editor/main.go --all --skipExisting=false
 ```
 
 ## Demo UI Editors
