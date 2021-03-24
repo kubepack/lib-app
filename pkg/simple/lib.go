@@ -296,7 +296,7 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 		rd.Spec.UI = &v1alpha1.UIParameters{
 			Options: nil,
 			Editor: &v1alpha1.ChartRepoRef{
-				URL:     "https://bundles.byte.builders/ui/",
+				URL:     "https://raw.githubusercontent.com/bytebuilders/ui-wizards/master/stable",
 				Name:    chartName,
 				Version: "v0.1.0",
 			},
