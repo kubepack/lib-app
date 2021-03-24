@@ -116,6 +116,9 @@ func ApplyResource(f cmdutil.Factory, model unstructured.Unstructured, skipCRds 
 	opts2.SubNotes = false
 	opts2.DisableOpenAPIValidation = false
 	opts2.IncludeCRDs = false
+
+	opts2.RefillMetadata = true
+
 	applier.WithOptions(opts2)
 
 	return applier.Run()

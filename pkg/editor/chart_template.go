@@ -381,11 +381,12 @@ func RenderChartTemplate(reg *repo.Registry, opts unstructured.Unstructured) (st
 			URL:  rd.Spec.UI.Editor.URL,
 			Name: rd.Spec.UI.Editor.Name,
 		},
-		Version:     rd.Spec.UI.Editor.Version,
-		ReleaseName: spec.Release.Name,
-		Namespace:   spec.Release.Namespace,
-		KubeVersion: "v1.17.0",
-		Values:      opts.Object,
+		Version:        rd.Spec.UI.Editor.Version,
+		ReleaseName:    spec.Release.Name,
+		Namespace:      spec.Release.Namespace,
+		KubeVersion:    "v1.17.0",
+		Values:         opts.Object,
+		RefillMetadata: true,
 	}
 	err = f1.Do()
 	if err != nil {

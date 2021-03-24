@@ -988,7 +988,7 @@ kmodules.xyz/client-go/meta
 kmodules.xyz/client-go/tools/converter
 kmodules.xyz/client-go/tools/parser
 kmodules.xyz/client-go/tools/wait
-# kmodules.xyz/resource-metadata v0.4.18-0.20210315120400-254abb0fa3ed
+# kmodules.xyz/resource-metadata v0.4.18-0.20210324013627-5fdd98dba829
 ## explicit
 kmodules.xyz/resource-metadata/apis/meta
 kmodules.xyz/resource-metadata/apis/meta/v1alpha1
