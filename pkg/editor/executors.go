@@ -20,9 +20,11 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"path"
 	"strconv"
+	"strings"
 
 	"kubepack.dev/kubepack/apis/kubepack/v1alpha1"
 	appapi "kubepack.dev/lib-app/api/v1alpha1"
@@ -30,6 +32,7 @@ import (
 	"kubepack.dev/lib-helm/repo"
 
 	jsonpatch "github.com/evanphx/json-patch"
+	"github.com/gobuffalo/flect"
 	"gocloud.dev/blob"
 	_ "gocloud.dev/blob/azureblob"
 	_ "gocloud.dev/blob/fileblob"
@@ -40,6 +43,7 @@ import (
 	"helm.sh/helm/v3/pkg/chart"
 	"helm.sh/helm/v3/pkg/chartutil"
 	"helm.sh/helm/v3/pkg/release"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	yamllib "sigs.k8s.io/yaml"
 )
@@ -287,6 +291,8 @@ type EditorModelGenerator struct {
 	ValuesPatch *runtime.RawExtension
 	Values      map[string]interface{}
 
+	RefillMetadata bool
+
 	CRDs     []*chart.File
 	Manifest []byte
 }
@@ -361,6 +367,14 @@ func (x *EditorModelGenerator) Do() error {
 		}
 	} else if x.Values != nil {
 		vals = x.Values
+
+		// opts / model needs to be updated for metadata
+		if x.RefillMetadata {
+			err = RefillMetadata(chrt.Values, vals)
+			if err != nil {
+				return err
+			}
+		}
 	}
 
 	// Pre-install anything in the crd/ directory. We do this before Helm
@@ -443,4 +457,93 @@ func (x *EditorModelGenerator) Do() error {
 
 func (x *EditorModelGenerator) Result() ([]*chart.File, []byte) {
 	return x.CRDs, x.Manifest
+}
+
+func RefillMetadata(ref, actual map[string]interface{}) error {
+	refResources, ok := ref["resources"].(map[string]interface{})
+	if !ok {
+		return nil
+	}
+	actualResources, ok := actual["resources"].(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	// detect application
+	app, ok, err := unstructured.NestedMap(actualResources, "appApplication")
+	if err != nil {
+		return err
+	}
+	if !ok {
+		return errors.New("missing application from actual model/values")
+	}
+
+	for key, o := range actualResources {
+		if key == "appApplication" {
+			continue
+		}
+
+		// apiVersion
+		// kind
+		// metadata:
+		//	name:
+		//  namespace:
+		//  labels:
+
+		refObj, ok := refResources[key].(map[string]interface{})
+		if !ok {
+			return fmt.Errorf("missing key %s in reference chart values", key)
+		}
+		obj := o.(map[string]interface{})
+		obj["apiVersion"] = refObj["apiVersion"]
+		obj["kind"] = refObj["kind"]
+
+		// name
+		name, _, err := unstructured.NestedString(app, "metadata", "name")
+		if err != nil {
+			return err
+		}
+		idx := strings.IndexRune(key, '_')
+		if idx != -1 {
+			name += "-" + flect.Dasherize(key[idx+1:])
+		}
+		err = unstructured.SetNestedField(obj, name, "metadata", "name")
+		if err != nil {
+			return err
+		}
+
+		// namespace
+		// TODO: add namespace if needed
+		ns, _, err := unstructured.NestedString(app, "metadata", "namespace")
+		if err != nil {
+			return err
+		}
+		err = unstructured.SetNestedField(obj, ns, "metadata", "namespace")
+		if err != nil {
+			return err
+		}
+
+		// get select labels from app and set to obj labels
+		labels, ok, err := unstructured.NestedStringMap(obj, "metadata", "labels")
+		if err != nil {
+			return err
+		}
+		if !ok {
+			labels = map[string]string{}
+		}
+		appLabels, _, err := unstructured.NestedStringMap(app, "spec", "selector", "matchLabels")
+		if err != nil {
+			return err
+		}
+		for lk, lv := range appLabels {
+			labels[lk] = lv
+		}
+		err = unstructured.SetNestedStringMap(obj, labels, "metadata", "labels")
+		if err != nil {
+			return err
+		}
+
+		actualResources[key] = obj
+	}
+	return nil
 }

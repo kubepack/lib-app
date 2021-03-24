@@ -24,6 +24,7 @@ import (
 	"time"
 
 	"kubepack.dev/lib-app/pkg/action"
+	"kubepack.dev/lib-app/pkg/editor"
 	"kubepack.dev/lib-helm/repo"
 
 	jsonpatch "github.com/evanphx/json-patch"
@@ -62,6 +63,8 @@ type ApplyOptions struct {
 	// DependencyUpdate         bool
 	Namespace   string
 	ReleaseName string
+
+	RefillMetadata bool
 
 	//OutputDir                string
 	Atomic                   bool
@@ -220,6 +223,12 @@ func (x *Applier) Run() (*release.Release, error) {
 		}
 	} else if x.opts.Values != nil {
 		vals = x.opts.Values
+		if x.opts.RefillMetadata {
+			err = editor.RefillMetadata(chrt.Values, vals)
+			if err != nil {
+				return nil, err
+			}
+		}
 	}
 	// VERY IMP: changes the default rendering behavior of helm charts
 	cmd.OverwriteValues = x.opts.Values != nil

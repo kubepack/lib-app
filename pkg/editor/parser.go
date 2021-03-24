@@ -44,11 +44,17 @@ func ResourceKey(apiVersion, kind, chartName, name string) (string, error) {
 
 	var nameSuffix string
 	nameSuffix = strings.TrimPrefix(name, chartName)
-	nameSuffix = strings.Replace(nameSuffix, ".", "-", -1)
-	nameSuffix = strings.Trim(nameSuffix, "-")
-	nameSuffix = flect.Pascalize(nameSuffix)
+	// we can't use - as separator since Go template does not like it
+	// Go template throws an error like "unexpected bad character U+002D '-' in with"
+	// ref: https://github.com/gohugoio/hugo/issues/1474
+	nameSuffix = flect.Underscore(nameSuffix)
+	nameSuffix = strings.Trim(nameSuffix, "_")
 
-	return flect.Camelize(groupPrefix + kind + nameSuffix), nil
+	result := flect.Camelize(groupPrefix + kind)
+	if len(nameSuffix) > 0 {
+		result += "_" + nameSuffix
+	}
+	return result, nil
 }
 
 func ResourceFilename(apiVersion, kind, chartName, name string) (string, string, string) {
