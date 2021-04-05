@@ -76,7 +76,13 @@ func ApplyResource(f cmdutil.Factory, model unstructured.Unstructured, skipCRds 
 		p3 := struct {
 			Patch jsonpatch.Patch `json:"patch"`
 		}{}
-		err = meta_util.DecodeObject(model.Object, &p3)
+
+		data, err := model.MarshalJSON()
+		if err != nil {
+			return nil, err
+		}
+
+		err = json.Unmarshal(data, &p3)
 		if err != nil {
 			return nil, err
 		}
