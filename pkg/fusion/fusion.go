@@ -123,6 +123,8 @@ func NewCmdFuse() *cobra.Command {
 				}
 
 				if IsCRD(gvr.Group) {
+					// Do not update the hub registry
+					descriptor = descriptor.DeepCopy()
 					if descriptor.Spec.Validation != nil && descriptor.Spec.Validation.OpenAPIV3Schema != nil {
 						descriptor.Spec.Validation.OpenAPIV3Schema.Properties["metadata"] = crdv1.JSONSchemaProps{
 							Type: "object",
