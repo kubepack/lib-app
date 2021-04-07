@@ -106,6 +106,20 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 		return err
 	}
 
+	{
+		if rd.Spec.Validation != nil && rd.Spec.Validation.OpenAPIV3Schema != nil {
+			data3, err := yaml.Marshal(rd.Spec.Validation.OpenAPIV3Schema)
+			if err != nil {
+				return err
+			}
+			schemaFilename := filepath.Join(chartDir, chartName, "values.openapiv3_schema.yaml")
+			err = ioutil.WriteFile(schemaFilename, data3, 0644)
+			if err != nil {
+				return err
+			}
+		}
+	}
+
 	if IsCRD(gvr.Group) {
 		if rd.Spec.Validation != nil && rd.Spec.Validation.OpenAPIV3Schema != nil {
 			rd.Spec.Validation.OpenAPIV3Schema.Properties["metadata"] = crdv1.JSONSchemaProps{
@@ -208,20 +222,6 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 		err = ioutil.WriteFile(schemaFilename, []byte(data), 0644)
 		if err != nil {
 			return err
-		}
-	}
-
-	{
-		if rd.Spec.Validation != nil && rd.Spec.Validation.OpenAPIV3Schema != nil {
-			data3, err := yaml.Marshal(rd.Spec.Validation.OpenAPIV3Schema)
-			if err != nil {
-				return err
-			}
-			schemaFilename := filepath.Join(chartDir, chartName, "values.openapiv3_schema.yaml")
-			err = ioutil.WriteFile(schemaFilename, data3, 0644)
-			if err != nil {
-				return err
-			}
 		}
 	}
 
