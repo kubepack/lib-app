@@ -6,7 +6,7 @@
 $ go run cmd/gen-simple-editor/main.go --all --skipExisting=false
 
 $ go run cmd/fuse-chart/*.go \
-  --sample-dir=/home/tamal/go/src/github.com/appscode/kubedb-samples/mongodb/standalone/prometheus.io/backupconfiguration/stash/tls/custom-auth/standalone \
+  --sample-dir=/home/tamal/go/src/github.com/appscode/kubedb-samples/mongodb/sharded/prometheus.io/backupconfiguration/stash/tls/custom-auth/sharded \
   --chart-dir=/home/tamal/go/src/go.bytebuilders.dev/ui-wizards/charts \
   --sample-name=mongodb \
   --resource.group=kubedb.com \
