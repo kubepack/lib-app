@@ -20,7 +20,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"path"
 	"strconv"
@@ -469,20 +468,42 @@ func RefillMetadata(ref, actual map[string]interface{}) error {
 		return nil
 	}
 
-	// detect application
-	app, ok, err := unstructured.NestedMap(actualResources, "appApplication")
+	rlsName, _, err := unstructured.NestedString(actual, "metadata", "release", "name")
 	if err != nil {
 		return err
 	}
-	if !ok {
-		return errors.New("missing application from actual model/values")
+	rlsNamespace, _, err := unstructured.NestedString(actual, "metadata", "release", "namespace")
+	if err != nil {
+		return err
 	}
 
-	for key, o := range actualResources {
-		if key == "appApplication" {
-			continue
-		}
+	// detect application
+	//app, ok, err := unstructured.NestedMap(actualResources, "appApplication")
+	//if err != nil {
+	//	return err
+	//}
+	//if !ok {
+	//	return errors.New("missing application from actual model/values")
+	//}
+	//
+	//err = unstructured.SetNestedField(app, rlsName, "metadata", "name")
+	//if err != nil {
+	//	return err
+	//}
+	//
+	//err = unstructured.SetNestedField(app, rlsNamespace, "metadata", "namespace")
+	//if err != nil {
+	//	return err
+	//}
 
+	//appLabels, _, err := unstructured.NestedStringMap(app, "spec", "selector", "matchLabels")
+	//if err != nil {
+	//	return err
+	//}
+
+	// app.kubernetes.io/instance: {{ include "kubedbcom-mongodb-editor-options.fullname" . }}
+
+	for key, o := range actualResources {
 		// apiVersion
 		// kind
 		// metadata:
@@ -499,10 +520,7 @@ func RefillMetadata(ref, actual map[string]interface{}) error {
 		obj["kind"] = refObj["kind"]
 
 		// name
-		name, _, err := unstructured.NestedString(app, "metadata", "name")
-		if err != nil {
-			return err
-		}
+		name := rlsName
 		idx := strings.IndexRune(key, '_')
 		if idx != -1 {
 			name += "-" + flect.Dasherize(key[idx+1:])
@@ -514,36 +532,37 @@ func RefillMetadata(ref, actual map[string]interface{}) error {
 
 		// namespace
 		// TODO: add namespace if needed
-		ns, _, err := unstructured.NestedString(app, "metadata", "namespace")
-		if err != nil {
-			return err
-		}
-		err = unstructured.SetNestedField(obj, ns, "metadata", "namespace")
+		err = unstructured.SetNestedField(obj, rlsNamespace, "metadata", "namespace")
 		if err != nil {
 			return err
 		}
 
 		// get select labels from app and set to obj labels
-		labels, ok, err := unstructured.NestedStringMap(obj, "metadata", "labels")
+		err = updateLabels(rlsName, obj, "metadata", "labels")
 		if err != nil {
 			return err
 		}
-		if !ok {
-			labels = map[string]string{}
-		}
-		appLabels, _, err := unstructured.NestedStringMap(app, "spec", "selector", "matchLabels")
-		if err != nil {
-			return err
-		}
-		for lk, lv := range appLabels {
-			labels[lk] = lv
-		}
-		err = unstructured.SetNestedStringMap(obj, labels, "metadata", "labels")
-		if err != nil {
-			return err
+
+		if key == "appApplication" {
+			err = updateLabels(rlsName, obj, "spec", "selector", "matchLabels")
+			if err != nil {
+				return err
+			}
 		}
 
 		actualResources[key] = obj
 	}
 	return nil
+}
+
+func updateLabels(rlsName string, obj map[string]interface{}, fields ...string) error {
+	labels, ok, err := unstructured.NestedStringMap(obj, fields...)
+	if err != nil {
+		return err
+	}
+	if !ok {
+		labels = map[string]string{}
+	}
+	labels["app.kubernetes.io/instance"] = rlsName
+	return unstructured.SetNestedStringMap(obj, labels, fields...)
 }
