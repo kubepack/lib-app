@@ -44,6 +44,8 @@ import (
 	"helm.sh/helm/v3/pkg/release"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"kmodules.xyz/resource-metadata/hub"
 	yamllib "sigs.k8s.io/yaml"
 )
 
@@ -369,7 +371,7 @@ func (x *EditorModelGenerator) Do() error {
 
 		// opts / model needs to be updated for metadata
 		if x.RefillMetadata {
-			err = RefillMetadata(chrt.Values, vals)
+			err = RefillMetadata(hub.NewRegistryOfKnownResources(), chrt.Values, vals)
 			if err != nil {
 				return err
 			}
@@ -458,7 +460,7 @@ func (x *EditorModelGenerator) Result() ([]*chart.File, []byte) {
 	return x.CRDs, x.Manifest
 }
 
-func RefillMetadata(ref, actual map[string]interface{}) error {
+func RefillMetadata(reg *hub.Registry, ref, actual map[string]interface{}) error {
 	refResources, ok := ref["resources"].(map[string]interface{})
 	if !ok {
 		return nil
@@ -476,32 +478,6 @@ func RefillMetadata(ref, actual map[string]interface{}) error {
 	if err != nil {
 		return err
 	}
-
-	// detect application
-	//app, ok, err := unstructured.NestedMap(actualResources, "appApplication")
-	//if err != nil {
-	//	return err
-	//}
-	//if !ok {
-	//	return errors.New("missing application from actual model/values")
-	//}
-	//
-	//err = unstructured.SetNestedField(app, rlsName, "metadata", "name")
-	//if err != nil {
-	//	return err
-	//}
-	//
-	//err = unstructured.SetNestedField(app, rlsNamespace, "metadata", "namespace")
-	//if err != nil {
-	//	return err
-	//}
-
-	//appLabels, _, err := unstructured.NestedStringMap(app, "spec", "selector", "matchLabels")
-	//if err != nil {
-	//	return err
-	//}
-
-	// app.kubernetes.io/instance: {{ include "kubedbcom-mongodb-editor-options.fullname" . }}
 
 	for key, o := range actualResources {
 		// apiVersion
@@ -543,10 +519,18 @@ func RefillMetadata(ref, actual map[string]interface{}) error {
 			return err
 		}
 
-		if key == "appApplication" {
-			err = updateLabels(rlsName, obj, "spec", "selector", "matchLabels")
-			if err != nil {
-				return err
+		gvk := schema.FromAPIVersionAndKind(refObj["apiVersion"].(string), refObj["kind"].(string))
+		if gvr, err := reg.GVR(gvk); err == nil {
+			if rd, err := reg.LoadByGVR(gvr); err == nil {
+				if rd.Spec.UI != nil {
+					for _, fields := range rd.Spec.UI.InstanceLabelPaths {
+						fields := strings.Trim(fields, ".")
+						err = updateLabels(rlsName, obj, strings.Split(fields, ".")...)
+						if err != nil {
+							return err
+						}
+					}
+				}
 			}
 		}
 
@@ -563,6 +547,9 @@ func updateLabels(rlsName string, obj map[string]interface{}, fields ...string) 
 	if !ok {
 		labels = map[string]string{}
 	}
-	labels["app.kubernetes.io/instance"] = rlsName
+	key := "app.kubernetes.io/instance"
+	if _, ok := labels[key]; ok {
+		labels[key] = rlsName
+	}
 	return unstructured.SetNestedStringMap(obj, labels, fields...)
 }

@@ -990,7 +990,7 @@ kmodules.xyz/client-go/meta
 kmodules.xyz/client-go/tools/converter
 kmodules.xyz/client-go/tools/parser
 kmodules.xyz/client-go/tools/wait
-# kmodules.xyz/resource-metadata v0.4.18-0.20210423051843-8c566166c6b8
+# kmodules.xyz/resource-metadata v0.4.18-0.20210424073607-13d579068f40
 ## explicit
 kmodules.xyz/resource-metadata/apis/meta
 kmodules.xyz/resource-metadata/apis/meta/v1alpha1
