@@ -36,6 +36,7 @@ import (
 	"k8s.io/cli-runtime/pkg/genericclioptions"
 	cmdutil "k8s.io/kubectl/pkg/cmd/util"
 	"kmodules.xyz/apply"
+	"kmodules.xyz/resource-metadata/hub"
 	"sigs.k8s.io/yaml"
 )
 
@@ -224,7 +225,7 @@ func (x *Applier) Run() (*release.Release, error) {
 	} else if x.opts.Values != nil {
 		vals = x.opts.Values
 		if x.opts.RefillMetadata {
-			err = editor.RefillMetadata(chrt.Values, vals)
+			err = editor.RefillMetadata(hub.NewRegistryOfKnownResources(), chrt.Values, vals)
 			if err != nil {
 				return nil, err
 			}
