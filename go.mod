@@ -20,6 +20,7 @@ require (
 	gocloud.dev v0.20.0
 	gomodules.xyz/jsonpatch/v3 v3.0.1
 	gomodules.xyz/version v0.1.0
+	gomodules.xyz/x v0.0.3 // indirect
 	gopkg.in/macaron.v1 v1.4.0
 	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c
 	helm.sh/helm/v3 v3.4.1
@@ -31,7 +32,7 @@ require (
 	k8s.io/component-base v0.21.0
 	k8s.io/kubectl v0.21.0
 	kmodules.xyz/apply v0.0.0-20210503080849-eb226c295465
-	kmodules.xyz/client-go v0.0.0-20210503064222-c8c59295a3a5
+	kmodules.xyz/client-go v0.0.0-20210504024435-1eb80721e9b8
 	kmodules.xyz/resource-metadata v0.4.8-0.20210113000222-d15533e4bb66
 	kubepack.dev/chart-doc-gen v0.4.0
 	kubepack.dev/kubepack v0.3.4-0.20210503075001-edc5430148cf
