@@ -25,13 +25,13 @@ import (
 
 	"kubepack.dev/lib-app/pkg/fusion"
 
-	"kmodules.xyz/client-go/logs"
+	"gomodules.xyz/kglog"
 )
 
 func main() {
 	rand.Seed(time.Now().UnixNano())
-	logs.InitLogs()
-	defer logs.FlushLogs()
+	kglog.InitLogs()
+	defer kglog.FlushLogs()
 
 	if len(os.Getenv("GOMAXPROCS")) == 0 {
 		runtime.GOMAXPROCS(runtime.NumCPU())

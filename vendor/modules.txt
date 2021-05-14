@@ -1,4 +1,4 @@
-# cloud.google.com/go v0.58.0 => cloud.google.com/go v0.54.0
+# cloud.google.com/go v0.72.0 => cloud.google.com/go v0.54.0
 cloud.google.com/go
 cloud.google.com/go/compute/metadata
 cloud.google.com/go/iam
@@ -7,15 +7,28 @@ cloud.google.com/go/internal
 cloud.google.com/go/internal/optional
 cloud.google.com/go/internal/trace
 cloud.google.com/go/internal/version
-# cloud.google.com/go/storage v1.9.0 => cloud.google.com/go/storage v1.6.0
+# cloud.google.com/go/storage v1.12.0 => cloud.google.com/go/storage v1.6.0
 cloud.google.com/go/storage
-# github.com/Azure/azure-pipeline-go v0.2.2
+# github.com/Azure/azure-pipeline-go v0.2.3
 github.com/Azure/azure-pipeline-go/pipeline
-# github.com/Azure/azure-storage-blob-go v0.9.0
+# github.com/Azure/azure-storage-blob-go v0.13.0
 github.com/Azure/azure-storage-blob-go/azblob
 # github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78 => github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78
 github.com/Azure/go-ansiterm
 github.com/Azure/go-ansiterm/winterm
+# github.com/Azure/go-autorest v14.2.0+incompatible => github.com/Azure/go-autorest v14.2.0+incompatible
+github.com/Azure/go-autorest
+# github.com/Azure/go-autorest/autorest v0.11.12 => github.com/Azure/go-autorest/autorest v0.11.12
+github.com/Azure/go-autorest/autorest
+github.com/Azure/go-autorest/autorest/azure
+# github.com/Azure/go-autorest/autorest/adal v0.9.6 => github.com/Azure/go-autorest/autorest/adal v0.9.5
+github.com/Azure/go-autorest/autorest/adal
+# github.com/Azure/go-autorest/autorest/date v0.3.0 => github.com/Azure/go-autorest/autorest/date v0.3.0
+github.com/Azure/go-autorest/autorest/date
+# github.com/Azure/go-autorest/logger v0.2.0 => github.com/Azure/go-autorest/logger v0.2.0
+github.com/Azure/go-autorest/logger
+# github.com/Azure/go-autorest/tracing v0.6.0 => github.com/Azure/go-autorest/tracing v0.6.0
+github.com/Azure/go-autorest/tracing
 # github.com/BurntSushi/toml v0.3.1
 github.com/BurntSushi/toml
 # github.com/MakeNowJust/heredoc v0.0.0-20170808103936-bb23615498cd
@@ -65,12 +78,11 @@ github.com/Microsoft/hcsshim/osversion
 github.com/PuerkitoBio/purell
 # github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578
 github.com/PuerkitoBio/urlesc
-# github.com/alessio/shellescape v1.2.2
+# github.com/alessio/shellescape v1.4.1
 github.com/alessio/shellescape
 # github.com/asaskevich/govalidator v0.0.0-20200428143746-21a406dcc535
 github.com/asaskevich/govalidator
-# github.com/aws/aws-sdk-go v1.38.31
-## explicit
+# github.com/aws/aws-sdk-go v1.36.1
 github.com/aws/aws-sdk-go/aws
 github.com/aws/aws-sdk-go/aws/arn
 github.com/aws/aws-sdk-go/aws/awserr
@@ -82,7 +94,6 @@ github.com/aws/aws-sdk-go/aws/credentials
 github.com/aws/aws-sdk-go/aws/credentials/ec2rolecreds
 github.com/aws/aws-sdk-go/aws/credentials/endpointcreds
 github.com/aws/aws-sdk-go/aws/credentials/processcreds
-github.com/aws/aws-sdk-go/aws/credentials/ssocreds
 github.com/aws/aws-sdk-go/aws/credentials/stscreds
 github.com/aws/aws-sdk-go/aws/csm
 github.com/aws/aws-sdk-go/aws/defaults
@@ -108,18 +119,14 @@ github.com/aws/aws-sdk-go/private/protocol
 github.com/aws/aws-sdk-go/private/protocol/eventstream
 github.com/aws/aws-sdk-go/private/protocol/eventstream/eventstreamapi
 github.com/aws/aws-sdk-go/private/protocol/json/jsonutil
-github.com/aws/aws-sdk-go/private/protocol/jsonrpc
 github.com/aws/aws-sdk-go/private/protocol/query
 github.com/aws/aws-sdk-go/private/protocol/query/queryutil
 github.com/aws/aws-sdk-go/private/protocol/rest
-github.com/aws/aws-sdk-go/private/protocol/restjson
 github.com/aws/aws-sdk-go/private/protocol/restxml
 github.com/aws/aws-sdk-go/private/protocol/xml/xmlutil
 github.com/aws/aws-sdk-go/service/s3
 github.com/aws/aws-sdk-go/service/s3/s3iface
 github.com/aws/aws-sdk-go/service/s3/s3manager
-github.com/aws/aws-sdk-go/service/sso
-github.com/aws/aws-sdk-go/service/sso/ssoiface
 github.com/aws/aws-sdk-go/service/sts
 github.com/aws/aws-sdk-go/service/sts/stsiface
 # github.com/beorn7/perks v1.0.1
@@ -232,6 +239,8 @@ github.com/exponent-io/jsonpath
 github.com/fatih/color
 # github.com/fatih/structs v1.1.0
 github.com/fatih/structs
+# github.com/form3tech-oss/jwt-go v3.2.2+incompatible
+github.com/form3tech-oss/jwt-go
 # github.com/gabriel-vasile/mimetype v1.2.0
 ## explicit
 github.com/gabriel-vasile/mimetype
@@ -271,8 +280,7 @@ github.com/gogo/protobuf/gogoproto
 github.com/gogo/protobuf/proto
 github.com/gogo/protobuf/protoc-gen-gogo/descriptor
 github.com/gogo/protobuf/sortkeys
-# github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
-## explicit
+# github.com/golang/glog v0.0.0-20210429001901-424d2337a529
 github.com/golang/glog
 # github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e
 github.com/golang/groupcache/lru
@@ -293,8 +301,9 @@ github.com/google/go-cmp/cmp/internal/diff
 github.com/google/go-cmp/cmp/internal/flags
 github.com/google/go-cmp/cmp/internal/function
 github.com/google/go-cmp/cmp/internal/value
-# github.com/google/gofuzz v1.1.0
+# github.com/google/gofuzz v1.2.0
 github.com/google/gofuzz
+github.com/google/gofuzz/bytesource
 # github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510
 github.com/google/shlex
 # github.com/google/uuid v1.1.2
@@ -302,8 +311,6 @@ github.com/google/shlex
 github.com/google/uuid
 # github.com/google/wire v0.4.0
 github.com/google/wire
-# github.com/googleapis/gax-go v2.0.2+incompatible
-github.com/googleapis/gax-go
 # github.com/googleapis/gax-go/v2 v2.0.5
 github.com/googleapis/gax-go/v2
 # github.com/googleapis/gnostic v0.5.4 => github.com/googleapis/gnostic v0.4.1
@@ -373,7 +380,7 @@ github.com/matttproud/golang_protobuf_extensions/pbutil
 github.com/mitchellh/copystructure
 # github.com/mitchellh/go-wordwrap v1.0.0
 github.com/mitchellh/go-wordwrap
-# github.com/mitchellh/mapstructure v1.1.2
+# github.com/mitchellh/mapstructure v1.4.0
 github.com/mitchellh/mapstructure
 # github.com/mitchellh/reflectwalk v1.0.1
 github.com/mitchellh/reflectwalk
@@ -455,7 +462,7 @@ github.com/yudai/gojsondiff
 github.com/yudai/gojsondiff/formatter
 # github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82
 github.com/yudai/golcs
-# go.opencensus.io v0.22.3
+# go.opencensus.io v0.22.5
 go.opencensus.io
 go.opencensus.io/internal
 go.opencensus.io/internal/tagencoding
@@ -480,7 +487,7 @@ go.starlark.net/resolve
 go.starlark.net/starlark
 go.starlark.net/starlarkstruct
 go.starlark.net/syntax
-# gocloud.dev v0.20.0
+# gocloud.dev v0.22.0
 ## explicit
 gocloud.dev/aws
 gocloud.dev/blob
@@ -488,6 +495,7 @@ gocloud.dev/blob/azureblob
 gocloud.dev/blob/driver
 gocloud.dev/blob/fileblob
 gocloud.dev/blob/gcsblob
+gocloud.dev/blob/memblob
 gocloud.dev/blob/s3blob
 gocloud.dev/gcerrors
 gocloud.dev/gcp
@@ -509,6 +517,8 @@ golang.org/x/crypto/openpgp/errors
 golang.org/x/crypto/openpgp/packet
 golang.org/x/crypto/openpgp/s2k
 golang.org/x/crypto/pbkdf2
+golang.org/x/crypto/pkcs12
+golang.org/x/crypto/pkcs12/internal/rc2
 golang.org/x/crypto/scrypt
 # golang.org/x/lint v0.0.0-20200302205851-738671d3881b
 golang.org/x/lint
@@ -529,7 +539,7 @@ golang.org/x/net/internal/timeseries
 golang.org/x/net/proxy
 golang.org/x/net/publicsuffix
 golang.org/x/net/trace
-# golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
+# golang.org/x/oauth2 v0.0.0-20201203001011-0b49973bad19
 golang.org/x/oauth2
 golang.org/x/oauth2/google
 golang.org/x/oauth2/internal
@@ -591,23 +601,31 @@ golang.org/x/tools/internal/typesinternal
 # golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1
 golang.org/x/xerrors
 golang.org/x/xerrors/internal
-# gomodules.xyz/blobfs v0.1.2
+# gomodules.xyz/blobfs v0.1.7
 gomodules.xyz/blobfs
 gomodules.xyz/blobfs/testing
+# gomodules.xyz/clock v0.0.0-20200817085942-06523dba733f
+gomodules.xyz/clock
 # gomodules.xyz/jsonpatch/v2 v2.1.0
 gomodules.xyz/jsonpatch/v2
 # gomodules.xyz/jsonpatch/v3 v3.0.1
 ## explicit
 gomodules.xyz/jsonpatch/v3
+# gomodules.xyz/kglog v0.0.1
+## explicit
+gomodules.xyz/kglog
 # gomodules.xyz/orderedmap v0.1.0
 gomodules.xyz/orderedmap
+# gomodules.xyz/runtime v0.2.0
+gomodules.xyz/runtime
 # gomodules.xyz/version v0.1.0
 ## explicit
 gomodules.xyz/version
-# gomodules.xyz/x v0.0.3
-## explicit
+# gomodules.xyz/wait v0.0.0-20210218105358-639bd9211545
+gomodules.xyz/wait
+# gomodules.xyz/x v0.0.4
 gomodules.xyz/x/strings
-# google.golang.org/api v0.26.0 => google.golang.org/api v0.20.0
+# google.golang.org/api v0.36.0 => google.golang.org/api v0.20.0
 google.golang.org/api/googleapi
 google.golang.org/api/googleapi/transport
 google.golang.org/api/internal
@@ -634,14 +652,14 @@ google.golang.org/appengine/internal/socket
 google.golang.org/appengine/internal/urlfetch
 google.golang.org/appengine/socket
 google.golang.org/appengine/urlfetch
-# google.golang.org/genproto v0.0.0-20201110150050-8816d57aaa9a => google.golang.org/genproto v0.0.0-20201110150050-8816d57aaa9a
+# google.golang.org/genproto v0.0.0-20201203001206-6486ece9c497 => google.golang.org/genproto v0.0.0-20201110150050-8816d57aaa9a
 google.golang.org/genproto/googleapis/api/annotations
 google.golang.org/genproto/googleapis/iam/credentials/v1
 google.golang.org/genproto/googleapis/iam/v1
 google.golang.org/genproto/googleapis/rpc/code
 google.golang.org/genproto/googleapis/rpc/status
 google.golang.org/genproto/googleapis/type/expr
-# google.golang.org/grpc v1.29.1 => google.golang.org/grpc v1.27.1
+# google.golang.org/grpc v1.34.0 => google.golang.org/grpc v1.27.1
 google.golang.org/grpc
 google.golang.org/grpc/attributes
 google.golang.org/grpc/backoff
@@ -740,7 +758,7 @@ gopkg.in/yaml.v2
 # gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c
 ## explicit
 gopkg.in/yaml.v3
-# helm.sh/helm/v3 v3.4.1 => github.com/kubepack/helm/v3 v3.1.0-rc.1.0.20210503022716-7e2d4913a125
+# helm.sh/helm/v3 v3.5.2 => github.com/kubepack/helm/v3 v3.1.0-rc.1.0.20210503022716-7e2d4913a125
 ## explicit
 helm.sh/helm/v3/internal/experimental/registry
 helm.sh/helm/v3/internal/fileutil
@@ -927,7 +945,7 @@ k8s.io/apiserver/pkg/endpoints/deprecation
 k8s.io/cli-runtime/pkg/genericclioptions
 k8s.io/cli-runtime/pkg/printers
 k8s.io/cli-runtime/pkg/resource
-# k8s.io/client-go v12.0.0+incompatible => k8s.io/client-go v0.21.0
+# k8s.io/client-go v0.21.0 => k8s.io/client-go v0.21.0
 ## explicit
 k8s.io/client-go/applyconfigurations/admissionregistration/v1
 k8s.io/client-go/applyconfigurations/admissionregistration/v1beta1
@@ -1062,6 +1080,7 @@ k8s.io/client-go/util/workqueue
 k8s.io/component-base/cli/flag
 k8s.io/component-base/version
 # k8s.io/klog/v2 v2.8.0
+## explicit
 k8s.io/klog/v2
 # k8s.io/kube-openapi v0.0.0-20210305001622-591a79e4bda7 => k8s.io/kube-openapi v0.0.0-20210305001622-591a79e4bda7
 k8s.io/kube-openapi/pkg/common
@@ -1094,19 +1113,18 @@ kmodules.xyz/apiversion
 # kmodules.xyz/apply v0.0.0-20210503080849-eb226c295465
 ## explicit
 kmodules.xyz/apply
-# kmodules.xyz/client-go v0.0.0-20210504024435-1eb80721e9b8
+# kmodules.xyz/client-go v0.0.0-20210514054158-27e164b43474
 ## explicit
 kmodules.xyz/client-go
 kmodules.xyz/client-go/apiextensions
 kmodules.xyz/client-go/apiextensions/v1
 kmodules.xyz/client-go/apiextensions/v1beta1
 kmodules.xyz/client-go/discovery
-kmodules.xyz/client-go/logs
 kmodules.xyz/client-go/meta
 kmodules.xyz/client-go/tools/converter
 kmodules.xyz/client-go/tools/parser
 kmodules.xyz/client-go/tools/wait
-# kmodules.xyz/resource-metadata v0.4.8-0.20210113000222-d15533e4bb66 => kmodules.xyz/resource-metadata v0.5.0
+# kmodules.xyz/resource-metadata v0.5.5-0.20210514060730-df2b810e12e6 => kmodules.xyz/resource-metadata v0.5.0
 ## explicit
 kmodules.xyz/resource-metadata/apis/meta
 kmodules.xyz/resource-metadata/apis/meta/v1alpha1
@@ -1117,7 +1135,7 @@ kmodules.xyz/resource-metadata/hub/resourcedescriptors
 # kubepack.dev/chart-doc-gen v0.4.0
 ## explicit
 kubepack.dev/chart-doc-gen/api
-# kubepack.dev/kubepack v0.3.4-0.20210503075001-edc5430148cf
+# kubepack.dev/kubepack v0.3.4-0.20210513213410-fab49d312392
 ## explicit
 kubepack.dev/kubepack/apis
 kubepack.dev/kubepack/apis/kubepack
@@ -1125,7 +1143,7 @@ kubepack.dev/kubepack/apis/kubepack/v1alpha1
 kubepack.dev/kubepack/artifacts/products
 kubepack.dev/kubepack/crds
 kubepack.dev/kubepack/pkg/lib
-# kubepack.dev/lib-helm v0.2.4-0.20210503073451-a00a8234173e
+# kubepack.dev/lib-helm v0.2.4-0.20210504075710-8653e4557a39
 ## explicit
 kubepack.dev/lib-helm/action
 kubepack.dev/lib-helm/chart
@@ -1136,7 +1154,7 @@ kubepack.dev/lib-helm/internal/tlsutil
 kubepack.dev/lib-helm/internal/urlutil
 kubepack.dev/lib-helm/internal/version
 kubepack.dev/lib-helm/repo
-# sigs.k8s.io/application v0.8.2-0.20200306235134-f10d9ca8abd4 => github.com/kmodules/application v0.8.4-0.20210427030912-90eeee3bc4ad
+# sigs.k8s.io/application v0.0.0-00010101000000-000000000000 => github.com/kmodules/application v0.8.4-0.20210427030912-90eeee3bc4ad
 ## explicit
 sigs.k8s.io/application/api/app/v1beta1
 sigs.k8s.io/application/client/clientset/versioned
@@ -1229,8 +1247,6 @@ sigs.k8s.io/structured-merge-diff/v4/value
 # sigs.k8s.io/yaml v1.2.0
 ## explicit
 sigs.k8s.io/yaml
-# git.apache.org/thrift.git => github.com/apache/thrift v0.13.0
-# github.com/Azure/go-autorest/autorest/azure/auth => github.com/Azure/go-autorest/autorest/azure/auth v0.2.0
 # github.com/go-macaron/binding => github.com/gomodules/binding v0.0.0-20200811095614-c752727d2156
 # bitbucket.org/ww/goautoneg => gomodules.xyz/goautoneg v0.0.0-20120707110453-a547fc61f48d
 # cloud.google.com/go => cloud.google.com/go v0.54.0

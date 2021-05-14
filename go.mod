@@ -6,45 +6,40 @@ require (
 	github.com/Masterminds/semver v1.5.0 // indirect
 	github.com/Masterminds/sprig v2.22.0+incompatible
 	github.com/Masterminds/sprig/v3 v3.2.2
-	github.com/aws/aws-sdk-go v1.38.31 // indirect
 	github.com/evanphx/json-patch v4.9.0+incompatible
 	github.com/gabriel-vasile/mimetype v1.2.0
 	github.com/go-macaron/binding v0.0.0-00010101000000-000000000000
 	github.com/gobuffalo/flect v0.2.2
-	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
 	github.com/google/uuid v1.1.2
 	github.com/gorilla/schema v1.2.0 // indirect
 	github.com/imdario/mergo v0.3.11
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.1.3
 	github.com/spf13/pflag v1.0.5
-	gocloud.dev v0.20.0
+	gocloud.dev v0.22.0
 	gomodules.xyz/jsonpatch/v3 v3.0.1
+	gomodules.xyz/kglog v0.0.1
 	gomodules.xyz/version v0.1.0
-	gomodules.xyz/x v0.0.3 // indirect
 	gopkg.in/macaron.v1 v1.4.0
 	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c
-	helm.sh/helm/v3 v3.4.1
+	helm.sh/helm/v3 v3.5.2
 	k8s.io/api v0.21.0
 	k8s.io/apiextensions-apiserver v0.21.0
 	k8s.io/apimachinery v0.21.0
 	k8s.io/cli-runtime v0.21.0
-	k8s.io/client-go v12.0.0+incompatible
+	k8s.io/client-go v0.21.0
 	k8s.io/component-base v0.21.0
+	k8s.io/klog/v2 v2.8.0
 	k8s.io/kubectl v0.21.0
 	kmodules.xyz/apply v0.0.0-20210503080849-eb226c295465
-	kmodules.xyz/client-go v0.0.0-20210504024435-1eb80721e9b8
-	kmodules.xyz/resource-metadata v0.4.8-0.20210113000222-d15533e4bb66
+	kmodules.xyz/client-go v0.0.0-20210514054158-27e164b43474
+	kmodules.xyz/resource-metadata v0.5.5-0.20210514060730-df2b810e12e6
 	kubepack.dev/chart-doc-gen v0.4.0
-	kubepack.dev/kubepack v0.3.4-0.20210503075001-edc5430148cf
-	kubepack.dev/lib-helm v0.2.4-0.20210503073451-a00a8234173e
-	sigs.k8s.io/application v0.8.2-0.20200306235134-f10d9ca8abd4
+	kubepack.dev/kubepack v0.3.4-0.20210513213410-fab49d312392
+	kubepack.dev/lib-helm v0.2.4-0.20210504075710-8653e4557a39
+	sigs.k8s.io/application v0.0.0-00010101000000-000000000000
 	sigs.k8s.io/yaml v1.2.0
 )
-
-replace git.apache.org/thrift.git => github.com/apache/thrift v0.13.0
-
-replace github.com/Azure/go-autorest/autorest/azure/auth => github.com/Azure/go-autorest/autorest/azure/auth v0.2.0
 
 replace github.com/go-macaron/binding => github.com/gomodules/binding v0.0.0-20200811095614-c752727d2156
 
