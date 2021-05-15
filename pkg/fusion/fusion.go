@@ -30,7 +30,7 @@ import (
 	appapi "kubepack.dev/lib-app/api/v1alpha1"
 	"kubepack.dev/lib-app/pkg/editor"
 
-	"github.com/Masterminds/sprig"
+	"github.com/Masterminds/sprig/v3"
 	"github.com/spf13/cobra"
 	y3 "gopkg.in/yaml.v3"
 	"helm.sh/helm/v3/pkg/chart"
