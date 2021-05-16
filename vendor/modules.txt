@@ -752,7 +752,7 @@ gopkg.in/yaml.v2
 # gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c
 ## explicit
 gopkg.in/yaml.v3
-# helm.sh/helm/v3 v3.5.2 => github.com/kubepack/helm/v3 v3.1.0-rc.1.0.20210503022716-7e2d4913a125
+# helm.sh/helm/v3 v3.5.2 => github.com/kubepack/helm/v3 v3.1.0-rc.1.0.20210515174429-5ca48746d739
 ## explicit
 helm.sh/helm/v3/internal/experimental/registry
 helm.sh/helm/v3/internal/fileutil
@@ -1118,7 +1118,7 @@ kmodules.xyz/client-go/meta
 kmodules.xyz/client-go/tools/converter
 kmodules.xyz/client-go/tools/parser
 kmodules.xyz/client-go/tools/wait
-# kmodules.xyz/resource-metadata v0.5.5-0.20210514060730-df2b810e12e6 => kmodules.xyz/resource-metadata v0.5.0
+# kmodules.xyz/resource-metadata v0.5.5-0.20210516011544-f7fae593b6ca => kmodules.xyz/resource-metadata v0.5.0
 ## explicit
 kmodules.xyz/resource-metadata/apis/meta
 kmodules.xyz/resource-metadata/apis/meta/v1alpha1
@@ -1284,7 +1284,7 @@ sigs.k8s.io/yaml
 # google.golang.org/api => google.golang.org/api v0.20.0
 # google.golang.org/genproto => google.golang.org/genproto v0.0.0-20201110150050-8816d57aaa9a
 # google.golang.org/grpc => google.golang.org/grpc v1.27.1
-# helm.sh/helm/v3 => github.com/kubepack/helm/v3 v3.1.0-rc.1.0.20210503022716-7e2d4913a125
+# helm.sh/helm/v3 => github.com/kubepack/helm/v3 v3.1.0-rc.1.0.20210515174429-5ca48746d739
 # k8s.io/api => k8s.io/api v0.21.0
 # k8s.io/apimachinery => github.com/kmodules/apimachinery v0.21.1-rc.0.0.20210405112358-ad4c2289ba4c
 # k8s.io/apiserver => github.com/kmodules/apiserver v0.21.1-0.20210427013338-53dee545b83c
