@@ -29,8 +29,8 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	kblabels "k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/util/validation"
-	"k8s.io/client-go/discovery"
 	"k8s.io/client-go/dynamic"
+	"kmodules.xyz/client-go/discovery"
 	meta_util "kmodules.xyz/client-go/meta"
 	"sigs.k8s.io/application/api/app/v1beta1"
 	cs "sigs.k8s.io/application/client/clientset/versioned/typed/app/v1beta1"
@@ -46,13 +46,13 @@ const ApplicationsDriverName = "Application"
 type Applications struct {
 	ai  cs.ApplicationInterface
 	di  dynamic.Interface
-	cl  discovery.CachedDiscoveryInterface
+	cl  discovery.ResourceMapper
 	Log func(string, ...interface{})
 }
 
 // NewApplications initializes a new Applications wrapping an implementation of
 // the kubernetes ApplicationsInterface.
-func NewApplications(ai cs.ApplicationInterface, di dynamic.Interface, cl discovery.CachedDiscoveryInterface) *Applications {
+func NewApplications(ai cs.ApplicationInterface, di dynamic.Interface, cl discovery.ResourceMapper) *Applications {
 	return &Applications{
 		ai:  ai,
 		di:  di,

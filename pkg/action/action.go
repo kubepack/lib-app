@@ -40,10 +40,10 @@ import (
 	"k8s.io/apimachinery/pkg/api/meta"
 	"k8s.io/cli-runtime/pkg/genericclioptions"
 	"k8s.io/client-go/discovery"
-	"k8s.io/client-go/discovery/cached/memory"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
+	disco_util "kmodules.xyz/client-go/discovery"
 	appcs "sigs.k8s.io/application/client/clientset/versioned"
 )
 
@@ -374,10 +374,14 @@ func (c *Configuration) Init(getter genericclioptions.RESTClientGetter, namespac
 		if err != nil {
 			return err
 		}
+		mapper, err := getter.ToRESTMapper()
+		if err != nil {
+			return err
+		}
 		d := driver2.NewApplications(
 			newApplicationClient(lazyClient),
 			dynamic.NewForConfigOrDie(config),
-			memory.NewMemCacheClient(kubernetes.NewForConfigOrDie(config).Discovery()),
+			disco_util.NewResourceMapper(mapper),
 		)
 		d.Log = log
 		store = storage.Init(d)

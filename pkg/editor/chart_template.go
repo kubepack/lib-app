@@ -31,17 +31,15 @@ import (
 	"github.com/google/uuid"
 	"gomodules.xyz/jsonpatch/v3"
 	"helm.sh/helm/v3/pkg/chart"
-	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
-	"k8s.io/client-go/discovery/cached/memory"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
-	"k8s.io/client-go/restmapper"
+	"kmodules.xyz/client-go/discovery"
 	meta_util "kmodules.xyz/client-go/meta"
 	"kmodules.xyz/client-go/tools/parser"
 	"kmodules.xyz/resource-metadata/hub"
@@ -149,7 +147,7 @@ func LoadEditorModel(cfg *rest.Config, reg *repo.Registry, opts appapi.ModelMeta
 	if err != nil {
 		return nil, err
 	}
-	mapper := restmapper.NewDeferredDiscoveryRESTMapper(memory.NewMemCacheClient(kc.Discovery()))
+	mapper := discovery.NewResourceMapper(discovery.NewRestMapper(kc.Discovery()))
 	dc, err := dynamic.NewForConfig(cfg)
 	if err != nil {
 		return nil, err
@@ -167,7 +165,7 @@ func LoadEditorModel(cfg *rest.Config, reg *repo.Registry, opts appapi.ModelMeta
 	return EditorChartValueManifest(app, mapper, dc, opts.Metadata.Release, chrt.Chart)
 }
 
-func EditorChartValueManifest(app *v1beta1.Application, mapper *restmapper.DeferredDiscoveryRESTMapper, dc dynamic.Interface, mt appapi.ObjectMeta, chrt *chart.Chart) (*appapi.EditorTemplate, error) {
+func EditorChartValueManifest(app *v1beta1.Application, mapper discovery.ResourceMapper, dc dynamic.Interface, mt appapi.ObjectMeta, chrt *chart.Chart) (*appapi.EditorTemplate, error) {
 	selector, err := metav1.LabelSelectorAsSelector(app.Spec.Selector)
 	if err != nil {
 		return nil, err
@@ -203,18 +201,24 @@ func EditorChartValueManifest(app *v1beta1.Application, mapper *restmapper.Defer
 			return nil, fmt.Errorf("failed to detect version for GK %#v in chart name=%s version=%s values", gk, chrt.Name(), chrt.Metadata.Version)
 		}
 
-		mapping, err := mapper.RESTMapping(schema.GroupKind{
-			Group: gk.Group,
-			Kind:  gk.Kind,
-		}, version)
+		gvk := schema.GroupVersionKind{
+			Group:   gk.Group,
+			Version: version,
+			Kind:    gk.Kind,
+		}
+		gvr, err := mapper.GVR(gvk)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("failed to detect GVR for gvk %v, reason %v", gvk, err)
+		}
+		namespaced, err := mapper.IsNamespaced(gvr)
+		if err != nil {
+			return nil, fmt.Errorf("failed to detect if gvr %v is namespaced, reason %v", gvr, err)
 		}
 		var rc dynamic.ResourceInterface
-		if mapping.Scope == meta.RESTScopeNamespace {
-			rc = dc.Resource(mapping.Resource).Namespace(mt.Namespace)
+		if namespaced {
+			rc = dc.Resource(gvr).Namespace(mt.Namespace)
 		} else {
-			rc = dc.Resource(mapping.Resource)
+			rc = dc.Resource(gvr)
 		}
 
 		list, err := rc.List(context.TODO(), metav1.ListOptions{
