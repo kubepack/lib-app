@@ -314,7 +314,10 @@ func GenerateChartMetadata(chartDir, chartName string, rd *v1alpha1.ResourceDesc
 		Version:  rd.Spec.Resource.Version,
 		Resource: rd.Spec.Resource.Name,
 	}
-	gvrData, _ := json.Marshal(gvr)
+	gvrData, err := json.Marshal(gvr)
+	if err != nil {
+		panic(err)
+	}
 
 	chartMeta := chart.Metadata{
 		Name:        chartName,

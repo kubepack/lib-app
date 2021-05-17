@@ -23,6 +23,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"text/template"
 
@@ -340,6 +341,57 @@ func NewCmdFuse() *cobra.Command {
 }
 
 func GenerateChartMetadata(rd *v1alpha1.ResourceDescriptor) error {
+	gvr := metav1.GroupVersionResource{
+		Group:    rd.Spec.Resource.Group,
+		Version:  rd.Spec.Resource.Version,
+		Resource: rd.Spec.Resource.Name,
+	}
+	gvrData, err := json.Marshal(gvr)
+	if err != nil {
+		panic(err)
+	}
+	gks := []metav1.GroupKind{
+		{
+			Group: rd.Spec.Resource.Group,
+			Kind:  rd.Spec.Resource.Kind,
+		},
+		{
+			Group: "",
+			Kind: "Secret",
+		},
+		{
+			Group: "cert-manager.io",
+			Kind: "Issuer",
+		},
+		{
+			Group: "monitoring.coreos.com",
+			Kind:  "ServiceMonitor",
+		},
+		{
+			Group: "stash.appscode.com",
+			Kind: "Repository",
+		},
+		{
+			Group: "stash.appscode.com",
+			Kind:  "BackupConfiguration",
+		},
+		{
+			Group: "stash.appscode.com",
+			Kind:  "RestoreSession",
+		},
+	}
+	sort.Slice(gks, func(i, j int) bool {
+		if gks[i].Group == gks[j].Group {
+			return gks[i].Kind < gks[j].Kind
+		}
+		return gks[i].Group < gks[j].Group
+	})
+
+	gkData, err := yaml.Marshal(gks)
+	if err != nil {
+		panic(err)
+	}
+
 	chartMeta := chart.Metadata{
 		Name:        chartName,
 		Home:        "https://byte.builders",
@@ -360,6 +412,10 @@ func GenerateChartMetadata(rd *v1alpha1.ResourceDescriptor) error {
 		Deprecated:  false,
 		KubeVersion: ">= 1.14.0",
 		Type:        "application",
+		Annotations: map[string]string{
+			"meta.x-helm.dev/editor":    string(gvrData),
+			"meta.x-helm.dev/resources": string(gkData),
+		},
 	}
 	data4, err := yaml.Marshal(chartMeta)
 	if err != nil {
