@@ -17,6 +17,7 @@ limitations under the License.
 package simple
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -308,6 +309,13 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 }
 
 func GenerateChartMetadata(chartDir, chartName string, rd *v1alpha1.ResourceDescriptor) error {
+	gvr := metav1.GroupVersionResource{
+		Group:    rd.Spec.Resource.Group,
+		Version:  rd.Spec.Resource.Version,
+		Resource: rd.Spec.Resource.Name,
+	}
+	gvrData, _ := json.Marshal(gvr)
+
 	chartMeta := chart.Metadata{
 		Name:        chartName,
 		Home:        "https://byte.builders",
@@ -328,6 +336,9 @@ func GenerateChartMetadata(chartDir, chartName string, rd *v1alpha1.ResourceDesc
 		Deprecated:  false,
 		KubeVersion: ">= 1.14.0",
 		Type:        "application",
+		Annotations: map[string]string{
+			"meta.x-helm.dev/editor": string(gvrData),
+		},
 	}
 	data4, err := yaml.Marshal(chartMeta)
 	if err != nil {

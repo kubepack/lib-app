@@ -33,7 +33,7 @@ require (
 	kmodules.xyz/client-go v0.0.0-20210514054158-27e164b43474
 	kmodules.xyz/resource-metadata v0.5.5-0.20210516011544-f7fae593b6ca
 	kubepack.dev/chart-doc-gen v0.4.0
-	kubepack.dev/kubepack v0.3.4-0.20210513213410-fab49d312392
+	kubepack.dev/kubepack v0.3.4-0.20210517032317-54d0d8fa1423
 	kubepack.dev/lib-helm v0.2.4-0.20210504075710-8653e4557a39
 	sigs.k8s.io/application v0.0.0-00010101000000-000000000000
 	sigs.k8s.io/yaml v1.2.0
