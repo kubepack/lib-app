@@ -241,7 +241,6 @@ github.com/fatih/structs
 # github.com/form3tech-oss/jwt-go v3.2.2+incompatible
 github.com/form3tech-oss/jwt-go
 # github.com/gabriel-vasile/mimetype v1.2.0
-## explicit
 github.com/gabriel-vasile/mimetype
 github.com/gabriel-vasile/mimetype/internal/json
 github.com/gabriel-vasile/mimetype/internal/matchers
@@ -334,7 +333,6 @@ github.com/hashicorp/golang-lru/simplelru
 # github.com/huandu/xstrings v1.3.1
 github.com/huandu/xstrings
 # github.com/imdario/mergo v0.3.11 => github.com/imdario/mergo v0.3.5
-## explicit
 github.com/imdario/mergo
 # github.com/inconshreveable/mousetrap v1.0.0
 github.com/inconshreveable/mousetrap
@@ -407,7 +405,6 @@ github.com/opencontainers/runc/libcontainer/user
 # github.com/peterbourgon/diskv v2.0.1+incompatible
 github.com/peterbourgon/diskv
 # github.com/pkg/errors v0.9.1
-## explicit
 github.com/pkg/errors
 # github.com/pmezard/go-difflib v1.0.0
 github.com/pmezard/go-difflib/difflib
@@ -1082,7 +1079,6 @@ k8s.io/client-go/util/workqueue
 k8s.io/component-base/cli/flag
 k8s.io/component-base/version
 # k8s.io/klog/v2 v2.8.0
-## explicit
 k8s.io/klog/v2
 # k8s.io/kube-openapi v0.0.0-20210305001622-591a79e4bda7 => k8s.io/kube-openapi v0.0.0-20210305001622-591a79e4bda7
 k8s.io/kube-openapi/pkg/common
@@ -1113,7 +1109,6 @@ k8s.io/utils/trace
 # kmodules.xyz/apiversion v0.2.0
 kmodules.xyz/apiversion
 # kmodules.xyz/apply v0.0.0-20210503080849-eb226c295465
-## explicit
 kmodules.xyz/apply
 # kmodules.xyz/client-go v0.0.0-20210514054158-27e164b43474
 ## explicit
@@ -1137,7 +1132,7 @@ kmodules.xyz/resource-metadata/hub/resourcedescriptors
 # kubepack.dev/chart-doc-gen v0.4.0
 ## explicit
 kubepack.dev/chart-doc-gen/api
-# kubepack.dev/kubepack v0.3.4-0.20210519061031-ec5133517aa6
+# kubepack.dev/kubepack v0.3.4-0.20210519233354-5cc60f4b6f4c
 ## explicit
 kubepack.dev/kubepack/apis
 kubepack.dev/kubepack/apis/kubepack
@@ -1145,7 +1140,7 @@ kubepack.dev/kubepack/apis/kubepack/v1alpha1
 kubepack.dev/kubepack/artifacts/products
 kubepack.dev/kubepack/crds
 kubepack.dev/kubepack/pkg/lib
-# kubepack.dev/lib-helm v0.2.4-0.20210519054220-39927d049f0f
+# kubepack.dev/lib-helm v0.2.4-0.20210519231607-c3994656e95b
 ## explicit
 kubepack.dev/lib-helm/pkg/action
 kubepack.dev/lib-helm/pkg/application

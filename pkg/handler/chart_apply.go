@@ -23,7 +23,8 @@ import (
 	"kubepack.dev/kubepack/pkg/lib"
 	appapi "kubepack.dev/lib-app/api/v1alpha1"
 	"kubepack.dev/lib-app/pkg/editor"
-	"kubepack.dev/lib-app/pkg/lib/action"
+	"kubepack.dev/lib-helm/pkg/action"
+	"kubepack.dev/lib-helm/pkg/values"
 
 	jsonpatch "github.com/evanphx/json-patch"
 	"helm.sh/helm/v3/pkg/release"
@@ -50,16 +51,18 @@ func ApplyResource(f cmdutil.Factory, model unstructured.Unstructured, skipCRds 
 		return nil, err
 	}
 
-	applier, err := action.NewApplier(f, tm.Release.Namespace, "applications")
+	applier, err := action.NewInstaller(f, tm.Release.Namespace, "storage.x-helm.dev/apps")
 	if err != nil {
 		return nil, err
 	}
 
 	applier.WithRegistry(lib.DefaultRegistry)
-	opts2 := action.NewApplyOptions()
-	opts2.ChartURL = rd.Spec.UI.Editor.URL
-	opts2.ChartName = rd.Spec.UI.Editor.Name
-	opts2.Version = rd.Spec.UI.Editor.Version
+	var opts action.InstallOptions
+	opts.ChartURL = rd.Spec.UI.Editor.URL
+	opts.ChartName = rd.Spec.UI.Editor.Name
+	opts.Version = rd.Spec.UI.Editor.Version
+
+	var vals map[string]interface{}
 	if _, ok := model.Object["patch"]; ok {
 		// NOTE: Makes an assumption that this is a "edit" apply
 		cfg, err := f.ToRESTConfig()
@@ -102,32 +105,33 @@ func ApplyResource(f cmdutil.Factory, model unstructured.Unstructured, skipCRds 
 		if err != nil {
 			return nil, err
 		}
-		opts2.Values = mod
+		vals = mod
 	} else {
-		opts2.Values = model.Object
+		vals = model.Object
+	}
+	opts.Values = values.Options{
+		ReplaceValues: vals,
 	}
 
-	opts2.CreateNamespace = true // TODO?
-	opts2.DryRun = false
-	opts2.DisableHooks = false
-	opts2.Replace = false
-	opts2.Wait = false
-	opts2.Timeout = 0
-	opts2.Description = "Apply editor"
-	opts2.Devel = false
-	opts2.Namespace = tm.Release.Namespace
-	opts2.ReleaseName = tm.Release.Name
-	opts2.Atomic = false
-	opts2.SkipCRDs = skipCRds
-	opts2.SubNotes = false
-	opts2.DisableOpenAPIValidation = false
-	opts2.IncludeCRDs = false
+	opts.DryRun = false
+	opts.DisableHooks = false
+	opts.Replace = false
+	opts.Wait = false
+	opts.Timeout = 0
+	opts.Description = "Apply editor"
+	opts.Devel = false
+	opts.Namespace = tm.Release.Namespace
+	opts.ReleaseName = tm.Release.Name
+	opts.Atomic = false
+	opts.SkipCRDs = skipCRds
+	opts.SubNotes = false
+	opts.DisableOpenAPIValidation = false
+	opts.IncludeCRDs = false
 
-	opts2.RefillMetadata = true
+	applier.WithOptions(opts)
 
-	applier.WithOptions(opts2)
-
-	return applier.Run()
+	rls, _, err := applier.Run()
+	return rls, err
 }
 
 func DeleteResource(f cmdutil.Factory, release appapi.ObjectMeta) (*release.UninstallReleaseResponse, error) {

@@ -122,42 +122,6 @@ func (d *Applications) Get(key string) (*rspb.Release, error) {
 	return r[0], nil
 }
 
-func (d *Applications) getApp(relName string) (*v1beta1.Application, error) {
-	selector, err := metav1.LabelSelectorAsSelector(&metav1.LabelSelector{
-		MatchLabels: map[string]string{
-			fmt.Sprintf("%s/%s", annotaionScopeReleaseName, relName): relName,
-		},
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	// fetch the configmap holding the release named by key
-	result, err := d.ai.List(context.Background(), metav1.ListOptions{
-		LabelSelector: selector.String(),
-	})
-	if err != nil {
-		d.Log("get: failed to get release %q: %s", relName, err)
-		return nil, err
-	}
-	if len(result.Items) == 0 {
-		return nil, driver.ErrReleaseNotFound
-	}
-	if len(result.Items) > 1 {
-		names := make([]string, 0, len(result.Items))
-		for _, obj := range result.Items {
-			name, err := cache.MetaNamespaceKeyFunc(obj)
-			if err != nil {
-				return nil, err
-			}
-			names = append(names, name)
-		}
-		return nil, fmt.Errorf("multiple matching application objects found %s", strings.Join(names, ","))
-	}
-	obj := &result.Items[0]
-	return obj, nil
-}
-
 // List fetches all releases and returns the list releases such
 // that filter(release) == true. An error is returned if the
 // configmap fails to retrieve the releases.

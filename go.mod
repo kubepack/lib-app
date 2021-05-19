@@ -5,13 +5,10 @@ go 1.15
 require (
 	github.com/Masterminds/sprig/v3 v3.2.2
 	github.com/evanphx/json-patch v4.9.0+incompatible
-	github.com/gabriel-vasile/mimetype v1.2.0
 	github.com/go-macaron/binding v0.0.0-00010101000000-000000000000
 	github.com/gobuffalo/flect v0.2.2
 	github.com/google/uuid v1.1.2
 	github.com/gorilla/schema v1.2.0 // indirect
-	github.com/imdario/mergo v0.3.11
-	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.1.3
 	github.com/spf13/pflag v1.0.5
 	gocloud.dev v0.22.0
@@ -27,14 +24,12 @@ require (
 	k8s.io/cli-runtime v0.21.0
 	k8s.io/client-go v0.21.0
 	k8s.io/component-base v0.21.0
-	k8s.io/klog/v2 v2.8.0
 	k8s.io/kubectl v0.21.0
-	kmodules.xyz/apply v0.0.0-20210503080849-eb226c295465
 	kmodules.xyz/client-go v0.0.0-20210514054158-27e164b43474
 	kmodules.xyz/resource-metadata v0.5.5-0.20210518185031-147bfd9e841c
 	kubepack.dev/chart-doc-gen v0.4.0
-	kubepack.dev/kubepack v0.3.4-0.20210519061031-ec5133517aa6
-	kubepack.dev/lib-helm v0.2.4-0.20210519054220-39927d049f0f
+	kubepack.dev/kubepack v0.3.4-0.20210519233354-5cc60f4b6f4c
+	kubepack.dev/lib-helm v0.2.4-0.20210519231607-c3994656e95b
 	sigs.k8s.io/application v0.8.2-0.20200306235134-f10d9ca8abd4
 	sigs.k8s.io/yaml v1.2.0
 )

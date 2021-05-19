@@ -20,21 +20,25 @@ import (
 )
 
 type InstallOptions struct {
-	ChartURL     string         `json:"chartURL"`
-	ChartName    string         `json:"chartName"`
-	Version      string         `json:"version"`
-	Values       values.Options `json:",inline,omitempty"`
-	DryRun       bool           `json:"dryRun"`
-	DisableHooks bool           `json:"disableHooks"`
-	Replace      bool           `json:"replace"`
-	Wait         bool           `json:"wait"`
-	Devel        bool           `json:"devel"`
-	Timeout      time.Duration  `json:"timeout"`
-	Namespace    string         `json:"namespace"`
-	ReleaseName  string         `json:"releaseName"`
-	Atomic       bool           `json:"atomic"`
-	SkipCRDs     bool           `json:"skipCRDs"`
-	PartOf       string         `json:"partOf"`
+	ChartURL                 string         `json:"chartURL"`
+	ChartName                string         `json:"chartName"`
+	Version                  string         `json:"version"`
+	Values                   values.Options `json:",inline,omitempty"`
+	DryRun                   bool           `json:"dryRun"`
+	DisableHooks             bool           `json:"disableHooks"`
+	Replace                  bool           `json:"replace"`
+	Wait                     bool           `json:"wait"`
+	Devel                    bool           `json:"devel"`
+	Timeout                  time.Duration  `json:"timeout"`
+	Namespace                string         `json:"namespace"`
+	ReleaseName              string         `json:"releaseName"`
+	Description              string         `json:"description"`
+	Atomic                   bool           `json:"atomic"`
+	SkipCRDs                 bool           `json:"skipCRDs"`
+	SubNotes                 bool           `json:"subNotes"`
+	DisableOpenAPIValidation bool           `json:"disableOpenAPIValidation"`
+	IncludeCRDs              bool           `json:"includeCRDs"`
+	PartOf                   string         `json:"partOf"`
 }
 
 type Installer struct {
@@ -101,9 +105,14 @@ func (x *Installer) Run() (*release.Release, *flowapi.FlowState, error) {
 	cmd.APIVersions = chartutil.VersionSet(extraAPIs)
 	cmd.Version = x.opts.Version
 	cmd.DisableHooks = x.opts.DisableHooks
-	cmd.Atomic = x.opts.Atomic
 	cmd.Wait = x.opts.Wait
 	cmd.Timeout = x.opts.Timeout
+	cmd.Description = x.opts.Description
+	cmd.Atomic = x.opts.Atomic
+	cmd.SkipCRDs = x.opts.SkipCRDs
+	cmd.SubNotes = x.opts.SubNotes
+	cmd.DisableOpenAPIValidation = x.opts.DisableOpenAPIValidation
+	cmd.IncludeCRDs = x.opts.IncludeCRDs
 
 	validInstallableChart, err := libchart.IsChartInstallable(chrt.Chart)
 	if !validInstallableChart {
