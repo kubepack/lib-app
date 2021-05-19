@@ -26,7 +26,7 @@ import (
 	"kubepack.dev/kubepack/apis/kubepack/v1alpha1"
 	"kubepack.dev/kubepack/pkg/lib"
 	appapi "kubepack.dev/lib-app/api/v1alpha1"
-	"kubepack.dev/lib-helm/repo"
+	"kubepack.dev/lib-helm/pkg/repo"
 
 	"github.com/google/uuid"
 	"gomodules.xyz/jsonpatch/v3"

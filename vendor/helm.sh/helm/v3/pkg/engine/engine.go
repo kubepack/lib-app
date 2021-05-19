@@ -68,8 +68,8 @@ func (e Engine) Render(chrt *chart.Chart, values chartutil.Values) (map[string]s
 	return e.render(tmap)
 }
 
-func (e Engine) NewInstance(chrt *chart.Chart, values chartutil.Values) EngineInstance {
-	return EngineInstance{
+func (e Engine) NewInstance(chrt *chart.Chart, values chartutil.Values) *EngineInstance {
+	return &EngineInstance{
 		chrt:          chrt,
 		values:        values,
 		referenceTpls: allPartialTemplates(chrt, values),
@@ -369,7 +369,7 @@ func recAllPartialTpls(c *chart.Chart, templates map[string]renderable, vals cha
 	newParentID := c.ChartFullPath()
 	for _, t := range c.Templates {
 		// Only read partials. They are only included from other templates.
-		if !strings.HasPrefix(t.Name, "_") {
+		if !strings.HasPrefix(path.Base(t.Name), "_") {
 			continue
 		}
 		//if !isTemplateValid(c, t.Name) {

@@ -32,8 +32,8 @@ import (
 	appapi "kubepack.dev/lib-app/api/v1alpha1"
 	"kubepack.dev/lib-app/pkg/editor"
 	"kubepack.dev/lib-app/pkg/handler"
-	"kubepack.dev/lib-helm/getter"
-	"kubepack.dev/lib-helm/repo"
+	"kubepack.dev/lib-helm/pkg/getter"
+	"kubepack.dev/lib-helm/pkg/repo"
 
 	"github.com/go-macaron/binding"
 	"github.com/google/uuid"

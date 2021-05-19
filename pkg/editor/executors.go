@@ -27,8 +27,8 @@ import (
 
 	"kubepack.dev/kubepack/apis/kubepack/v1alpha1"
 	appapi "kubepack.dev/lib-app/api/v1alpha1"
-	libchart "kubepack.dev/lib-helm/chart"
-	"kubepack.dev/lib-helm/repo"
+	libchart "kubepack.dev/lib-helm/pkg/chart"
+	"kubepack.dev/lib-helm/pkg/repo"
 
 	jsonpatch "github.com/evanphx/json-patch"
 	"github.com/gobuffalo/flect"

@@ -25,7 +25,7 @@ import (
 
 	"kubepack.dev/lib-app/pkg/action"
 	"kubepack.dev/lib-app/pkg/editor"
-	"kubepack.dev/lib-helm/repo"
+	"kubepack.dev/lib-helm/pkg/repo"
 
 	jsonpatch "github.com/evanphx/json-patch"
 	"github.com/pkg/errors"
