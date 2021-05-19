@@ -357,11 +357,11 @@ func GenerateChartMetadata(rd *v1alpha1.ResourceDescriptor) error {
 		},
 		{
 			Group: "",
-			Kind: "Secret",
+			Kind:  "Secret",
 		},
 		{
 			Group: "cert-manager.io",
-			Kind: "Issuer",
+			Kind:  "Issuer",
 		},
 		{
 			Group: "monitoring.coreos.com",
@@ -369,7 +369,7 @@ func GenerateChartMetadata(rd *v1alpha1.ResourceDescriptor) error {
 		},
 		{
 			Group: "stash.appscode.com",
-			Kind: "Repository",
+			Kind:  "Repository",
 		},
 		{
 			Group: "stash.appscode.com",
