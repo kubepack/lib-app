@@ -5,13 +5,10 @@ go 1.15
 require (
 	github.com/Masterminds/sprig/v3 v3.2.2
 	github.com/evanphx/json-patch v4.9.0+incompatible
-	github.com/gabriel-vasile/mimetype v1.2.0
 	github.com/go-macaron/binding v0.0.0-00010101000000-000000000000
 	github.com/gobuffalo/flect v0.2.2
 	github.com/google/uuid v1.1.2
 	github.com/gorilla/schema v1.2.0 // indirect
-	github.com/imdario/mergo v0.3.11
-	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.1.3
 	github.com/spf13/pflag v1.0.5
 	gocloud.dev v0.22.0
@@ -19,7 +16,7 @@ require (
 	gomodules.xyz/kglog v0.0.1
 	gomodules.xyz/version v0.1.0
 	gopkg.in/macaron.v1 v1.4.0
-	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c
+	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
 	helm.sh/helm/v3 v3.5.2
 	k8s.io/api v0.21.0
 	k8s.io/apiextensions-apiserver v0.21.0
@@ -27,15 +24,13 @@ require (
 	k8s.io/cli-runtime v0.21.0
 	k8s.io/client-go v0.21.0
 	k8s.io/component-base v0.21.0
-	k8s.io/klog/v2 v2.8.0
 	k8s.io/kubectl v0.21.0
-	kmodules.xyz/apply v0.0.0-20210503080849-eb226c295465
 	kmodules.xyz/client-go v0.0.0-20210514054158-27e164b43474
-	kmodules.xyz/resource-metadata v0.5.5-0.20210516011544-f7fae593b6ca
+	kmodules.xyz/resource-metadata v0.5.5-0.20210518185031-147bfd9e841c
 	kubepack.dev/chart-doc-gen v0.4.0
-	kubepack.dev/kubepack v0.3.4-0.20210517032317-54d0d8fa1423
-	kubepack.dev/lib-helm v0.2.4-0.20210504075710-8653e4557a39
-	sigs.k8s.io/application v0.0.0-00010101000000-000000000000
+	kubepack.dev/kubepack v0.3.4-0.20210519233354-5cc60f4b6f4c
+	kubepack.dev/lib-helm v0.2.4-0.20210519231607-c3994656e95b
+	sigs.k8s.io/application v0.8.2-0.20200306235134-f10d9ca8abd4
 	sigs.k8s.io/yaml v1.2.0
 )
 
@@ -125,7 +120,9 @@ replace google.golang.org/genproto => google.golang.org/genproto v0.0.0-20201110
 
 replace google.golang.org/grpc => google.golang.org/grpc v1.27.1
 
-replace helm.sh/helm/v3 => github.com/kubepack/helm/v3 v3.1.0-rc.1.0.20210515174429-5ca48746d739
+replace gopkg.in/yaml.v2 => gopkg.in/yaml.v2 v2.3.0
+
+replace helm.sh/helm/v3 => github.com/kubepack/helm/v3 v3.6.0-rc.1.0.20210518225915-c3e0ce48dd1b
 
 replace k8s.io/api => k8s.io/api v0.21.0
 
@@ -144,7 +141,5 @@ replace k8s.io/kube-openapi => k8s.io/kube-openapi v0.0.0-20210305001622-591a79e
 replace k8s.io/kubernetes => github.com/kmodules/kubernetes v1.22.0-alpha.0.0.20210427080452-22d2e66bae50
 
 replace k8s.io/utils => k8s.io/utils v0.0.0-20201110183641-67b214c5f920
-
-replace kmodules.xyz/resource-metadata => kmodules.xyz/resource-metadata v0.5.0
 
 replace sigs.k8s.io/application => github.com/kmodules/application v0.8.4-0.20210427030912-90eeee3bc4ad
