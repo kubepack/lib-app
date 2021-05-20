@@ -1369,11 +1369,10 @@ kmodules.xyz/resource-metadata v0.5.5-0.20210518185031-147bfd9e841c/go.mod h1:a/
 kmodules.xyz/webhook-runtime v0.0.0-20210504042742-3a9911e3dcdc/go.mod h1:6XuoN0H+Od+12aEywFaQnPJ3DYfJZE+Sx0MB4dzWI5Q=
 kubepack.dev/chart-doc-gen v0.4.0 h1:icZyLKX4In/sr5MoeKQ/yDdRWso687WMx4X0qBhg3dY=
 kubepack.dev/chart-doc-gen v0.4.0/go.mod h1:7/YwWgQwKQZIazjAMNuk7vLTjJHT5ZP+Z4rglDjx1PQ=
-kubepack.dev/kubepack v0.3.4-0.20210519233354-5cc60f4b6f4c h1:Lsq2kDFMsjEO3ZN25e7gSVNIE2wwIGpkEZ92VtpniWU=
-kubepack.dev/kubepack v0.3.4-0.20210519233354-5cc60f4b6f4c/go.mod h1:yX6QdFu8tNttnlRyn8BQvclJtf1T6NhMG33dpGlbRxM=
-kubepack.dev/lib-helm v0.2.4-0.20210519231607-c3994656e95b/go.mod h1:AuOMvWHSm3GvSAZueIz2ZO+0EswKl5OrbxK6tMSD2sU=
-kubepack.dev/lib-helm v0.2.4-0.20210520071059-07c3b48a14b5 h1:yCr+xd+JfFf4772XYNlBgWqeXa2jcWVbOdLDQe0p+us=
-kubepack.dev/lib-helm v0.2.4-0.20210520071059-07c3b48a14b5/go.mod h1:AuOMvWHSm3GvSAZueIz2ZO+0EswKl5OrbxK6tMSD2sU=
+kubepack.dev/kubepack v0.3.4-0.20210520194934-caa30b1e0d68 h1:J+TKbA3FSmKwkMhtD1LwqvjAKpNAuvX2mVR7h7WH1NY=
+kubepack.dev/kubepack v0.3.4-0.20210520194934-caa30b1e0d68/go.mod h1:KJXxuhvjl8CkLqey0hEh1kkWZz0xezi+QGo797UUaVE=
+kubepack.dev/lib-helm v0.2.4-0.20210520194150-305faa644d29 h1:xqWDUq8nb3ow3x9dvYqHoW1vQkDGL6XbB/h9uUA0SMY=
+kubepack.dev/lib-helm v0.2.4-0.20210520194150-305faa644d29/go.mod h1:AuOMvWHSm3GvSAZueIz2ZO+0EswKl5OrbxK6tMSD2sU=
 modernc.org/cc v1.0.0/go.mod h1:1Sk4//wdnYJiUIxnW8ddKpaOJCF37yAdqYnkxUpaYxw=
 modernc.org/golex v1.0.0/go.mod h1:b/QX9oBD/LhixY6NDh+IdGv17hgB+51fET1i2kPSmvk=
 modernc.org/mathutil v1.0.0/go.mod h1:wU0vUrJsVWBZ4P6e7xtFJEhFSNsfRLJ8H458uRjg03k=

@@ -1132,7 +1132,7 @@ kmodules.xyz/resource-metadata/hub/resourcedescriptors
 # kubepack.dev/chart-doc-gen v0.4.0
 ## explicit
 kubepack.dev/chart-doc-gen/api
-# kubepack.dev/kubepack v0.3.4-0.20210519233354-5cc60f4b6f4c
+# kubepack.dev/kubepack v0.3.4-0.20210520194934-caa30b1e0d68
 ## explicit
 kubepack.dev/kubepack/apis
 kubepack.dev/kubepack/apis/kubepack
@@ -1140,14 +1140,14 @@ kubepack.dev/kubepack/apis/kubepack/v1alpha1
 kubepack.dev/kubepack/artifacts/products
 kubepack.dev/kubepack/crds
 kubepack.dev/kubepack/pkg/lib
-# kubepack.dev/lib-helm v0.2.4-0.20210520071059-07c3b48a14b5
+# kubepack.dev/lib-helm v0.2.4-0.20210520194150-305faa644d29
 ## explicit
 kubepack.dev/lib-helm/pkg/action
 kubepack.dev/lib-helm/pkg/application
 kubepack.dev/lib-helm/pkg/chart
 kubepack.dev/lib-helm/pkg/chart/loader
 kubepack.dev/lib-helm/pkg/downloader
-kubepack.dev/lib-helm/pkg/flowapi
+kubepack.dev/lib-helm/pkg/engine
 kubepack.dev/lib-helm/pkg/getter
 kubepack.dev/lib-helm/pkg/internal/tlsutil
 kubepack.dev/lib-helm/pkg/internal/urlutil
