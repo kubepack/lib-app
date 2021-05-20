@@ -29,7 +29,7 @@ require (
 	kmodules.xyz/resource-metadata v0.5.5-0.20210518185031-147bfd9e841c
 	kubepack.dev/chart-doc-gen v0.4.0
 	kubepack.dev/kubepack v0.3.4-0.20210519233354-5cc60f4b6f4c
-	kubepack.dev/lib-helm v0.2.4-0.20210519231607-c3994656e95b
+	kubepack.dev/lib-helm v0.2.4-0.20210520071059-07c3b48a14b5
 	sigs.k8s.io/application v0.8.2-0.20200306235134-f10d9ca8abd4
 	sigs.k8s.io/yaml v1.2.0
 )
