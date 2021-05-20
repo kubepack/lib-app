@@ -24,23 +24,23 @@ $ go run cmd/fuse-chart/*.go \
 
 - GET "/packageview"
 
-`http://localhost:4000/packageview?url=https://bundles.byte.builders/ui/&name=mongodb-editor-options&version=v0.1.0`
+`http://localhost:4000/packageview?url=https://raw.githubusercontent.com/bytebuilders/ui-wizards/master/stable/&name=kubedbcom-mongodb-editor-options&version=v0.1.0`
 
 - POST "/packageview/orders"
 
-`curl -X POST -H "Content-Type: application/json" -d @./artifacts/mongodb-editor/packageview_chart_order.json http://localhost:4000/packageview/orders?url=https://bundles.byte.builders/ui/&name=mongodb-editor-options&version=v0.1.0`
+`curl -X POST -H "Content-Type: application/json" -d @./artifacts/mongodb-editor/packageview_chart_order.json http://localhost:4000/packageview/orders?url=https://raw.githubusercontent.com/bytebuilders/ui-wizards/master/stable/&name=kubedbcom-mongodb-editor-options&version=v0.1.0`
 
-`$ {"kind":"Order","apiVersion":"kubepack.com/v1alpha1","metadata":{"name":"mymongo","namespace":"demo","uid":"d96b7440-2fdb-4fab-89b0-81d2b72631f2","creationTimestamp":"2021-01-13T05:36:37Z"},"spec":{"items":[{"chart":{"url":"https://bundles.byte.builders/ui/","name":"mongodb-editor-options","version":"v0.1.0","releaseName":"mymongo","namespace":"demo","valuesFile":"values.yaml","valuesPatch":[{"op":"add","path":"/metadata/release/name","value":"mymongo"},{"op":"add","path":"/metadata/release/namespace","value":"demo"},{"op":"replace","path":"/spec/version","value":"4.3.2"}]}}]},"status":{}}`
+`$ {"kind":"Order","apiVersion":"kubepack.com/v1alpha1","metadata":{"name":"mymongo","namespace":"demo","uid":"d96b7440-2fdb-4fab-89b0-81d2b72631f2","creationTimestamp":"2021-01-13T05:36:37Z"},"spec":{"items":[{"chart":{"url":"https://raw.githubusercontent.com/bytebuilders/ui-wizards/master/stable/","name":"kubedbcom-mongodb-editor-options","version":"v0.1.0","releaseName":"mymongo","namespace":"demo","valuesFile":"values.yaml","valuesPatch":[{"op":"add","path":"/metadata/release/name","value":"mymongo"},{"op":"add","path":"/metadata/release/namespace","value":"demo"},{"op":"replace","path":"/spec/version","value":"4.3.2"}]}}]},"status":{}}`
 
 - GET "/packageview/files"
 
-`http://localhost:4000/packageview/files?url=https://bundles.byte.builders/ui/&name=mongodb-editor-options&version=v0.1.0`
+`http://localhost:4000/packageview/files?url=https://raw.githubusercontent.com/bytebuilders/ui-wizards/master/stable/&name=kubedbcom-mongodb-editor-options&version=v0.1.0`
 
 - GET "/packageview/files/\*"
 
-`http://localhost:4000/packageview/files/templates/app.yaml?url=https://bundles.byte.builders/ui/&name=mongodb-editor-options&version=v0.1.0`
+`http://localhost:4000/packageview/files/templates/app.yaml?url=https://raw.githubusercontent.com/bytebuilders/ui-wizards/master/stable/&name=kubedbcom-mongodb-editor-options&version=v0.1.0`
 
-`http://localhost:4000/packageview/files/values.yaml?url=https://bundles.byte.builders/ui/&name=mongodb-editor-options&version=v0.1.0&format=json`
+`http://localhost:4000/packageview/files/values.yaml?url=https://raw.githubusercontent.com/bytebuilders/ui-wizards/master/stable/&name=kubedbcom-mongodb-editor-options&version=v0.1.0&format=json`
 
 - PUT "/editor/model" (Initial Model)
 
