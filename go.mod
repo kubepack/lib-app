@@ -13,7 +13,7 @@ require (
 	github.com/spf13/pflag v1.0.5
 	gocloud.dev v0.22.0
 	gomodules.xyz/jsonpatch/v3 v3.0.1
-	gomodules.xyz/kglog v0.0.1
+	gomodules.xyz/kglog v0.0.3
 	gomodules.xyz/version v0.1.0
 	gopkg.in/macaron.v1 v1.4.0
 	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
@@ -23,13 +23,12 @@ require (
 	k8s.io/apimachinery v0.21.0
 	k8s.io/cli-runtime v0.21.0
 	k8s.io/client-go v0.21.0
-	k8s.io/component-base v0.21.0
 	k8s.io/kubectl v0.21.0
 	kmodules.xyz/client-go v0.0.0-20210514054158-27e164b43474
 	kmodules.xyz/resource-metadata v0.5.5-0.20210518185031-147bfd9e841c
 	kubepack.dev/chart-doc-gen v0.4.0
 	kubepack.dev/kubepack v0.3.4-0.20210520194934-caa30b1e0d68
-	kubepack.dev/lib-helm v0.2.4-0.20210520194150-305faa644d29
+	kubepack.dev/lib-helm v0.2.4-0.20210526063248-7546c8116658
 	sigs.k8s.io/application v0.8.2-0.20200306235134-f10d9ca8abd4
 	sigs.k8s.io/yaml v1.2.0
 )
@@ -128,7 +127,7 @@ replace k8s.io/api => k8s.io/api v0.21.0
 
 replace k8s.io/apimachinery => github.com/kmodules/apimachinery v0.21.1-rc.0.0.20210405112358-ad4c2289ba4c
 
-replace k8s.io/apiserver => github.com/kmodules/apiserver v0.21.1-0.20210427013338-53dee545b83c
+replace k8s.io/apiserver => github.com/kmodules/apiserver v0.21.1-0.20210525165825-102cf43e00fa
 
 replace k8s.io/cli-runtime => k8s.io/cli-runtime v0.21.0
 

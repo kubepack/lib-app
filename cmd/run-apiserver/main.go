@@ -18,7 +18,6 @@ package main
 
 import (
 	"encoding/json"
-	"flag"
 	"io/ioutil"
 	"net/http"
 	"path"
@@ -46,7 +45,6 @@ import (
 	"k8s.io/cli-runtime/pkg/genericclioptions"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/util/homedir"
-	cliflag "k8s.io/component-base/cli/flag"
 	cmdutil "k8s.io/kubectl/pkg/cmd/util"
 	meta_util "kmodules.xyz/client-go/meta"
 	"kmodules.xyz/client-go/tools/converter"
@@ -54,18 +52,13 @@ import (
 )
 
 func main() {
-	flags := pflag.CommandLine
-	// Normalize all flags that are coming from other packages or pre-configurations
-	// a.k.a. change all "_" to "-". e.g. glog package
-	flags.SetNormalizeFunc(cliflag.WordSepNormalizeFunc)
-
 	kubeConfigFlags := genericclioptions.NewConfigFlags(true)
-	kubeConfigFlags.AddFlags(flags)
+	kubeConfigFlags.AddFlags(pflag.CommandLine)
 	matchVersionKubeConfigFlags := cmdutil.NewMatchVersionFlags(kubeConfigFlags)
-	matchVersionKubeConfigFlags.AddFlags(flags)
+	matchVersionKubeConfigFlags.AddFlags(pflag.CommandLine)
 
-	flags.AddGoFlagSet(flag.CommandLine)
-	kglog.ParseFlags()
+	kglog.Init(nil, true)
+	defer kglog.FlushLogs()
 
 	f := cmdutil.NewFactory(matchVersionKubeConfigFlags)
 

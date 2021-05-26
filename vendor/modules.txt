@@ -607,13 +607,13 @@ gomodules.xyz/jsonpatch/v2
 # gomodules.xyz/jsonpatch/v3 v3.0.1
 ## explicit
 gomodules.xyz/jsonpatch/v3
-# gomodules.xyz/kglog v0.0.1
+# gomodules.xyz/kglog v0.0.3
 ## explicit
 gomodules.xyz/kglog
 # gomodules.xyz/orderedmap v0.1.0
 gomodules.xyz/orderedmap
-# gomodules.xyz/runtime v0.2.0
-gomodules.xyz/runtime
+# gomodules.xyz/sets v0.0.0-20210218105342-2efe2fb519a2
+gomodules.xyz/sets
 # gomodules.xyz/version v0.1.0
 ## explicit
 gomodules.xyz/version
@@ -936,7 +936,7 @@ k8s.io/apimachinery/pkg/watch
 k8s.io/apimachinery/third_party/forked/golang/json
 k8s.io/apimachinery/third_party/forked/golang/netutil
 k8s.io/apimachinery/third_party/forked/golang/reflect
-# k8s.io/apiserver v0.21.0 => github.com/kmodules/apiserver v0.21.1-0.20210427013338-53dee545b83c
+# k8s.io/apiserver v0.21.0 => github.com/kmodules/apiserver v0.21.1-0.20210525165825-102cf43e00fa
 k8s.io/apiserver/pkg/endpoints/deprecation
 # k8s.io/cli-runtime v0.21.0 => k8s.io/cli-runtime v0.21.0
 ## explicit
@@ -1075,8 +1075,6 @@ k8s.io/client-go/util/jsonpath
 k8s.io/client-go/util/keyutil
 k8s.io/client-go/util/workqueue
 # k8s.io/component-base v0.21.0 => k8s.io/component-base v0.21.0
-## explicit
-k8s.io/component-base/cli/flag
 k8s.io/component-base/version
 # k8s.io/klog/v2 v2.8.0
 k8s.io/klog/v2
@@ -1140,7 +1138,7 @@ kubepack.dev/kubepack/apis/kubepack/v1alpha1
 kubepack.dev/kubepack/artifacts/products
 kubepack.dev/kubepack/crds
 kubepack.dev/kubepack/pkg/lib
-# kubepack.dev/lib-helm v0.2.4-0.20210520194150-305faa644d29
+# kubepack.dev/lib-helm v0.2.4-0.20210526063248-7546c8116658
 ## explicit
 kubepack.dev/lib-helm/pkg/action
 kubepack.dev/lib-helm/pkg/application
@@ -1308,7 +1306,7 @@ sigs.k8s.io/yaml
 # helm.sh/helm/v3 => github.com/kubepack/helm/v3 v3.6.0-rc.1.0.20210518225915-c3e0ce48dd1b
 # k8s.io/api => k8s.io/api v0.21.0
 # k8s.io/apimachinery => github.com/kmodules/apimachinery v0.21.1-rc.0.0.20210405112358-ad4c2289ba4c
-# k8s.io/apiserver => github.com/kmodules/apiserver v0.21.1-0.20210427013338-53dee545b83c
+# k8s.io/apiserver => github.com/kmodules/apiserver v0.21.1-0.20210525165825-102cf43e00fa
 # k8s.io/cli-runtime => k8s.io/cli-runtime v0.21.0
 # k8s.io/client-go => k8s.io/client-go v0.21.0
 # k8s.io/component-base => k8s.io/component-base v0.21.0

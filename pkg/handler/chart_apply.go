@@ -135,7 +135,7 @@ func ApplyResource(f cmdutil.Factory, model unstructured.Unstructured, skipCRds 
 }
 
 func DeleteResource(f cmdutil.Factory, release appapi.ObjectMeta) (*release.UninstallReleaseResponse, error) {
-	cmd, err := action.NewUninstaller(f, release.Namespace, "applications")
+	cmd, err := action.NewUninstaller(f, release.Namespace, "storage.x-helm.dev/apps")
 	if err != nil {
 		return nil, err
 	}
