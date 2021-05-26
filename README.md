@@ -93,6 +93,21 @@ http://localhost:4000/deploy/orders/5902b772-319c-40c1-b260-68d81b7864fd/render/
 
 `curl -X PUT -H "Content-Type: application/json" -d @./artifacts/mongodb-editor/mongodb_editor_model.json  http://localhost:4000/clusters/my_cluster/editor/resources`
 
+### Test Delete Editor Resource
+
+```
+curl 'http://localhost:4000/clusters/appscode/editor' \
+  -X 'PUT' \
+  -H 'Accept: application/json, text/plain, */*' \
+  -H 'Content-Type: application/json;charset=UTF-8' \
+  --data-raw '{"metadata":{"release":{"name":"sample-std","namespace":"default"},"resource":{"group":"kubedb.com","kind":"MongoDB","name":"mongodbs","scope":"Namespaced","version":"v1alpha2"}},"resources":{"kubedbComMongoDB":{"apiVersion":"kubedb.com/v1alpha2","kind":"MongoDB","metadata":{"labels":{"app.kubernetes.io/instance":"sample-std","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/name":"mongodbs.kubedb.com"},"name":"sample-std","namespace":"default"},"spec":{"clusterAuthMode":"keyFile","podTemplate":{"spec":{"resources":{"limits":{"cpu":".5","memory":"1024Mi"}}}},"replicas":1,"sslMode":"disabled","storage":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"10Gi"}},"storageClassName":"linode-block-storage-retain"},"storageType":"Durable","terminationPolicy":"WipeOut","version":"4.2.3"}}},"spec":{"version":"4.2.3"}}' \
+  --compressed \
+  --insecure
+
+curl 'http://localhost:4000/clusters/appscode/editor/namespaces/default/releases/sample-std' \
+  -X 'DELETE'
+```
+
 ## Deploy Button APIs
 
 - http://localhost:4000/products
