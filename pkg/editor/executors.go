@@ -30,6 +30,7 @@ import (
 	libchart "kubepack.dev/lib-helm/pkg/chart"
 	"kubepack.dev/lib-helm/pkg/repo"
 
+	"github.com/Masterminds/semver/v3"
 	jsonpatch "github.com/evanphx/json-patch"
 	"github.com/gobuffalo/flect"
 	"gocloud.dev/blob"
@@ -37,7 +38,6 @@ import (
 	_ "gocloud.dev/blob/fileblob"
 	_ "gocloud.dev/blob/gcsblob"
 	_ "gocloud.dev/blob/s3blob"
-	"gomodules.xyz/version"
 	"helm.sh/helm/v3/pkg/action"
 	"helm.sh/helm/v3/pkg/chart"
 	"helm.sh/helm/v3/pkg/chartutil"
@@ -187,15 +187,17 @@ func (x *TemplateRenderer) Do() error {
 
 	caps := chartutil.DefaultCapabilities
 	if x.KubeVersion != "" {
-		info, err := version.NewSemver(x.KubeVersion)
+		infoPtr, err := semver.NewVersion(x.KubeVersion)
 		if err != nil {
 			return err
 		}
-		info = info.ToMutator().ResetPrerelease().ResetMetadata().Done()
+		info := *infoPtr
+		info, _ = info.SetPrerelease("")
+		info, _ = info.SetMetadata("")
 		caps.KubeVersion = chartutil.KubeVersion{
-			Version: info.String(),
-			Major:   strconv.FormatInt(info.Major(), 10),
-			Minor:   strconv.FormatInt(info.Minor(), 10),
+			Version: info.Original(),
+			Major:   strconv.FormatUint(info.Major(), 10),
+			Minor:   strconv.FormatUint(info.Minor(), 10),
 		}
 	}
 	options := chartutil.ReleaseOptions{
@@ -390,15 +392,17 @@ func (x *EditorModelGenerator) Do() error {
 
 	caps := chartutil.DefaultCapabilities
 	if x.KubeVersion != "" {
-		info, err := version.NewSemver(x.KubeVersion)
+		infoPtr, err := semver.NewVersion(x.KubeVersion)
 		if err != nil {
 			return err
 		}
-		info = info.ToMutator().ResetPrerelease().ResetMetadata().Done()
+		info := *infoPtr
+		info, _ = info.SetPrerelease("")
+		info, _ = info.SetMetadata("")
 		caps.KubeVersion = chartutil.KubeVersion{
-			Version: info.String(),
-			Major:   strconv.FormatInt(info.Major(), 10),
-			Minor:   strconv.FormatInt(info.Minor(), 10),
+			Version: info.Original(),
+			Major:   strconv.FormatUint(info.Major(), 10),
+			Minor:   strconv.FormatUint(info.Minor(), 10),
 		}
 	}
 	options := chartutil.ReleaseOptions{

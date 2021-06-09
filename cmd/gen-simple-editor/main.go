@@ -25,19 +25,21 @@ import (
 
 	"kubepack.dev/lib-app/pkg/simple"
 
-	"gomodules.xyz/kglog"
+	"gomodules.xyz/logs"
 )
 
 func main() {
 	rand.Seed(time.Now().UnixNano())
-	kglog.InitLogs()
-	defer kglog.FlushLogs()
+
+	rootCmd := simple.NewCmdSimple()
+	logs.Init(rootCmd, false)
+	defer logs.FlushLogs()
 
 	if len(os.Getenv("GOMAXPROCS")) == 0 {
 		runtime.GOMAXPROCS(runtime.NumCPU())
 	}
 
-	if err := simple.NewCmdSimple().Execute(); err != nil {
+	if err := rootCmd.Execute(); err != nil {
 		log.Fatalln("error:", err)
 	}
 }

@@ -3,6 +3,7 @@ module kubepack.dev/lib-app
 go 1.15
 
 require (
+	github.com/Masterminds/semver/v3 v3.1.1
 	github.com/Masterminds/sprig/v3 v3.2.2
 	github.com/evanphx/json-patch v4.9.0+incompatible
 	github.com/go-macaron/binding v0.0.0-00010101000000-000000000000
@@ -13,22 +14,21 @@ require (
 	github.com/spf13/pflag v1.0.5
 	gocloud.dev v0.22.0
 	gomodules.xyz/jsonpatch/v3 v3.0.1
-	gomodules.xyz/kglog v0.0.3
-	gomodules.xyz/version v0.1.0
+	gomodules.xyz/logs v0.0.2
 	gopkg.in/macaron.v1 v1.4.0
 	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
-	helm.sh/helm/v3 v3.5.2
+	helm.sh/helm/v3 v3.6.0
 	k8s.io/api v0.21.0
 	k8s.io/apiextensions-apiserver v0.21.0
 	k8s.io/apimachinery v0.21.0
 	k8s.io/cli-runtime v0.21.0
 	k8s.io/client-go v0.21.0
 	k8s.io/kubectl v0.21.0
-	kmodules.xyz/client-go v0.0.0-20210514054158-27e164b43474
-	kmodules.xyz/resource-metadata v0.5.5-0.20210518185031-147bfd9e841c
+	kmodules.xyz/client-go v0.0.0-20210606080445-4a400cecb350
+	kmodules.xyz/resource-metadata v0.5.6-0.20210609095405-6352a05e3b49
 	kubepack.dev/chart-doc-gen v0.4.0
-	kubepack.dev/kubepack v0.3.4-0.20210520194934-caa30b1e0d68
-	kubepack.dev/lib-helm v0.2.4-0.20210526063248-7546c8116658
+	kubepack.dev/kubepack v0.3.4-0.20210609104829-296b914af995
+	kubepack.dev/lib-helm v0.2.4-0.20210609103625-e05e8e764d03
 	sigs.k8s.io/application v0.8.2-0.20200306235134-f10d9ca8abd4
 	sigs.k8s.io/yaml v1.2.0
 )

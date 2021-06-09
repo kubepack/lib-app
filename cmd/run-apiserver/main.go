@@ -37,7 +37,7 @@ import (
 	"github.com/go-macaron/binding"
 	"github.com/google/uuid"
 	"github.com/spf13/pflag"
-	"gomodules.xyz/kglog"
+	"gomodules.xyz/logs"
 	"gopkg.in/macaron.v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -57,8 +57,8 @@ func main() {
 	matchVersionKubeConfigFlags := cmdutil.NewMatchVersionFlags(kubeConfigFlags)
 	matchVersionKubeConfigFlags.AddFlags(pflag.CommandLine)
 
-	kglog.Init(nil, true)
-	defer kglog.FlushLogs()
+	logs.Init(nil, true)
+	defer logs.FlushLogs()
 
 	f := cmdutil.NewFactory(matchVersionKubeConfigFlags)
 

@@ -32,6 +32,7 @@ import (
 	crdv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	kmapi "kmodules.xyz/client-go/api/v1"
 	"kmodules.xyz/resource-metadata/apis/meta/v1alpha1"
 	"kmodules.xyz/resource-metadata/hub"
 	"sigs.k8s.io/yaml"
@@ -236,7 +237,7 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 				Name: strings.ToLower(rd.Spec.Resource.Kind),
 			},
 		}
-		if rd.Spec.Resource.Scope == v1alpha1.NamespaceScoped {
+		if rd.Spec.Resource.Scope == kmapi.NamespaceScoped {
 			v.ObjectMeta.Namespace = "default"
 		}
 
