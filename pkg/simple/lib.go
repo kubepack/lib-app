@@ -268,7 +268,6 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 			},
 			Chart: docapi.ChartInfo{
 				Name:          chartName,
-				Version:       "v0.1.0",
 				Values:        "-- generate from values file --",
 				ValuesExample: "-- generate from values file --",
 			},
