@@ -307,9 +307,9 @@ func EditorChartValueManifest(app *v1beta1.Application, mapper discovery.Resourc
 	return &tpl, nil
 }
 
-func GenerateEditorModel(reg *repo.Registry, opts unstructured.Unstructured) (*unstructured.Unstructured, error) {
+func GenerateEditorModel(reg *repo.Registry, opts map[string]interface{}) (*unstructured.Unstructured, error) {
 	var spec appapi.ModelMetadata
-	err := meta_util.DecodeObject(opts.Object, &spec)
+	err := meta_util.DecodeObject(opts, &spec)
 	if err != nil {
 		return nil, err
 	}
@@ -333,7 +333,7 @@ func GenerateEditorModel(reg *repo.Registry, opts unstructured.Unstructured) (*u
 		ReleaseName: spec.Metadata.Release.Name,
 		Namespace:   spec.Metadata.Release.Namespace,
 		KubeVersion: "v1.17.0",
-		Values:      opts.Object,
+		Values:      opts,
 	}
 	err = f1.Do()
 	if err != nil {
@@ -357,15 +357,15 @@ func GenerateEditorModel(reg *repo.Registry, opts unstructured.Unstructured) (*u
 	}
 	return &unstructured.Unstructured{
 		Object: map[string]interface{}{
-			"metadata":  opts.Object["metadata"],
+			"metadata":  opts["metadata"],
 			"resources": resoourceValues,
 		},
 	}, err
 }
 
-func RenderChartTemplate(reg *repo.Registry, opts unstructured.Unstructured) (string, *appapi.ChartTemplate, error) {
+func RenderChartTemplate(reg *repo.Registry, opts map[string]interface{}) (string, *appapi.ChartTemplate, error) {
 	var spec appapi.ModelMetadata
-	err := meta_util.DecodeObject(opts.Object, &spec)
+	err := meta_util.DecodeObject(opts, &spec)
 	if err != nil {
 		return "", nil, err
 	}
@@ -389,7 +389,7 @@ func RenderChartTemplate(reg *repo.Registry, opts unstructured.Unstructured) (st
 		ReleaseName:    spec.Release.Name,
 		Namespace:      spec.Release.Namespace,
 		KubeVersion:    "v1.17.0",
-		Values:         opts.Object,
+		Values:         opts,
 		RefillMetadata: true,
 	}
 	err = f1.Do()

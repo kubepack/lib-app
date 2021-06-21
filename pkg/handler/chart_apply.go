@@ -28,16 +28,15 @@ import (
 
 	jsonpatch "github.com/evanphx/json-patch"
 	"helm.sh/helm/v3/pkg/release"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	cmdutil "k8s.io/kubectl/pkg/cmd/util"
 	meta_util "kmodules.xyz/client-go/meta"
 	"kmodules.xyz/resource-metadata/hub"
 )
 
-func ApplyResource(f cmdutil.Factory, model unstructured.Unstructured, skipCRds bool) (*release.Release, error) {
+func ApplyResource(f cmdutil.Factory, model map[string]interface{}, skipCRds bool) (*release.Release, error) {
 	var tm appapi.ModelMetadata
-	err := meta_util.DecodeObject(model.Object, &tm)
+	err := meta_util.DecodeObject(model, &tm)
 	if err != nil {
 		return nil, errors.New("failed to parse Metadata for values")
 	}
@@ -63,7 +62,7 @@ func ApplyResource(f cmdutil.Factory, model unstructured.Unstructured, skipCRds 
 	opts.Version = rd.Spec.UI.Editor.Version
 
 	var vals map[string]interface{}
-	if _, ok := model.Object["patch"]; ok {
+	if _, ok := model["patch"]; ok {
 		// NOTE: Makes an assumption that this is a "edit" apply
 		cfg, err := f.ToRESTConfig()
 		if err != nil {
@@ -80,7 +79,7 @@ func ApplyResource(f cmdutil.Factory, model unstructured.Unstructured, skipCRds 
 			Patch jsonpatch.Patch `json:"patch"`
 		}{}
 
-		data, err := model.MarshalJSON()
+		data, err := json.Marshal(model)
 		if err != nil {
 			return nil, err
 		}
@@ -107,7 +106,7 @@ func ApplyResource(f cmdutil.Factory, model unstructured.Unstructured, skipCRds 
 		}
 		vals = mod
 	} else {
-		vals = model.Object
+		vals = model
 	}
 	opts.Values = values.Options{
 		ReplaceValues: vals,
