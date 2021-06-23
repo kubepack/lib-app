@@ -1,39 +1,40 @@
 module kubepack.dev/lib-app
 
-go 1.15
+go 1.16
 
 require (
 	github.com/Masterminds/semver/v3 v3.1.1
 	github.com/Masterminds/sprig/v3 v3.2.2
-	github.com/evanphx/json-patch v4.9.0+incompatible
-	github.com/go-macaron/binding v0.0.0-00010101000000-000000000000
-	github.com/gobuffalo/flect v0.2.2
+	github.com/evanphx/json-patch v4.11.0+incompatible
+	github.com/go-chi/chi/v5 v5.0.3
+	github.com/gobuffalo/flect v0.2.3
 	github.com/google/uuid v1.1.2
-	github.com/gorilla/schema v1.2.0 // indirect
 	github.com/spf13/cobra v1.1.3
 	github.com/spf13/pflag v1.0.5
+	github.com/unrolled/render v1.4.0
+	go.wandrs.dev/binding v0.0.2
+	go.wandrs.dev/http v0.0.1
 	gocloud.dev v0.22.0
+	golang.org/x/crypto v0.0.0-20210314154223-e6e6c4f2bb5b // indirect
 	gomodules.xyz/jsonpatch/v3 v3.0.1
 	gomodules.xyz/logs v0.0.2
-	gopkg.in/macaron.v1 v1.4.0
-	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
+	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 	helm.sh/helm/v3 v3.6.0
-	k8s.io/api v0.21.0
-	k8s.io/apiextensions-apiserver v0.21.0
-	k8s.io/apimachinery v0.21.0
-	k8s.io/cli-runtime v0.21.0
-	k8s.io/client-go v0.21.0
-	k8s.io/kubectl v0.21.0
-	kmodules.xyz/client-go v0.0.0-20210606080445-4a400cecb350
-	kmodules.xyz/resource-metadata v0.5.6-0.20210609095405-6352a05e3b49
+	k8s.io/api v0.21.1
+	k8s.io/apiextensions-apiserver v0.21.1
+	k8s.io/apimachinery v0.21.1
+	k8s.io/cli-runtime v0.21.1
+	k8s.io/client-go v0.21.1
+	k8s.io/klog/v2 v2.8.0
+	k8s.io/kubectl v0.21.1
+	kmodules.xyz/client-go v0.0.0-20210617233340-13d22e91512b
+	kmodules.xyz/resource-metadata v0.5.7
 	kubepack.dev/chart-doc-gen v0.4.0
 	kubepack.dev/kubepack v0.3.4-0.20210609104829-296b914af995
 	kubepack.dev/lib-helm v0.2.4-0.20210609103625-e05e8e764d03
 	sigs.k8s.io/application v0.8.2-0.20200306235134-f10d9ca8abd4
 	sigs.k8s.io/yaml v1.2.0
 )
-
-replace github.com/go-macaron/binding => github.com/gomodules/binding v0.0.0-20200811095614-c752727d2156
 
 replace bitbucket.org/ww/goautoneg => gomodules.xyz/goautoneg v0.0.0-20120707110453-a547fc61f48d
 
@@ -103,8 +104,6 @@ replace github.com/googleapis/gnostic => github.com/googleapis/gnostic v0.4.1
 
 replace github.com/imdario/mergo => github.com/imdario/mergo v0.3.5
 
-replace github.com/jetstack/cert-manager => github.com/kmodules/cert-manager v1.3.1-0.20210429172957-c5436c14ce0e
-
 replace github.com/prometheus-operator/prometheus-operator => github.com/prometheus-operator/prometheus-operator v0.47.0
 
 replace github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring => github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.47.0
@@ -123,21 +122,21 @@ replace gopkg.in/yaml.v2 => gopkg.in/yaml.v2 v2.3.0
 
 replace helm.sh/helm/v3 => github.com/kubepack/helm/v3 v3.6.0-rc.1.0.20210518225915-c3e0ce48dd1b
 
-replace k8s.io/api => k8s.io/api v0.21.0
+replace k8s.io/api => k8s.io/api v0.21.1
 
-replace k8s.io/apimachinery => github.com/kmodules/apimachinery v0.21.1-rc.0.0.20210405112358-ad4c2289ba4c
+replace k8s.io/apimachinery => github.com/kmodules/apimachinery v0.21.2-rc.0.0.20210617231004-332981b97d2d
 
-replace k8s.io/apiserver => github.com/kmodules/apiserver v0.21.1-0.20210525165825-102cf43e00fa
+replace k8s.io/apiserver => github.com/kmodules/apiserver v0.21.2-0.20210617231348-daadbf0c8d5e
 
-replace k8s.io/cli-runtime => k8s.io/cli-runtime v0.21.0
+replace k8s.io/cli-runtime => k8s.io/cli-runtime v0.21.1
 
-replace k8s.io/client-go => k8s.io/client-go v0.21.0
+replace k8s.io/client-go => k8s.io/client-go v0.21.1
 
-replace k8s.io/component-base => k8s.io/component-base v0.21.0
+replace k8s.io/component-base => k8s.io/component-base v0.21.1
 
 replace k8s.io/kube-openapi => k8s.io/kube-openapi v0.0.0-20210305001622-591a79e4bda7
 
-replace k8s.io/kubernetes => github.com/kmodules/kubernetes v1.22.0-alpha.0.0.20210427080452-22d2e66bae50
+replace k8s.io/kubernetes => github.com/kmodules/kubernetes v1.22.0-alpha.0.0.20210617232219-a432af45d932
 
 replace k8s.io/utils => k8s.io/utils v0.0.0-20201110183641-67b214c5f920
 

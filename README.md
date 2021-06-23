@@ -96,7 +96,7 @@ http://localhost:4000/deploy/orders/5902b772-319c-40c1-b260-68d81b7864fd/render/
 ### Test Delete Editor Resource
 
 ```
-curl 'http://localhost:4000/clusters/appscode/editor' \
+curl 'http://localhost:4000/clusters/appscode/editor?installCRDs=true' \
   -X 'PUT' \
   -H 'Accept: application/json, text/plain, */*' \
   -H 'Content-Type: application/json;charset=UTF-8' \
