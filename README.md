@@ -12,6 +12,22 @@ $ go run cmd/fuse-chart/*.go \
   --resource.group=kubedb.com \
   --resource.version=v1alpha2 \
   --resource.name=mongodbs
+
+$ go run cmd/fuse-chart/*.go \
+  --sample-dir=/home/tamal/go/src/github.com/appscode/kubedb-samples/postgres/cluster/prometheus.io/backupconfiguration/stash/tls/custom-auth/custom-auth-mode/custom-config/custom-pg-coordinator/custom-uid \
+  --chart-dir=/home/tamal/go/src/go.bytebuilders.dev/ui-wizards/charts \
+  --sample-name=postgres \
+  --resource.group=kubedb.com \
+  --resource.version=v1alpha2 \
+  --resource.name=postgreses
+
+$ go run cmd/fuse-chart/*.go \
+  --sample-dir=/home/tamal/go/src/github.com/appscode/kubedb-samples/mariadb/cluster/prometheus.io/backupconfiguration/stash/tls/custom-auth/config-file \
+  --chart-dir=/home/tamal/go/src/go.bytebuilders.dev/ui-wizards/charts \
+  --sample-name=mariadb \
+  --resource.group=kubedb.com \
+  --resource.version=v1alpha2 \
+  --resource.name=mariadbs
 ```
 
 ## Demo UI Editors
