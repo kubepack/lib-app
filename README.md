@@ -28,6 +28,14 @@ $ go run cmd/fuse-chart/*.go \
   --resource.group=kubedb.com \
   --resource.version=v1alpha2 \
   --resource.name=mariadbs
+
+$ go run cmd/fuse-chart/*.go \
+  --sample-dir=/home/tamal/go/src/github.com/appscode/kubedb-samples/elasticsearch/topology/prometheus.io/backupconfiguration/stash/cert-manager/custom-auth/custom-config/internal-users/kernel-settings \
+  --chart-dir=/home/tamal/go/src/go.bytebuilders.dev/ui-wizards/charts \
+  --sample-name=elasticsearch \
+  --resource.group=kubedb.com \
+  --resource.version=v1alpha2 \
+  --resource.name=elasticsearches
 ```
 
 ## Demo UI Editors
