@@ -304,7 +304,7 @@ func NewCmdFuse() *cobra.Command {
 						ValuesExample: "-- generate from values file --",
 					},
 					Prerequisites: []string{
-						"Kubernetes 1.14+",
+						"Kubernetes 1.16+",
 					},
 					Release: docapi.ReleaseInfo{
 						Name:      chartName,
@@ -395,8 +395,8 @@ func GenerateChartMetadata(rd *v1alpha1.ResourceDescriptor) error {
 		Name:        chartName,
 		Home:        "https://byte.builders",
 		Sources:     nil,
-		Version:     "v0.1.0",
-		AppVersion:  "v0.1.0",
+		Version:     "v0.2.0-alpha.0",
+		AppVersion:  "v0.2.0-alpha.0",
 		Description: fmt.Sprintf("%s Editor", rd.Spec.Resource.Kind),
 		Keywords:    []string{"appscode"},
 		Maintainers: []*chart.Maintainer{
