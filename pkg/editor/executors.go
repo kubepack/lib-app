@@ -31,7 +31,7 @@ import (
 	"kubepack.dev/lib-helm/pkg/repo"
 
 	"github.com/Masterminds/semver/v3"
-	jsonpatch "github.com/evanphx/json-patch"
+	jsonpatch "github.com/evanphx/json-patch/v5"
 	"github.com/gobuffalo/flect"
 	"gocloud.dev/blob"
 	_ "gocloud.dev/blob/azureblob"

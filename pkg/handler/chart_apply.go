@@ -24,9 +24,10 @@ import (
 	appapi "kubepack.dev/lib-app/api/v1alpha1"
 	"kubepack.dev/lib-app/pkg/editor"
 	"kubepack.dev/lib-helm/pkg/action"
+	"kubepack.dev/lib-helm/pkg/storage/driver"
 	"kubepack.dev/lib-helm/pkg/values"
 
-	jsonpatch "github.com/evanphx/json-patch"
+	jsonpatch "github.com/evanphx/json-patch/v5"
 	"helm.sh/helm/v3/pkg/release"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	cmdutil "k8s.io/kubectl/pkg/cmd/util"
@@ -50,13 +51,13 @@ func ApplyResource(f cmdutil.Factory, model map[string]interface{}, skipCRds boo
 		return nil, err
 	}
 
-	applier, err := action.NewInstaller(f, tm.Release.Namespace, "storage.x-helm.dev/apps")
+	deployer, err := action.NewDeployer(f, tm.Release.Namespace, driver.ApplicationsDriverName)
 	if err != nil {
 		return nil, err
 	}
 
-	applier.WithRegistry(lib.DefaultRegistry)
-	var opts action.InstallOptions
+	deployer.WithRegistry(lib.DefaultRegistry)
+	var opts action.DeployOptions
 	opts.ChartURL = rd.Spec.UI.Editor.URL
 	opts.ChartName = rd.Spec.UI.Editor.Name
 	opts.Version = rd.Spec.UI.Editor.Version
@@ -94,7 +95,12 @@ func ApplyResource(f cmdutil.Factory, model map[string]interface{}, skipCRds boo
 			return nil, err
 		}
 
-		modified, err := p3.Patch.Apply(original)
+		modified, err := p3.Patch.ApplyWithOptions(original, &jsonpatch.ApplyOptions{
+			SupportNegativeIndices:   jsonpatch.SupportNegativeIndices,
+			AccumulatedCopySizeLimit: jsonpatch.AccumulatedCopySizeLimit,
+			AllowMissingPathOnRemove: true,
+			EnsurePathExistsOnAdd:    false,
+		})
 		if err != nil {
 			return nil, err
 		}
@@ -127,14 +133,14 @@ func ApplyResource(f cmdutil.Factory, model map[string]interface{}, skipCRds boo
 	opts.DisableOpenAPIValidation = false
 	opts.IncludeCRDs = false
 
-	applier.WithOptions(opts)
+	deployer.WithOptions(opts)
 
-	rls, _, err := applier.Run()
+	rls, _, err := deployer.Run()
 	return rls, err
 }
 
 func DeleteResource(f cmdutil.Factory, release appapi.ObjectMeta) (*release.UninstallReleaseResponse, error) {
-	cmd, err := action.NewUninstaller(f, release.Namespace, "storage.x-helm.dev/apps")
+	cmd, err := action.NewUninstaller(f, release.Namespace, driver.ApplicationsDriverName)
 	if err != nil {
 		return nil, err
 	}
