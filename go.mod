@@ -5,7 +5,7 @@ go 1.16
 require (
 	github.com/Masterminds/semver/v3 v3.1.1
 	github.com/Masterminds/sprig/v3 v3.2.2
-	github.com/evanphx/json-patch v4.11.0+incompatible
+	github.com/evanphx/json-patch/v5 v5.5.0
 	github.com/go-chi/chi/v5 v5.0.3
 	github.com/gobuffalo/flect v0.2.3
 	github.com/google/uuid v1.1.2
@@ -16,10 +16,11 @@ require (
 	go.wandrs.dev/http v0.0.1
 	gocloud.dev v0.22.0
 	golang.org/x/crypto v0.0.0-20210314154223-e6e6c4f2bb5b // indirect
+	gomodules.xyz/flags v0.1.1 // indirect
 	gomodules.xyz/jsonpatch/v3 v3.0.1
-	gomodules.xyz/logs v0.0.2
+	gomodules.xyz/logs v0.0.3
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
-	helm.sh/helm/v3 v3.6.0
+	helm.sh/helm/v3 v3.6.1
 	k8s.io/api v0.21.1
 	k8s.io/apiextensions-apiserver v0.21.1
 	k8s.io/apimachinery v0.21.1
@@ -31,7 +32,7 @@ require (
 	kmodules.xyz/resource-metadata v0.5.8-0.20210712150818-2d0db054dfef
 	kubepack.dev/chart-doc-gen v0.4.0
 	kubepack.dev/kubepack v0.3.4-0.20210609104829-296b914af995
-	kubepack.dev/lib-helm v0.2.4-0.20210609103625-e05e8e764d03
+	kubepack.dev/lib-helm v0.2.4-0.20210702135227-03dd8e7b6b0f
 	sigs.k8s.io/application v0.8.2-0.20200306235134-f10d9ca8abd4
 	sigs.k8s.io/yaml v1.2.0
 )
