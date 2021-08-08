@@ -521,8 +521,7 @@ gocloud.dev/internal/oc
 gocloud.dev/internal/openurl
 gocloud.dev/internal/retry
 gocloud.dev/internal/useragent
-# golang.org/x/crypto v0.0.0-20210314154223-e6e6c4f2bb5b
-## explicit
+# golang.org/x/crypto v0.0.0-20210220033148-5ea612d1eb83
 golang.org/x/crypto/bcrypt
 golang.org/x/crypto/blowfish
 golang.org/x/crypto/cast5
@@ -631,8 +630,7 @@ gomodules.xyz/blobfs
 gomodules.xyz/blobfs/testing
 # gomodules.xyz/clock v0.0.0-20200817085942-06523dba733f
 gomodules.xyz/clock
-# gomodules.xyz/flags v0.1.1
-## explicit
+# gomodules.xyz/flags v0.1.0
 gomodules.xyz/flags
 # gomodules.xyz/jsonpatch/v2 v2.2.0
 gomodules.xyz/jsonpatch/v2
@@ -1145,7 +1143,7 @@ kmodules.xyz/client-go/meta
 kmodules.xyz/client-go/tools/converter
 kmodules.xyz/client-go/tools/parser
 kmodules.xyz/client-go/tools/wait
-# kmodules.xyz/resource-metadata v0.5.8-0.20210722055301-dcc1abc08aa0
+# kmodules.xyz/resource-metadata v0.5.8-0.20210808211643-76995fcb5c3a
 ## explicit
 kmodules.xyz/resource-metadata/apis/meta
 kmodules.xyz/resource-metadata/apis/meta/v1alpha1

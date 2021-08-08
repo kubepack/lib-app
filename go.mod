@@ -15,8 +15,6 @@ require (
 	go.wandrs.dev/binding v0.0.2
 	go.wandrs.dev/http v0.0.1
 	gocloud.dev v0.22.0
-	golang.org/x/crypto v0.0.0-20210314154223-e6e6c4f2bb5b // indirect
-	gomodules.xyz/flags v0.1.1 // indirect
 	gomodules.xyz/jsonpatch/v3 v3.0.1
 	gomodules.xyz/logs v0.0.3
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
@@ -29,7 +27,7 @@ require (
 	k8s.io/klog/v2 v2.8.0
 	k8s.io/kubectl v0.21.1
 	kmodules.xyz/client-go v0.0.0-20210719120358-dd0503cf99cf
-	kmodules.xyz/resource-metadata v0.5.8-0.20210722055301-dcc1abc08aa0
+	kmodules.xyz/resource-metadata v0.5.8-0.20210808211643-76995fcb5c3a
 	kubepack.dev/chart-doc-gen v0.4.0
 	kubepack.dev/kubepack v0.3.4-0.20210609104829-296b914af995
 	kubepack.dev/lib-helm v0.2.4-0.20210702135227-03dd8e7b6b0f
