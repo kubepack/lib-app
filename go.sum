@@ -1417,8 +1417,8 @@ kmodules.xyz/offshoot-api v0.0.0-20210804100837-d0388be3e60d/go.mod h1:3LECbAL3F
 kmodules.xyz/openshift v0.0.0-20210504040454-a3ddfc579bb7/go.mod h1:T6jBAUCoXuGZg0gtI6RBlLxTbcQx2CEHnGt4O01TFFk=
 kmodules.xyz/resource-metadata v0.5.6-0.20210609095405-6352a05e3b49/go.mod h1:XHlSPIsm0LTsMsLul/6X5TLUUOjMAJCtcNcMA5zop1Q=
 kmodules.xyz/resource-metadata v0.5.7/go.mod h1:Jdi7zBXRwwFTOR0CxwKxqJhsDVIilhrgNipPjnKLyrs=
-kmodules.xyz/resource-metadata v0.5.8-0.20210827004859-bbcf4d756d7b h1:/WV5Lj63xxt60Rkn1QsGE4+yvpmwvxo7za61wziKETs=
-kmodules.xyz/resource-metadata v0.5.8-0.20210827004859-bbcf4d756d7b/go.mod h1:FpXWUvVESesHlaexlwqQvdI5Vtl8DCBcmBPWTVpiyn0=
+kmodules.xyz/resource-metadata v0.5.8-0.20210827022228-0ee529789ae5 h1:eg9W5/zlt8SFFOpLAcRLTtOGBVUVunQHykKH1tudJHw=
+kmodules.xyz/resource-metadata v0.5.8-0.20210827022228-0ee529789ae5/go.mod h1:FpXWUvVESesHlaexlwqQvdI5Vtl8DCBcmBPWTVpiyn0=
 kmodules.xyz/resource-metrics v0.0.1/go.mod h1:5nlhi7MPPr09m7VblezHSz9cE1fuUypOSLlo+aN5mrA=
 kmodules.xyz/webhook-runtime v0.0.0-20210504042742-3a9911e3dcdc/go.mod h1:6XuoN0H+Od+12aEywFaQnPJ3DYfJZE+Sx0MB4dzWI5Q=
 kubepack.dev/chart-doc-gen v0.4.2 h1:EnuQonCBZqUga3KkxWRQZkfA2eZ5YBPeI2/RjdyjGLY=
