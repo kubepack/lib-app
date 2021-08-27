@@ -16,7 +16,7 @@ require (
 	go.wandrs.dev/http v0.0.1
 	gocloud.dev v0.22.0
 	gomodules.xyz/jsonpatch/v3 v3.0.1
-	gomodules.xyz/logs v0.0.3
+	gomodules.xyz/logs v0.0.4
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 	helm.sh/helm/v3 v3.6.1
 	k8s.io/api v0.21.1
@@ -26,9 +26,9 @@ require (
 	k8s.io/client-go v0.21.1
 	k8s.io/klog/v2 v2.8.0
 	k8s.io/kubectl v0.21.1
-	kmodules.xyz/client-go v0.0.0-20210719120358-dd0503cf99cf
-	kmodules.xyz/resource-metadata v0.5.8-0.20210808211643-76995fcb5c3a
-	kubepack.dev/chart-doc-gen v0.4.0
+	kmodules.xyz/client-go v0.0.0-20210822203828-5e9cebbf1dfa
+	kmodules.xyz/resource-metadata v0.5.8-0.20210827004859-bbcf4d756d7b
+	kubepack.dev/chart-doc-gen v0.4.2
 	kubepack.dev/kubepack v0.3.4-0.20210609104829-296b914af995
 	kubepack.dev/lib-helm v0.2.4-0.20210702135227-03dd8e7b6b0f
 	sigs.k8s.io/application v0.8.2-0.20200306235134-f10d9ca8abd4
