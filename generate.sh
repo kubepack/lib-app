@@ -41,7 +41,7 @@ go run cmd/fuse-chart/*.go \
     --resource.name=mariadbs
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=/home/tamal/go/src/github.com/appscode/kubedb-samples/elasticsearch/topology/prometheus.io/backupconfiguration/stash/cert-manager/custom-auth/custom-config/internal-users/kernel-settings \
+    --sample-dir=/home/tamal/go/src/github.com/appscode/kubedb-samples/elasticsearch/custom \
     --chart-dir=/home/tamal/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --sample-name=elasticsearch \
     --resource.group=kubedb.com \
