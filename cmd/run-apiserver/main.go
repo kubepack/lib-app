@@ -17,8 +17,6 @@ limitations under the License.
 package main
 
 import (
-	"encoding/json"
-	"io/ioutil"
 	"net/http"
 	"path"
 	"path/filepath"
@@ -26,7 +24,6 @@ import (
 	"time"
 
 	"kubepack.dev/kubepack/apis/kubepack/v1alpha1"
-	"kubepack.dev/kubepack/artifacts/products"
 	"kubepack.dev/kubepack/pkg/lib"
 	appapi "kubepack.dev/lib-app/api/v1alpha1"
 	"kubepack.dev/lib-app/pkg/editor"
@@ -108,13 +105,114 @@ func main() {
 	})
 
 	// PUBLIC
-	m.Get("/products", binding.HandlerFunc(func(ctx httpw.ResponseWriter) {
-		// /products
+	/*
+		m.Get("/products", binding.HandlerFunc(func(ctx httpw.ResponseWriter) {
+			// /products
 
-		phase := ctx.R().Params("phase")
-		var out v1alpha1.ProductList
-		for _, filename := range products.AssetNames() {
-			data, err := products.Asset(filename)
+			phase := ctx.R().Params("phase")
+			var out v1alpha1.ProductList
+			fsys := artifacts.Products()
+			_ = fs.WalkDir(fsys, ".", func(path string, d fs.DirEntry, err error) error {
+				if err != nil {
+					return err
+				}
+				if d.IsDir() {
+					return nil
+				}
+				data, err := fs.ReadFile(fsys, path)
+				if err != nil {
+					ctx.Error(http.StatusInternalServerError, err.Error())
+					return
+				}
+				var p v1alpha1.Product
+				err = json.Unmarshal(data, &p)
+				if err != nil {
+					ctx.Error(http.StatusInternalServerError, err.Error())
+					return
+				}
+				if phase == "" || p.Spec.Phase == v1alpha1.Phase(phase) {
+					out.Items = append(out.Items, p)
+				}
+			})
+			ctx.JSON(http.StatusOK, out)
+		}))
+
+		// PUBLIC
+		m.Get("/products/{owner}/{key}", binding.HandlerFunc(func(ctx httpw.ResponseWriter) {
+			// /products/appscode/kubedb
+			// TODO: get product by (owner, key)
+
+			data, err := fs.ReadFile(artifacts.Products(), ctx.R().Params("key")+".json")
+			if err != nil {
+				ctx.Error(http.StatusInternalServerError, err.Error())
+				return
+			}
+			_, _ = ctx.Write(data)
+		}))
+
+		// PUBLIC
+		m.Get("/products/{owner}/{key}/plans", binding.HandlerFunc(func(ctx httpw.ResponseWriter) {
+			// /products/appscode/kubedb
+			// TODO: get product by (owner, key)
+
+			dir := "artifacts/products/kubedb-plans"
+			files, err := ioutil.ReadDir(dir)
+			if err != nil {
+				ctx.Error(http.StatusInternalServerError, err.Error())
+				return
+			}
+
+			phase := ctx.R().Params("phase")
+			var out v1alpha1.PlanList
+			for _, file := range files {
+				data, err := ioutil.ReadFile(filepath.Join(dir, file.Name()))
+				if err != nil {
+					ctx.Error(http.StatusInternalServerError, err.Error())
+					return
+				}
+				var plaan v1alpha1.Plan
+				err = json.Unmarshal(data, &plaan)
+				if err != nil {
+					ctx.Error(http.StatusInternalServerError, err.Error())
+					return
+				}
+				if phase == "" || plaan.Spec.Phase == v1alpha1.Phase(phase) {
+					out.Items = append(out.Items, plaan)
+				}
+			}
+			ctx.JSON(http.StatusOK, out)
+		}))
+
+		// PUBLIC
+		m.Get("/products/{owner}/{key}/plans/{plan}", binding.HandlerFunc(func(ctx httpw.ResponseWriter) {
+			// /products/appscode/kubedb
+			// TODO: get product by (owner, key)
+
+			dir := "artifacts/products/" + ctx.R().Params("key") + "-plans"
+
+			data, err := ioutil.ReadFile(filepath.Join(dir, ctx.R().Params("plan")+".json"))
+			if err != nil {
+				ctx.Error(http.StatusInternalServerError, err.Error())
+				return
+			}
+			var plaan v1alpha1.Plan
+			err = json.Unmarshal(data, &plaan)
+			if err != nil {
+				ctx.Error(http.StatusInternalServerError, err.Error())
+				return
+			}
+			ctx.JSON(http.StatusOK, plaan)
+		}))
+
+		// PUBLIC
+		m.Get("/products/{owner}/{key}/compare", binding.HandlerFunc(func(ctx httpw.ResponseWriter) {
+			// /products/appscode/kubedb
+			// TODO: get product by (owner, key)
+
+			phase := ctx.R().Params("phase")
+
+			// product
+			data, err := fs.ReadFile(artifacts.Products(), ctx.R().Params("key")+".json")
 			if err != nil {
 				ctx.Error(http.StatusInternalServerError, err.Error())
 				return
@@ -125,42 +223,80 @@ func main() {
 				ctx.Error(http.StatusInternalServerError, err.Error())
 				return
 			}
-			if phase == "" || p.Spec.Phase == v1alpha1.Phase(phase) {
-				out.Items = append(out.Items, p)
+
+			var url string
+			version := p.Spec.LatestVersion
+			var plaans []v1alpha1.Plan
+
+			dir := "artifacts/products/" + ctx.R().Params("key") + "-plans"
+			files, err := ioutil.ReadDir(dir)
+			if err != nil {
+				ctx.Error(http.StatusInternalServerError, err.Error())
+				return
 			}
-		}
-		ctx.JSON(http.StatusOK, out)
-	}))
+			for idx, file := range files {
+				data, err := ioutil.ReadFile(filepath.Join(dir, file.Name()))
+				if err != nil {
+					ctx.Error(http.StatusInternalServerError, err.Error())
+					return
+				}
+				var plaan v1alpha1.Plan
+				err = json.Unmarshal(data, &plaan)
+				if err != nil {
+					ctx.Error(http.StatusInternalServerError, err.Error())
+					return
+				}
+				if idx == 0 {
+					url = plaan.Spec.Bundle.URL
+				}
 
-	// PUBLIC
-	m.Get("/products/{owner}/{key}", binding.HandlerFunc(func(ctx httpw.ResponseWriter) {
-		// /products/appscode/kubedb
-		// TODO: get product by (owner, key)
+				if phase == "" || plaan.Spec.Phase == v1alpha1.Phase(phase) {
+					plaans = append(plaans, plaan)
+				}
+			}
 
-		data, err := products.Asset(ctx.R().Params("key") + ".json")
-		if err != nil {
-			ctx.Error(http.StatusInternalServerError, err.Error())
-			return
-		}
-		_, _ = ctx.Write(data)
-	}))
+			sort.Slice(plaans, func(i, j int) bool {
+				if plaans[i].Spec.Weight == plaans[j].Spec.Weight {
+					return plaans[i].Spec.NickName < plaans[j].Spec.NickName
+				}
+				return plaans[i].Spec.Weight < plaans[j].Spec.Weight
+			})
 
-	// PUBLIC
-	m.Get("/products/{owner}/{key}/plans", binding.HandlerFunc(func(ctx httpw.ResponseWriter) {
-		// /products/appscode/kubedb
-		// TODO: get product by (owner, key)
+			var names []string
+			for _, plaan := range plaans {
+				names = append(names, plaan.Spec.Bundle.Name)
+			}
 
-		dir := "artifacts/products/kubedb-plans"
-		files, err := ioutil.ReadDir(dir)
-		if err != nil {
-			ctx.Error(http.StatusInternalServerError, err.Error())
-			return
-		}
+			table, err := lib.ComparePlans(lib.DefaultRegistry, url, names, version)
+			if err != nil {
+				ctx.Error(http.StatusInternalServerError, err.Error())
+				return
+			}
+			table.Plans = plaans
+			ctx.JSON(http.StatusOK, table)
+		}))
 
-		phase := ctx.R().Params("phase")
-		var out v1alpha1.PlanList
-		for _, file := range files {
-			data, err := ioutil.ReadFile(filepath.Join(dir, file.Name()))
+		// PUBLIC
+		m.Get("/products/{owner}/{key}/plans/{plan}/bundleview", binding.HandlerFunc(func(ctx httpw.ResponseWriter) {
+			// /products/appscode/kubedb
+			// TODO: get product by (owner, key)
+
+			// product
+			data, err := fs.ReadFile(artifacts.Products(), ctx.R().Params("key")+".json")
+			if err != nil {
+				ctx.Error(http.StatusInternalServerError, err.Error())
+				return
+			}
+			var p v1alpha1.Product
+			err = json.Unmarshal(data, &p)
+			if err != nil {
+				ctx.Error(http.StatusInternalServerError, err.Error())
+				return
+			}
+
+			// plan
+			dir := "artifacts/products/" + ctx.R().Params("key") + "-plans"
+			data, err = ioutil.ReadFile(filepath.Join(dir, ctx.R().Params("plan")+".json"))
 			if err != nil {
 				ctx.Error(http.StatusInternalServerError, err.Error())
 				return
@@ -171,161 +307,31 @@ func main() {
 				ctx.Error(http.StatusInternalServerError, err.Error())
 				return
 			}
-			if phase == "" || plaan.Spec.Phase == v1alpha1.Phase(phase) {
-				out.Items = append(out.Items, plaan)
-			}
-		}
-		ctx.JSON(http.StatusOK, out)
-	}))
 
-	// PUBLIC
-	m.Get("/products/{owner}/{key}/plans/{plan}", binding.HandlerFunc(func(ctx httpw.ResponseWriter) {
-		// /products/appscode/kubedb
-		// TODO: get product by (owner, key)
-
-		dir := "artifacts/products/" + ctx.R().Params("key") + "-plans"
-
-		data, err := ioutil.ReadFile(filepath.Join(dir, ctx.R().Params("plan")+".json"))
-		if err != nil {
-			ctx.Error(http.StatusInternalServerError, err.Error())
-			return
-		}
-		var plaan v1alpha1.Plan
-		err = json.Unmarshal(data, &plaan)
-		if err != nil {
-			ctx.Error(http.StatusInternalServerError, err.Error())
-			return
-		}
-		ctx.JSON(http.StatusOK, plaan)
-	}))
-
-	// PUBLIC
-	m.Get("/products/{owner}/{key}/compare", binding.HandlerFunc(func(ctx httpw.ResponseWriter) {
-		// /products/appscode/kubedb
-		// TODO: get product by (owner, key)
-
-		phase := ctx.R().Params("phase")
-
-		// product
-		data, err := products.Asset(ctx.R().Params("key") + ".json")
-		if err != nil {
-			ctx.Error(http.StatusInternalServerError, err.Error())
-			return
-		}
-		var p v1alpha1.Product
-		err = json.Unmarshal(data, &p)
-		if err != nil {
-			ctx.Error(http.StatusInternalServerError, err.Error())
-			return
-		}
-
-		var url string
-		version := p.Spec.LatestVersion
-		var plaans []v1alpha1.Plan
-
-		dir := "artifacts/products/" + ctx.R().Params("key") + "-plans"
-		files, err := ioutil.ReadDir(dir)
-		if err != nil {
-			ctx.Error(http.StatusInternalServerError, err.Error())
-			return
-		}
-		for idx, file := range files {
-			data, err := ioutil.ReadFile(filepath.Join(dir, file.Name()))
+			bv, err := lib.CreateBundleViewForBundle(lib.DefaultRegistry, &v1alpha1.ChartRepoRef{
+				URL:     plaan.Spec.Bundle.URL,
+				Name:    plaan.Spec.Bundle.Name,
+				Version: p.Spec.LatestVersion,
+			})
 			if err != nil {
 				ctx.Error(http.StatusInternalServerError, err.Error())
 				return
 			}
-			var plaan v1alpha1.Plan
-			err = json.Unmarshal(data, &plaan)
+			ctx.JSON(http.StatusOK, bv)
+		}))
+
+		// PUBLIC
+		m.Get("/product_id/{id}", binding.HandlerFunc(func(ctx httpw.ResponseWriter) {
+			// TODO: get product by id
+
+			data, err := fs.ReadFile(artifacts.Products(), "kubedb.json")
 			if err != nil {
 				ctx.Error(http.StatusInternalServerError, err.Error())
 				return
 			}
-			if idx == 0 {
-				url = plaan.Spec.Bundle.URL
-			}
-
-			if phase == "" || plaan.Spec.Phase == v1alpha1.Phase(phase) {
-				plaans = append(plaans, plaan)
-			}
-		}
-
-		sort.Slice(plaans, func(i, j int) bool {
-			if plaans[i].Spec.Weight == plaans[j].Spec.Weight {
-				return plaans[i].Spec.NickName < plaans[j].Spec.NickName
-			}
-			return plaans[i].Spec.Weight < plaans[j].Spec.Weight
-		})
-
-		var names []string
-		for _, plaan := range plaans {
-			names = append(names, plaan.Spec.Bundle.Name)
-		}
-
-		table, err := lib.ComparePlans(lib.DefaultRegistry, url, names, version)
-		if err != nil {
-			ctx.Error(http.StatusInternalServerError, err.Error())
-			return
-		}
-		table.Plans = plaans
-		ctx.JSON(http.StatusOK, table)
-	}))
-
-	// PUBLIC
-	m.Get("/products/{owner}/{key}/plans/{plan}/bundleview", binding.HandlerFunc(func(ctx httpw.ResponseWriter) {
-		// /products/appscode/kubedb
-		// TODO: get product by (owner, key)
-
-		// product
-		data, err := products.Asset(ctx.R().Params("key") + ".json")
-		if err != nil {
-			ctx.Error(http.StatusInternalServerError, err.Error())
-			return
-		}
-		var p v1alpha1.Product
-		err = json.Unmarshal(data, &p)
-		if err != nil {
-			ctx.Error(http.StatusInternalServerError, err.Error())
-			return
-		}
-
-		// plan
-		dir := "artifacts/products/" + ctx.R().Params("key") + "-plans"
-		data, err = ioutil.ReadFile(filepath.Join(dir, ctx.R().Params("plan")+".json"))
-		if err != nil {
-			ctx.Error(http.StatusInternalServerError, err.Error())
-			return
-		}
-		var plaan v1alpha1.Plan
-		err = json.Unmarshal(data, &plaan)
-		if err != nil {
-			ctx.Error(http.StatusInternalServerError, err.Error())
-			return
-		}
-
-		bv, err := lib.CreateBundleViewForBundle(lib.DefaultRegistry, &v1alpha1.ChartRepoRef{
-			URL:     plaan.Spec.Bundle.URL,
-			Name:    plaan.Spec.Bundle.Name,
-			Version: p.Spec.LatestVersion,
-		})
-		if err != nil {
-			ctx.Error(http.StatusInternalServerError, err.Error())
-			return
-		}
-		ctx.JSON(http.StatusOK, bv)
-	}))
-
-	// PUBLIC
-	m.Get("/product_id/{id}", binding.HandlerFunc(func(ctx httpw.ResponseWriter) {
-		// TODO: get product by id
-
-		data, err := products.Asset("kubedb.json")
-		if err != nil {
-			ctx.Error(http.StatusInternalServerError, err.Error())
-			return
-		}
-		_, _ = ctx.Write(data)
-	}))
+			_, _ = ctx.Write(data)
+		}))
+	*/
 
 	// PRIVATE
 	// Should we store Order UID in a table per User?
