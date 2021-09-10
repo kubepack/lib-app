@@ -55,3 +55,19 @@ go run cmd/fuse-chart/*.go \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
     --resource.name=mysqls
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=/home/tamal/go/src/github.com/appscode/kubedb-samples/redis/sentinel/prometheus.io/backupconfiguration/stash/tls/custom-auth/custom-config \
+    --chart-dir=/home/tamal/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --sample-name=redis \
+    --resource.group=kubedb.com \
+    --resource.version=v1alpha2 \
+    --resource.name=redises
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=/home/tamal/go/src/github.com/appscode/kubedb-samples/redissentinel/prometheus.io/tls/custom-auth/custom-config \
+    --chart-dir=/home/tamal/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --sample-name=redissentinel \
+    --resource.group=kubedb.com \
+    --resource.version=v1alpha2 \
+    --resource.name=redissentinels
