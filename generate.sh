@@ -17,7 +17,7 @@
 go run cmd/gen-simple-editor/main.go --all --skipExisting=false
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=/home/tamal/go/src/github.com/appscode/kubedb-samples/mongodb/sharded/prometheus.io/backupconfiguration/stash/tls/custom-auth/sharded \
+    --sample-dir=/home/tamal/go/src/github.com/appscode/ui-samples/mongodb/sharded/prometheus.io/backupconfiguration/stash/tls/custom-auth/sharded \
     --chart-dir=/home/tamal/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --sample-name=mongodb \
     --resource.group=kubedb.com \
@@ -25,7 +25,7 @@ go run cmd/fuse-chart/*.go \
     --resource.name=mongodbs
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=/home/tamal/go/src/github.com/appscode/kubedb-samples/postgres/cluster/prometheus.io/backupconfiguration/stash/tls/custom-auth/custom-auth-mode/custom-config/custom-pg-coordinator/custom-uid \
+    --sample-dir=/home/tamal/go/src/github.com/appscode/ui-samples/postgres/cluster/prometheus.io/backupconfiguration/stash/tls/custom-auth/custom-auth-mode/custom-config/custom-pg-coordinator/custom-uid \
     --chart-dir=/home/tamal/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --sample-name=postgres \
     --resource.group=kubedb.com \
@@ -33,7 +33,7 @@ go run cmd/fuse-chart/*.go \
     --resource.name=postgreses
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=/home/tamal/go/src/github.com/appscode/kubedb-samples/mariadb/cluster/prometheus.io/backupconfiguration/stash/tls/custom-auth/config-file/customize-pod-template \
+    --sample-dir=/home/tamal/go/src/github.com/appscode/ui-samples/mariadb/cluster/prometheus.io/backupconfiguration/stash/tls/custom-auth/config-file/customize-pod-template \
     --chart-dir=/home/tamal/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --sample-name=mariadb \
     --resource.group=kubedb.com \
@@ -41,7 +41,7 @@ go run cmd/fuse-chart/*.go \
     --resource.name=mariadbs
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=/home/tamal/go/src/github.com/appscode/kubedb-samples/elasticsearch/custom \
+    --sample-dir=/home/tamal/go/src/github.com/appscode/ui-samples/elasticsearch/custom \
     --chart-dir=/home/tamal/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --sample-name=elasticsearch \
     --resource.group=kubedb.com \
@@ -49,7 +49,7 @@ go run cmd/fuse-chart/*.go \
     --resource.name=elasticsearches
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=/home/tamal/go/src/github.com/appscode/kubedb-samples/mysql/group-replication/prometheus.io/backupconfiguration/stash/tls/custom-auth/config-file/customize-pod-template \
+    --sample-dir=/home/tamal/go/src/github.com/appscode/ui-samples/mysql/group-replication/prometheus.io/backupconfiguration/stash/tls/custom-auth/config-file/customize-pod-template \
     --chart-dir=/home/tamal/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --sample-name=mysql \
     --resource.group=kubedb.com \
@@ -57,7 +57,7 @@ go run cmd/fuse-chart/*.go \
     --resource.name=mysqls
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=/home/tamal/go/src/github.com/appscode/kubedb-samples/redis/sentinel/prometheus.io/backupconfiguration/stash/tls/custom-auth/custom-config \
+    --sample-dir=/home/tamal/go/src/github.com/appscode/ui-samples/redis/sentinel/prometheus.io/backupconfiguration/stash/tls/custom-auth/custom-config \
     --chart-dir=/home/tamal/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --sample-name=redis \
     --resource.group=kubedb.com \
@@ -65,7 +65,7 @@ go run cmd/fuse-chart/*.go \
     --resource.name=redises
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=/home/tamal/go/src/github.com/appscode/kubedb-samples/redissentinel/prometheus.io/tls/custom-auth \
+    --sample-dir=/home/tamal/go/src/github.com/appscode/ui-samples/redissentinel/prometheus.io/tls/custom-auth \
     --chart-dir=/home/tamal/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --sample-name=redissentinel \
     --resource.group=kubedb.com \
