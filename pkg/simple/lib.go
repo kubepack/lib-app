@@ -228,9 +228,13 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 	}
 
 	{
+		gv := schema.GroupVersion{
+			Group:   rd.Spec.Resource.Group,
+			Version: rd.Spec.Resource.Version,
+		}
 		v := appapi.SimpleValue{
 			TypeMeta: metav1.TypeMeta{
-				APIVersion: fmt.Sprintf("%s/%s", rd.Spec.Resource.Group, rd.Spec.Resource.Version),
+				APIVersion: gv.String(),
 				Kind:       rd.Spec.Resource.Kind,
 			},
 			ObjectMeta: appapi.ObjectMeta{
