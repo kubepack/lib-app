@@ -24,7 +24,6 @@ import (
 
 	"github.com/gobuffalo/flect"
 	core "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"kmodules.xyz/client-go/tools/parser"
 )
@@ -84,8 +83,8 @@ func ListResources(chartName string, data []byte) ([]appapi.ResourceObject, erro
 	s2map := map[string]int{}
 	s3map := map[string]int{}
 
-	err := parser.ProcessResources(data, func(obj *unstructured.Unstructured) error {
-		s1, s2, s3 := ResourceFilename(obj.GetAPIVersion(), obj.GetKind(), chartName, obj.GetName())
+	err := parser.ProcessResources(data, func(ri parser.ResourceInfo) error {
+		s1, s2, s3 := ResourceFilename(ri.Object.GetAPIVersion(), ri.Object.GetKind(), chartName, ri.Object.GetName())
 		if v, ok := s1map[s1]; !ok {
 			s1map[s1] = 1
 		} else {
@@ -109,12 +108,12 @@ func ListResources(chartName string, data []byte) ([]appapi.ResourceObject, erro
 
 	var resources []appapi.ResourceObject
 
-	err = parser.ProcessResources(data, func(obj *unstructured.Unstructured) error {
-		if obj.GetNamespace() == "" {
-			obj.SetNamespace(core.NamespaceDefault)
+	err = parser.ProcessResources(data, func(ri parser.ResourceInfo) error {
+		if ri.Object.GetNamespace() == "" {
+			ri.Object.SetNamespace(core.NamespaceDefault)
 		}
 
-		s1, s2, s3 := ResourceFilename(obj.GetAPIVersion(), obj.GetKind(), chartName, obj.GetName())
+		s1, s2, s3 := ResourceFilename(ri.Object.GetAPIVersion(), ri.Object.GetKind(), chartName, ri.Object.GetName())
 		name := s1
 		if s1map[s1] > 1 {
 			if s2map[s2] > 1 {
@@ -126,7 +125,7 @@ func ListResources(chartName string, data []byte) ([]appapi.ResourceObject, erro
 
 		resources = append(resources, appapi.ResourceObject{
 			Filename: name,
-			Data:     obj,
+			Data:     ri.Object,
 		})
 		return nil
 	})

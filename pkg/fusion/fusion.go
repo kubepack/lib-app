@@ -91,25 +91,25 @@ func NewCmdFuse() *cobra.Command {
 				return err
 			}
 
-			err = parser.ProcessDir(sampleDir, func(obj *unstructured.Unstructured) error {
-				rsKey, err := editor.ResourceKey(obj.GetAPIVersion(), obj.GetKind(), sampleName, obj.GetName())
+			err = parser.ProcessPath(sampleDir, func(ri parser.ResourceInfo) error {
+				rsKey, err := editor.ResourceKey(ri.Object.GetAPIVersion(), ri.Object.GetKind(), sampleName, ri.Object.GetName())
 				if err != nil {
 					return err
 				}
 				resourceKeys.Insert(rsKey)
-				_, _, rsFilename := editor.ResourceFilename(obj.GetAPIVersion(), obj.GetKind(), sampleName, obj.GetName())
+				_, _, rsFilename := editor.ResourceFilename(ri.Object.GetAPIVersion(), ri.Object.GetKind(), sampleName, ri.Object.GetName())
 
 				// values
-				cp := obj.DeepCopy()
+				cp := ri.Object.DeepCopy()
 				delete(cp.Object, "status")
 				cp.Object["metadata"] = appapi.ObjectMeta{
-					Name:      obj.GetName(),
-					Namespace: obj.GetNamespace(),
+					Name:      ri.Object.GetName(),
+					Namespace: ri.Object.GetNamespace(),
 				}
 				resourceValues[rsKey] = cp
 
 				// schema
-				gvr, err := registry.GVR(obj.GetObjectKind().GroupVersionKind())
+				gvr, err := registry.GVR(ri.Object.GetObjectKind().GroupVersionKind())
 				if err != nil {
 					return err
 				}
@@ -192,7 +192,7 @@ func NewCmdFuse() *cobra.Command {
 
 				objModel := appapi.ObjectModel{
 					Key:    rsKey,
-					Object: obj,
+					Object: ri.Object,
 				}
 				modelJSON, err := json.Marshal(objModel)
 				if err != nil {

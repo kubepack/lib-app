@@ -1131,7 +1131,7 @@ k8s.io/utils/trace
 kmodules.xyz/apiversion
 # kmodules.xyz/apply v0.0.0-20210503080849-eb226c295465
 kmodules.xyz/apply
-# kmodules.xyz/client-go v0.0.0-20210907223235-5e60d7111ced
+# kmodules.xyz/client-go v0.0.0-20210928133955-8df5bb467db6
 ## explicit
 kmodules.xyz/client-go
 kmodules.xyz/client-go/api/v1
@@ -1143,7 +1143,7 @@ kmodules.xyz/client-go/meta
 kmodules.xyz/client-go/tools/converter
 kmodules.xyz/client-go/tools/parser
 kmodules.xyz/client-go/tools/wait
-# kmodules.xyz/resource-metadata v0.5.8-0.20210916191446-b6e0dbe0e843
+# kmodules.xyz/resource-metadata v0.6.0-rc.0
 ## explicit
 kmodules.xyz/resource-metadata/apis/meta
 kmodules.xyz/resource-metadata/apis/meta/v1alpha1
@@ -1151,10 +1151,10 @@ kmodules.xyz/resource-metadata/crds
 kmodules.xyz/resource-metadata/hub
 kmodules.xyz/resource-metadata/hub/resourceclasses
 kmodules.xyz/resource-metadata/hub/resourcedescriptors
-# kubepack.dev/chart-doc-gen v0.4.2
+# kubepack.dev/chart-doc-gen v0.4.3
 ## explicit
 kubepack.dev/chart-doc-gen/api
-# kubepack.dev/kubepack v0.3.4-0.20210908054317-ceae98fd2beb
+# kubepack.dev/kubepack v0.3.4
 ## explicit
 kubepack.dev/kubepack/apis
 kubepack.dev/kubepack/apis/kubepack

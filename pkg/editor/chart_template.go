@@ -342,14 +342,14 @@ func GenerateEditorModel(reg *repo.Registry, opts map[string]interface{}) (*unst
 
 	resoourceValues := map[string]interface{}{}
 	_, manifest := f1.Result()
-	err = parser.ProcessResources(manifest, func(obj *unstructured.Unstructured) error {
-		rsKey, err := ResourceKey(obj.GetAPIVersion(), obj.GetKind(), spec.Metadata.Release.Name, obj.GetName())
+	err = parser.ProcessResources(manifest, func(ri parser.ResourceInfo) error {
+		rsKey, err := ResourceKey(ri.Object.GetAPIVersion(), ri.Object.GetKind(), spec.Metadata.Release.Name, ri.Object.GetName())
 		if err != nil {
 			return err
 		}
 
 		// values
-		resoourceValues[rsKey] = obj.Object
+		resoourceValues[rsKey] = ri.Object
 		return nil
 	})
 	if err != nil {
@@ -416,7 +416,7 @@ func RenderChartTemplate(reg *repo.Registry, opts map[string]interface{}) (strin
 		tpl.CRDs = append(tpl.CRDs, appapi.BucketObject{
 			ResourceObject: appapi.ResourceObject{
 				Filename: crd.Name,
-				Data:     resources[0],
+				Data:     resources[0].Object,
 			},
 		})
 	}
