@@ -33,6 +33,7 @@ import (
 
 	"github.com/Masterminds/sprig/v3"
 	"github.com/spf13/cobra"
+	ksets "gomodules.xyz/sets/kubernetes"
 	y3 "gopkg.in/yaml.v3"
 	"helm.sh/helm/v3/pkg/chart"
 	crdv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -86,12 +87,11 @@ func NewCmdFuse() *cobra.Command {
 				return err
 			}
 
-			err = GenerateChartMetadata(rd)
-			if err != nil {
-				return err
-			}
+			gkSet := ksets.NewGroupKind()
 
 			err = parser.ProcessPath(sampleDir, func(ri parser.ResourceInfo) error {
+				gkSet.Insert(ri.Object.GetObjectKind().GroupVersionKind().GroupKind())
+
 				rsKey, err := editor.ResourceKey(ri.Object.GetAPIVersion(), ri.Object.GetKind(), sampleName, ri.Object.GetName())
 				if err != nil {
 					return err
@@ -220,6 +220,18 @@ func NewCmdFuse() *cobra.Command {
 				return err
 			}
 
+			gks := make([]metav1.GroupKind, gkSet.Len())
+			for i, gk := range gkSet.List() {
+				gks[i] = metav1.GroupKind{
+					Group: gk.Group,
+					Kind:  gk.Kind,
+				}
+			}
+			err = GenerateChartMetadata(rd, gks)
+			if err != nil {
+				return err
+			}
+
 			{
 				var chartSchema crdv1.JSONSchemaProps
 				err = yaml.Unmarshal([]byte(valuesMetadataSchema), &chartSchema)
@@ -295,7 +307,7 @@ func NewCmdFuse() *cobra.Command {
 						App:         fmt.Sprintf("a %s", desc),
 					},
 					Repository: docapi.RepositoryInfo{
-						URL:  "https://bundles.bytebuilders.dev/ui/",
+						URL:  "https://bundles.byte.builders/ui/",
 						Name: "bytebuilders-ui",
 					},
 					Chart: docapi.ChartInfo{
@@ -339,7 +351,7 @@ func NewCmdFuse() *cobra.Command {
 	return cmd
 }
 
-func GenerateChartMetadata(rd *v1alpha1.ResourceDescriptor) error {
+func GenerateChartMetadata(rd *v1alpha1.ResourceDescriptor, gks []metav1.GroupKind) error {
 	gvr := metav1.GroupVersionResource{
 		Group:    rd.Spec.Resource.Group,
 		Version:  rd.Spec.Resource.Version,
@@ -349,36 +361,38 @@ func GenerateChartMetadata(rd *v1alpha1.ResourceDescriptor) error {
 	if err != nil {
 		panic(err)
 	}
-	gks := []metav1.GroupKind{
-		{
-			Group: rd.Spec.Resource.Group,
-			Kind:  rd.Spec.Resource.Kind,
-		},
-		{
-			Group: "",
-			Kind:  "Secret",
-		},
-		{
-			Group: "cert-manager.io",
-			Kind:  "Issuer",
-		},
-		{
-			Group: "monitoring.coreos.com",
-			Kind:  "ServiceMonitor",
-		},
-		{
-			Group: "stash.appscode.com",
-			Kind:  "Repository",
-		},
-		{
-			Group: "stash.appscode.com",
-			Kind:  "BackupConfiguration",
-		},
-		{
-			Group: "stash.appscode.com",
-			Kind:  "RestoreSession",
-		},
-	}
+	//if rd.Spec.Resource.Group == "kubedb.com" {
+	//	gks = []metav1.GroupKind{
+	//		{
+	//			Group: rd.Spec.Resource.Group,
+	//			Kind:  rd.Spec.Resource.Kind,
+	//		},
+	//		{
+	//			Group: "",
+	//			Kind:  "Secret",
+	//		},
+	//		{
+	//			Group: "cert-manager.io",
+	//			Kind:  "Issuer",
+	//		},
+	//		{
+	//			Group: "monitoring.coreos.com",
+	//			Kind:  "ServiceMonitor",
+	//		},
+	//		{
+	//			Group: "stash.appscode.com",
+	//			Kind:  "Repository",
+	//		},
+	//		{
+	//			Group: "stash.appscode.com",
+	//			Kind:  "BackupConfiguration",
+	//		},
+	//		{
+	//			Group: "stash.appscode.com",
+	//			Kind:  "RestoreSession",
+	//		},
+	//	}
+	//}
 	sort.Slice(gks, func(i, j int) bool {
 		if gks[i].Group == gks[j].Group {
 			return gks[i].Kind < gks[j].Kind
@@ -395,8 +409,8 @@ func GenerateChartMetadata(rd *v1alpha1.ResourceDescriptor) error {
 		Name:        chartName,
 		Home:        "https://byte.builders",
 		Sources:     nil,
-		Version:     "v0.2.0-alpha.0",
-		AppVersion:  "v0.2.0-alpha.0",
+		Version:     "v0.2.0",
+		AppVersion:  "v0.2.0",
 		Description: fmt.Sprintf("%s Editor", rd.Spec.Resource.Kind),
 		Keywords:    []string{"appscode"},
 		Maintainers: []*chart.Maintainer{

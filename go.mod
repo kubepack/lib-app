@@ -17,6 +17,7 @@ require (
 	gocloud.dev v0.22.0
 	gomodules.xyz/jsonpatch/v3 v3.0.1
 	gomodules.xyz/logs v0.0.4
+	gomodules.xyz/sets/kubernetes v0.2.0
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 	helm.sh/helm/v3 v3.6.1
 	k8s.io/api v0.21.1

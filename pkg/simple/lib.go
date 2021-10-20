@@ -268,7 +268,7 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 				App:         fmt.Sprintf("a %s", desc),
 			},
 			Repository: docapi.RepositoryInfo{
-				URL:  "https://bundles.bytebuilders.dev/ui/",
+				URL:  "https://bundles.byte.builders/ui/",
 				Name: "bytebuilders-ui",
 			},
 			Chart: docapi.ChartInfo{
@@ -327,8 +327,8 @@ func GenerateChartMetadata(chartDir, chartName string, rd *v1alpha1.ResourceDesc
 		Name:        chartName,
 		Home:        "https://byte.builders",
 		Sources:     nil,
-		Version:     "v0.2.0-alpha.0",
-		AppVersion:  "v0.2.0-alpha.0",
+		Version:     "v0.2.0",
+		AppVersion:  "v0.2.0",
 		Description: fmt.Sprintf("%s Editor", rd.Spec.Resource.Kind),
 		Keywords:    []string{"appscode"},
 		Maintainers: []*chart.Maintainer{

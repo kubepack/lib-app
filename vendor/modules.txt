@@ -644,6 +644,9 @@ gomodules.xyz/logs
 gomodules.xyz/orderedmap
 # gomodules.xyz/sets v0.2.0
 gomodules.xyz/sets
+# gomodules.xyz/sets/kubernetes v0.2.0
+## explicit
+gomodules.xyz/sets/kubernetes
 # gomodules.xyz/wait v0.0.0-20210218105358-639bd9211545
 gomodules.xyz/wait
 # gomodules.xyz/x v0.0.8
