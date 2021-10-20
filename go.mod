@@ -26,8 +26,8 @@ require (
 	k8s.io/client-go v0.21.1
 	k8s.io/klog/v2 v2.8.0
 	k8s.io/kubectl v0.21.1
-	kmodules.xyz/client-go v0.0.0-20210928133955-8df5bb467db6
-	kmodules.xyz/resource-metadata v0.6.0
+	kmodules.xyz/client-go v0.0.0-20211016043712-8f3e2dd50e7e
+	kmodules.xyz/resource-metadata v0.6.6
 	kubepack.dev/chart-doc-gen v0.4.3
 	kubepack.dev/kubepack v0.3.4
 	kubepack.dev/lib-helm v0.2.4-0.20210702135227-03dd8e7b6b0f
@@ -142,3 +142,9 @@ replace k8s.io/utils => k8s.io/utils v0.0.0-20201110183641-67b214c5f920
 replace sigs.k8s.io/application => github.com/kmodules/application v0.8.4-0.20210427030912-90eeee3bc4ad
 
 replace github.com/satori/go.uuid => github.com/gofrs/uuid v4.0.0+incompatible
+
+replace github.com/dgrijalva/jwt-go => github.com/gomodules/jwt v3.2.2+incompatible
+
+replace github.com/golang-jwt/jwt => github.com/golang-jwt/jwt v3.2.2+incompatible
+
+replace github.com/form3tech-oss/jwt-go => github.com/form3tech-oss/jwt-go v3.2.5+incompatible
