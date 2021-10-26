@@ -73,7 +73,7 @@ go run cmd/fuse-chart/*.go \
     --resource.name=redissentinels
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=/home/tamal/go/src/github.com/appscode/ui-samples/kubevault/vaultserver/google-kms-gcs/mysql \
+    --sample-dir=/home/tamal/go/src/github.com/appscode/ui-samples/kubevault/vaultserver/custom \
     --chart-dir=/home/tamal/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --sample-name=vault \
     --resource.group=kubevault.com \
