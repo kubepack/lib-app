@@ -16,7 +16,7 @@ require (
 	go.wandrs.dev/http v0.0.1
 	gocloud.dev v0.22.0
 	gomodules.xyz/jsonpatch/v3 v3.0.1
-	gomodules.xyz/logs v0.0.4
+	gomodules.xyz/logs v0.0.6
 	gomodules.xyz/sets/kubernetes v0.2.0
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 	helm.sh/helm/v3 v3.6.1
@@ -27,8 +27,8 @@ require (
 	k8s.io/client-go v0.21.1
 	k8s.io/klog/v2 v2.8.0
 	k8s.io/kubectl v0.21.1
-	kmodules.xyz/client-go v0.0.0-20211016043712-8f3e2dd50e7e
-	kmodules.xyz/resource-metadata v0.6.6
+	kmodules.xyz/client-go v0.0.0-20211028132207-0cf6ea46b030
+	kmodules.xyz/resource-metadata v0.6.7
 	kubepack.dev/chart-doc-gen v0.4.3
 	kubepack.dev/kubepack v0.3.4
 	kubepack.dev/lib-helm v0.2.4-0.20210702135227-03dd8e7b6b0f
@@ -142,7 +142,7 @@ replace k8s.io/utils => k8s.io/utils v0.0.0-20201110183641-67b214c5f920
 
 replace sigs.k8s.io/application => github.com/kmodules/application v0.8.4-0.20210427030912-90eeee3bc4ad
 
-replace github.com/satori/go.uuid => github.com/gofrs/uuid v4.0.0+incompatible
+replace github.com/satori/go.uuid => github.com/gomodules/uuid v4.0.0+incompatible
 
 replace github.com/dgrijalva/jwt-go => github.com/gomodules/jwt v3.2.2+incompatible
 
