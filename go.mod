@@ -28,7 +28,7 @@ require (
 	k8s.io/klog/v2 v2.8.0
 	k8s.io/kubectl v0.21.1
 	kmodules.xyz/client-go v0.0.0-20211028132207-0cf6ea46b030
-	kmodules.xyz/resource-metadata v0.6.7
+	kmodules.xyz/resource-metadata v0.7.0
 	kubepack.dev/chart-doc-gen v0.4.3
 	kubepack.dev/kubepack v0.3.4
 	kubepack.dev/lib-helm v0.2.4-0.20210702135227-03dd8e7b6b0f
