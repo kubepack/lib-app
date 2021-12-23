@@ -8,8 +8,8 @@ require (
 	github.com/evanphx/json-patch/v5 v5.5.0
 	github.com/go-chi/chi/v5 v5.0.3
 	github.com/gobuffalo/flect v0.2.3
-	github.com/google/uuid v1.1.2
-	github.com/spf13/cobra v1.1.3
+	github.com/google/uuid v1.3.0
+	github.com/spf13/cobra v1.2.1
 	github.com/spf13/pflag v1.0.5
 	github.com/unrolled/render v1.4.0
 	go.wandrs.dev/binding v0.0.2
@@ -27,11 +27,11 @@ require (
 	k8s.io/client-go v0.21.1
 	k8s.io/klog/v2 v2.8.0
 	k8s.io/kubectl v0.21.1
-	kmodules.xyz/client-go v0.0.0-20211028132207-0cf6ea46b030
-	kmodules.xyz/resource-metadata v0.7.0
+	kmodules.xyz/client-go v0.0.0-20211223001502-9d4767bf97ce
+	kmodules.xyz/resource-metadata v0.7.1-0.20211223071151-daf19bd77f84
 	kubepack.dev/chart-doc-gen v0.4.3
 	kubepack.dev/kubepack v0.3.4
-	kubepack.dev/lib-helm v0.2.4-0.20210702135227-03dd8e7b6b0f
+	kubepack.dev/lib-helm v0.3.2-0.20211223113921-d8cbb538a0e3
 	sigs.k8s.io/application v0.8.2-0.20200306235134-f10d9ca8abd4
 	sigs.k8s.io/yaml v1.2.0
 )

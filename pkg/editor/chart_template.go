@@ -210,7 +210,7 @@ func EditorChartValueManifest(app *v1beta1.Application, mapper discovery.Resourc
 		if err != nil {
 			return nil, fmt.Errorf("failed to detect GVR for gvk %v, reason %v", gvk, err)
 		}
-		namespaced, err := mapper.IsNamespaced(gvr)
+		namespaced, err := mapper.IsGVRNamespaced(gvr)
 		if err != nil {
 			return nil, fmt.Errorf("failed to detect if gvr %v is namespaced, reason %v", gvr, err)
 		}
