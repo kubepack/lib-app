@@ -117,6 +117,14 @@ spec:
       apiVersion: v1
       kind: Secret
     type: MatchRef
+  - labels:
+    - view
+    nameTemplate: '{.metadata.name}'
+    namespacePath: metadata.namespace
+    target:
+      apiVersion: ui.k8s.appscode.com/v1alpha1
+      kind: PodView
+    type: MatchName
   icons:
   - src: https://cdn.appscode.com/k8s/icons/core/pods.svg
     type: image/svg+xml
@@ -130,6 +138,7 @@ spec:
       displayMode: List
       query:
         byLabel: offshoot
+        type: GraphQL
       ref:
         group: ""
         kind: Service
@@ -138,6 +147,7 @@ spec:
       displayMode: List
       query:
         byLabel: offshoot
+        type: GraphQL
       ref:
         group: ""
         kind: Secret
@@ -146,6 +156,7 @@ spec:
       displayMode: List
       query:
         byLabel: offshoot
+        type: GraphQL
       ref:
         group: ""
         kind: ConfigMap
@@ -154,6 +165,7 @@ spec:
       displayMode: List
       query:
         byLabel: offshoot
+        type: GraphQL
       ref:
         group: ""
         kind: PersistentVolumeClaim
@@ -163,7 +175,18 @@ spec:
         create: IfEmpty
       displayMode: List
       query:
-        byLabel: monitored_by
+        raw: |-
+          query Find($src: String!, $targetGroup: String!, $targetKind: String!) {
+            find(oid: $src) {
+              exposed_by(group: "", kind: "Service") {
+                refs: monitored_by(group: $targetGroup, kind: $targetKind) {
+                  namespace
+                  name
+                }
+              }
+            }
+          }
+        type: GraphQL
       ref:
         group: monitoring.coreos.com
         kind: ServiceMonitor
@@ -171,7 +194,18 @@ spec:
         create: IfEmpty
       displayMode: List
       query:
-        byLabel: monitored_by
+        raw: |-
+          query Find($src: String!, $targetGroup: String!, $targetKind: String!) {
+            find(oid: $src) {
+              exposed_by(group: "", kind: "Service") {
+                refs: monitored_by(group: $targetGroup, kind: $targetKind) {
+                  namespace
+                  name
+                }
+              }
+            }
+          }
+        type: GraphQL
       ref:
         group: monitoring.coreos.com
         kind: PodMonitor
@@ -179,7 +213,18 @@ spec:
         create: Never
       displayMode: List
       query:
-        byLabel: monitored_by
+        raw: |-
+          query Find($src: String!, $targetGroup: String!, $targetKind: String!) {
+            find(oid: $src) {
+              exposed_by(group: "", kind: "Service") {
+                refs: monitored_by(group: $targetGroup, kind: $targetKind) {
+                  namespace
+                  name
+                }
+              }
+            }
+          }
+        type: GraphQL
       ref:
         group: monitoring.coreos.com
         kind: Prometheus

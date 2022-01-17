@@ -340,33 +340,6 @@ func main() {
 		m.With(binding.JSON(v1alpha1.Order{})).Post("/", binding.HandlerFunc(CreateOrder))
 		m.Get("/{id}/render/manifest", binding.HandlerFunc(PreviewOrderManifest))
 		m.Get("/{id}/render/resources", binding.HandlerFunc(PreviewOrderResources))
-		m.Get("/{id}/helm2", binding.HandlerFunc(func(ctx httpw.ResponseWriter) {
-			bs, err := lib.NewTestBlobStore()
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-
-			data, err := bs.ReadFile(ctx.R().Request().Context(), path.Join(ctx.R().Params("id"), "order.yaml"))
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-
-			var order v1alpha1.Order
-			err = yaml.Unmarshal(data, &order)
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-
-			scripts, err := lib.GenerateHelm2Script(bs, lib.DefaultRegistry, order)
-			if err != nil {
-				ctx.Error(http.StatusInternalServerError, err.Error())
-				return
-			}
-			ctx.JSON(http.StatusOK, scripts)
-		}))
 		m.Get("/{id}/helm3", binding.HandlerFunc(func(ctx httpw.ResponseWriter) {
 			bs, err := lib.NewTestBlobStore()
 			if err != nil {
