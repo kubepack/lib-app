@@ -27,11 +27,11 @@ require (
 	k8s.io/client-go v0.21.1
 	k8s.io/klog/v2 v2.9.0
 	k8s.io/kubectl v0.21.1
-	kmodules.xyz/client-go v0.0.0-20220113110622-dbc40d36b6f8
-	kmodules.xyz/resource-metadata v0.8.2-0.20220117074456-44df42ff8320
+	kmodules.xyz/client-go v0.0.0-20220131065336-bb3e98486e83
+	kmodules.xyz/resource-metadata v0.8.2-0.20220202132534-f0c60906a41b
 	kubepack.dev/chart-doc-gen v0.4.3
-	kubepack.dev/kubepack v0.3.9-0.20220116143022-30c1dc0a58ab
-	kubepack.dev/lib-helm v0.3.2-0.20211223113921-d8cbb538a0e3
+	kubepack.dev/kubepack v0.3.9-0.20220201033352-575b50c5a43d
+	kubepack.dev/lib-helm v0.3.2-0.20220202133039-f91fc7c04650
 	sigs.k8s.io/application v0.8.2-0.20200306235134-f10d9ca8abd4
 	sigs.k8s.io/yaml v1.2.0
 )

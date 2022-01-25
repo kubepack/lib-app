@@ -45,7 +45,9 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"kmodules.xyz/client-go/discovery"
 	"kmodules.xyz/resource-metadata/hub"
+	"kmodules.xyz/resource-metadata/hub/resourceeditors"
 	yamllib "sigs.k8s.io/yaml"
 )
 
@@ -464,7 +466,7 @@ func (x *EditorModelGenerator) Result() ([]*chart.File, []byte) {
 	return x.CRDs, x.Manifest
 }
 
-func RefillMetadata(reg *hub.Registry, ref, actual map[string]interface{}) error {
+func RefillMetadata(mapper discovery.ResourceMapper, ref, actual map[string]interface{}) error {
 	refResources, ok := ref["resources"].(map[string]interface{})
 	if !ok {
 		return nil
@@ -524,8 +526,8 @@ func RefillMetadata(reg *hub.Registry, ref, actual map[string]interface{}) error
 		}
 
 		gvk := schema.FromAPIVersionAndKind(refObj["apiVersion"].(string), refObj["kind"].(string))
-		if gvr, err := reg.GVR(gvk); err == nil {
-			if rd, err := reg.LoadByGVR(gvr); err == nil {
+		if gvr, err := mapper.GVR(gvk); err == nil {
+			if rd, err := resourceeditors.LoadByName(resourceeditors.DefaultEditorName(gvr)); err == nil {
 				if rd.Spec.UI != nil {
 					for _, fields := range rd.Spec.UI.InstanceLabelPaths {
 						fields := strings.Trim(fields, ".")

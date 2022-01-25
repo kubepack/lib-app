@@ -35,6 +35,7 @@ import (
 	kmapi "kmodules.xyz/client-go/api/v1"
 	"kmodules.xyz/resource-metadata/apis/meta/v1alpha1"
 	"kmodules.xyz/resource-metadata/hub"
+	"kmodules.xyz/resource-metadata/hub/resourceeditors"
 	"sigs.k8s.io/yaml"
 )
 
@@ -297,16 +298,17 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 		}
 	}
 
-	if rd.Spec.UI == nil {
-		rd.Spec.UI = &v1alpha1.UIParameters{
+	ed, err := resourceeditors.LoadByName(resourceeditors.DefaultEditorName(rd.Spec.Resource.GroupVersionResource()))
+	if err == nil {
+		ed.Spec.UI = &v1alpha1.UIParameters{
 			Options: nil,
 			Editor: &v1alpha1.ChartRepoRef{
 				URL:     "https://raw.githubusercontent.com/bytebuilders/ui-wizards/master/stable",
 				Name:    chartName,
-				Version: "v0.1.0",
+				Version: "v0.3.0",
 			},
 		}
-		return UpdateDescriptor(rd, descriptorDir)
+		return UpdateEditor(ed, descriptorDir)
 	}
 
 	return nil
@@ -375,7 +377,7 @@ func IsCRD(group string) bool {
 		!strings.HasSuffix(group, ".kubernetes.io")
 }
 
-func UpdateDescriptor(rd *v1alpha1.ResourceDescriptor, dir string) error {
+func UpdateEditor(rd *v1alpha1.ResourceEditor, dir string) error {
 	data, err := yaml.Marshal(rd)
 	if err != nil {
 		return err

@@ -42,7 +42,7 @@ import (
 	"kmodules.xyz/client-go/discovery"
 	meta_util "kmodules.xyz/client-go/meta"
 	"kmodules.xyz/client-go/tools/parser"
-	"kmodules.xyz/resource-metadata/hub"
+	"kmodules.xyz/resource-metadata/hub/resourceeditors"
 	"sigs.k8s.io/application/api/app/v1beta1"
 	app_cs "sigs.k8s.io/application/client/clientset/versioned"
 	"sigs.k8s.io/yaml"
@@ -129,16 +129,12 @@ func RenderOrderTemplate(bs *lib.BlobStore, reg *repo.Registry, order v1alpha1.O
 }
 
 func LoadEditorModel(cfg *rest.Config, reg *repo.Registry, opts appapi.ModelMetadata) (*appapi.EditorTemplate, error) {
-	rd, err := hub.NewRegistryOfKnownResources().LoadByGVR(schema.GroupVersionResource{
-		Group:    opts.Resource.Group,
-		Version:  opts.Resource.Version,
-		Resource: opts.Resource.Name,
-	})
+	ed, err := resourceeditors.LoadByName(resourceeditors.DefaultEditorName(opts.Resource.GroupVersionResource()))
 	if err != nil {
 		return nil, err
 	}
 
-	chrt, err := reg.GetChart(rd.Spec.UI.Editor.URL, rd.Spec.UI.Editor.Name, rd.Spec.UI.Editor.Version)
+	chrt, err := reg.GetChart(ed.Spec.UI.Editor.URL, ed.Spec.UI.Editor.Name, ed.Spec.UI.Editor.Version)
 	if err != nil {
 		return nil, err
 	}
@@ -314,11 +310,7 @@ func GenerateEditorModel(reg *repo.Registry, opts map[string]interface{}) (*unst
 		return nil, err
 	}
 
-	rd, err := hub.NewRegistryOfKnownResources().LoadByGVR(schema.GroupVersionResource{
-		Group:    spec.Resource.Group,
-		Version:  spec.Resource.Version,
-		Resource: spec.Resource.Name,
-	})
+	ed, err := resourceeditors.LoadByName(resourceeditors.DefaultEditorName(spec.Resource.GroupVersionResource()))
 	if err != nil {
 		return nil, err
 	}
@@ -326,10 +318,10 @@ func GenerateEditorModel(reg *repo.Registry, opts map[string]interface{}) (*unst
 	f1 := &EditorModelGenerator{
 		Registry: reg,
 		ChartRef: v1alpha1.ChartRef{
-			URL:  rd.Spec.UI.Options.URL,
-			Name: rd.Spec.UI.Options.Name,
+			URL:  ed.Spec.UI.Options.URL,
+			Name: ed.Spec.UI.Options.Name,
 		},
-		Version:     rd.Spec.UI.Options.Version,
+		Version:     ed.Spec.UI.Options.Version,
 		ReleaseName: spec.Metadata.Release.Name,
 		Namespace:   spec.Metadata.Release.Namespace,
 		KubeVersion: "v1.17.0",
@@ -370,11 +362,7 @@ func RenderChartTemplate(reg *repo.Registry, opts map[string]interface{}) (strin
 		return "", nil, err
 	}
 
-	rd, err := hub.NewRegistryOfKnownResources().LoadByGVR(schema.GroupVersionResource{
-		Group:    spec.Resource.Group,
-		Version:  spec.Resource.Version,
-		Resource: spec.Resource.Name,
-	})
+	ed, err := resourceeditors.LoadByName(resourceeditors.DefaultEditorName(spec.Resource.GroupVersionResource()))
 	if err != nil {
 		return "", nil, err
 	}
@@ -382,10 +370,10 @@ func RenderChartTemplate(reg *repo.Registry, opts map[string]interface{}) (strin
 	f1 := &EditorModelGenerator{
 		Registry: reg,
 		ChartRef: v1alpha1.ChartRef{
-			URL:  rd.Spec.UI.Editor.URL,
-			Name: rd.Spec.UI.Editor.Name,
+			URL:  ed.Spec.UI.Editor.URL,
+			Name: ed.Spec.UI.Editor.Name,
 		},
-		Version:        rd.Spec.UI.Editor.Version,
+		Version:        ed.Spec.UI.Editor.Version,
 		ReleaseName:    spec.Release.Name,
 		Namespace:      spec.Release.Namespace,
 		KubeVersion:    "v1.17.0",
