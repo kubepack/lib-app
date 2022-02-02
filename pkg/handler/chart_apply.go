@@ -19,11 +19,12 @@ package handler
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 
 	"kubepack.dev/kubepack/pkg/lib"
 	appapi "kubepack.dev/lib-app/api/v1alpha1"
 	"kubepack.dev/lib-app/pkg/editor"
-	"kubepack.dev/lib-helm/pkg/action"
+	actionx "kubepack.dev/lib-helm/pkg/action"
 	"kubepack.dev/lib-helm/pkg/storage/driver"
 	"kubepack.dev/lib-helm/pkg/values"
 
@@ -41,18 +42,23 @@ func ApplyResource(f cmdutil.Factory, model map[string]interface{}, skipCRds boo
 		return nil, errors.New("failed to parse Metadata for values")
 	}
 
-	ed, err := resourceeditors.LoadByName(resourceeditors.DefaultEditorName(tm.Resource.GroupVersionResource()))
+	kc, err := actionx.NewUncachedClient(f)
 	if err != nil {
 		return nil, err
 	}
 
-	deployer, err := action.NewDeployer(f, tm.Release.Namespace, driver.ApplicationsDriverName)
+	ed, ok := resourceeditors.LoadByResourceID(kc, &tm.Resource)
+	if !ok {
+		return nil, fmt.Errorf("failed to load resource editor for %+v", tm.Resource)
+	}
+
+	deployer, err := actionx.NewDeployer(f, tm.Release.Namespace, driver.ApplicationsDriverName)
 	if err != nil {
 		return nil, err
 	}
 
 	deployer.WithRegistry(lib.DefaultRegistry)
-	var opts action.DeployOptions
+	var opts actionx.DeployOptions
 	opts.ChartURL = ed.Spec.UI.Editor.URL
 	opts.ChartName = ed.Spec.UI.Editor.Name
 	opts.Version = ed.Spec.UI.Editor.Version
@@ -60,11 +66,7 @@ func ApplyResource(f cmdutil.Factory, model map[string]interface{}, skipCRds boo
 	var vals map[string]interface{}
 	if _, ok := model["patch"]; ok {
 		// NOTE: Makes an assumption that this is a "edit" apply
-		cfg, err := f.ToRESTConfig()
-		if err != nil {
-			return nil, err
-		}
-		tpl, err := editor.LoadEditorModel(cfg, lib.DefaultRegistry, appapi.ModelMetadata{
+		tpl, err := editor.LoadEditorModel(kc, lib.DefaultRegistry, appapi.ModelMetadata{
 			Metadata: tm.Metadata,
 		})
 		if err != nil {
@@ -135,13 +137,13 @@ func ApplyResource(f cmdutil.Factory, model map[string]interface{}, skipCRds boo
 }
 
 func DeleteResource(f cmdutil.Factory, release appapi.ObjectMeta) (*release.UninstallReleaseResponse, error) {
-	cmd, err := action.NewUninstaller(f, release.Namespace, driver.ApplicationsDriverName)
+	cmd, err := actionx.NewUninstaller(f, release.Namespace, driver.ApplicationsDriverName)
 	if err != nil {
 		return nil, err
 	}
 
 	cmd.WithReleaseName(release.Name)
-	cmd.WithOptions(action.UninstallOptions{
+	cmd.WithOptions(actionx.UninstallOptions{
 		DisableHooks: false,
 		DryRun:       false,
 		KeepHistory:  false,

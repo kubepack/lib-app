@@ -23,16 +23,15 @@ import (
 	"fmt"
 	"path"
 	"strconv"
-	"strings"
 
 	"kubepack.dev/kubepack/apis/kubepack/v1alpha1"
 	appapi "kubepack.dev/lib-app/api/v1alpha1"
+	actionx "kubepack.dev/lib-helm/pkg/action"
 	libchart "kubepack.dev/lib-helm/pkg/chart"
 	"kubepack.dev/lib-helm/pkg/repo"
 
 	"github.com/Masterminds/semver/v3"
 	jsonpatch "github.com/evanphx/json-patch/v5"
-	"github.com/gobuffalo/flect"
 	"gocloud.dev/blob"
 	_ "gocloud.dev/blob/azureblob"
 	_ "gocloud.dev/blob/fileblob"
@@ -42,12 +41,11 @@ import (
 	"helm.sh/helm/v3/pkg/chart"
 	"helm.sh/helm/v3/pkg/chartutil"
 	"helm.sh/helm/v3/pkg/release"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/runtime/schema"
-	"kmodules.xyz/client-go/discovery"
-	"kmodules.xyz/resource-metadata/hub"
-	"kmodules.xyz/resource-metadata/hub/resourceeditors"
+	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	yamllib "sigs.k8s.io/yaml"
 )
 
@@ -302,7 +300,7 @@ type EditorModelGenerator struct {
 	Manifest []byte
 }
 
-func (x *EditorModelGenerator) Do() error {
+func (x *EditorModelGenerator) Do(kc client.Client) error {
 	chrt, err := x.Registry.GetChart(x.ChartRef.URL, x.ChartRef.Name, x.Version)
 	if err != nil {
 		return err
@@ -325,8 +323,9 @@ func (x *EditorModelGenerator) Do() error {
 		return err
 	}
 
-	//if chrt.Metadata.Deprecated {
-	//}
+	if chrt.Metadata.Deprecated {
+		klog.Warningf("WARNING: chart url=%s,name=%s,version=%s is deprecated", x.ChartRef.URL, x.ChartRef.Name, x.Version)
+	}
 
 	if req := chrt.Metadata.Dependencies; req != nil {
 		// If CheckDependencies returns an error, we have unfulfilled dependencies.
@@ -375,9 +374,20 @@ func (x *EditorModelGenerator) Do() error {
 
 		// opts / model needs to be updated for metadata
 		if x.RefillMetadata {
-			err = RefillMetadata(hub.NewRegistryOfKnownResources(), chrt.Values, vals)
-			if err != nil {
-				return err
+			if data, ok := chrt.Chart.Metadata.Annotations["meta.x-helm.dev/editor"]; ok && data != "" {
+				var gvr metav1.GroupVersionResource
+				if err := json.Unmarshal([]byte(data), &gvr); err != nil {
+					return fmt.Errorf("failed to parse %s annotation %s", "meta.x-helm.dev/editor", data)
+				}
+				rls := types.NamespacedName{
+					Namespace: x.Namespace,
+					Name:      x.ReleaseName,
+				}
+				if err := actionx.RefillMetadata(kc, chrt.Chart.Values, vals, gvr, rls); err != nil {
+					return err
+				}
+			} else {
+				return fmt.Errorf("chart url=%s,name=%s,version=%s is missing annotation key meta.x-helm.dev/editor", x.ChartRef.URL, x.ChartRef.Name, x.Version)
 			}
 		}
 	}
@@ -464,98 +474,4 @@ func (x *EditorModelGenerator) Do() error {
 
 func (x *EditorModelGenerator) Result() ([]*chart.File, []byte) {
 	return x.CRDs, x.Manifest
-}
-
-func RefillMetadata(mapper discovery.ResourceMapper, ref, actual map[string]interface{}) error {
-	refResources, ok := ref["resources"].(map[string]interface{})
-	if !ok {
-		return nil
-	}
-	actualResources, ok := actual["resources"].(map[string]interface{})
-	if !ok {
-		return nil
-	}
-
-	rlsName, _, err := unstructured.NestedString(actual, "metadata", "release", "name")
-	if err != nil {
-		return err
-	}
-	rlsNamespace, _, err := unstructured.NestedString(actual, "metadata", "release", "namespace")
-	if err != nil {
-		return err
-	}
-
-	for key, o := range actualResources {
-		// apiVersion
-		// kind
-		// metadata:
-		//	name:
-		//  namespace:
-		//  labels:
-
-		refObj, ok := refResources[key].(map[string]interface{})
-		if !ok {
-			return fmt.Errorf("missing key %s in reference chart values", key)
-		}
-		obj := o.(map[string]interface{})
-		obj["apiVersion"] = refObj["apiVersion"]
-		obj["kind"] = refObj["kind"]
-
-		// name
-		name := rlsName
-		idx := strings.IndexRune(key, '_')
-		if idx != -1 {
-			name += "-" + flect.Dasherize(key[idx+1:])
-		}
-		err = unstructured.SetNestedField(obj, name, "metadata", "name")
-		if err != nil {
-			return err
-		}
-
-		// namespace
-		// TODO: add namespace if needed
-		err = unstructured.SetNestedField(obj, rlsNamespace, "metadata", "namespace")
-		if err != nil {
-			return err
-		}
-
-		// get select labels from app and set to obj labels
-		err = updateLabels(rlsName, obj, "metadata", "labels")
-		if err != nil {
-			return err
-		}
-
-		gvk := schema.FromAPIVersionAndKind(refObj["apiVersion"].(string), refObj["kind"].(string))
-		if gvr, err := mapper.GVR(gvk); err == nil {
-			if rd, err := resourceeditors.LoadByName(resourceeditors.DefaultEditorName(gvr)); err == nil {
-				if rd.Spec.UI != nil {
-					for _, fields := range rd.Spec.UI.InstanceLabelPaths {
-						fields := strings.Trim(fields, ".")
-						err = updateLabels(rlsName, obj, strings.Split(fields, ".")...)
-						if err != nil {
-							return err
-						}
-					}
-				}
-			}
-		}
-
-		actualResources[key] = obj
-	}
-	return nil
-}
-
-func updateLabels(rlsName string, obj map[string]interface{}, fields ...string) error {
-	labels, ok, err := unstructured.NestedStringMap(obj, fields...)
-	if err != nil {
-		return err
-	}
-	if !ok {
-		labels = map[string]string{}
-	}
-	key := "app.kubernetes.io/instance"
-	if _, ok := labels[key]; ok {
-		labels[key] = rlsName
-	}
-	return unstructured.SetNestedStringMap(obj, labels, fields...)
 }

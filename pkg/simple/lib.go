@@ -298,8 +298,8 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 		}
 	}
 
-	ed, err := resourceeditors.LoadByName(resourceeditors.DefaultEditorName(rd.Spec.Resource.GroupVersionResource()))
-	if err == nil {
+	ed, ok := resourceeditors.LoadDefaultByGVR(rd.Spec.Resource.GroupVersionResource())
+	if ok {
 		ed.Spec.UI = &v1alpha1.UIParameters{
 			Options: nil,
 			Editor: &v1alpha1.ChartRepoRef{

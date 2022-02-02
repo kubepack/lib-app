@@ -29,6 +29,7 @@ import (
 	"kubepack.dev/lib-helm/pkg/repo"
 
 	"github.com/google/uuid"
+	"github.com/pkg/errors"
 	"gomodules.xyz/jsonpatch/v3"
 	"helm.sh/helm/v3/pkg/chart"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -36,15 +37,12 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
-	"k8s.io/client-go/dynamic"
-	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/rest"
 	"kmodules.xyz/client-go/discovery"
 	meta_util "kmodules.xyz/client-go/meta"
 	"kmodules.xyz/client-go/tools/parser"
 	"kmodules.xyz/resource-metadata/hub/resourceeditors"
 	"sigs.k8s.io/application/api/app/v1beta1"
-	app_cs "sigs.k8s.io/application/client/clientset/versioned"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/yaml"
 )
 
@@ -128,10 +126,10 @@ func RenderOrderTemplate(bs *lib.BlobStore, reg *repo.Registry, order v1alpha1.O
 	return buf.String(), tpls, nil
 }
 
-func LoadEditorModel(cfg *rest.Config, reg *repo.Registry, opts appapi.ModelMetadata) (*appapi.EditorTemplate, error) {
-	ed, err := resourceeditors.LoadByName(resourceeditors.DefaultEditorName(opts.Resource.GroupVersionResource()))
-	if err != nil {
-		return nil, err
+func LoadEditorModel(kc client.Client, reg *repo.Registry, opts appapi.ModelMetadata) (*appapi.EditorTemplate, error) {
+	ed, ok := resourceeditors.LoadByResourceID(kc, &opts.Resource)
+	if !ok {
+		return nil, fmt.Errorf("failed to load resource editor for %+v", opts.Resource)
 	}
 
 	chrt, err := reg.GetChart(ed.Spec.UI.Editor.URL, ed.Spec.UI.Editor.Name, ed.Spec.UI.Editor.Version)
@@ -139,34 +137,20 @@ func LoadEditorModel(cfg *rest.Config, reg *repo.Registry, opts appapi.ModelMeta
 		return nil, err
 	}
 
-	kc, err := kubernetes.NewForConfig(cfg)
-	if err != nil {
-		return nil, err
-	}
-	mapper := discovery.NewResourceMapper(discovery.NewRestMapper(kc.Discovery()))
-	dc, err := dynamic.NewForConfig(cfg)
-	if err != nil {
-		return nil, err
-	}
-	ac, err := app_cs.NewForConfig(cfg)
+	var app v1beta1.Application
+	err = kc.Get(context.TODO(), client.ObjectKey{Namespace: opts.Release.Namespace, Name: opts.Release.Name}, &app)
 	if err != nil {
 		return nil, err
 	}
 
-	app, err := ac.AppV1beta1().Applications(opts.Release.Namespace).Get(context.TODO(), opts.Release.Name, metav1.GetOptions{})
-	if err != nil {
-		return nil, err
-	}
-
-	return EditorChartValueManifest(app, mapper, dc, opts.Metadata.Release, chrt.Chart)
+	return EditorChartValueManifest(kc, &app, opts.Metadata.Release, chrt.Chart)
 }
 
-func EditorChartValueManifest(app *v1beta1.Application, mapper discovery.ResourceMapper, dc dynamic.Interface, mt appapi.ObjectMeta, chrt *chart.Chart) (*appapi.EditorTemplate, error) {
+func EditorChartValueManifest(kc client.Client, app *v1beta1.Application, mt appapi.ObjectMeta, chrt *chart.Chart) (*appapi.EditorTemplate, error) {
 	selector, err := metav1.LabelSelectorAsSelector(app.Spec.Selector)
 	if err != nil {
 		return nil, err
 	}
-	labelSelector := selector.String()
 
 	var buf bytes.Buffer
 	resourceMap := map[string]interface{}{}
@@ -190,6 +174,8 @@ func EditorChartValueManifest(app *v1beta1.Application, mapper discovery.Resourc
 		}] = gv.Version
 	}
 
+	mapper := discovery.NewResourceMapper(kc.RESTMapper())
+
 	var resources []*unstructured.Unstructured
 	for _, gk := range app.Spec.ComponentGroupKinds {
 		version, ok := gkToVersion[gk]
@@ -202,24 +188,17 @@ func EditorChartValueManifest(app *v1beta1.Application, mapper discovery.Resourc
 			Version: version,
 			Kind:    gk.Kind,
 		}
-		gvr, err := mapper.GVR(gvk)
+		namespaced, err := mapper.IsGVKNamespaced(gvk)
 		if err != nil {
-			return nil, fmt.Errorf("failed to detect GVR for gvk %v, reason %v", gvk, err)
+			return nil, errors.Wrapf(err, "failed to detect if gvk %v is namespaced", gvk)
 		}
-		namespaced, err := mapper.IsGVRNamespaced(gvr)
-		if err != nil {
-			return nil, fmt.Errorf("failed to detect if gvr %v is namespaced, reason %v", gvr, err)
-		}
-		var rc dynamic.ResourceInterface
+		var list unstructured.UnstructuredList
+		list.SetGroupVersionKind(gvk)
+		opts := []client.ListOption{client.MatchingLabelsSelector{Selector: selector}}
 		if namespaced {
-			rc = dc.Resource(gvr).Namespace(mt.Namespace)
-		} else {
-			rc = dc.Resource(gvr)
+			opts = append(opts, client.InNamespace(mt.Namespace))
 		}
-
-		list, err := rc.List(context.TODO(), metav1.ListOptions{
-			LabelSelector: labelSelector,
-		})
+		err = kc.List(context.TODO(), &list, opts...)
 		if err != nil {
 			return nil, err
 		}
@@ -303,16 +282,16 @@ func EditorChartValueManifest(app *v1beta1.Application, mapper discovery.Resourc
 	return &tpl, nil
 }
 
-func GenerateEditorModel(reg *repo.Registry, opts map[string]interface{}) (*unstructured.Unstructured, error) {
+func GenerateEditorModel(kc client.Client, reg *repo.Registry, opts map[string]interface{}) (*unstructured.Unstructured, error) {
 	var spec appapi.ModelMetadata
 	err := meta_util.DecodeObject(opts, &spec)
 	if err != nil {
 		return nil, err
 	}
 
-	ed, err := resourceeditors.LoadByName(resourceeditors.DefaultEditorName(spec.Resource.GroupVersionResource()))
-	if err != nil {
-		return nil, err
+	ed, ok := resourceeditors.LoadByResourceID(kc, &spec.Resource)
+	if !ok {
+		return nil, fmt.Errorf("failed to load resource editor for %+v", spec.Resource)
 	}
 
 	f1 := &EditorModelGenerator{
@@ -327,7 +306,7 @@ func GenerateEditorModel(reg *repo.Registry, opts map[string]interface{}) (*unst
 		KubeVersion: "v1.17.0",
 		Values:      opts,
 	}
-	err = f1.Do()
+	err = f1.Do(kc)
 	if err != nil {
 		return nil, err
 	}
@@ -355,16 +334,16 @@ func GenerateEditorModel(reg *repo.Registry, opts map[string]interface{}) (*unst
 	}, err
 }
 
-func RenderChartTemplate(reg *repo.Registry, opts map[string]interface{}) (string, *appapi.ChartTemplate, error) {
+func RenderChartTemplate(kc client.Client, reg *repo.Registry, opts map[string]interface{}) (string, *appapi.ChartTemplate, error) {
 	var spec appapi.ModelMetadata
 	err := meta_util.DecodeObject(opts, &spec)
 	if err != nil {
 		return "", nil, err
 	}
 
-	ed, err := resourceeditors.LoadByName(resourceeditors.DefaultEditorName(spec.Resource.GroupVersionResource()))
-	if err != nil {
-		return "", nil, err
+	ed, ok := resourceeditors.LoadByResourceID(kc, &spec.Resource)
+	if !ok {
+		return "", nil, fmt.Errorf("failed to load resource editor for %+v", spec.Resource)
 	}
 
 	f1 := &EditorModelGenerator{
@@ -380,7 +359,7 @@ func RenderChartTemplate(reg *repo.Registry, opts map[string]interface{}) (strin
 		Values:         opts,
 		RefillMetadata: true,
 	}
-	err = f1.Do()
+	err = f1.Do(kc)
 	if err != nil {
 		return "", nil, err
 	}
