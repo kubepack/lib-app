@@ -29,10 +29,9 @@ import (
 
 	jsonpatch "github.com/evanphx/json-patch/v5"
 	"helm.sh/helm/v3/pkg/release"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 	cmdutil "k8s.io/kubectl/pkg/cmd/util"
 	meta_util "kmodules.xyz/client-go/meta"
-	"kmodules.xyz/resource-metadata/hub"
+	"kmodules.xyz/resource-metadata/hub/resourceeditors"
 )
 
 func ApplyResource(f cmdutil.Factory, model map[string]interface{}, skipCRds bool) (*release.Release, error) {
@@ -42,11 +41,7 @@ func ApplyResource(f cmdutil.Factory, model map[string]interface{}, skipCRds boo
 		return nil, errors.New("failed to parse Metadata for values")
 	}
 
-	rd, err := hub.NewRegistryOfKnownResources().LoadByGVR(schema.GroupVersionResource{
-		Group:    tm.Resource.Group,
-		Version:  tm.Resource.Version,
-		Resource: tm.Resource.Name,
-	})
+	ed, err := resourceeditors.LoadByName(resourceeditors.DefaultEditorName(tm.Resource.GroupVersionResource()))
 	if err != nil {
 		return nil, err
 	}
@@ -58,9 +53,9 @@ func ApplyResource(f cmdutil.Factory, model map[string]interface{}, skipCRds boo
 
 	deployer.WithRegistry(lib.DefaultRegistry)
 	var opts action.DeployOptions
-	opts.ChartURL = rd.Spec.UI.Editor.URL
-	opts.ChartName = rd.Spec.UI.Editor.Name
-	opts.Version = rd.Spec.UI.Editor.Version
+	opts.ChartURL = ed.Spec.UI.Editor.URL
+	opts.ChartName = ed.Spec.UI.Editor.Name
+	opts.Version = ed.Spec.UI.Editor.Version
 
 	var vals map[string]interface{}
 	if _, ok := model["patch"]; ok {
