@@ -788,12 +788,6 @@ gomodules.xyz/logs
 # gomodules.xyz/orderedmap v0.1.0
 ## explicit; go 1.12
 gomodules.xyz/orderedmap
-# gomodules.xyz/password-generator v0.2.7
-## explicit; go 1.15
-gomodules.xyz/password-generator
-# gomodules.xyz/pointer v0.1.0
-## explicit; go 1.15
-gomodules.xyz/pointer
 # gomodules.xyz/sets v0.2.1
 ## explicit; go 1.14
 gomodules.xyz/sets
@@ -805,7 +799,6 @@ gomodules.xyz/sets/kubernetes
 gomodules.xyz/wait
 # gomodules.xyz/x v0.0.10
 ## explicit; go 1.17
-gomodules.xyz/x/crypto/rand
 gomodules.xyz/x/strings
 # google.golang.org/api v0.44.0 => google.golang.org/api v0.20.0
 ## explicit; go 1.11
@@ -1230,12 +1223,7 @@ k8s.io/client-go/pkg/apis/clientauthentication
 k8s.io/client-go/pkg/apis/clientauthentication/v1alpha1
 k8s.io/client-go/pkg/apis/clientauthentication/v1beta1
 k8s.io/client-go/pkg/version
-k8s.io/client-go/plugin/pkg/client/auth
-k8s.io/client-go/plugin/pkg/client/auth/azure
 k8s.io/client-go/plugin/pkg/client/auth/exec
-k8s.io/client-go/plugin/pkg/client/auth/gcp
-k8s.io/client-go/plugin/pkg/client/auth/oidc
-k8s.io/client-go/plugin/pkg/client/auth/openstack
 k8s.io/client-go/rest
 k8s.io/client-go/rest/watch
 k8s.io/client-go/restmapper
@@ -1275,7 +1263,6 @@ k8s.io/component-base/version
 # k8s.io/klog/v2 v2.9.0
 ## explicit; go 1.13
 k8s.io/klog/v2
-k8s.io/klog/v2/klogr
 # k8s.io/kube-openapi v0.0.0-20210421082810-95288971da7e => k8s.io/kube-openapi v0.0.0-20210305001622-591a79e4bda7
 ## explicit; go 1.12
 k8s.io/kube-openapi/pkg/common
@@ -1318,7 +1305,6 @@ kmodules.xyz/client-go/apiextensions
 kmodules.xyz/client-go/apiextensions/v1
 kmodules.xyz/client-go/discovery
 kmodules.xyz/client-go/meta
-kmodules.xyz/client-go/tools/clientcmd
 kmodules.xyz/client-go/tools/converter
 kmodules.xyz/client-go/tools/parser
 kmodules.xyz/client-go/tools/wait

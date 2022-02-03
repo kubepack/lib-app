@@ -18,9 +18,7 @@ require (
 	gocloud.dev v0.22.0
 	gomodules.xyz/jsonpatch/v3 v3.0.1
 	gomodules.xyz/logs v0.0.6
-	gomodules.xyz/pointer v0.1.0
 	gomodules.xyz/sets/kubernetes v0.2.0
-	gomodules.xyz/x v0.0.10
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 	helm.sh/helm/v3 v3.6.1
 	k8s.io/api v0.21.1
@@ -35,7 +33,6 @@ require (
 	kubepack.dev/chart-doc-gen v0.4.3
 	kubepack.dev/kubepack v0.3.9-0.20220201033352-575b50c5a43d
 	kubepack.dev/lib-helm v0.3.2-0.20220203205019-08f9034b21b9
-	kubepack.dev/preset v0.0.0-20220202134203-5d5853a977cb
 	sigs.k8s.io/application v0.8.2-0.20200306235134-f10d9ca8abd4
 	sigs.k8s.io/controller-runtime v0.9.0
 	sigs.k8s.io/yaml v1.2.0
@@ -185,9 +182,9 @@ require (
 	gomodules.xyz/flags v0.1.3 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.2.0 // indirect
 	gomodules.xyz/orderedmap v0.1.0 // indirect
-	gomodules.xyz/password-generator v0.2.7 // indirect
 	gomodules.xyz/sets v0.2.1 // indirect
 	gomodules.xyz/wait v0.2.0 // indirect
+	gomodules.xyz/x v0.0.10 // indirect
 	google.golang.org/api v0.44.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20210602131652-f16073e35f0c // indirect
@@ -203,6 +200,7 @@ require (
 	k8s.io/utils v0.0.0-20210802155522-efc7438f0176 // indirect
 	kmodules.xyz/apiversion v0.2.0 // indirect
 	kmodules.xyz/apply v0.0.0-20210503080849-eb226c295465 // indirect
+	kubepack.dev/preset v0.0.0-20220202134203-5d5853a977cb // indirect
 	sigs.k8s.io/cli-utils v0.26.1 // indirect
 	sigs.k8s.io/kustomize/api v0.8.8 // indirect
 	sigs.k8s.io/kustomize/kyaml v0.10.17 // indirect
