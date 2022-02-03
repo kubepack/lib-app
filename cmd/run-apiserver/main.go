@@ -17,6 +17,7 @@ limitations under the License.
 package main
 
 import (
+	"encoding/json"
 	"net/http"
 	"path"
 	"path/filepath"
@@ -31,6 +32,8 @@ import (
 	actionx "kubepack.dev/lib-helm/pkg/action"
 	"kubepack.dev/lib-helm/pkg/getter"
 	"kubepack.dev/lib-helm/pkg/repo"
+	"kubepack.dev/lib-helm/pkg/values"
+	chartsapi "kubepack.dev/preset/apis/charts/v1alpha1"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -87,6 +90,9 @@ func main() {
 
 		// PUBLIC
 		m.With(binding.JSON(v1alpha1.ChartRepoRef{})).Get("/files/*", binding.HandlerFunc(GetPackageFile))
+
+		// PUBLIC
+		m.With(binding.JSON(chartsapi.ChartPresetRef{})).Get("/values", binding.HandlerFunc(GetValuesFile))
 
 		// Generate Order for a Editor PackageView / Chart
 		m.With(binding.JSON(appapi.ChartOrder{})).Post("/orders", binding.HandlerFunc(CreateOrderForPackage))
@@ -839,6 +845,49 @@ func GetPackageFile(ctx httpw.ResponseWriter, params v1alpha1.ChartRepoRef) {
 		}
 	}
 	ctx.WriteHeader(http.StatusNotFound)
+}
+
+func GetValuesFile(ctx httpw.ResponseWriter, params chartsapi.ChartPresetRef) {
+	cfg, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, err.Error())
+		return
+	}
+	kc, err := actionx.NewUncachedClientForConfig(cfg)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	chrt, err := lib.DefaultRegistry.GetChart(params.URL, params.Name, params.Version)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "GetChart", err.Error())
+		return
+	}
+
+	vals, err := values.MergePresetValues(kc, chrt.Chart, params)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "MergePresetValues", err.Error())
+		return
+	}
+
+	var data []byte
+	var ct string
+	format := meta_util.NewDataFormat(ctx.R().QueryTrim("format"), meta_util.KeepFormat)
+	if format == meta_util.JsonFormat {
+		ct = "application/json"
+		data, err = json.Marshal(vals)
+	} else if format == meta_util.YAMLFormat {
+		ct = "text/yaml"
+		data, err = yaml.Marshal(vals)
+	}
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "ConvertFormat", err.Error())
+		return
+	}
+
+	ctx.Header().Set("Content-Type", ct)
+	_, _ = ctx.Write(data)
 }
 
 func ListPackageFiles(ctx httpw.ResponseWriter, params v1alpha1.ChartRepoRef) {
