@@ -28,6 +28,7 @@ import (
 	appapi "kubepack.dev/lib-app/api/v1alpha1"
 	"kubepack.dev/lib-app/pkg/editor"
 	"kubepack.dev/lib-app/pkg/handler"
+	actionx "kubepack.dev/lib-helm/pkg/action"
 	"kubepack.dev/lib-helm/pkg/getter"
 	"kubepack.dev/lib-helm/pkg/repo"
 
@@ -503,8 +504,13 @@ func LoadEditorResources(ctx httpw.ResponseWriter, model appapi.Model) {
 		ctx.Error(http.StatusInternalServerError, err.Error())
 		return
 	}
+	kc, err := actionx.NewUncachedClientForConfig(cfg)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, err.Error())
+		return
+	}
 
-	tpl, err := editor.LoadEditorModel(cfg, lib.DefaultRegistry, appapi.ModelMetadata{
+	tpl, err := editor.LoadEditorModel(kc, lib.DefaultRegistry, appapi.ModelMetadata{
 		Metadata: model.Metadata,
 	})
 	if err != nil {
@@ -535,8 +541,13 @@ func LoadEditorManifest(ctx httpw.ResponseWriter, model appapi.Model) {
 		ctx.Error(http.StatusInternalServerError, err.Error())
 		return
 	}
+	kc, err := actionx.NewUncachedClientForConfig(cfg)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, err.Error())
+		return
+	}
 
-	tpl, err := editor.LoadEditorModel(cfg, lib.DefaultRegistry, appapi.ModelMetadata{
+	tpl, err := editor.LoadEditorModel(kc, lib.DefaultRegistry, appapi.ModelMetadata{
 		Metadata: model.Metadata,
 	})
 	if err != nil {
@@ -552,8 +563,13 @@ func LoadEditorModel(ctx httpw.ResponseWriter, model appapi.ModelMetadata) {
 		ctx.Error(http.StatusInternalServerError, err.Error())
 		return
 	}
+	kc, err := actionx.NewUncachedClientForConfig(cfg)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, err.Error())
+		return
+	}
 
-	tpl, err := editor.LoadEditorModel(cfg, lib.DefaultRegistry, model)
+	tpl, err := editor.LoadEditorModel(kc, lib.DefaultRegistry, model)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "LoadEditorModel", err.Error())
 		return
@@ -701,7 +717,18 @@ func CreateOrder(ctx httpw.ResponseWriter, order v1alpha1.Order) {
 }
 
 func PreviewEditorResources(ctx httpw.ResponseWriter, opts map[string]interface{}) {
-	_, tpls, err := editor.RenderChartTemplate(lib.DefaultRegistry, opts)
+	cfg, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, err.Error())
+		return
+	}
+	kc, err := actionx.NewUncachedClientForConfig(cfg)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	_, tpls, err := editor.RenderChartTemplate(kc, lib.DefaultRegistry, opts)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "RenderChartTemplate", err.Error())
 		return
@@ -739,7 +766,18 @@ func PreviewEditorResources(ctx httpw.ResponseWriter, opts map[string]interface{
 }
 
 func PreviewEditorManifest(ctx httpw.ResponseWriter, opts map[string]interface{}) {
-	manifest, _, err := editor.RenderChartTemplate(lib.DefaultRegistry, opts)
+	cfg, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, err.Error())
+		return
+	}
+	kc, err := actionx.NewUncachedClientForConfig(cfg)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	manifest, _, err := editor.RenderChartTemplate(kc, lib.DefaultRegistry, opts)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "RenderChartTemplate", err.Error())
 		return
@@ -748,7 +786,18 @@ func PreviewEditorManifest(ctx httpw.ResponseWriter, opts map[string]interface{}
 }
 
 func GenerateEditorModelFromOptions(ctx httpw.ResponseWriter, opts map[string]interface{}) {
-	model, err := editor.GenerateEditorModel(lib.DefaultRegistry, opts)
+	cfg, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, err.Error())
+		return
+	}
+	kc, err := actionx.NewUncachedClientForConfig(cfg)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	model, err := editor.GenerateEditorModel(kc, lib.DefaultRegistry, opts)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "GetChart", err.Error())
 		return

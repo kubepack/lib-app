@@ -9,6 +9,7 @@ require (
 	github.com/go-chi/chi/v5 v5.0.3
 	github.com/gobuffalo/flect v0.2.3
 	github.com/google/uuid v1.3.0
+	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.2.1
 	github.com/spf13/pflag v1.0.5
 	github.com/unrolled/render v1.4.0
@@ -17,7 +18,9 @@ require (
 	gocloud.dev v0.22.0
 	gomodules.xyz/jsonpatch/v3 v3.0.1
 	gomodules.xyz/logs v0.0.6
+	gomodules.xyz/pointer v0.1.0
 	gomodules.xyz/sets/kubernetes v0.2.0
+	gomodules.xyz/x v0.0.10
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 	helm.sh/helm/v3 v3.6.1
 	k8s.io/api v0.21.1
@@ -27,12 +30,14 @@ require (
 	k8s.io/client-go v0.21.1
 	k8s.io/klog/v2 v2.9.0
 	k8s.io/kubectl v0.21.1
-	kmodules.xyz/client-go v0.0.0-20220131065336-bb3e98486e83
-	kmodules.xyz/resource-metadata v0.8.2-0.20220202132534-f0c60906a41b
+	kmodules.xyz/client-go v0.0.0-20220203031013-1de48437aaf3
+	kmodules.xyz/resource-metadata v0.8.2-0.20220203195725-17129529420b
 	kubepack.dev/chart-doc-gen v0.4.3
 	kubepack.dev/kubepack v0.3.9-0.20220201033352-575b50c5a43d
-	kubepack.dev/lib-helm v0.3.2-0.20220202133039-f91fc7c04650
+	kubepack.dev/lib-helm v0.3.2-0.20220203205019-08f9034b21b9
+	kubepack.dev/preset v0.0.0-20220202134203-5d5853a977cb
 	sigs.k8s.io/application v0.8.2-0.20200306235134-f10d9ca8abd4
+	sigs.k8s.io/controller-runtime v0.9.0
 	sigs.k8s.io/yaml v1.2.0
 )
 
@@ -142,7 +147,6 @@ require (
 	github.com/opencontainers/image-spec v1.0.2 // indirect
 	github.com/opencontainers/runc v1.0.3 // indirect
 	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_golang v1.11.0 // indirect
 	github.com/prometheus/client_model v0.2.0 // indirect
@@ -181,9 +185,9 @@ require (
 	gomodules.xyz/flags v0.1.3 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.2.0 // indirect
 	gomodules.xyz/orderedmap v0.1.0 // indirect
+	gomodules.xyz/password-generator v0.2.7 // indirect
 	gomodules.xyz/sets v0.2.1 // indirect
 	gomodules.xyz/wait v0.2.0 // indirect
-	gomodules.xyz/x v0.0.10 // indirect
 	google.golang.org/api v0.44.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20210602131652-f16073e35f0c // indirect
@@ -200,7 +204,6 @@ require (
 	kmodules.xyz/apiversion v0.2.0 // indirect
 	kmodules.xyz/apply v0.0.0-20210503080849-eb226c295465 // indirect
 	sigs.k8s.io/cli-utils v0.26.1 // indirect
-	sigs.k8s.io/controller-runtime v0.9.0 // indirect
 	sigs.k8s.io/kustomize/api v0.8.8 // indirect
 	sigs.k8s.io/kustomize/kyaml v0.10.17 // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.1.2 // indirect
