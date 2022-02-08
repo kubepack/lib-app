@@ -21,6 +21,12 @@ import (
 	"path/filepath"
 	"sort"
 
+	"kubepack.dev/kubepack/pkg/lib"
+	"kubepack.dev/lib-helm/pkg/action"
+	actionx "kubepack.dev/lib-helm/pkg/action"
+	"kubepack.dev/lib-helm/pkg/values"
+	chartsapi "kubepack.dev/preset/apis/charts/v1alpha1"
+
 	flag "github.com/spf13/pflag"
 	"gomodules.xyz/x/crypto/rand"
 	"k8s.io/cli-runtime/pkg/genericclioptions"
@@ -29,11 +35,6 @@ import (
 	"k8s.io/client-go/util/homedir"
 	"k8s.io/klog/v2"
 	clientcmdutil "kmodules.xyz/client-go/tools/clientcmd"
-	"kubepack.dev/kubepack/pkg/lib"
-	"kubepack.dev/lib-helm/pkg/action"
-	actionx "kubepack.dev/lib-helm/pkg/action"
-	"kubepack.dev/lib-helm/pkg/values"
-	chartsapi "kubepack.dev/preset/apis/charts/v1alpha1"
 )
 
 func main() {
@@ -91,6 +92,12 @@ func DD(getter genericclioptions.RESTClientGetter, ref chartsapi.ChartPresetRef)
 	if err != nil {
 		return err
 	}
+
+	vpsMap, err := values.LoadVendorPresets(chrt.Chart)
+	if err != nil {
+		return err
+	}
+	PrintGPS(vpsMap)
 
 	vals, err := values.MergePresetValues(kc, chrt.Chart, ref)
 	if err != nil {
