@@ -63,7 +63,7 @@ type TemplateRenderer struct {
 	BucketURL string
 	UID       string
 	PublicURL string
-	//W         io.Writer
+	// W         io.Writer
 
 	CRDs     []appapi.BucketFile
 	Manifest *appapi.BucketFile

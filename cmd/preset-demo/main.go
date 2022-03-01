@@ -63,19 +63,19 @@ func main() {
 	getter := clientcmdutil.NewClientGetter(&kubeconfig)
 
 	ref := chartsapi.ChartPresetRef{
-		//URL:            url,
-		//Name:           name,
-		//Version:        version,
+		// URL:            url,
+		// Name:           name,
+		// Version:        version,
 		PresetGroup:    chartsapi.GroupVersion.Group,
 		PresetKind:     chartsapi.ResourceKindVendorChartPreset,
 		PresetName:     "unified",
 		PresetSelector: "",
 		Namespace:      "default",
 	}
-	//encoder := form.NewEncoder()
-	//encoder.SetTagName("json")
-	//qv, err := encoder.Encode(&ref)
-	//fmt.Println(qv.Encode())
+	// encoder := form.NewEncoder()
+	// encoder.SetTagName("json")
+	// qv, err := encoder.Encode(&ref)
+	// fmt.Println(qv.Encode())
 
 	if err := DD(getter, ref); err != nil {
 		klog.Fatalln(err)

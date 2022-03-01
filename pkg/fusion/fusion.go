@@ -76,13 +76,13 @@ func NewCmdFuse() *cobra.Command {
 			chartName = fmt.Sprintf("%s-%s-editor", safeGroupName(rd.Spec.Resource.Group), strings.ToLower(rd.Spec.Resource.Kind))
 
 			tplDir := filepath.Join(chartDir, chartName, "templates")
-			err = os.MkdirAll(tplDir, 0755)
+			err = os.MkdirAll(tplDir, 0o755)
 			if err != nil {
 				return err
 			}
 
 			crdDir := filepath.Join(chartDir, chartName, "crds")
-			err = os.MkdirAll(crdDir, 0755)
+			err = os.MkdirAll(crdDir, 0o755)
 			if err != nil {
 				return err
 			}
@@ -157,8 +157,8 @@ func NewCmdFuse() *cobra.Command {
 									Served:  true,
 									Storage: true,
 									Schema:  descriptor.Spec.Validation,
-									//Subresources:             nil,
-									//AdditionalPrinterColumns: nil,
+									// Subresources:             nil,
+									// AdditionalPrinterColumns: nil,
 								},
 							},
 							PreserveUnknownFields: false,
@@ -176,7 +176,7 @@ func NewCmdFuse() *cobra.Command {
 					if err != nil {
 						return err
 					}
-					err = ioutil.WriteFile(filename, data, 0644)
+					err = ioutil.WriteFile(filename, data, 0o644)
 					if err != nil {
 						return err
 					}
@@ -184,7 +184,7 @@ func NewCmdFuse() *cobra.Command {
 
 				// templates
 				filename := filepath.Join(tplDir, rsFilename+".yaml")
-				f, err := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
+				f, err := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o644)
 				if err != nil {
 					return err
 				}
@@ -245,7 +245,7 @@ func NewCmdFuse() *cobra.Command {
 					return err
 				}
 				schemaFilename := filepath.Join(chartDir, chartName, "values.openapiv3_schema.yaml")
-				err = ioutil.WriteFile(schemaFilename, data3, 0644)
+				err = ioutil.WriteFile(schemaFilename, data3, 0o644)
 				if err != nil {
 					return err
 				}
@@ -290,7 +290,7 @@ func NewCmdFuse() *cobra.Command {
 				}
 
 				filename := filepath.Join(chartDir, chartName, "values.yaml")
-				err = ioutil.WriteFile(filename, buf.Bytes(), 0644)
+				err = ioutil.WriteFile(filename, buf.Bytes(), 0o644)
 				if err != nil {
 					return err
 				}
@@ -330,7 +330,7 @@ func NewCmdFuse() *cobra.Command {
 				}
 
 				filename := filepath.Join(chartDir, chartName, "doc.yaml")
-				err = ioutil.WriteFile(filename, data, 0644)
+				err = ioutil.WriteFile(filename, data, 0o644)
 				if err != nil {
 					return err
 				}
@@ -435,7 +435,7 @@ func GenerateChartMetadata(rd *v1alpha1.ResourceDescriptor, gks []metav1.GroupKi
 		return err
 	}
 	filename := filepath.Join(chartDir, chartName, "Chart.yaml")
-	return ioutil.WriteFile(filename, data4, 0644)
+	return ioutil.WriteFile(filename, data4, 0o644)
 }
 
 // toYAML takes an interface, marshals it to yaml, and returns a string. It will
