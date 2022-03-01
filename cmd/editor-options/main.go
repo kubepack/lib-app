@@ -45,7 +45,7 @@ func main() {
 		ValuesPatch: nil,
 	}
 
-	err := os.MkdirAll("artifacts/"+name, 0755)
+	err := os.MkdirAll("artifacts/"+name, 0o755)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -55,7 +55,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		err = ioutil.WriteFile("artifacts/"+name+"/editor.yaml", data, 0644)
+		err = ioutil.WriteFile("artifacts/"+name+"/editor.yaml", data, 0o644)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -66,7 +66,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		err = ioutil.WriteFile("artifacts/"+name+"/editor.json", data, 0644)
+		err = ioutil.WriteFile("artifacts/"+name+"/editor.json", data, 0o644)
 		if err != nil {
 			log.Fatal(err)
 		}
