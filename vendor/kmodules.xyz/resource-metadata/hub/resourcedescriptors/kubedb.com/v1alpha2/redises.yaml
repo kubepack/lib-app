@@ -47,7 +47,6 @@ spec:
       kind: AppBinding
     type: MatchName
   - labels:
-    - offshoot
     - catalog
     references:
     - '{.spec.version}'
@@ -56,7 +55,7 @@ spec:
       kind: RedisVersion
     type: MatchRef
   - labels:
-    - offshoot
+    - cert_issuer
     namespacePath: metadata.namespace
     references:
     - '{.spec.tls.issuerRef.name},{.metadata.namespace}'
@@ -65,7 +64,7 @@ spec:
       kind: Issuer
     type: MatchRef
   - labels:
-    - offshoot
+    - cert_issuer
     references:
     - '{.spec.tls.issuerRef.name}'
     target:
@@ -77,7 +76,7 @@ spec:
     nameTemplate: '{.metadata.name}~Redis.kubedb.com'
     namespacePath: metadata.namespace
     target:
-      apiVersion: ui.k8s.appscode.com/v1alpha1
+      apiVersion: core.k8s.appscode.com/v1alpha1
       kind: GenericResource
     type: MatchName
   - labels:
@@ -85,7 +84,7 @@ spec:
     nameTemplate: '{.metadata.name}~Redis.kubedb.com'
     namespacePath: metadata.namespace
     target:
-      apiVersion: ui.k8s.appscode.com/v1alpha1
+      apiVersion: core.k8s.appscode.com/v1alpha1
       kind: GenericResourceService
     type: MatchName
   - labels:
@@ -112,11 +111,6 @@ spec:
       apiVersion: ui.kubedb.com/v1alpha1
       kind: RedisSchemaOverview
     type: MatchName
-  icons:
-  - src: https://cdn.appscode.com/k8s/icons/kubedb.com/redises.svg
-    type: image/svg+xml
-  - src: https://cdn.appscode.com/k8s/icons/kubedb.com/redises.png
-    type: image/png
   resource:
     group: kubedb.com
     kind: Redis
@@ -151,6 +145,70 @@ spec:
           type: object
         spec:
           properties:
+            allowedSchemas:
+              default:
+                namespaces:
+                  from: Same
+              properties:
+                namespaces:
+                  default:
+                    from: Same
+                  properties:
+                    from:
+                      default: Same
+                      enum:
+                      - All
+                      - Selector
+                      - Same
+                      type: string
+                    selector:
+                      properties:
+                        matchExpressions:
+                          items:
+                            properties:
+                              key:
+                                type: string
+                              operator:
+                                type: string
+                              values:
+                                items:
+                                  type: string
+                                type: array
+                            required:
+                            - key
+                            - operator
+                            type: object
+                          type: array
+                        matchLabels:
+                          additionalProperties:
+                            type: string
+                          type: object
+                      type: object
+                  type: object
+                selector:
+                  properties:
+                    matchExpressions:
+                      items:
+                        properties:
+                          key:
+                            type: string
+                          operator:
+                            type: string
+                          values:
+                            items:
+                              type: string
+                            type: array
+                        required:
+                        - key
+                        - operator
+                        type: object
+                      type: array
+                    matchLabels:
+                      additionalProperties:
+                        type: string
+                      type: object
+                  type: object
+              type: object
             authSecret:
               properties:
                 name:
@@ -251,6 +309,8 @@ spec:
                       type: object
                   type: object
               type: object
+            disableAuth:
+              type: boolean
             halted:
               type: boolean
             init:
