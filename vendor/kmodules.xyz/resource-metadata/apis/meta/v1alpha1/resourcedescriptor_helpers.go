@@ -20,7 +20,6 @@ import (
 	"bytes"
 	"fmt"
 	"strings"
-	"sync"
 	"text/template"
 
 	kmapi "kmodules.xyz/client-go/api/v1"
@@ -89,12 +88,6 @@ const (
 	GraphQueryVarTargetKind  = "targetKind"
 )
 
-var pool = sync.Pool{
-	New: func() interface{} {
-		return new(bytes.Buffer)
-	},
-}
-
 func (r ResourceLocator) GraphQuery(oid kmapi.OID) (string, map[string]interface{}, error) {
 	if r.Query.Type == GraphQLQuery {
 		vars := map[string]interface{}{
@@ -128,16 +121,12 @@ func (r ResourceLocator) GraphQuery(oid kmapi.OID) (string, map[string]interface
 		// We mitigate that later.
 		tpl.Option("missingkey=default")
 
-		objID, err := kmapi.ObjectIDMap(oid)
+		objID, err := kmapi.ParseObjectID(oid)
 		if err != nil {
 			return "", nil, errors.Wrapf(err, "failed to parse oid=%s", oid)
 		}
-
-		buf := pool.Get().(*bytes.Buffer)
-		defer pool.Put(buf)
-		buf.Reset()
-
-		err = tpl.Execute(buf, objID)
+		var buf bytes.Buffer
+		err = tpl.Execute(&buf, objID)
 		if err != nil {
 			return "", nil, errors.Wrap(err, "failed to resolve template")
 		}

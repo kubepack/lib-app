@@ -47,6 +47,7 @@ spec:
       kind: AppBinding
     type: MatchName
   - labels:
+    - offshoot
     - catalog
     references:
     - '{.spec.version}'
@@ -55,7 +56,7 @@ spec:
       kind: ElasticsearchVersion
     type: MatchRef
   - labels:
-    - cert_issuer
+    - offshoot
     namespacePath: metadata.namespace
     references:
     - '{.spec.tls.issuerRef.name},{.metadata.namespace}'
@@ -64,7 +65,7 @@ spec:
       kind: Issuer
     type: MatchRef
   - labels:
-    - cert_issuer
+    - offshoot
     references:
     - '{.spec.tls.issuerRef.name}'
     target:
@@ -76,7 +77,7 @@ spec:
     nameTemplate: '{.metadata.name}~Elasticsearch.kubedb.com'
     namespacePath: metadata.namespace
     target:
-      apiVersion: core.k8s.appscode.com/v1alpha1
+      apiVersion: ui.k8s.appscode.com/v1alpha1
       kind: GenericResource
     type: MatchName
   - labels:
@@ -84,7 +85,7 @@ spec:
     nameTemplate: '{.metadata.name}~Elasticsearch.kubedb.com'
     namespacePath: metadata.namespace
     target:
-      apiVersion: core.k8s.appscode.com/v1alpha1
+      apiVersion: ui.k8s.appscode.com/v1alpha1
       kind: GenericResourceService
     type: MatchName
   - labels:
@@ -111,6 +112,11 @@ spec:
       apiVersion: ui.kubedb.com/v1alpha1
       kind: ElasticsearchSchemaOverview
     type: MatchName
+  icons:
+  - src: https://cdn.appscode.com/k8s/icons/kubedb.com/elasticsearches.svg
+    type: image/svg+xml
+  - src: https://cdn.appscode.com/k8s/icons/kubedb.com/elasticsearches.png
+    type: image/png
   resource:
     group: kubedb.com
     kind: Elasticsearch
@@ -161,10 +167,6 @@ spec:
               type: boolean
             halted:
               type: boolean
-            heapSizePercentage:
-              default: 50
-              format: int32
-              type: integer
             init:
               properties:
                 initialized:
@@ -2801,9 +2803,6 @@ spec:
               properties:
                 coordinating:
                   properties:
-                    heapSizePercentage:
-                      format: int32
-                      type: integer
                     maxUnavailable:
                       anyOf:
                       - type: integer
@@ -2903,9 +2902,6 @@ spec:
                   type: object
                 data:
                   properties:
-                    heapSizePercentage:
-                      format: int32
-                      type: integer
                     maxUnavailable:
                       anyOf:
                       - type: integer
@@ -3005,9 +3001,6 @@ spec:
                   type: object
                 dataCold:
                   properties:
-                    heapSizePercentage:
-                      format: int32
-                      type: integer
                     maxUnavailable:
                       anyOf:
                       - type: integer
@@ -3107,9 +3100,6 @@ spec:
                   type: object
                 dataContent:
                   properties:
-                    heapSizePercentage:
-                      format: int32
-                      type: integer
                     maxUnavailable:
                       anyOf:
                       - type: integer
@@ -3209,9 +3199,6 @@ spec:
                   type: object
                 dataFrozen:
                   properties:
-                    heapSizePercentage:
-                      format: int32
-                      type: integer
                     maxUnavailable:
                       anyOf:
                       - type: integer
@@ -3311,9 +3298,6 @@ spec:
                   type: object
                 dataHot:
                   properties:
-                    heapSizePercentage:
-                      format: int32
-                      type: integer
                     maxUnavailable:
                       anyOf:
                       - type: integer
@@ -3413,9 +3397,6 @@ spec:
                   type: object
                 dataWarm:
                   properties:
-                    heapSizePercentage:
-                      format: int32
-                      type: integer
                     maxUnavailable:
                       anyOf:
                       - type: integer
@@ -3515,9 +3496,6 @@ spec:
                   type: object
                 ingest:
                   properties:
-                    heapSizePercentage:
-                      format: int32
-                      type: integer
                     maxUnavailable:
                       anyOf:
                       - type: integer
@@ -3617,9 +3595,6 @@ spec:
                   type: object
                 master:
                   properties:
-                    heapSizePercentage:
-                      format: int32
-                      type: integer
                     maxUnavailable:
                       anyOf:
                       - type: integer
@@ -3719,9 +3694,6 @@ spec:
                   type: object
                 ml:
                   properties:
-                    heapSizePercentage:
-                      format: int32
-                      type: integer
                     maxUnavailable:
                       anyOf:
                       - type: integer
@@ -3821,9 +3793,6 @@ spec:
                   type: object
                 transform:
                   properties:
-                    heapSizePercentage:
-                      format: int32
-                      type: integer
                     maxUnavailable:
                       anyOf:
                       - type: integer

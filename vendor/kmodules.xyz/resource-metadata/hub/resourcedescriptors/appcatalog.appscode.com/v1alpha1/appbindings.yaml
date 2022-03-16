@@ -20,7 +20,7 @@ spec:
       kind: Service
     type: MatchRef
   - labels:
-    - offshoot
+    - auth_via
     namespacePath: metadata.namespace
     references:
     - '{.spec.clientConfig.secret.name}'
@@ -28,6 +28,11 @@ spec:
       apiVersion: v1
       kind: Secret
     type: MatchRef
+  icons:
+  - src: https://cdn.appscode.com/k8s/icons/appcatalog.appscode.com/appbindings.svg
+    type: image/svg+xml
+  - src: https://cdn.appscode.com/k8s/icons/appcatalog.appscode.com/appbindings.png
+    type: image/png
   resource:
     group: appcatalog.appscode.com
     kind: AppBinding

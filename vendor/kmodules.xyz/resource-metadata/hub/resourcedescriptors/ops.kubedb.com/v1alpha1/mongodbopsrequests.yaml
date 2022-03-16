@@ -18,6 +18,11 @@ spec:
       apiVersion: kubedb.com/v1alpha2
       kind: MongoDB
     type: MatchRef
+  icons:
+  - src: https://cdn.appscode.com/k8s/icons/ops.kubedb.com/mongodbopsrequests.svg
+    type: image/svg+xml
+  - src: https://cdn.appscode.com/k8s/icons/ops.kubedb.com/mongodbopsrequests.png
+    type: image/png
   resource:
     group: ops.kubedb.com
     kind: MongoDBOpsRequest
@@ -291,7 +296,6 @@ spec:
             type:
               enum:
               - Upgrade
-              - UpdateVersion
               - HorizontalScaling
               - VerticalScaling
               - VolumeExpansion

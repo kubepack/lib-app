@@ -89,9 +89,5 @@ spec:
               type: integer
             version:
               type: string
-          required:
-          - mode
-          - status
-          - version
           type: object
       type: object
