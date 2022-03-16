@@ -55,9 +55,6 @@ spec:
                     type: string
                   keys:
                     type: string
-                required:
-                - dbId
-                - keys
                 type: object
               type: array
           required:

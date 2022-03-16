@@ -71,7 +71,7 @@ spec:
             slowLogMaxLen:
               format: int64
               type: integer
-            slowLogThresholdMicroSeconds:
+            slowLogThresholdMircoSeconds:
               format: int64
               type: integer
             status:
@@ -81,9 +81,5 @@ spec:
               type: integer
             version:
               type: string
-          required:
-          - mode
-          - status
-          - version
           type: object
       type: object

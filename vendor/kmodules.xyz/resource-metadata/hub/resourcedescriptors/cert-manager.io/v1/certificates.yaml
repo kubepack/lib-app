@@ -11,7 +11,7 @@ metadata:
 spec:
   connections:
   - labels:
-    - cert_issuer
+    - offshoot
     namespacePath: metadata.namespace
     references:
     - '{.spec.issuerRef.name},{.metadata.namespace}'
@@ -20,13 +20,18 @@ spec:
       kind: Issuer
     type: MatchRef
   - labels:
-    - cert_issuer
+    - offshoot
     references:
     - '{.spec.issuerRef.name}'
     target:
       apiVersion: cert-manager.io/v1
       kind: ClusterIssuer
     type: MatchRef
+  icons:
+  - src: https://cdn.appscode.com/k8s/icons/cert-manager.io/certificates.svg
+    type: image/svg+xml
+  - src: https://cdn.appscode.com/k8s/icons/cert-manager.io/certificates.png
+    type: image/png
   resource:
     group: cert-manager.io
     kind: Certificate

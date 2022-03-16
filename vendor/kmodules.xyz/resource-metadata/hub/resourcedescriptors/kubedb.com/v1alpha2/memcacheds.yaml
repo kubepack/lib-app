@@ -47,6 +47,7 @@ spec:
       kind: AppBinding
     type: MatchName
   - labels:
+    - offshoot
     - catalog
     references:
     - '{.spec.version}'
@@ -55,7 +56,7 @@ spec:
       kind: MemcachedVersion
     type: MatchRef
   - labels:
-    - cert_issuer
+    - offshoot
     namespacePath: metadata.namespace
     references:
     - '{.spec.tls.issuerRef.name},{.metadata.namespace}'
@@ -64,7 +65,7 @@ spec:
       kind: Issuer
     type: MatchRef
   - labels:
-    - cert_issuer
+    - offshoot
     references:
     - '{.spec.tls.issuerRef.name}'
     target:
@@ -76,9 +77,14 @@ spec:
     nameTemplate: '{.metadata.name}~Memcached.kubedb.com'
     namespacePath: metadata.namespace
     target:
-      apiVersion: core.k8s.appscode.com/v1alpha1
+      apiVersion: ui.k8s.appscode.com/v1alpha1
       kind: GenericResource
     type: MatchName
+  icons:
+  - src: https://cdn.appscode.com/k8s/icons/kubedb.com/memcacheds.svg
+    type: image/svg+xml
+  - src: https://cdn.appscode.com/k8s/icons/kubedb.com/memcacheds.png
+    type: image/png
   resource:
     group: kubedb.com
     kind: Memcached

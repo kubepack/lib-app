@@ -18,6 +18,11 @@ spec:
       apiVersion: kubedb.com/v1alpha2
       kind: Memcached
     type: MatchRef
+  icons:
+  - src: https://cdn.appscode.com/k8s/icons/ops.kubedb.com/memcachedopsrequests.svg
+    type: image/svg+xml
+  - src: https://cdn.appscode.com/k8s/icons/ops.kubedb.com/memcachedopsrequests.png
+    type: image/png
   resource:
     group: ops.kubedb.com
     kind: MemcachedOpsRequest
@@ -169,7 +174,6 @@ spec:
             type:
               enum:
               - Upgrade
-              - UpdateVersion
               - HorizontalScaling
               - VerticalScaling
               - VolumeExpansion

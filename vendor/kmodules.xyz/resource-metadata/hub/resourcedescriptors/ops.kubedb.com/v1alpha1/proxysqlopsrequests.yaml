@@ -18,6 +18,11 @@ spec:
       apiVersion: kubedb.com/v1alpha2
       kind: ProxySQL
     type: MatchRef
+  icons:
+  - src: https://cdn.appscode.com/k8s/icons/ops.kubedb.com/proxysqlopsrequests.svg
+    type: image/svg+xml
+  - src: https://cdn.appscode.com/k8s/icons/ops.kubedb.com/proxysqlopsrequests.png
+    type: image/png
   resource:
     group: ops.kubedb.com
     kind: ProxySQLOpsRequest
@@ -169,7 +174,6 @@ spec:
             type:
               enum:
               - Upgrade
-              - UpdateVersion
               - HorizontalScaling
               - VerticalScaling
               - VolumeExpansion

@@ -232,11 +232,6 @@ spec:
               properties:
                 configServer:
                   properties:
-                    expansionMode:
-                      enum:
-                      - Offline
-                      - Online
-                      type: string
                     scalingThreshold:
                       format: int32
                       type: integer
@@ -248,11 +243,6 @@ spec:
                   type: object
                 replicaSet:
                   properties:
-                    expansionMode:
-                      enum:
-                      - Offline
-                      - Online
-                      type: string
                     scalingThreshold:
                       format: int32
                       type: integer
@@ -264,11 +254,6 @@ spec:
                   type: object
                 shard:
                   properties:
-                    expansionMode:
-                      enum:
-                      - Offline
-                      - Online
-                      type: string
                     scalingThreshold:
                       format: int32
                       type: integer
@@ -280,11 +265,6 @@ spec:
                   type: object
                 standalone:
                   properties:
-                    expansionMode:
-                      enum:
-                      - Offline
-                      - Online
-                      type: string
                     scalingThreshold:
                       format: int32
                       type: integer
