@@ -32,6 +32,7 @@ import (
 	"github.com/pkg/errors"
 	"gomodules.xyz/jsonpatch/v3"
 	"helm.sh/helm/v3/pkg/chart"
+	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -189,6 +190,9 @@ func EditorChartValueManifest(kc client.Client, app *v1beta1.Application, mt app
 			Kind:    gk.Kind,
 		}
 		namespaced, err := mapper.IsGVKNamespaced(gvk)
+		if meta.IsNoMatchError(err) {
+			continue // CRD type not installed, so skip it
+		}
 		if err != nil {
 			return nil, errors.Wrapf(err, "failed to detect if gvk %v is namespaced", gvk)
 		}
