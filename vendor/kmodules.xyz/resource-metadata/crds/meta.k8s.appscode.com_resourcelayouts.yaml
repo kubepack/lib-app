@@ -73,6 +73,8 @@ spec:
                         - restore_into
                         - scaled_by
                         - view
+                        - cert_issuer
+                        - policy
                         type: string
                       raw:
                         type: string
@@ -107,7 +109,13 @@ spec:
                             color:
                               properties:
                                 template:
-                                  description: 'Available color codes: success,danger,neutral,warning,info'
+                                  description: 'Available color codes: success,danger,warning,info,
+                                    link, white, light, dark, black see https://bulma.io/documentation/elements/tag/#colors'
+                                  type: string
+                              type: object
+                            dashboard:
+                              properties:
+                                name:
                                   type: string
                               type: object
                             description:
@@ -178,6 +186,13 @@ spec:
                               required:
                               - type
                               type: object
+                            textAlign:
+                              type: string
+                            tooltip:
+                              properties:
+                                template:
+                                  type: string
+                              type: object
                             type:
                               description: type is an OpenAPI type definition for
                                 this column. See https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#data-types
@@ -239,6 +254,8 @@ spec:
                                 - restore_into
                                 - scaled_by
                                 - view
+                                - cert_issuer
+                                - policy
                                 type: string
                               raw:
                                 type: string
@@ -274,7 +291,13 @@ spec:
                                     color:
                                       properties:
                                         template:
-                                          description: 'Available color codes: success,danger,neutral,warning,info'
+                                          description: 'Available color codes: success,danger,warning,info,
+                                            link, white, light, dark, black see https://bulma.io/documentation/elements/tag/#colors'
+                                          type: string
+                                      type: object
+                                    dashboard:
+                                      properties:
+                                        name:
                                           type: string
                                       type: object
                                     description:
@@ -349,6 +372,13 @@ spec:
                                       required:
                                       - type
                                       type: object
+                                    textAlign:
+                                      type: string
+                                    tooltip:
+                                      properties:
+                                        template:
+                                          type: string
+                                      type: object
                                     type:
                                       description: type is an OpenAPI type definition
                                         for this column. See https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#data-types
@@ -407,6 +437,8 @@ spec:
                               - restore_into
                               - scaled_by
                               - view
+                              - cert_issuer
+                              - policy
                               type: string
                             raw:
                               type: string
@@ -442,7 +474,13 @@ spec:
                                   color:
                                     properties:
                                       template:
-                                        description: 'Available color codes: success,danger,neutral,warning,info'
+                                        description: 'Available color codes: success,danger,warning,info,
+                                          link, white, light, dark, black see https://bulma.io/documentation/elements/tag/#colors'
+                                        type: string
+                                    type: object
+                                  dashboard:
+                                    properties:
+                                      name:
                                         type: string
                                     type: object
                                   description:
@@ -515,6 +553,13 @@ spec:
                                         type: string
                                     required:
                                     - type
+                                    type: object
+                                  textAlign:
+                                    type: string
+                                  tooltip:
+                                    properties:
+                                      template:
+                                        type: string
                                     type: object
                                   type:
                                     description: type is an OpenAPI type definition
@@ -573,6 +618,8 @@ spec:
                               - restore_into
                               - scaled_by
                               - view
+                              - cert_issuer
+                              - policy
                               type: string
                             raw:
                               type: string
@@ -608,7 +655,13 @@ spec:
                                   color:
                                     properties:
                                       template:
-                                        description: 'Available color codes: success,danger,neutral,warning,info'
+                                        description: 'Available color codes: success,danger,warning,info,
+                                          link, white, light, dark, black see https://bulma.io/documentation/elements/tag/#colors'
+                                        type: string
+                                    type: object
+                                  dashboard:
+                                    properties:
+                                      name:
                                         type: string
                                     type: object
                                   description:
@@ -682,6 +735,13 @@ spec:
                                     required:
                                     - type
                                     type: object
+                                  textAlign:
+                                    type: string
+                                  tooltip:
+                                    properties:
+                                      template:
+                                        type: string
+                                    type: object
                                   type:
                                     description: type is an OpenAPI type definition
                                       for this column. See https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#data-types
@@ -702,8 +762,6 @@ spec:
                       type: object
                     name:
                       type: string
-                  required:
-                  - name
                   type: object
                 type: array
               resource:
@@ -772,6 +830,8 @@ spec:
                         - restore_into
                         - scaled_by
                         - view
+                        - cert_issuer
+                        - policy
                         type: string
                       raw:
                         type: string
@@ -806,7 +866,13 @@ spec:
                             color:
                               properties:
                                 template:
-                                  description: 'Available color codes: success,danger,neutral,warning,info'
+                                  description: 'Available color codes: success,danger,warning,info,
+                                    link, white, light, dark, black see https://bulma.io/documentation/elements/tag/#colors'
+                                  type: string
+                              type: object
+                            dashboard:
+                              properties:
+                                name:
                                   type: string
                               type: object
                             description:
@@ -876,6 +942,13 @@ spec:
                                   type: string
                               required:
                               - type
+                              type: object
+                            textAlign:
+                              type: string
+                            tooltip:
+                              properties:
+                                template:
+                                  type: string
                               type: object
                             type:
                               description: type is an OpenAPI type definition for
