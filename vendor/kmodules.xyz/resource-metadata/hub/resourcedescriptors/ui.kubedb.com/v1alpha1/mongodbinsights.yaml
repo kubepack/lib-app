@@ -112,5 +112,9 @@ spec:
               type: string
             version:
               type: string
+          required:
+          - status
+          - type
+          - version
           type: object
       type: object
