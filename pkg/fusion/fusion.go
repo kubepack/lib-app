@@ -409,8 +409,8 @@ func GenerateChartMetadata(rd *v1alpha1.ResourceDescriptor, gks []metav1.GroupKi
 		Name:        chartName,
 		Home:        "https://byte.builders",
 		Sources:     nil,
-		Version:     "v0.2.0",
-		AppVersion:  "v0.2.0",
+		Version:     "v0.4.3",
+		AppVersion:  "v0.4.3",
 		Description: fmt.Sprintf("%s Editor", rd.Spec.Resource.Kind),
 		Keywords:    []string{"appscode"},
 		Maintainers: []*chart.Maintainer{

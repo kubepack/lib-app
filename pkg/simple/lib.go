@@ -32,6 +32,7 @@ import (
 	crdv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/client-go/util/homedir"
 	kmapi "kmodules.xyz/client-go/api/v1"
 	"kmodules.xyz/resource-metadata/apis/meta/v1alpha1"
 	"kmodules.xyz/resource-metadata/hub"
@@ -41,8 +42,8 @@ import (
 
 func NewCmdSimple() *cobra.Command {
 	var (
-		descriptorDir = "/home/tamal/go/src/kmodules.xyz/resource-metadata/hub/resourcedescriptors/"
-		chartDir      = "/home/tamal/go/src/go.bytebuilders.dev/ui-wizards/charts"
+		descriptorDir = homedir.HomeDir() + "/go/src/kmodules.xyz/resource-metadata/hub/resourcedescriptors/"
+		chartDir      = homedir.HomeDir() + "/go/src/go.bytebuilders.dev/ui-wizards/charts"
 		gvr           schema.GroupVersionResource
 		all           bool
 		skipExisting  bool
