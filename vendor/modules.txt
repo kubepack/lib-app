@@ -569,7 +569,7 @@ github.com/spf13/cobra
 # github.com/spf13/pflag v1.0.5
 ## explicit; go 1.12
 github.com/spf13/pflag
-# github.com/stretchr/testify v1.7.0
+# github.com/stretchr/testify v1.7.1
 ## explicit; go 1.13
 github.com/stretchr/testify/assert
 # github.com/unrolled/render v1.4.0
@@ -621,6 +621,12 @@ go.starlark.net/resolve
 go.starlark.net/starlark
 go.starlark.net/starlarkstruct
 go.starlark.net/syntax
+# go.uber.org/automaxprocs v1.5.1
+## explicit; go 1.18
+go.uber.org/automaxprocs
+go.uber.org/automaxprocs/internal/cgroups
+go.uber.org/automaxprocs/internal/runtime
+go.uber.org/automaxprocs/maxprocs
 # go.wandrs.dev/binding v0.0.2
 ## explicit; go 1.16
 go.wandrs.dev/binding
@@ -794,13 +800,10 @@ gomodules.xyz/password-generator
 # gomodules.xyz/sets v0.2.1
 ## explicit; go 1.14
 gomodules.xyz/sets
-# gomodules.xyz/sets/kubernetes v0.2.0
-## explicit; go 1.17
-gomodules.xyz/sets/kubernetes
 # gomodules.xyz/wait v0.2.0
 ## explicit; go 1.14
 gomodules.xyz/wait
-# gomodules.xyz/x v0.0.13
+# gomodules.xyz/x v0.0.14
 ## explicit; go 1.17
 gomodules.xyz/x/crypto/rand
 gomodules.xyz/x/ioutil
@@ -1307,7 +1310,7 @@ kmodules.xyz/apiversion
 # kmodules.xyz/apply v0.0.0-20210503080849-eb226c295465
 ## explicit; go 1.15
 kmodules.xyz/apply
-# kmodules.xyz/client-go v0.0.0-20220317213815-2a6d5a5784f2
+# kmodules.xyz/client-go v0.0.0-20220404224906-af7b092cfac5
 ## explicit; go 1.17
 kmodules.xyz/client-go
 kmodules.xyz/client-go/api/v1
@@ -1319,7 +1322,7 @@ kmodules.xyz/client-go/tools/clientcmd
 kmodules.xyz/client-go/tools/converter
 kmodules.xyz/client-go/tools/parser
 kmodules.xyz/client-go/tools/wait
-# kmodules.xyz/resource-metadata v0.10.15
+# kmodules.xyz/resource-metadata v0.10.16-0.20220419233724-fbd1b7e25b05
 ## explicit; go 1.17
 kmodules.xyz/resource-metadata/apis/meta
 kmodules.xyz/resource-metadata/apis/meta/v1alpha1
@@ -1327,17 +1330,20 @@ kmodules.xyz/resource-metadata/crds
 kmodules.xyz/resource-metadata/hub
 kmodules.xyz/resource-metadata/hub/resourcedescriptors
 kmodules.xyz/resource-metadata/hub/resourceeditors
+# kmodules.xyz/sets v0.0.0-20220317222127-b3d874bd1796
+## explicit; go 1.17
+kmodules.xyz/sets
 # kubepack.dev/chart-doc-gen v0.4.3
 ## explicit; go 1.14
 kubepack.dev/chart-doc-gen/api
-# kubepack.dev/kubepack v0.3.9-0.20220201033352-575b50c5a43d
+# kubepack.dev/kubepack v0.3.9-0.20220425225403-4b1ca29cd318
 ## explicit; go 1.17
 kubepack.dev/kubepack/apis
 kubepack.dev/kubepack/apis/kubepack
 kubepack.dev/kubepack/apis/kubepack/v1alpha1
 kubepack.dev/kubepack/crds
 kubepack.dev/kubepack/pkg/lib
-# kubepack.dev/lib-helm v0.3.2-0.20220207083916-19ae74825432
+# kubepack.dev/lib-helm v0.3.2-0.20220426062150-3c0a3b34a215
 ## explicit; go 1.17
 kubepack.dev/lib-helm/pkg/action
 kubepack.dev/lib-helm/pkg/application
@@ -1355,7 +1361,7 @@ kubepack.dev/lib-helm/pkg/kube
 kubepack.dev/lib-helm/pkg/repo
 kubepack.dev/lib-helm/pkg/storage/driver
 kubepack.dev/lib-helm/pkg/values
-# kubepack.dev/preset v0.0.0-20220207074019-090909e7fcff
+# kubepack.dev/preset v0.0.0-20220318014008-5b564b7dc9e7
 ## explicit; go 1.17
 kubepack.dev/preset/apis/charts/v1alpha1
 kubepack.dev/preset/apis/store/v1alpha1
