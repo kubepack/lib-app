@@ -28,12 +28,14 @@ import (
 	"text/template"
 
 	docapi "kubepack.dev/chart-doc-gen/api"
+	"kubepack.dev/kubepack/pkg/lib"
 	appapi "kubepack.dev/lib-app/api/v1alpha1"
 	"kubepack.dev/lib-app/pkg/editor"
+	"kubepack.dev/lib-helm/pkg/action"
 
 	"github.com/Masterminds/sprig/v3"
 	"github.com/spf13/cobra"
-	ksets "gomodules.xyz/sets/kubernetes"
+	ioutilz "gomodules.xyz/x/ioutil"
 	y3 "gopkg.in/yaml.v3"
 	"helm.sh/helm/v3/pkg/chart"
 	crdv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -44,16 +46,19 @@ import (
 	"kmodules.xyz/client-go/tools/parser"
 	"kmodules.xyz/resource-metadata/apis/meta/v1alpha1"
 	"kmodules.xyz/resource-metadata/hub"
+	ksets "kmodules.xyz/sets"
 	"sigs.k8s.io/yaml"
 )
 
 var (
-	sampleDir      = ""
-	sampleName     = ""
-	chartDir       = ""
-	chartName      = ""
-	gvr            schema.GroupVersionResource
-	resourceSchema = crdv1.JSONSchemaProps{
+	sampleDir                  = ""
+	sampleName                 = ""
+	chartDir                   = ""
+	editorChartName            = ""
+	optsChartName              = ""
+	formTemplateFiles []string = nil
+	gvr               schema.GroupVersionResource
+	resourceSchema    = crdv1.JSONSchemaProps{
 		Type:       "object",
 		Properties: map[string]crdv1.JSONSchemaProps{},
 	}
@@ -73,24 +78,29 @@ func NewCmdFuse() *cobra.Command {
 				return err
 			}
 
-			chartName = fmt.Sprintf("%s-%s-editor", safeGroupName(rd.Spec.Resource.Group), strings.ToLower(rd.Spec.Resource.Kind))
+			editorChartName = fmt.Sprintf("%s-%s-editor", safeGroupName(rd.Spec.Resource.Group), strings.ToLower(rd.Spec.Resource.Kind))
+			optsChartName = fmt.Sprintf("%s-%s-editor-options", safeGroupName(rd.Spec.Resource.Group), strings.ToLower(rd.Spec.Resource.Kind))
 
-			tplDir := filepath.Join(chartDir, chartName, "templates")
+			tplDir := filepath.Join(chartDir, editorChartName, "templates")
 			err = os.MkdirAll(tplDir, 0o755)
 			if err != nil {
 				return err
 			}
 
-			crdDir := filepath.Join(chartDir, chartName, "crds")
+			crdDir := filepath.Join(chartDir, editorChartName, "crds")
 			err = os.MkdirAll(crdDir, 0o755)
 			if err != nil {
 				return err
 			}
 
-			gkSet := ksets.NewGroupKind()
+			gkSet := ksets.NewMetaGroupKind()
 
 			err = parser.ProcessPath(sampleDir, func(ri parser.ResourceInfo) error {
-				gkSet.Insert(ri.Object.GetObjectKind().GroupVersionKind().GroupKind())
+				gvk := ri.Object.GetObjectKind().GroupVersionKind()
+				gkSet.Insert(metav1.GroupKind{
+					Group: gvk.Group,
+					Kind:  gvk.Kind,
+				})
 
 				rsKey, err := editor.ResourceKey(ri.Object.GetAPIVersion(), ri.Object.GetKind(), sampleName, ri.Object.GetName())
 				if err != nil {
@@ -220,13 +230,51 @@ func NewCmdFuse() *cobra.Command {
 				return err
 			}
 
-			gks := make([]metav1.GroupKind, gkSet.Len())
-			for i, gk := range gkSet.List() {
-				gks[i] = metav1.GroupKind{
-					Group: gk.Group,
-					Kind:  gk.Kind,
+			// form templates
+			if len(formTemplateFiles) > 0 {
+				for i, filename := range formTemplateFiles {
+					filename = filepath.ToSlash(filename)
+					if !strings.HasPrefix(filename, "templates/") {
+						formTemplateFiles[i] = filepath.Join("templates", filename)
+					}
+				}
+
+				i, err := action.NewRenderer()
+				if err != nil {
+					return err
+				}
+				_, files, err := i.WithRegistry(lib.DefaultRegistry).
+					ForChart(filepath.Join(chartDir, optsChartName), optsChartName, "").
+					Run()
+				if err != nil {
+					return err
+				}
+
+				err = copyWithReplace(chartDir, optsChartName, editorChartName, "templates/_helpers.tpl", false)
+				if err != nil {
+					return err
+				}
+				for _, filename := range formTemplateFiles {
+					err = copyWithReplace(chartDir, optsChartName, editorChartName, filename, true)
+					if err != nil {
+						return err
+					}
+
+					if content, ok := files[filename]; ok {
+						gks, _, err := parser.ExtractComponents([]byte(content))
+						if err != nil {
+							return err
+						}
+						for gk := range gks {
+							if gkSet.Has(gk) {
+								return fmt.Errorf("%s contains resource type %+v also found in sample yaml", filename, gk)
+							}
+						}
+					}
 				}
 			}
+
+			gks := gkSet.List()
 			err = GenerateChartMetadata(rd, gks)
 			if err != nil {
 				return err
@@ -239,12 +287,32 @@ func NewCmdFuse() *cobra.Command {
 					return err
 				}
 				chartSchema.Properties["resources"] = resourceSchema
+
+				optsSchemaFile := filepath.Join(chartDir, optsChartName, "values.openapiv3_schema.yaml")
+				if ioutilz.PathExists(optsSchemaFile) {
+					var optSchema crdv1.JSONSchemaProps
+					data, err := ioutil.ReadFile(optsSchemaFile)
+					if err != nil {
+						return err
+					}
+					err = yaml.Unmarshal(data, &optSchema)
+					if err != nil {
+						return err
+					}
+					if v, ok := chartSchema.Properties["form"]; ok {
+						chartSchema.Properties["form"] = v
+						required := sets.NewString(chartSchema.Required...)
+						required.Insert("form")
+						chartSchema.Required = required.List()
+					}
+				}
+
 				removeDescription(&chartSchema)
 				data3, err := yaml.Marshal(chartSchema)
 				if err != nil {
 					return err
 				}
-				schemaFilename := filepath.Join(chartDir, chartName, "values.openapiv3_schema.yaml")
+				schemaFilename := filepath.Join(chartDir, editorChartName, "values.openapiv3_schema.yaml")
 				err = ioutil.WriteFile(schemaFilename, data3, 0o644)
 				if err != nil {
 					return err
@@ -280,6 +348,22 @@ func NewCmdFuse() *cobra.Command {
 					"resources": root.Content[0],
 				}
 
+				optsValuesFile := filepath.Join(chartDir, optsChartName, "values.yaml")
+				if ioutilz.PathExists(optsValuesFile) {
+					var optValues map[string]interface{}
+					data, err := ioutil.ReadFile(optsValuesFile)
+					if err != nil {
+						return err
+					}
+					err = yaml.Unmarshal(data, &optValues)
+					if err != nil {
+						return err
+					}
+					if v, ok := optValues["form"]; ok {
+						values["form"] = v
+					}
+				}
+
 				var buf bytes.Buffer
 				enc := y3.NewEncoder(&buf)
 				enc.SetIndent(2)
@@ -289,7 +373,7 @@ func NewCmdFuse() *cobra.Command {
 					return err
 				}
 
-				filename := filepath.Join(chartDir, chartName, "values.yaml")
+				filename := filepath.Join(chartDir, editorChartName, "values.yaml")
 				err = ioutil.WriteFile(filename, buf.Bytes(), 0o644)
 				if err != nil {
 					return err
@@ -311,7 +395,7 @@ func NewCmdFuse() *cobra.Command {
 						Name: "bytebuilders-ui",
 					},
 					Chart: docapi.ChartInfo{
-						Name:          chartName,
+						Name:          editorChartName,
 						Values:        "-- generate from values file --",
 						ValuesExample: "-- generate from values file --",
 					},
@@ -319,7 +403,7 @@ func NewCmdFuse() *cobra.Command {
 						"Kubernetes 1.16+",
 					},
 					Release: docapi.ReleaseInfo{
-						Name:      chartName,
+						Name:      editorChartName,
 						Namespace: metav1.NamespaceDefault,
 					},
 				}
@@ -329,7 +413,7 @@ func NewCmdFuse() *cobra.Command {
 					return err
 				}
 
-				filename := filepath.Join(chartDir, chartName, "doc.yaml")
+				filename := filepath.Join(chartDir, editorChartName, "doc.yaml")
 				err = ioutil.WriteFile(filename, data, 0o644)
 				if err != nil {
 					return err
@@ -343,6 +427,7 @@ func NewCmdFuse() *cobra.Command {
 	cmd.Flags().StringVar(&sampleDir, "sample-dir", sampleDir, "Sample dir")
 	cmd.Flags().StringVar(&sampleName, "sample-name", sampleName, "Sample name used in yamls")
 	cmd.Flags().StringVar(&chartDir, "chart-dir", chartDir, "Charts dir")
+	cmd.Flags().StringSliceVar(&formTemplateFiles, "form-templates", formTemplateFiles, "Name of form template files in options chart")
 
 	cmd.Flags().StringVar(&gvr.Group, "resource.group", gvr.Group, "Resource api group")
 	cmd.Flags().StringVar(&gvr.Version, "resource.version", gvr.Version, "Resource api version")
@@ -406,7 +491,7 @@ func GenerateChartMetadata(rd *v1alpha1.ResourceDescriptor, gks []metav1.GroupKi
 	}
 
 	chartMeta := chart.Metadata{
-		Name:        chartName,
+		Name:        editorChartName,
 		Home:        "https://byte.builders",
 		Sources:     nil,
 		Version:     "v0.4.3",
@@ -434,7 +519,7 @@ func GenerateChartMetadata(rd *v1alpha1.ResourceDescriptor, gks []metav1.GroupKi
 	if err != nil {
 		return err
 	}
-	filename := filepath.Join(chartDir, chartName, "Chart.yaml")
+	filename := filepath.Join(chartDir, editorChartName, "Chart.yaml")
 	return ioutil.WriteFile(filename, data4, 0o644)
 }
 
@@ -540,4 +625,19 @@ func safeGroupName(group string) string {
 	group = strings.ReplaceAll(group, ".", "")
 	group = strings.ReplaceAll(group, "-", "")
 	return group
+}
+
+func copyWithReplace(chartDir, optsChartName, editorChartName, filename string, force bool) error {
+	src := filepath.Join(chartDir, optsChartName, filename)
+	dst := filepath.Join(chartDir, editorChartName, filename)
+	if !force && ioutilz.PathExists(dst) {
+		return nil
+	}
+
+	data, err := ioutil.ReadFile(src)
+	if err != nil {
+		return err
+	}
+	data = bytes.ReplaceAll(data, []byte(optsChartName), []byte(editorChartName))
+	return ioutil.WriteFile(dst, data, 0o644)
 }

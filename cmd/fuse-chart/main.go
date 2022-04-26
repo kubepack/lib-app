@@ -17,15 +17,14 @@ limitations under the License.
 package main
 
 import (
-	"log"
 	"math/rand"
-	"os"
-	"runtime"
 	"time"
 
 	"kubepack.dev/lib-app/pkg/fusion"
 
+	_ "go.uber.org/automaxprocs"
 	"gomodules.xyz/logs"
+	"k8s.io/klog/v2"
 )
 
 func main() {
@@ -35,11 +34,7 @@ func main() {
 	logs.Init(rootCmd, false)
 	defer logs.FlushLogs()
 
-	if len(os.Getenv("GOMAXPROCS")) == 0 {
-		runtime.GOMAXPROCS(runtime.NumCPU())
-	}
-
 	if err := rootCmd.Execute(); err != nil {
-		log.Fatalln("error:", err)
+		klog.ErrorS(err, "command failed")
 	}
 }

@@ -62,7 +62,7 @@ func RenderOrderTemplate(bs *lib.BlobStore, reg *repo.Registry, order v1alpha1.O
 			Version:     pkg.Chart.Version,
 			ReleaseName: pkg.Chart.ReleaseName,
 			Namespace:   pkg.Chart.Namespace,
-			KubeVersion: "v1.17.0",
+			KubeVersion: "v1.22.0",
 			ValuesFile:  pkg.Chart.ValuesFile,
 			ValuesPatch: pkg.Chart.ValuesPatch,
 			BucketURL:   bs.Bucket,
@@ -307,7 +307,7 @@ func GenerateEditorModel(kc client.Client, reg *repo.Registry, opts map[string]i
 		Version:     ed.Spec.UI.Options.Version,
 		ReleaseName: spec.Metadata.Release.Name,
 		Namespace:   spec.Metadata.Release.Namespace,
-		KubeVersion: "v1.17.0",
+		KubeVersion: "v1.22.0",
 		Values:      opts,
 	}
 	err = f1.Do(kc)
@@ -359,7 +359,7 @@ func RenderChartTemplate(kc client.Client, reg *repo.Registry, opts map[string]i
 		Version:        ed.Spec.UI.Editor.Version,
 		ReleaseName:    spec.Release.Name,
 		Namespace:      spec.Release.Namespace,
-		KubeVersion:    "v1.17.0",
+		KubeVersion:    "v1.22.0",
 		Values:         opts,
 		RefillMetadata: true,
 	}
