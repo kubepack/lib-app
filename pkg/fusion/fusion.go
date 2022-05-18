@@ -299,7 +299,7 @@ func NewCmdFuse() *cobra.Command {
 					if err != nil {
 						return err
 					}
-					if v, ok := chartSchema.Properties["form"]; ok {
+					if v, ok := optSchema.Properties["form"]; ok {
 						chartSchema.Properties["form"] = v
 						required := sets.NewString(chartSchema.Required...)
 						required.Insert("form")
