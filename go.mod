@@ -34,7 +34,7 @@ require (
 	kmodules.xyz/sets v0.0.0-20220317222127-b3d874bd1796
 	kubepack.dev/chart-doc-gen v0.4.3
 	kubepack.dev/kubepack v0.3.9-0.20220425225403-4b1ca29cd318
-	kubepack.dev/lib-helm v0.3.2-0.20220426062150-3c0a3b34a215
+	kubepack.dev/lib-helm v0.3.2-0.20220524083025-f38fe5e69427
 	kubepack.dev/preset v0.0.0-20220318014008-5b564b7dc9e7
 	sigs.k8s.io/application v0.8.2-0.20200306235134-f10d9ca8abd4
 	sigs.k8s.io/controller-runtime v0.9.0
