@@ -330,12 +330,16 @@ func GenerateEditorModel(kc client.Client, reg *repo.Registry, opts map[string]i
 	if err != nil {
 		return nil, err
 	}
-	return &unstructured.Unstructured{
+	model := &unstructured.Unstructured{
 		Object: map[string]interface{}{
 			"metadata":  opts["metadata"],
 			"resources": resoourceValues,
 		},
-	}, err
+	}
+	if form, ok := opts["form"]; ok {
+		model.Object["form"] = form
+	}
+	return model, err
 }
 
 func RenderChartTemplate(kc client.Client, reg *repo.Registry, opts map[string]interface{}) (string, *appapi.ChartTemplate, error) {
