@@ -408,12 +408,12 @@ func main() {
 	// PRIVATE
 	m.Route("/clusters/{cluster}", func(m chi.Router) {
 		m.Route("/editor", func(m chi.Router) {
-			// create / update / apply / install
+			// PUT create / update / apply / install
 			m.With(binding.JSON(map[string]interface{}{})).Put("/", binding.HandlerFunc(ApplyResource(f)))
 
 			m.Delete("/namespaces/{namespace}/releases/{releaseName}", binding.HandlerFunc(DeleteResource(f)))
 
-			// POST Model from Existing Installations
+			// PUT Model from Existing Installations
 			m.With(binding.JSON(appapi.ModelMetadata{})).Put("/model", binding.HandlerFunc(LoadEditorModel))
 
 			// redundant apis
