@@ -38,6 +38,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"kmodules.xyz/client-go/discovery"
 	meta_util "kmodules.xyz/client-go/meta"
 	"kmodules.xyz/client-go/tools/parser"
@@ -298,6 +299,35 @@ func GenerateEditorModel(kc client.Client, reg *repo.Registry, opts map[string]i
 		return nil, fmt.Errorf("failed to load resource editor for %+v", spec.Resource)
 	}
 
+	_, usesForm := opts["form"]
+	rsKeys := sets.NewString()
+
+	if usesForm {
+		ref := struct {
+			url     string
+			name    string
+			version string
+		}{
+			ed.Spec.UI.Editor.URL,
+			ed.Spec.UI.Editor.Name,
+			ed.Spec.UI.Editor.Version,
+		}
+		chrt, err := reg.GetChart(ref.url, ref.name, ref.version)
+		if err != nil {
+			return nil, errors.Wrapf(err, "failed to load resource editor chart %+v", ref)
+		}
+		if data, ok := chrt.Chart.Metadata.Annotations["meta.x-helm.dev/editor"]; ok && data != "" {
+			// store reference rsKeys
+			if refResources, ok := chrt.Chart.Values["resources"].(map[string]interface{}); ok {
+				for key := range refResources {
+					rsKeys.Insert(key)
+				}
+			}
+		} else {
+			return nil, fmt.Errorf("editor chart %+v is missing annotation key meta.x-helm.dev/editor", ref)
+		}
+	}
+
 	f1 := &EditorModelGenerator{
 		Registry: reg,
 		ChartRef: v1alpha1.ChartRef{
@@ -315,7 +345,7 @@ func GenerateEditorModel(kc client.Client, reg *repo.Registry, opts map[string]i
 		return nil, err
 	}
 
-	resoourceValues := map[string]interface{}{}
+	resourceValues := map[string]interface{}{}
 	_, manifest := f1.Result()
 	err = parser.ProcessResources(manifest, func(ri parser.ResourceInfo) error {
 		rsKey, err := ResourceKey(ri.Object.GetAPIVersion(), ri.Object.GetKind(), spec.Metadata.Release.Name, ri.Object.GetName())
@@ -324,7 +354,9 @@ func GenerateEditorModel(kc client.Client, reg *repo.Registry, opts map[string]i
 		}
 
 		// values
-		resoourceValues[rsKey] = ri.Object
+		if !usesForm || rsKeys.Has(rsKey) {
+			resourceValues[rsKey] = ri.Object
+		}
 		return nil
 	})
 	if err != nil {
@@ -333,7 +365,7 @@ func GenerateEditorModel(kc client.Client, reg *repo.Registry, opts map[string]i
 	model := &unstructured.Unstructured{
 		Object: map[string]interface{}{
 			"metadata":  opts["metadata"],
-			"resources": resoourceValues,
+			"resources": resourceValues,
 		},
 	}
 	if form, ok := opts["form"]; ok {

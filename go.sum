@@ -1444,8 +1444,8 @@ kubepack.dev/chart-doc-gen v0.4.3/go.mod h1:IslPGDf/yxW4W7e3hEmKnZXx4HxdLrVZtCSe
 kubepack.dev/kubepack v0.3.9-0.20220425225403-4b1ca29cd318 h1:YNqyPfMKaVnLlX3N5IW1DDqJenAp6y+02phmrdohosY=
 kubepack.dev/kubepack v0.3.9-0.20220425225403-4b1ca29cd318/go.mod h1:aVKxk4qMrARcSKP9rj2HsXpp2AsnCo46FvvBfGWU0+g=
 kubepack.dev/lib-helm v0.3.2-0.20220425222012-4279003342a5/go.mod h1:MwxHdmyDpici5TWrbW2RJOifZCIRVyzSTfpuLzpNNdM=
-kubepack.dev/lib-helm v0.3.2-0.20220426062150-3c0a3b34a215 h1:PtU+H3HPOfJ8m6QJVn0wIT7sU2f9gOWhAzVWYE3e4Zs=
-kubepack.dev/lib-helm v0.3.2-0.20220426062150-3c0a3b34a215/go.mod h1:1GigCkvcYpttbU7G4SW0laKqwA27/DE6umO5TGsVYok=
+kubepack.dev/lib-helm v0.3.2-0.20220524083025-f38fe5e69427 h1:CiMy5pMnbDlnvk9VqRsdZNJyMcKETBrz4rmOOMEbLCE=
+kubepack.dev/lib-helm v0.3.2-0.20220524083025-f38fe5e69427/go.mod h1:1GigCkvcYpttbU7G4SW0laKqwA27/DE6umO5TGsVYok=
 kubepack.dev/preset v0.0.0-20220207074019-090909e7fcff/go.mod h1:1s67LhHc0fnyjgkums9qfzlmeG0Z0CsV+2b0BDfWH6s=
 kubepack.dev/preset v0.0.0-20220318014008-5b564b7dc9e7 h1:ukvKo3UrEbimaHD76wBp0DyeN0ZBAAD7kgaE1Dyw8a4=
 kubepack.dev/preset v0.0.0-20220318014008-5b564b7dc9e7/go.mod h1:ge+xHvzZu0GtfVSXNOhAqv6z6gAjEmUxrOJePF5el7g=
