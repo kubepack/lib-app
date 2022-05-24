@@ -177,12 +177,24 @@ func EditorChartValueManifest(kc client.Client, app *v1beta1.Application, mt app
 	}
 
 	mapper := discovery.NewResourceMapper(kc.RESTMapper())
+	_, usesForm := chrt.Values["form"]
 
 	var resources []*unstructured.Unstructured
 	for _, gk := range app.Spec.ComponentGroupKinds {
 		version, ok := gkToVersion[gk]
 		if !ok {
-			return nil, fmt.Errorf("failed to detect version for GK %#v in chart name=%s version=%s values", gk, chrt.Name(), chrt.Metadata.Version)
+			if !usesForm {
+				return nil, fmt.Errorf("failed to detect version for GK %#v in chart name=%s version=%s values", gk, chrt.Name(), chrt.Metadata.Version)
+			} else {
+				mapping, err := kc.RESTMapper().RESTMapping(schema.GroupKind{
+					Group: gk.Group,
+					Kind:  gk.Kind,
+				})
+				if err != nil {
+					return nil, err
+				}
+				version = mapping.GroupVersionKind.Version
+			}
 		}
 
 		gvk := schema.GroupVersionKind{
@@ -282,6 +294,15 @@ func EditorChartValueManifest(kc client.Client, app *v1beta1.Application, mt app
 			},
 		},
 		Resources: rsfiles,
+	}
+	if usesForm {
+		// https://github.com/kubepack/lib-helm/commit/4279003342a502f328f3c9a6334f4ab5bfdf900d
+		if f, ok := app.Annotations["form.release.x-helm.dev/"+mt.Name]; ok {
+			var form map[string]interface{}
+			if err = json.Unmarshal([]byte(f), &form); err == nil {
+				tpl.Values.Object["form"] = form
+			}
+		}
 	}
 
 	return &tpl, nil
