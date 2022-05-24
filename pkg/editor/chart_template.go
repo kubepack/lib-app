@@ -159,7 +159,9 @@ func EditorChartValueManifest(kc client.Client, app *v1beta1.Application, mt app
 
 	// detect apiVersion from defaultValues in chart
 	gkToVersion := map[metav1.GroupKind]string{}
+	rsKeys := sets.NewString()
 	for rsKey, x := range chrt.Values["resources"].(map[string]interface{}) {
+		rsKeys.Insert(rsKey)
 		var tm metav1.TypeMeta
 
 		err = meta_util.DecodeObject(x.(map[string]interface{}), &tm)
@@ -236,10 +238,12 @@ func EditorChartValueManifest(kc client.Client, app *v1beta1.Application, mt app
 			if err != nil {
 				return nil, err
 			}
-			if _, ok := resourceMap[rsKey]; ok {
-				return nil, fmt.Errorf("duplicate resource key %s for application %s/%s", rsKey, app.Namespace, app.Name)
+			if rsKeys.Has(rsKey) { // ski form objects
+				if _, ok := resourceMap[rsKey]; ok {
+					return nil, fmt.Errorf("duplicate resource key %s for application %s/%s", rsKey, app.Namespace, app.Name)
+				}
+				resourceMap[rsKey] = &obj
 			}
-			resourceMap[rsKey] = &obj
 		}
 	}
 
