@@ -29,12 +29,12 @@ require (
 	k8s.io/client-go v0.24.1
 	k8s.io/klog/v2 v2.60.1
 	k8s.io/kubectl v0.24.1
-	kmodules.xyz/client-go v0.24.0
-	kmodules.xyz/resource-metadata v0.11.3
+	kmodules.xyz/client-go v0.24.5
+	kmodules.xyz/resource-metadata v0.12.1
 	kmodules.xyz/sets v0.24.0
 	kubepack.dev/chart-doc-gen v0.4.7
 	kubepack.dev/kubepack v0.4.0
-	kubepack.dev/lib-helm v0.3.2-0.20220604063230-32de2acacbfb
+	kubepack.dev/lib-helm v0.3.2-0.20220628112852-e1f4a31c6721
 	kubepack.dev/preset v0.0.1
 	sigs.k8s.io/application v0.8.2-0.20200306235134-f10d9ca8abd4
 	sigs.k8s.io/controller-runtime v0.12.1
@@ -197,6 +197,7 @@ require (
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	gomodules.xyz/blobfs v0.1.10 // indirect
 	gomodules.xyz/clock v0.0.0-20200817085942-06523dba733f // indirect
+	gomodules.xyz/encoding v0.0.5 // indirect
 	gomodules.xyz/flags v0.1.3 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.2.0 // indirect
 	gomodules.xyz/orderedmap v0.1.0 // indirect
