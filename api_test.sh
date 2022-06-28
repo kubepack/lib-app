@@ -37,3 +37,7 @@ curl 'http://localhost:4000/clusters/appscode/editor/model?installCRDs=true' \
     -H 'Accept: application/json, text/plain, */*' \
     -H 'Content-Type: application/json;charset=UTF-8' \
     --data-raw '{"metadata":{"release":{"name":"test-elastic","namespace":"demo"},"resource":{"group":"kubedb.com","version":"v1alpha2","name":"elasticsearches","resourceTitle":"Elasticsearch","scope":"Namespaced"}}}'
+
+# Load Preset
+
+curl 'http://localhost:4000/packageview/values?name=kubedbcom-mongodb-editor-options&url=https://bundles.byte.builders/ui/&version=v0.4.8&presetKind=ClusterChartPreset&presetName=kubedb.com-v1alpha2-mongodbs&format=json'

@@ -20,7 +20,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"path"
-	"path/filepath"
 	"sort"
 	"time"
 
@@ -46,12 +45,11 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/cli-runtime/pkg/genericclioptions"
-	"k8s.io/client-go/tools/clientcmd"
-	"k8s.io/client-go/util/homedir"
 	"k8s.io/klog/v2"
 	cmdutil "k8s.io/kubectl/pkg/cmd/util"
 	meta_util "kmodules.xyz/client-go/meta"
 	"kmodules.xyz/client-go/tools/converter"
+	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	"sigs.k8s.io/yaml"
 )
 
@@ -505,7 +503,7 @@ func main() {
 }
 
 func LoadEditorResources(ctx httpw.ResponseWriter, model appapi.Model) {
-	cfg, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
+	cfg, err := config.GetConfig()
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, err.Error())
 		return
@@ -542,7 +540,7 @@ func LoadEditorResources(ctx httpw.ResponseWriter, model appapi.Model) {
 }
 
 func LoadEditorManifest(ctx httpw.ResponseWriter, model appapi.Model) {
-	cfg, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
+	cfg, err := config.GetConfig()
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, err.Error())
 		return
@@ -564,7 +562,7 @@ func LoadEditorManifest(ctx httpw.ResponseWriter, model appapi.Model) {
 }
 
 func LoadEditorModel(ctx httpw.ResponseWriter, model appapi.ModelMetadata) {
-	cfg, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
+	cfg, err := config.GetConfig()
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, err.Error())
 		return
@@ -723,7 +721,7 @@ func CreateOrder(ctx httpw.ResponseWriter, order v1alpha1.Order) {
 }
 
 func PreviewEditorResources(ctx httpw.ResponseWriter, opts map[string]interface{}) {
-	cfg, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
+	cfg, err := config.GetConfig()
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, err.Error())
 		return
@@ -772,7 +770,7 @@ func PreviewEditorResources(ctx httpw.ResponseWriter, opts map[string]interface{
 }
 
 func PreviewEditorManifest(ctx httpw.ResponseWriter, opts map[string]interface{}) {
-	cfg, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
+	cfg, err := config.GetConfig()
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, err.Error())
 		return
@@ -792,7 +790,7 @@ func PreviewEditorManifest(ctx httpw.ResponseWriter, opts map[string]interface{}
 }
 
 func GenerateEditorModelFromOptions(ctx httpw.ResponseWriter, opts map[string]interface{}) {
-	cfg, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
+	cfg, err := config.GetConfig()
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, err.Error())
 		return
@@ -848,7 +846,7 @@ func GetPackageFile(ctx httpw.ResponseWriter, params v1alpha1.ChartRepoRef) {
 }
 
 func GetValuesFile(ctx httpw.ResponseWriter, params chartsapi.ChartPresetRef) {
-	cfg, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
+	cfg, err := config.GetConfig()
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, err.Error())
 		return

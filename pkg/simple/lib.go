@@ -34,7 +34,9 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/util/homedir"
 	kmapi "kmodules.xyz/client-go/api/v1"
-	"kmodules.xyz/resource-metadata/apis/meta/v1alpha1"
+	rsapi "kmodules.xyz/resource-metadata/apis/meta/v1alpha1"
+	"kmodules.xyz/resource-metadata/apis/shared"
+	uiapi "kmodules.xyz/resource-metadata/apis/ui/v1alpha1"
 	"kmodules.xyz/resource-metadata/hub"
 	"kmodules.xyz/resource-metadata/hub/resourceeditors"
 	"sigs.k8s.io/yaml"
@@ -59,7 +61,7 @@ func NewCmdSimple() *cobra.Command {
 				return GenerateSimpleEditorChart(chartDir, descriptorDir, gvr, registry, skipExisting)
 			}
 
-			registry.Visit(func(key string, rd *v1alpha1.ResourceDescriptor) {
+			registry.Visit(func(key string, rd *rsapi.ResourceDescriptor) {
 				err := GenerateSimpleEditorChart(chartDir, descriptorDir, rd.Spec.Resource.GroupVersionResource(), registry, skipExisting)
 				if err != nil {
 					panic(err)
@@ -301,9 +303,9 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 
 	ed, ok := resourceeditors.LoadDefaultByGVR(rd.Spec.Resource.GroupVersionResource())
 	if ok {
-		ed.Spec.UI = &v1alpha1.UIParameters{
+		ed.Spec.UI = &shared.UIParameters{
 			Options: nil,
-			Editor: &v1alpha1.ChartRepoRef{
+			Editor: &shared.ChartRepoRef{
 				URL:     "https://raw.githubusercontent.com/bytebuilders/ui-wizards/master/stable",
 				Name:    chartName,
 				Version: "v0.3.0",
@@ -315,7 +317,7 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 	return nil
 }
 
-func GenerateChartMetadata(chartDir, chartName string, rd *v1alpha1.ResourceDescriptor) error {
+func GenerateChartMetadata(chartDir, chartName string, rd *rsapi.ResourceDescriptor) error {
 	gvr := metav1.GroupVersionResource{
 		Group:    rd.Spec.Resource.Group,
 		Version:  rd.Spec.Resource.Version,
@@ -378,7 +380,7 @@ func IsCRD(group string) bool {
 		!strings.HasSuffix(group, ".kubernetes.io")
 }
 
-func UpdateEditor(rd *v1alpha1.ResourceEditor, dir string) error {
+func UpdateEditor(rd *uiapi.ResourceEditor, dir string) error {
 	data, err := yaml.Marshal(rd)
 	if err != nil {
 		return err
