@@ -26,9 +26,10 @@ import (
 
 	"k8s.io/cli-runtime/pkg/genericclioptions"
 	disco_util "kmodules.xyz/client-go/discovery"
+	"kmodules.xyz/resource-metadata/hub"
 )
 
-func CheckPermissions(getter genericclioptions.RESTClientGetter, reg *repo.Registry, order v1alpha1.Order) (bool, error) {
+func CheckPermissions(getter genericclioptions.RESTClientGetter, reg *repo.Registry, order v1alpha1.Order, helm hub.HelmVersion) (bool, error) {
 	config, err := getter.ToRESTConfig()
 	if err != nil {
 		return false, err
