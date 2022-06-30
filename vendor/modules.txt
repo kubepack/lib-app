@@ -248,7 +248,7 @@ github.com/chai2010/gettext-go/gettext
 github.com/chai2010/gettext-go/gettext/mo
 github.com/chai2010/gettext-go/gettext/plural
 github.com/chai2010/gettext-go/gettext/po
-# github.com/containerd/containerd v1.6.3
+# github.com/containerd/containerd v1.6.6
 ## explicit; go 1.17
 github.com/containerd/containerd/archive/compression
 github.com/containerd/containerd/content
@@ -1394,7 +1394,7 @@ kmodules.xyz/client-go/tools/clientcmd
 kmodules.xyz/client-go/tools/converter
 kmodules.xyz/client-go/tools/parser
 kmodules.xyz/client-go/tools/wait
-# kmodules.xyz/resource-metadata v0.12.1
+# kmodules.xyz/resource-metadata v0.12.3
 ## explicit; go 1.18
 kmodules.xyz/resource-metadata/apis/meta
 kmodules.xyz/resource-metadata/apis/meta/v1alpha1
@@ -1411,14 +1411,14 @@ kmodules.xyz/sets
 # kubepack.dev/chart-doc-gen v0.4.7
 ## explicit; go 1.17
 kubepack.dev/chart-doc-gen/api
-# kubepack.dev/kubepack v0.4.0
+# kubepack.dev/kubepack v0.4.1-0.20220630025733-60a1b112f0d1
 ## explicit; go 1.18
 kubepack.dev/kubepack/apis
 kubepack.dev/kubepack/apis/kubepack
 kubepack.dev/kubepack/apis/kubepack/v1alpha1
 kubepack.dev/kubepack/crds
 kubepack.dev/kubepack/pkg/lib
-# kubepack.dev/lib-helm v0.3.2-0.20220628112852-e1f4a31c6721
+# kubepack.dev/lib-helm v0.3.2-0.20220630023647-c2726d41f0fd
 ## explicit; go 1.18
 kubepack.dev/lib-helm/pkg/action
 kubepack.dev/lib-helm/pkg/application
