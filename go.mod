@@ -30,11 +30,11 @@ require (
 	k8s.io/klog/v2 v2.60.1
 	k8s.io/kubectl v0.24.1
 	kmodules.xyz/client-go v0.24.5
-	kmodules.xyz/resource-metadata v0.12.1
+	kmodules.xyz/resource-metadata v0.12.3
 	kmodules.xyz/sets v0.24.0
 	kubepack.dev/chart-doc-gen v0.4.7
-	kubepack.dev/kubepack v0.4.0
-	kubepack.dev/lib-helm v0.3.2-0.20220628112852-e1f4a31c6721
+	kubepack.dev/kubepack v0.4.1-0.20220630025733-60a1b112f0d1
+	kubepack.dev/lib-helm v0.3.2-0.20220630023647-c2726d41f0fd
 	kubepack.dev/preset v0.0.1
 	sigs.k8s.io/application v0.8.2-0.20200306235134-f10d9ca8abd4
 	sigs.k8s.io/controller-runtime v0.12.1
@@ -84,7 +84,7 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/chai2010/gettext-go v0.0.0-20160711120539-c6fed771bfd5 // indirect
-	github.com/containerd/containerd v1.6.3 // indirect
+	github.com/containerd/containerd v1.6.6 // indirect
 	github.com/cubewise-code/go-mime v0.0.0-20200519001935-8c5762b177d8 // indirect
 	github.com/cyphar/filepath-securejoin v0.2.3 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
