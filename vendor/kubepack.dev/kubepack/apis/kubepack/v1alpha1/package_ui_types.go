@@ -24,53 +24,53 @@ import (
 
 type PackageDescriptor struct {
 	// Type is the type of the application (e.g. WordPress, MySQL, Cassandra).
-	Type string `json:"type,omitempty"`
+	Type string `json:"type,omitempty" protobuf:"bytes,1,opt,name=type"`
 
 	// Description is a brief string description of the Application.
-	Description string `json:"description,omitempty"`
+	Description string `json:"description,omitempty" protobuf:"bytes,2,opt,name=description"`
 
 	// Icons is an optional list of icons for an application. Icon information includes the source, size,
 	// and mime type.
-	Icons []ImageSpec `json:"icons,omitempty"`
+	Icons []ImageSpec `json:"icons,omitempty" protobuf:"bytes,3,rep,name=icons"`
 
 	// Maintainers is an optional list of maintainers of the application. The maintainers in this list maintain the
 	// the source code, images, and package for the application.
-	Maintainers []ContactData `json:"maintainers,omitempty"`
+	Maintainers []ContactData `json:"maintainers,omitempty" protobuf:"bytes,4,rep,name=maintainers"`
 
 	// Keywords is an optional list of key words associated with the application (e.g. MySQL, RDBMS, database).
-	Keywords []string `json:"keywords,omitempty"`
+	Keywords []string `json:"keywords,omitempty" protobuf:"bytes,5,rep,name=keywords"`
 
 	// Links are a list of descriptive URLs intended to be used to surface additional documentation, dashboards, etc.
-	Links []Link `json:"links,omitempty"`
+	Links []Link `json:"links,omitempty" protobuf:"bytes,6,rep,name=links"`
 
 	// Notes contain a human readable snippets intended as a quick start for the users of the Application.
 	// CommonMark markdown syntax may be used for rich text representation.
-	Notes string `json:"notes,omitempty"`
+	Notes string `json:"notes,omitempty" protobuf:"bytes,7,opt,name=notes"`
 }
 
 type PackageMeta struct {
-	PackageDescriptor `json:",inline"`
+	PackageDescriptor `json:",inline" protobuf:"bytes,1,opt,name=packageDescriptor"`
 
-	Name string `json:"name"`
-	URL  string `json:"url"`
+	Name string `json:"name" protobuf:"bytes,2,opt,name=name"`
+	URL  string `json:"url" protobuf:"bytes,3,opt,name=url"`
 	// Version is an optional version indicator for the Application.
-	Version string `json:"version,omitempty"`
+	Version string `json:"version,omitempty" protobuf:"bytes,4,opt,name=version"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 type PackageView struct {
 	metav1.TypeMeta `json:",inline"`
-	PackageMeta     `json:",inline"`
+	PackageMeta     `json:",inline" protobuf:"bytes,1,opt,name=packageMeta"`
 
 	// Chart value files
-	ValuesFiles []ValuesFile `json:"valuesFiles,omitempty"`
+	ValuesFiles []ValuesFile `json:"valuesFiles,omitempty" protobuf:"bytes,2,rep,name=valuesFiles"`
 
 	// openAPIV3Schema describes the schema used for validation and pruning of the Values file.
 	// +optional
-	OpenAPIV3Schema *crdv1beta1.JSONSchemaProps `json:"openAPIV3Schema,omitempty"`
+	OpenAPIV3Schema *crdv1beta1.JSONSchemaProps `json:"openAPIV3Schema,omitempty" protobuf:"bytes,3,opt,name=openAPIV3Schema"`
 }
 
 type ValuesFile struct {
-	Filename string                `json:"filename"`
-	Values   *runtime.RawExtension `json:"values,omitempty"`
+	Filename string                `json:"filename" protobuf:"bytes,1,opt,name=filename"`
+	Values   *runtime.RawExtension `json:"values,omitempty" protobuf:"bytes,2,opt,name=values"`
 }

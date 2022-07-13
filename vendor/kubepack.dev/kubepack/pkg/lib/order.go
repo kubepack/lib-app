@@ -30,11 +30,11 @@ import (
 	"github.com/google/uuid"
 	"github.com/pkg/errors"
 	"gomodules.xyz/jsonpatch/v2"
-	crd_cs "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/cli-runtime/pkg/genericclioptions"
+	"k8s.io/client-go/kubernetes"
 	"sigs.k8s.io/application/client/clientset/versioned"
 )
 
@@ -174,12 +174,12 @@ func InstallOrder(getter genericclioptions.RESTClientGetter, reg *repo.Registry,
 		return err
 	}
 
-	cc, err := crd_cs.NewForConfig(config)
+	kc, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		return err
 	}
 
-	info, err := cc.ServerVersion()
+	info, err := kc.ServerVersion()
 	if err != nil {
 		return err
 	}
@@ -247,7 +247,7 @@ func InstallOrder(getter genericclioptions.RESTClientGetter, reg *repo.Registry,
 		if pkg.Chart.Resources != nil && len(pkg.Chart.Resources.Owned) > 0 {
 			f5 := &CRDReadinessChecker{
 				CRDs:   pkg.Chart.Resources.Owned,
-				Client: cc,
+				Client: kc.RESTClient(),
 			}
 			err = f5.Do()
 			if err != nil {

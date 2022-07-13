@@ -36,41 +36,41 @@ const (
 // +kubebuilder:subresource:status
 type Product struct {
 	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ProductSpec   `json:"spec,omitempty"`
-	Status            ProductStatus `json:"status,omitempty"`
+	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+	Spec              ProductSpec   `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
+	Status            ProductStatus `json:"status,omitempty" protobuf:"bytes,3,opt,name=status"`
 }
 
 type ProductSpec struct {
-	StripeID  string `json:"id"`
-	Key       string `json:"key"`
-	Name      string `json:"name"`
-	ShortName string `json:"shortName"`
-	Tagline   string `json:"tagline"`
+	StripeID  string `json:"id" protobuf:"bytes,1,opt,name=id"`
+	Key       string `json:"key" protobuf:"bytes,2,opt,name=key"`
+	Name      string `json:"name" protobuf:"bytes,3,opt,name=name"`
+	ShortName string `json:"shortName" protobuf:"bytes,4,opt,name=shortName,json=shortName"`
+	Tagline   string `json:"tagline" protobuf:"bytes,5,opt,name=tagline"`
 	//+optional
-	Summary string `json:"summary,omitempty"`
-	Owner   int64  `json:"owner"`
+	Summary string `json:"summary,omitempty" protobuf:"bytes,6,opt,name=summary"`
+	Owner   int64  `json:"owner" protobuf:"varint,7,opt,name=owner"`
 	//+optional
-	OwnerName string `json:"ownerName,omitempty"`
+	OwnerName string `json:"ownerName,omitempty" protobuf:"bytes,8,opt,name=ownerName"`
 	//+optional
-	Description string `json:"description,omitempty"`
+	Description string `json:"description,omitempty" protobuf:"bytes,9,opt,name=description"`
 	//+optional
-	UnitLabel string `json:"unitLabel,omitempty"`
-	Phase     Phase  `json:"phase"`
+	UnitLabel string `json:"unitLabel,omitempty" protobuf:"bytes,10,opt,name=unitLabel"`
+	Phase     Phase  `json:"phase" protobuf:"bytes,11,opt,name=phase,casttype=Phase"`
 	//+optional
-	Media []MediaSpec `json:"icons,omitempty"`
+	Media []MediaSpec `json:"icons,omitempty" protobuf:"bytes,12,rep,name=icons"`
 	//+optional
-	Maintainers []ContactData `json:"maintainers,omitempty"`
+	Maintainers []ContactData `json:"maintainers,omitempty" protobuf:"bytes,13,rep,name=maintainers"`
 	//+optional
-	Keywords []string `json:"keywords,omitempty"`
+	Keywords []string `json:"keywords,omitempty" protobuf:"bytes,14,rep,name=keywords"`
 	//+optional
-	Links []Link `json:"links,omitempty"`
+	Links []Link `json:"links,omitempty" protobuf:"bytes,15,rep,name=links"`
 	//+optional
-	Badges []Badge `json:"badges,omitempty"`
+	Badges []Badge `json:"badges,omitempty" protobuf:"bytes,16,rep,name=badges"`
 	//+optional
-	Versions []ProductVersion `json:"versions,omitempty"`
+	Versions []ProductVersion `json:"versions,omitempty" protobuf:"bytes,17,rep,name=versions"`
 	//+optional
-	LatestVersion string `json:"latestVersion,omitempty"`
+	LatestVersion string `json:"latestVersion,omitempty" protobuf:"bytes,18,opt,name=latestVersion"`
 }
 
 type Phase string
@@ -82,9 +82,9 @@ const (
 )
 
 type ProductVersion struct {
-	Version string `json:"version"`
+	Version string `json:"version" protobuf:"bytes,1,opt,name=version"`
 	// +optional
-	ReleaseDate *metav1.Time `json:"releaseDate,omitempty"`
+	ReleaseDate *metav1.Time `json:"releaseDate,omitempty" protobuf:"bytes,2,opt,name=releaseDate"`
 }
 
 type MediaType string
@@ -115,9 +115,9 @@ const (
 )
 
 type Badge struct {
-	URL  string `json:"url"`
-	Alt  string `json:"alt"`
-	Logo string `json:"logo"`
+	URL  string `json:"url" protobuf:"bytes,1,opt,name=url"`
+	Alt  string `json:"alt" protobuf:"bytes,2,opt,name=alt"`
+	Logo string `json:"logo" protobuf:"bytes,3,opt,name=logo"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -125,13 +125,13 @@ type Badge struct {
 
 type ProductList struct {
 	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []Product `json:"items,omitempty"`
+	metav1.ListMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+	Items           []Product `json:"items,omitempty" protobuf:"bytes,2,rep,name=items"`
 }
 
 type ProductStatus struct {
 	// ObservedGeneration is the most recent generation observed for this resource. It corresponds to the
 	// resource's generation, which is updated on mutation by the API Server.
 	// +optional
-	ObservedGeneration int64 `json:"observedGeneration,omitempty"`
+	ObservedGeneration int64 `json:"observedGeneration,omitempty" protobuf:"varint,1,opt,name=observedGeneration"`
 }

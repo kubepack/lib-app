@@ -384,6 +384,9 @@ github.com/go-openapi/jsonpointer
 ## explicit; go 1.13
 github.com/go-openapi/jsonreference
 github.com/go-openapi/jsonreference/internal
+# github.com/go-openapi/spec v0.19.8
+## explicit; go 1.13
+github.com/go-openapi/spec
 # github.com/go-openapi/swag v0.19.15
 ## explicit; go 1.11
 github.com/go-openapi/swag
@@ -823,9 +826,6 @@ gomodules.xyz/blobfs/testing
 # gomodules.xyz/clock v0.0.0-20200817085942-06523dba733f
 ## explicit; go 1.14
 gomodules.xyz/clock
-# gomodules.xyz/encoding v0.0.5
-## explicit; go 1.17
-gomodules.xyz/encoding/json
 # gomodules.xyz/flags v0.1.3
 ## explicit; go 1.16
 gomodules.xyz/flags
@@ -1411,15 +1411,15 @@ kmodules.xyz/sets
 # kubepack.dev/chart-doc-gen v0.4.7
 ## explicit; go 1.17
 kubepack.dev/chart-doc-gen/api
-# kubepack.dev/kubepack v0.4.1-0.20220630025733-60a1b112f0d1
-## explicit; go 1.18
+# kubepack.dev/kubepack v0.3.8
+## explicit; go 1.17
 kubepack.dev/kubepack/apis
 kubepack.dev/kubepack/apis/kubepack
 kubepack.dev/kubepack/apis/kubepack/v1alpha1
 kubepack.dev/kubepack/crds
 kubepack.dev/kubepack/pkg/lib
-# kubepack.dev/lib-helm v0.3.2-0.20220630023647-c2726d41f0fd
-## explicit; go 1.18
+# kubepack.dev/lib-helm v0.3.1
+## explicit; go 1.17
 kubepack.dev/lib-helm/pkg/action
 kubepack.dev/lib-helm/pkg/application
 kubepack.dev/lib-helm/pkg/chart
@@ -1439,7 +1439,6 @@ kubepack.dev/lib-helm/pkg/values
 # kubepack.dev/preset v0.0.1
 ## explicit; go 1.18
 kubepack.dev/preset/apis/charts/v1alpha1
-kubepack.dev/preset/apis/store/v1alpha1
 kubepack.dev/preset/crds
 # oras.land/oras-go v1.1.0
 ## explicit; go 1.17

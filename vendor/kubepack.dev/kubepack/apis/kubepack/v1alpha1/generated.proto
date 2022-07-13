@@ -27,7 +27,7 @@ import "k8s.io/apimachinery/pkg/runtime/generated.proto";
 import "k8s.io/apimachinery/pkg/runtime/schema/generated.proto";
 
 // Package-wide variables from generator "generated".
-option go_package = "kubepack.dev/kubepack/apis/kubepack/v1alpha1";
+option go_package = "v1alpha1";
 
 message ApplicationPackage {
   optional ChartRepoRef bundle = 1;
@@ -85,15 +85,15 @@ message BundleRef {
 }
 
 message BundleSpec {
-  optional PackageDescriptor packageDescriptor = 1;
+  optional PackageDescriptor packageDescriptor = 3;
 
-  optional string displayName = 2;
+  optional string displayName = 4;
 
-  repeated Feature features = 3;
+  repeated Feature features = 5;
 
-  optional string namespace = 4;
+  optional string namespace = 6;
 
-  repeated PackageRef packages = 5;
+  repeated PackageRef packages = 7;
 }
 
 message BundleStatus {
@@ -570,13 +570,13 @@ message ValuesFile {
 message VersionDetail {
   optional VersionOption versionOption = 1;
 
-  optional ResourceDefinitions resources = 2;
+  optional ResourceDefinitions resources = 3;
 
-  repeated WaitFlags waitFors = 3;
+  repeated WaitFlags waitFors = 4;
 
   // jsonpatch path in Values where the license key will be set using replace operation, if defined.
   // See: http://jsonpatch.com
-  optional string licenseKeyPath = 4;
+  optional string licenseKeyPath = 5;
 }
 
 message VersionOption {

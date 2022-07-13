@@ -37,73 +37,73 @@ const (
 // +kubebuilder:subresource:status
 type Bundle struct {
 	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              BundleSpec   `json:"spec,omitempty"`
-	Status            BundleStatus `json:"status,omitempty"`
+	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+	Spec              BundleSpec   `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
+	Status            BundleStatus `json:"status,omitempty" protobuf:"bytes,3,opt,name=status"`
 }
 
 type BundleSpec struct {
-	PackageDescriptor `json:",inline"`
-	DisplayName       string       `json:"displayName,omitempty"`
-	Features          []Feature    `json:"features,omitempty"`
-	Namespace         string       `json:"namespace"`
-	Packages          []PackageRef `json:"packages"`
+	PackageDescriptor `json:",inline" protobuf:"bytes,3,opt,name=packageDescriptor"`
+	DisplayName       string       `json:"displayName,omitempty" protobuf:"bytes,4,opt,name=displayName"`
+	Features          []Feature    `json:"features,omitempty" protobuf:"bytes,5,rep,name=features"`
+	Namespace         string       `json:"namespace" protobuf:"bytes,6,opt,name=namespace"`
+	Packages          []PackageRef `json:"packages" protobuf:"bytes,7,rep,name=packages"`
 }
 
 type PackageRef struct {
-	Chart  *ChartOption       `json:"chart,omitempty"`
-	Bundle *BundleOption      `json:"bundle,omitempty"`
-	OneOf  *OneOfBundleOption `json:"oneOf,omitempty"`
+	Chart  *ChartOption       `json:"chart,omitempty" protobuf:"bytes,1,opt,name=chart"`
+	Bundle *BundleOption      `json:"bundle,omitempty" protobuf:"bytes,2,opt,name=bundle"`
+	OneOf  *OneOfBundleOption `json:"oneOf,omitempty" protobuf:"bytes,3,rep,name=oneOf"`
 }
 
 type OneOfBundleOption struct {
-	Description string          `json:"description"`
-	Bundles     []*BundleOption `json:"bundles,omitempty"`
+	Description string          `json:"description" protobuf:"bytes,1,opt,name=description"`
+	Bundles     []*BundleOption `json:"bundles,omitempty" protobuf:"bytes,2,rep,name=bundles"`
 }
 
 type ChartRef struct {
-	URL  string `json:"url"`
-	Name string `json:"name"`
+	URL  string `json:"url" protobuf:"bytes,1,opt,name=url"`
+	Name string `json:"name" protobuf:"bytes,2,opt,name=name"`
 }
 
 type SelectionMode string
 
 type ChartOption struct {
-	ChartRef    `json:",inline"`
-	Features    []string        `json:"features,omitempty"`
-	Namespace   string          `json:"namespace,omitempty"`
-	Versions    []VersionDetail `json:"versions"`
-	MultiSelect bool            `json:"multiSelect,omitempty"`
-	Required    bool            `json:"required,omitempty"`
+	ChartRef    `json:",inline" protobuf:"bytes,1,opt,name=chartRef"`
+	Features    []string        `json:"features,omitempty" protobuf:"bytes,2,rep,name=features"`
+	Namespace   string          `json:"namespace,omitempty" protobuf:"bytes,3,opt,name=namespace"`
+	Versions    []VersionDetail `json:"versions" protobuf:"bytes,4,rep,name=versions"`
+	MultiSelect bool            `json:"multiSelect,omitempty" protobuf:"varint,5,opt,name=multiSelect"`
+	Required    bool            `json:"required,omitempty" protobuf:"varint,6,opt,name=required"`
 }
 
 type BundleRef struct {
-	URL  string `json:"url"`
-	Name string `json:"name"`
+	URL  string `json:"url" protobuf:"bytes,1,opt,name=url"`
+	Name string `json:"name" protobuf:"bytes,2,opt,name=name"`
 }
 
 type BundleOption struct {
-	BundleRef `json:",inline"`
-	Version   string `json:"version"`
+	BundleRef `json:",inline" protobuf:"bytes,1,opt,name=bundleRef"`
+	Version   string `json:"version" protobuf:"bytes,2,opt,name=version"`
 }
 
 type VersionOption struct {
-	Version    string `json:"version"`
-	Selected   bool   `json:"selected,omitempty"`
-	ValuesFile string `json:"valuesFile,omitempty"`
+	Version    string `json:"version" protobuf:"bytes,1,opt,name=version"`
+	Selected   bool   `json:"selected,omitempty" protobuf:"varint,2,opt,name=selected"`
+	ValuesFile string `json:"valuesFile,omitempty" protobuf:"bytes,3,opt,name=valuesFile"`
 	// RFC 6902 compatible json patch. ref: http://jsonpatch.com
 	// +optional
 	// +kubebuilder:pruning:PreserveUnknownFields
-	ValuesPatch *runtime.RawExtension `json:"valuesPatch,omitempty"`
+	ValuesPatch *runtime.RawExtension `json:"valuesPatch,omitempty" protobuf:"bytes,4,opt,name=valuesPatch"`
 }
 
 type VersionDetail struct {
-	VersionOption `json:",inline"`
-	Resources     *ResourceDefinitions `json:"resources,omitempty"`
-	WaitFors      []WaitFlags          `json:"waitFors,omitempty"`
+	VersionOption `json:",inline" protobuf:"bytes,1,opt,name=versionOption"`
+	Resources     *ResourceDefinitions `json:"resources,omitempty" protobuf:"bytes,3,opt,name=resources"`
+	WaitFors      []WaitFlags          `json:"waitFors,omitempty" protobuf:"bytes,4,rep,name=waitFors"`
 	// jsonpatch path in Values where the license key will be set using replace operation, if defined.
 	// See: http://jsonpatch.com
-	LicenseKeyPath string `json:"licenseKeyPath,omitempty"`
+	LicenseKeyPath string `json:"licenseKeyPath,omitempty" protobuf:"bytes,5,opt,name=licenseKeyPath"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -111,20 +111,13 @@ type VersionDetail struct {
 
 type BundleList struct {
 	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []Bundle `json:"items,omitempty"`
+	metav1.ListMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+	Items           []Bundle `json:"items,omitempty" protobuf:"bytes,2,rep,name=items"`
 }
 
 type BundleStatus struct {
 	// ObservedGeneration is the most recent generation observed for this resource. It corresponds to the
 	// resource's generation, which is updated on mutation by the API Server.
 	// +optional
-	ObservedGeneration int64 `json:"observedGeneration,omitempty"`
-}
-
-type InstallOptions struct {
-	ChartRef    `json:",inline"`
-	Version     string `json:"version"`
-	ReleaseName string `json:"releaseName"`
-	Namespace   string `json:"namespace"`
+	ObservedGeneration int64 `json:"observedGeneration,omitempty" protobuf:"varint,1,opt,name=observedGeneration"`
 }
