@@ -64,6 +64,23 @@ type ResourceDescriptorSpec struct {
 
 	// Links are a list of descriptive URLs intended to be used to surface additional documentation, dashboards, etc.
 	Links []Link `json:"links,omitempty"`
+
+	// +optional
+	Exec []ResourceExec `json:"exec,omitempty"`
+}
+
+type ResourceExec struct {
+	Alias string `json:"alias"`
+	// +optional
+	If *shared.If `json:"if,omitempty"`
+	// +optional
+	ServiceNameTemplate string `json:"serviceNameTemplate,omitempty"`
+	// +optional
+	Container string `json:"container,omitempty"`
+	// +optional
+	Command []string `json:"command,omitempty"`
+	// +optional
+	Help string `json:"help,omitempty"`
 }
 
 // +kubebuilder:validation:Enum=List;Field
@@ -190,6 +207,7 @@ type ResourceColumnDefinition struct {
 	Color     *ColorDefinition     `json:"color,omitempty"`
 	TextAlign string               `json:"textAlign,omitempty"`
 	Dashboard *DashboardDefinition `json:"dashboard,omitempty"`
+	Exec      *ExecDefinition      `json:"exec,omitempty"`
 }
 
 type DashboardDefinition struct {
@@ -201,6 +219,19 @@ type DashboardDefinition struct {
 	Status RenderStatus `json:"-"`
 	// Message
 	Message string `json:"-"`
+}
+
+type ExecDefinition struct {
+	// +optional
+	Alias string `json:"alias,omitempty"`
+	// +optional
+	ServiceNameTemplate string `json:"serviceNameTemplate,omitempty"`
+	// +optional
+	Container string `json:"container,omitempty"`
+	// +optional
+	Command []string `json:"command,omitempty"`
+	// +optional
+	Help string `json:"help,omitempty"`
 }
 
 type SortDefinition struct {
@@ -263,6 +294,7 @@ type ResourceColumn struct {
 	Icon      bool             `json:"icon,omitempty"`
 	TextAlign string           `json:"textAlign,omitempty"`
 	Dashboard *DashboardResult `json:"dashboard,omitempty"`
+	Exec      *ExecResult      `json:"exec,omitempty"`
 }
 
 type DashboardResult struct {
@@ -271,6 +303,20 @@ type DashboardResult struct {
 	Status RenderStatus `json:"status"`
 	// Message
 	Message string `json:"message,omitempty"`
+}
+
+// cell.Data == name of resource
+type ExecResult struct {
+	// +optional
+	Alias string `json:"alias,omitempty"`
+	// +optional
+	Resource string `json:"resource,omitempty"` // pods or services
+	// +optional
+	Container string `json:"container,omitempty"`
+	// +optional
+	Command []string `json:"command,omitempty"`
+	// +optional
+	Help string `json:"help,omitempty"`
 }
 
 // ContactData contains information about an individual or organization.
