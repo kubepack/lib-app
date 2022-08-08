@@ -30,12 +30,12 @@ require (
 	k8s.io/klog/v2 v2.60.1
 	k8s.io/kubectl v0.24.1
 	kmodules.xyz/client-go v0.24.5
-	kmodules.xyz/resource-metadata v0.12.4
+	kmodules.xyz/resource-metadata v0.12.5
 	kmodules.xyz/sets v0.24.0
 	kubepack.dev/chart-doc-gen v0.4.7
-	kubepack.dev/kubepack v0.4.1-0.20220630025733-60a1b112f0d1
-	kubepack.dev/lib-helm v0.3.2-0.20220630023647-c2726d41f0fd
-	kubepack.dev/preset v0.0.1
+	kubepack.dev/kubepack v0.4.1
+	kubepack.dev/lib-helm v0.4.0
+	kubepack.dev/preset v0.0.2
 	sigs.k8s.io/application v0.8.2-0.20200306235134-f10d9ca8abd4
 	sigs.k8s.io/controller-runtime v0.12.1
 	sigs.k8s.io/yaml v1.3.0
@@ -95,6 +95,7 @@ require (
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-metrics v0.0.1 // indirect
 	github.com/docker/go-units v0.4.0 // indirect
+	github.com/dustin/go-humanize v1.0.1-0.20220316001817-d5090ed65664 // indirect
 	github.com/emicklei/go-restful v2.9.5+incompatible // indirect
 	github.com/evanphx/json-patch v4.12.0+incompatible // indirect
 	github.com/exponent-io/jsonpath v0.0.0-20151013193312-d6023ce2651d // indirect
@@ -200,8 +201,10 @@ require (
 	gomodules.xyz/encoding v0.0.5 // indirect
 	gomodules.xyz/flags v0.1.3 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.2.0 // indirect
+	gomodules.xyz/jsonpath v0.0.2 // indirect
+	gomodules.xyz/mergo v0.3.13 // indirect
 	gomodules.xyz/orderedmap v0.1.0 // indirect
-	gomodules.xyz/password-generator v0.2.7 // indirect
+	gomodules.xyz/password-generator v0.2.8 // indirect
 	gomodules.xyz/sets v0.2.1 // indirect
 	gomodules.xyz/wait v0.2.0 // indirect
 	google.golang.org/api v0.74.0 // indirect
@@ -225,6 +228,12 @@ require (
 	sigs.k8s.io/structured-merge-diff/v4 v4.2.1 // indirect
 )
 
+replace github.com/Masterminds/sprig/v3 => github.com/gomodules/sprig/v3 v3.2.3-0.20220405051441-0a8a99bac1b8
+
+replace helm.sh/helm/v3 => github.com/kubepack/helm/v3 v3.9.1-0.20220603235400-7882cd0f0948
+
+replace sigs.k8s.io/application => github.com/kmodules/application v0.8.4-0.20220603221517-a62565381f64
+
 replace (
 	go.opentelemetry.io/contrib => go.opentelemetry.io/contrib v0.20.0
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc => go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.20.0
@@ -239,7 +248,3 @@ replace (
 	go.opentelemetry.io/otel/trace => go.opentelemetry.io/otel/trace v0.20.0
 	go.opentelemetry.io/proto/otlp => go.opentelemetry.io/proto/otlp v0.7.0
 )
-
-replace helm.sh/helm/v3 => github.com/kubepack/helm/v3 v3.9.1-0.20220603235400-7882cd0f0948
-
-replace sigs.k8s.io/application => github.com/kmodules/application v0.8.4-0.20220603221517-a62565381f64
