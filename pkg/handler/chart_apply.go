@@ -29,13 +29,14 @@ import (
 	"kubepack.dev/lib-helm/pkg/values"
 
 	jsonpatch "github.com/evanphx/json-patch/v5"
+	ha "helm.sh/helm/v3/pkg/action"
 	"helm.sh/helm/v3/pkg/release"
 	cmdutil "k8s.io/kubectl/pkg/cmd/util"
 	meta_util "kmodules.xyz/client-go/meta"
 	"kmodules.xyz/resource-metadata/hub/resourceeditors"
 )
 
-func ApplyResource(f cmdutil.Factory, model map[string]interface{}, skipCRds bool) (*release.Release, error) {
+func ApplyResource(f cmdutil.Factory, model map[string]interface{}, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
 	var tm appapi.ModelMetadata
 	err := meta_util.DecodeObject(model, &tm)
 	if err != nil {
@@ -52,7 +53,7 @@ func ApplyResource(f cmdutil.Factory, model map[string]interface{}, skipCRds boo
 		return nil, fmt.Errorf("failed to load resource editor for %+v", tm.Resource)
 	}
 
-	deployer, err := actionx.NewDeployer(f, tm.Release.Namespace, driver.ApplicationsDriverName)
+	deployer, err := actionx.NewDeployer(f, tm.Release.Namespace, driver.ApplicationsDriverName, log...)
 	if err != nil {
 		return nil, err
 	}
@@ -136,8 +137,8 @@ func ApplyResource(f cmdutil.Factory, model map[string]interface{}, skipCRds boo
 	return rls, err
 }
 
-func DeleteResource(f cmdutil.Factory, release appapi.ObjectMeta) (*release.UninstallReleaseResponse, error) {
-	cmd, err := actionx.NewUninstaller(f, release.Namespace, driver.ApplicationsDriverName)
+func DeleteResource(f cmdutil.Factory, release appapi.ObjectMeta, log ...ha.DebugLog) (*release.UninstallReleaseResponse, error) {
+	cmd, err := actionx.NewUninstaller(f, release.Namespace, driver.ApplicationsDriverName, log...)
 	if err != nil {
 		return nil, err
 	}
