@@ -1392,7 +1392,7 @@ kmodules.xyz/apiversion
 # kmodules.xyz/apply v0.24.1
 ## explicit; go 1.18
 kmodules.xyz/apply
-# kmodules.xyz/client-go v0.24.5
+# kmodules.xyz/client-go v0.24.8
 ## explicit; go 1.18
 kmodules.xyz/client-go
 kmodules.xyz/client-go/api/v1
@@ -1404,7 +1404,7 @@ kmodules.xyz/client-go/tools/clientcmd
 kmodules.xyz/client-go/tools/converter
 kmodules.xyz/client-go/tools/parser
 kmodules.xyz/client-go/tools/wait
-# kmodules.xyz/resource-metadata v0.12.5
+# kmodules.xyz/resource-metadata v0.12.6
 ## explicit; go 1.18
 kmodules.xyz/resource-metadata/apis/meta
 kmodules.xyz/resource-metadata/apis/meta/v1alpha1
