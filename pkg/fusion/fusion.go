@@ -20,7 +20,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"sort"
@@ -186,7 +185,7 @@ func NewCmdFuse() *cobra.Command {
 					if err != nil {
 						return err
 					}
-					err = ioutil.WriteFile(filename, data, 0o644)
+					err = os.WriteFile(filename, data, 0o644)
 					if err != nil {
 						return err
 					}
@@ -291,7 +290,7 @@ func NewCmdFuse() *cobra.Command {
 				optsSchemaFile := filepath.Join(chartDir, optsChartName, "values.openapiv3_schema.yaml")
 				if ioutilz.PathExists(optsSchemaFile) {
 					var optSchema crdv1.JSONSchemaProps
-					data, err := ioutil.ReadFile(optsSchemaFile)
+					data, err := os.ReadFile(optsSchemaFile)
 					if err != nil {
 						return err
 					}
@@ -313,7 +312,7 @@ func NewCmdFuse() *cobra.Command {
 					return err
 				}
 				schemaFilename := filepath.Join(chartDir, editorChartName, "values.openapiv3_schema.yaml")
-				err = ioutil.WriteFile(schemaFilename, data3, 0o644)
+				err = os.WriteFile(schemaFilename, data3, 0o644)
 				if err != nil {
 					return err
 				}
@@ -351,7 +350,7 @@ func NewCmdFuse() *cobra.Command {
 				optsValuesFile := filepath.Join(chartDir, optsChartName, "values.yaml")
 				if ioutilz.PathExists(optsValuesFile) {
 					var optValues map[string]interface{}
-					data, err := ioutil.ReadFile(optsValuesFile)
+					data, err := os.ReadFile(optsValuesFile)
 					if err != nil {
 						return err
 					}
@@ -374,7 +373,7 @@ func NewCmdFuse() *cobra.Command {
 				}
 
 				filename := filepath.Join(chartDir, editorChartName, "values.yaml")
-				err = ioutil.WriteFile(filename, buf.Bytes(), 0o644)
+				err = os.WriteFile(filename, buf.Bytes(), 0o644)
 				if err != nil {
 					return err
 				}
@@ -414,7 +413,7 @@ func NewCmdFuse() *cobra.Command {
 				}
 
 				filename := filepath.Join(chartDir, editorChartName, "doc.yaml")
-				err = ioutil.WriteFile(filename, data, 0o644)
+				err = os.WriteFile(filename, data, 0o644)
 				if err != nil {
 					return err
 				}
@@ -520,7 +519,7 @@ func GenerateChartMetadata(rd *v1alpha1.ResourceDescriptor, gks []metav1.GroupKi
 		return err
 	}
 	filename := filepath.Join(chartDir, editorChartName, "Chart.yaml")
-	return ioutil.WriteFile(filename, data4, 0o644)
+	return os.WriteFile(filename, data4, 0o644)
 }
 
 // toYAML takes an interface, marshals it to yaml, and returns a string. It will
@@ -634,10 +633,10 @@ func copyWithReplace(chartDir, optsChartName, editorChartName, filename string, 
 		return nil
 	}
 
-	data, err := ioutil.ReadFile(src)
+	data, err := os.ReadFile(src)
 	if err != nil {
 		return err
 	}
 	data = bytes.ReplaceAll(data, []byte(optsChartName), []byte(editorChartName))
-	return ioutil.WriteFile(dst, data, 0o644)
+	return os.WriteFile(dst, data, 0o644)
 }

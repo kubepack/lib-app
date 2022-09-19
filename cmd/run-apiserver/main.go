@@ -170,7 +170,7 @@ func main() {
 			phase := ctx.R().Params("phase")
 			var out v1alpha1.PlanList
 			for _, file := range files {
-				data, err := ioutil.ReadFile(filepath.Join(dir, file.Name()))
+				data, err := os.ReadFile(filepath.Join(dir, file.Name()))
 				if err != nil {
 					ctx.Error(http.StatusInternalServerError, err.Error())
 					return
@@ -195,7 +195,7 @@ func main() {
 
 			dir := "artifacts/products/" + ctx.R().Params("key") + "-plans"
 
-			data, err := ioutil.ReadFile(filepath.Join(dir, ctx.R().Params("plan")+".json"))
+			data, err := os.ReadFile(filepath.Join(dir, ctx.R().Params("plan")+".json"))
 			if err != nil {
 				ctx.Error(http.StatusInternalServerError, err.Error())
 				return
@@ -240,7 +240,7 @@ func main() {
 				return
 			}
 			for idx, file := range files {
-				data, err := ioutil.ReadFile(filepath.Join(dir, file.Name()))
+				data, err := os.ReadFile(filepath.Join(dir, file.Name()))
 				if err != nil {
 					ctx.Error(http.StatusInternalServerError, err.Error())
 					return
@@ -301,7 +301,7 @@ func main() {
 
 			// plan
 			dir := "artifacts/products/" + ctx.R().Params("key") + "-plans"
-			data, err = ioutil.ReadFile(filepath.Join(dir, ctx.R().Params("plan")+".json"))
+			data, err = os.ReadFile(filepath.Join(dir, ctx.R().Params("plan")+".json"))
 			if err != nil {
 				ctx.Error(http.StatusInternalServerError, err.Error())
 				return
