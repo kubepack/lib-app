@@ -18,7 +18,6 @@ package main
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"log"
 	"os"
 
@@ -55,7 +54,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		err = ioutil.WriteFile("artifacts/"+name+"/editor.yaml", data, 0o644)
+		err = os.WriteFile("artifacts/"+name+"/editor.yaml", data, 0o644)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -66,7 +65,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		err = ioutil.WriteFile("artifacts/"+name+"/editor.json", data, 0o644)
+		err = os.WriteFile("artifacts/"+name+"/editor.json", data, 0o644)
 		if err != nil {
 			log.Fatal(err)
 		}

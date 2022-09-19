@@ -19,7 +19,6 @@ package simple
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -119,7 +118,7 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 				return err
 			}
 			schemaFilename := filepath.Join(chartDir, chartName, "values.openapiv3_schema.yaml")
-			err = ioutil.WriteFile(schemaFilename, data3, 0o644)
+			err = os.WriteFile(schemaFilename, data3, 0o644)
 			if err != nil {
 				return err
 			}
@@ -177,7 +176,7 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 		if err != nil {
 			return err
 		}
-		err = ioutil.WriteFile(filename, data, 0o644)
+		err = os.WriteFile(filename, data, 0o644)
 		if err != nil {
 			return err
 		}
@@ -209,7 +208,7 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 .vscode/
 `
 		schemaFilename := filepath.Join(chartDir, chartName, ".helmignore")
-		err = ioutil.WriteFile(schemaFilename, []byte(data), 0o644)
+		err = os.WriteFile(schemaFilename, []byte(data), 0o644)
 		if err != nil {
 			return err
 		}
@@ -225,7 +224,7 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
   kubectl --namespace {{ .Release.Namespace }} get %s {{ .Release.Name }}
 `, rd.Spec.Resource.Kind, fqdn)
 		schemaFilename := filepath.Join(chartDir, chartName, "templates", "NOTES.txt")
-		err = ioutil.WriteFile(schemaFilename, []byte(data), 0o644)
+		err = os.WriteFile(schemaFilename, []byte(data), 0o644)
 		if err != nil {
 			return err
 		}
@@ -255,7 +254,7 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 		}
 
 		filename := filepath.Join(chartDir, chartName, "values.yaml")
-		err = ioutil.WriteFile(filename, data, 0o644)
+		err = os.WriteFile(filename, data, 0o644)
 		if err != nil {
 			return err
 		}
@@ -295,7 +294,7 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 		}
 
 		filename := filepath.Join(chartDir, chartName, "doc.yaml")
-		err = ioutil.WriteFile(filename, data, 0o644)
+		err = os.WriteFile(filename, data, 0o644)
 		if err != nil {
 			return err
 		}
@@ -357,7 +356,7 @@ func GenerateChartMetadata(chartDir, chartName string, rd *rsapi.ResourceDescrip
 		return err
 	}
 	filename := filepath.Join(chartDir, chartName, "Chart.yaml")
-	return ioutil.WriteFile(filename, data4, 0o644)
+	return os.WriteFile(filename, data4, 0o644)
 }
 
 func safeGroupName(group string) string {
@@ -392,5 +391,5 @@ func UpdateEditor(rd *uiapi.ResourceEditor, dir string) error {
 	}
 	baseDir := filepath.Join(dir, group, rd.Spec.Resource.Version)
 	filename := filepath.Join(baseDir, rd.Spec.Resource.Name+".yaml")
-	return ioutil.WriteFile(filename, data, 0o644)
+	return os.WriteFile(filename, data, 0o644)
 }
