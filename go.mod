@@ -33,7 +33,7 @@ require (
 	kmodules.xyz/resource-metadata v0.13.0
 	kmodules.xyz/sets v0.24.0
 	kubepack.dev/chart-doc-gen v0.4.7
-	kubepack.dev/kubepack v0.4.2-0.20220922172707-0cf55fc85b93
+	kubepack.dev/kubepack v0.5.0
 	kubepack.dev/lib-helm v0.5.0
 	kubepack.dev/preset v0.0.3
 	sigs.k8s.io/application v0.0.0-00010101000000-000000000000

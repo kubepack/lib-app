@@ -1409,7 +1409,7 @@ kmodules.xyz/sets
 # kubepack.dev/chart-doc-gen v0.4.7
 ## explicit; go 1.17
 kubepack.dev/chart-doc-gen/api
-# kubepack.dev/kubepack v0.4.2-0.20220922172707-0cf55fc85b93
+# kubepack.dev/kubepack v0.5.0
 ## explicit; go 1.18
 kubepack.dev/kubepack/apis
 kubepack.dev/kubepack/apis/kubepack
