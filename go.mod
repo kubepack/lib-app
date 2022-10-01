@@ -30,7 +30,7 @@ require (
 	k8s.io/klog/v2 v2.80.1
 	k8s.io/kubectl v0.25.2
 	kmodules.xyz/client-go v0.25.6
-	kmodules.xyz/resource-metadata v0.13.1-0.20221001160356-ab241e64a163
+	kmodules.xyz/resource-metadata v0.13.1-0.20221001183334-809797c02490
 	kmodules.xyz/sets v0.24.0
 	kubepack.dev/chart-doc-gen v0.4.7
 	kubepack.dev/kubepack v0.5.0
