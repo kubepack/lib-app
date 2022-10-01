@@ -30,7 +30,7 @@ require (
 	k8s.io/klog/v2 v2.80.1
 	k8s.io/kubectl v0.25.2
 	kmodules.xyz/client-go v0.25.6
-	kmodules.xyz/resource-metadata v0.13.0
+	kmodules.xyz/resource-metadata v0.13.1-0.20221001160356-ab241e64a163
 	kmodules.xyz/sets v0.24.0
 	kubepack.dev/chart-doc-gen v0.4.7
 	kubepack.dev/kubepack v0.5.0
@@ -225,6 +225,8 @@ require (
 replace helm.sh/helm/v3 => github.com/kubepack/helm/v3 v3.10.1-0.20220922170417-3a8110bacfda
 
 replace sigs.k8s.io/application => github.com/kmodules/application v0.8.4-0.20220917032906-876dc58b7366
+
+replace gopkg.in/yaml.v2 => gopkg.in/yaml.v2 v2.3.0
 
 replace (
 	go.opencensus.io => go.opencensus.io v0.23.0

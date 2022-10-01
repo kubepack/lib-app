@@ -56,6 +56,8 @@ func NewCmdSimple() *cobra.Command {
 		Short:             `Generate simple chart`,
 		DisableAutoGenTag: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
+			descriptorDir = filepath.Clean(descriptorDir)
+
 			if !all {
 				return GenerateSimpleEditorChart(chartDir, descriptorDir, gvr, registry, skipExisting)
 			}
@@ -302,15 +304,15 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 
 	ed, ok := resourceeditors.LoadDefaultByGVR(rd.Spec.Resource.GroupVersionResource())
 	if ok {
-		ed.Spec.UI = &shared.UIParameters{
-			Options: nil,
-			Editor: &shared.ChartRepoRef{
-				URL:     "https://raw.githubusercontent.com/bytebuilders/ui-wizards/master/stable",
-				Name:    chartName,
-				Version: "v0.3.0",
-			},
+		if ed.Spec.UI == nil {
+			ed.Spec.UI = &shared.UIParameters{}
 		}
-		return UpdateEditor(ed, descriptorDir)
+		ed.Spec.UI.Editor = &shared.ChartRepoRef{
+			URL:     "https://bundles.byte.builders/ui/",
+			Name:    chartName,
+			Version: "v0.4.10",
+		}
+		return UpdateEditor(ed, filepath.Join(filepath.Dir(descriptorDir), uiapi.ResourceResourceEditors))
 	}
 
 	return nil
@@ -331,8 +333,8 @@ func GenerateChartMetadata(chartDir, chartName string, rd *rsapi.ResourceDescrip
 		Name:        chartName,
 		Home:        "https://byte.builders",
 		Sources:     nil,
-		Version:     "v0.4.3",
-		AppVersion:  "v0.4.3",
+		Version:     "v0.4.10",
+		AppVersion:  "v0.4.10",
 		Description: fmt.Sprintf("%s Editor", rd.Spec.Resource.Kind),
 		Keywords:    []string{"appscode"},
 		Maintainers: []*chart.Maintainer{
@@ -391,5 +393,9 @@ func UpdateEditor(rd *uiapi.ResourceEditor, dir string) error {
 	}
 	baseDir := filepath.Join(dir, group, rd.Spec.Resource.Version)
 	filename := filepath.Join(baseDir, rd.Spec.Resource.Name+".yaml")
+	err = os.MkdirAll(filepath.Dir(filename), 0o755)
+	if err != nil {
+		return err
+	}
 	return os.WriteFile(filename, data, 0o644)
 }
