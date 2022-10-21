@@ -112,7 +112,7 @@ func ApplyResource(f cmdutil.Factory, model map[string]interface{}, skipCRds boo
 	} else {
 		vals = model
 	}
-	opts.Values = values.Options{
+	opts.Options = values.Options{
 		ReplaceValues: vals,
 	}
 

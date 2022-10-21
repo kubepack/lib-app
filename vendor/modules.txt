@@ -1409,14 +1409,14 @@ kmodules.xyz/sets
 # kubepack.dev/chart-doc-gen v0.4.7
 ## explicit; go 1.17
 kubepack.dev/chart-doc-gen/api
-# kubepack.dev/kubepack v0.5.0
+# kubepack.dev/kubepack v0.5.1-0.20221021062247-95633fd87c89
 ## explicit; go 1.18
 kubepack.dev/kubepack/apis
 kubepack.dev/kubepack/apis/kubepack
 kubepack.dev/kubepack/apis/kubepack/v1alpha1
 kubepack.dev/kubepack/crds
 kubepack.dev/kubepack/pkg/lib
-# kubepack.dev/lib-helm v0.5.0
+# kubepack.dev/lib-helm v0.5.1-0.20221021054220-31a5a47694d6
 ## explicit; go 1.18
 kubepack.dev/lib-helm/pkg/action
 kubepack.dev/lib-helm/pkg/application
