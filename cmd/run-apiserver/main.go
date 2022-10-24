@@ -605,7 +605,13 @@ func DeleteResource(f cmdutil.Factory) func(ctx httpw.ResponseWriter) {
 
 func ApplyResource(f cmdutil.Factory) func(ctx httpw.ResponseWriter, model map[string]interface{}) {
 	return func(ctx httpw.ResponseWriter, model map[string]interface{}) {
-		rls, err := handler.ApplyResource(f, model, !ctx.R().QueryBool("installCRDs"))
+		kc, err := actionx.NewUncachedClient(f)
+		if err != nil {
+			ctx.Error(http.StatusInternalServerError, "ApplyResource", err.Error())
+			return
+		}
+		reg := repo.NewCachedRegistry(kc, repo.DefaultDiskCache())
+		rls, err := handler.ApplyResource(f, reg, model, !ctx.R().QueryBool("installCRDs"))
 		if err != nil {
 			ctx.Error(http.StatusInternalServerError, "ApplyResource", err.Error())
 			return

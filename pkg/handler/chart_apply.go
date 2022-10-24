@@ -18,17 +18,17 @@ package handler
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 
-	"kubepack.dev/kubepack/pkg/lib"
 	appapi "kubepack.dev/lib-app/api/v1alpha1"
 	"kubepack.dev/lib-app/pkg/editor"
 	actionx "kubepack.dev/lib-helm/pkg/action"
+	"kubepack.dev/lib-helm/pkg/repo"
 	"kubepack.dev/lib-helm/pkg/storage/driver"
 	"kubepack.dev/lib-helm/pkg/values"
 
 	jsonpatch "github.com/evanphx/json-patch/v5"
+	"github.com/pkg/errors"
 	ha "helm.sh/helm/v3/pkg/action"
 	"helm.sh/helm/v3/pkg/release"
 	cmdutil "k8s.io/kubectl/pkg/cmd/util"
@@ -36,7 +36,7 @@ import (
 	"kmodules.xyz/resource-metadata/hub/resourceeditors"
 )
 
-func ApplyResource(f cmdutil.Factory, model map[string]interface{}, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
+func ApplyResource(f cmdutil.Factory, reg repo.IRegistry, model map[string]interface{}, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
 	var tm appapi.ModelMetadata
 	err := meta_util.DecodeObject(model, &tm)
 	if err != nil {
@@ -58,16 +58,22 @@ func ApplyResource(f cmdutil.Factory, model map[string]interface{}, skipCRds boo
 		return nil, err
 	}
 
-	deployer.WithRegistry(lib.DefaultRegistry)
+	deployer.WithRegistry(reg)
+
+	chartURL, err := reg.Register(ed.Spec.UI.Editor.SourceRef)
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to register chart %+v", ed.Spec.UI.Editor)
+	}
+
 	var opts actionx.DeployOptions
-	opts.ChartURL = ed.Spec.UI.Editor.URL
+	opts.ChartURL = chartURL
 	opts.ChartName = ed.Spec.UI.Editor.Name
 	opts.Version = ed.Spec.UI.Editor.Version
 
 	var vals map[string]interface{}
 	if _, ok := model["patch"]; ok {
 		// NOTE: Makes an assumption that this is a "edit" apply
-		tpl, err := editor.LoadEditorModel(kc, lib.DefaultRegistry, appapi.ModelMetadata{
+		tpl, err := editor.LoadEditorModel(kc, reg, appapi.ModelMetadata{
 			Metadata: tm.Metadata,
 		})
 		if err != nil {
@@ -112,7 +118,7 @@ func ApplyResource(f cmdutil.Factory, model map[string]interface{}, skipCRds boo
 	} else {
 		vals = model
 	}
-	opts.Values = values.Options{
+	opts.Options = values.Options{
 		ReplaceValues: vals,
 	}
 

@@ -22,19 +22,19 @@ require (
 	gomodules.xyz/x v0.0.14
 	gopkg.in/yaml.v3 v3.0.1
 	helm.sh/helm/v3 v3.0.0-00010101000000-000000000000
-	k8s.io/api v0.25.2
-	k8s.io/apiextensions-apiserver v0.25.2
-	k8s.io/apimachinery v0.25.2
+	k8s.io/api v0.25.3
+	k8s.io/apiextensions-apiserver v0.25.3
+	k8s.io/apimachinery v0.25.3
 	k8s.io/cli-runtime v0.25.2
-	k8s.io/client-go v0.25.2
+	k8s.io/client-go v0.25.3
 	k8s.io/klog/v2 v2.80.1
 	k8s.io/kubectl v0.25.2
 	kmodules.xyz/client-go v0.25.6
-	kmodules.xyz/resource-metadata v0.13.1
+	kmodules.xyz/resource-metadata v0.14.0
 	kmodules.xyz/sets v0.24.0
 	kubepack.dev/chart-doc-gen v0.4.7
-	kubepack.dev/kubepack v0.5.0
-	kubepack.dev/lib-helm v0.5.0
+	kubepack.dev/kubepack v0.5.1
+	kubepack.dev/lib-helm v0.5.4
 	kubepack.dev/preset v0.0.3
 	sigs.k8s.io/application v0.0.0-00010101000000-000000000000
 	sigs.k8s.io/controller-runtime v0.13.0
@@ -100,6 +100,11 @@ require (
 	github.com/fatih/camelcase v1.0.0 // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
+	github.com/fluxcd/helm-controller/api v0.26.0 // indirect
+	github.com/fluxcd/pkg/apis/acl v0.1.0 // indirect
+	github.com/fluxcd/pkg/apis/kustomize v0.6.0 // indirect
+	github.com/fluxcd/pkg/apis/meta v0.17.0 // indirect
+	github.com/fluxcd/source-controller/api v0.31.0 // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/fvbommel/sortorder v1.0.1 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.1 // indirect
@@ -189,7 +194,7 @@ require (
 	golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4 // indirect
 	golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab // indirect
 	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211 // indirect
-	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/text v0.4.0 // indirect
 	golang.org/x/time v0.0.0-20220722155302-e5dcc9cfc0b9 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	gomodules.xyz/blobfs v0.1.11 // indirect
@@ -208,8 +213,8 @@ require (
 	google.golang.org/protobuf v1.28.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	k8s.io/apiserver v0.25.2 // indirect
-	k8s.io/component-base v0.25.2 // indirect
+	k8s.io/apiserver v0.25.3 // indirect
+	k8s.io/component-base v0.25.3 // indirect
 	k8s.io/kube-openapi v0.0.0-20220803164354-a70c9af30aea // indirect
 	k8s.io/utils v0.0.0-20220823124924-e9cbc92d1a73 // indirect
 	kmodules.xyz/apiversion v0.2.0 // indirect
