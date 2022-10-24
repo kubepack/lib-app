@@ -50,7 +50,7 @@ import (
 )
 
 type TemplateRenderer struct {
-	Registry    *repo.Registry
+	Registry    repo.IRegistry
 	ChartRef    v1alpha1.ChartRef
 	Version     string
 	ReleaseName string
@@ -284,7 +284,7 @@ func (x *TemplateRenderer) Result() (crds []appapi.BucketFile, manifest *appapi.
 }
 
 type EditorModelGenerator struct {
-	Registry    *repo.Registry
+	Registry    repo.IRegistry
 	ChartRef    v1alpha1.ChartRef
 	Version     string
 	ReleaseName string

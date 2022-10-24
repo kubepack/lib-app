@@ -48,7 +48,12 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func RenderOrderTemplate(bs *lib.BlobStore, reg *repo.Registry, order v1alpha1.Order) (string, []appapi.ChartTemplate, error) {
+var helmRepositories = map[string]string{
+	"appscode":        "https://charts.appscode.com/stable/",
+	"bytebuilders-ui": "https://bundles.byte.builders/ui/",
+}
+
+func RenderOrderTemplate(bs *lib.BlobStore, reg repo.IRegistry, order v1alpha1.Order) (string, []appapi.ChartTemplate, error) {
 	var buf bytes.Buffer
 	var tpls []appapi.ChartTemplate
 
@@ -128,13 +133,13 @@ func RenderOrderTemplate(bs *lib.BlobStore, reg *repo.Registry, order v1alpha1.O
 	return buf.String(), tpls, nil
 }
 
-func LoadEditorModel(kc client.Client, reg *repo.Registry, opts appapi.ModelMetadata) (*appapi.EditorTemplate, error) {
+func LoadEditorModel(kc client.Client, reg repo.IRegistry, opts appapi.ModelMetadata) (*appapi.EditorTemplate, error) {
 	ed, ok := resourceeditors.LoadByResourceID(kc, &opts.Resource)
 	if !ok {
 		return nil, fmt.Errorf("failed to load resource editor for %+v", opts.Resource)
 	}
 
-	chrt, err := reg.GetChart(ed.Spec.UI.Editor.URL, ed.Spec.UI.Editor.Name, ed.Spec.UI.Editor.Version)
+	chrt, err := reg.GetChart(helmRepositories[ed.Spec.UI.Editor.SourceRef.Name], ed.Spec.UI.Editor.Name, ed.Spec.UI.Editor.Version)
 	if err != nil {
 		return nil, err
 	}
@@ -312,7 +317,7 @@ func EditorChartValueManifest(kc client.Client, app *v1beta1.Application, mt app
 	return &tpl, nil
 }
 
-func GenerateEditorModel(kc client.Client, reg *repo.Registry, opts map[string]interface{}) (*unstructured.Unstructured, error) {
+func GenerateEditorModel(kc client.Client, reg repo.IRegistry, opts map[string]interface{}) (*unstructured.Unstructured, error) {
 	var spec appapi.ModelMetadata
 	err := meta_util.DecodeObject(opts, &spec)
 	if err != nil {
@@ -333,7 +338,7 @@ func GenerateEditorModel(kc client.Client, reg *repo.Registry, opts map[string]i
 			name    string
 			version string
 		}{
-			ed.Spec.UI.Editor.URL,
+			helmRepositories[ed.Spec.UI.Editor.SourceRef.Name],
 			ed.Spec.UI.Editor.Name,
 			ed.Spec.UI.Editor.Version,
 		}
@@ -356,7 +361,7 @@ func GenerateEditorModel(kc client.Client, reg *repo.Registry, opts map[string]i
 	f1 := &EditorModelGenerator{
 		Registry: reg,
 		ChartRef: v1alpha1.ChartRef{
-			URL:  ed.Spec.UI.Options.URL,
+			URL:  helmRepositories[ed.Spec.UI.Options.SourceRef.Name],
 			Name: ed.Spec.UI.Options.Name,
 		},
 		Version:     ed.Spec.UI.Options.Version,
@@ -399,7 +404,7 @@ func GenerateEditorModel(kc client.Client, reg *repo.Registry, opts map[string]i
 	return model, err
 }
 
-func RenderChartTemplate(kc client.Client, reg *repo.Registry, opts map[string]interface{}) (string, *appapi.ChartTemplate, error) {
+func RenderChartTemplate(kc client.Client, reg repo.IRegistry, opts map[string]interface{}) (string, *appapi.ChartTemplate, error) {
 	var spec appapi.ModelMetadata
 	err := meta_util.DecodeObject(opts, &spec)
 	if err != nil {
@@ -414,7 +419,7 @@ func RenderChartTemplate(kc client.Client, reg *repo.Registry, opts map[string]i
 	f1 := &EditorModelGenerator{
 		Registry: reg,
 		ChartRef: v1alpha1.ChartRef{
-			URL:  ed.Spec.UI.Editor.URL,
+			URL:  helmRepositories[ed.Spec.UI.Editor.SourceRef.Name],
 			Name: ed.Spec.UI.Editor.Name,
 		},
 		Version:        ed.Spec.UI.Editor.Version,
@@ -461,7 +466,7 @@ func RenderChartTemplate(kc client.Client, reg *repo.Registry, opts map[string]i
 	return string(manifest), &tpl, nil
 }
 
-func CreateChartOrder(reg *repo.Registry, opts appapi.ChartOrder) (*v1alpha1.Order, error) {
+func CreateChartOrder(reg repo.IRegistry, opts appapi.ChartOrder) (*v1alpha1.Order, error) {
 	// editor chart
 	chrt, err := reg.GetChart(opts.URL, opts.Name, opts.Version)
 	if err != nil {

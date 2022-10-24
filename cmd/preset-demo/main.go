@@ -113,7 +113,7 @@ func DD(getter genericclioptions.RESTClientGetter, ref chartsapi.ChartPresetRef)
 			ChartURL:  ref.URL,
 			ChartName: ref.Name,
 			Version:   ref.Version,
-			Values: values.Options{
+			Options: values.Options{
 				ReplaceValues: vals,
 			},
 			DryRun:       false,

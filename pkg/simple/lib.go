@@ -308,9 +308,14 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 			ed.Spec.UI = &shared.UIParameters{}
 		}
 		ed.Spec.UI.Editor = &shared.ChartRepoRef{
-			URL:     "https://bundles.byte.builders/ui/",
 			Name:    chartName,
-			Version: "v0.4.10",
+			Version: "v0.4.11",
+			SourceRef: kmapi.TypedObjectReference{
+				APIGroup:  "source.toolkit.fluxcd.io",
+				Kind:      "HelmRepository",
+				Namespace: "",
+				Name:      "bytebuilders-ui",
+			},
 		}
 		return UpdateEditor(ed, filepath.Join(filepath.Dir(descriptorDir), uiapi.ResourceResourceEditors))
 	}
@@ -333,8 +338,8 @@ func GenerateChartMetadata(chartDir, chartName string, rd *rsapi.ResourceDescrip
 		Name:        chartName,
 		Home:        "https://byte.builders",
 		Sources:     nil,
-		Version:     "v0.4.10",
-		AppVersion:  "v0.4.10",
+		Version:     "v0.4.11",
+		AppVersion:  "v0.4.11",
 		Description: fmt.Sprintf("%s Editor", rd.Spec.Resource.Kind),
 		Keywords:    []string{"appscode"},
 		Maintainers: []*chart.Maintainer{
