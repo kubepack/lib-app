@@ -27,10 +27,10 @@ import (
 	"text/template"
 
 	docapi "kubepack.dev/chart-doc-gen/api"
-	"kubepack.dev/kubepack/pkg/lib"
 	appapi "kubepack.dev/lib-app/api/v1alpha1"
 	"kubepack.dev/lib-app/pkg/editor"
 	"kubepack.dev/lib-helm/pkg/action"
+	"kubepack.dev/lib-helm/pkg/repo"
 
 	"github.com/Masterminds/sprig/v3"
 	"github.com/spf13/cobra"
@@ -64,6 +64,7 @@ var (
 	resourceValues = map[string]*unstructured.Unstructured{}
 	registry       = hub.NewRegistryOfKnownResources()
 	resourceKeys   = sets.NewString()
+	HelmRegistry   = repo.NewDiskCacheRegistry()
 )
 
 func NewCmdFuse() *cobra.Command {
@@ -242,7 +243,7 @@ func NewCmdFuse() *cobra.Command {
 				if err != nil {
 					return err
 				}
-				_, files, err := i.WithRegistry(lib.DefaultRegistry).
+				_, files, err := i.WithRegistry(HelmRegistry).
 					ForChart(filepath.Join(chartDir, optsChartName), optsChartName, "").
 					Run()
 				if err != nil {

@@ -1395,7 +1395,7 @@ kmodules.xyz/apiversion
 # kmodules.xyz/apply v0.25.0
 ## explicit; go 1.18
 kmodules.xyz/apply
-# kmodules.xyz/client-go v0.25.6
+# kmodules.xyz/client-go v0.25.9
 ## explicit; go 1.18
 kmodules.xyz/client-go
 kmodules.xyz/client-go/api/v1
@@ -1407,7 +1407,7 @@ kmodules.xyz/client-go/tools/clientcmd
 kmodules.xyz/client-go/tools/converter
 kmodules.xyz/client-go/tools/parser
 kmodules.xyz/client-go/tools/wait
-# kmodules.xyz/resource-metadata v0.14.0
+# kmodules.xyz/resource-metadata v0.14.1-0.20221026061352-d80461714483
 ## explicit; go 1.18
 kmodules.xyz/resource-metadata/apis/meta
 kmodules.xyz/resource-metadata/apis/meta/v1alpha1
@@ -1418,20 +1418,20 @@ kmodules.xyz/resource-metadata/crds
 kmodules.xyz/resource-metadata/hub
 kmodules.xyz/resource-metadata/hub/resourcedescriptors
 kmodules.xyz/resource-metadata/hub/resourceeditors
-# kmodules.xyz/sets v0.24.0
+# kmodules.xyz/sets v0.24.1-0.20220924062722-286d229d7793
 ## explicit; go 1.17
 kmodules.xyz/sets
-# kubepack.dev/chart-doc-gen v0.4.7
+# kubepack.dev/chart-doc-gen v0.4.8-0.20220924070920-69adc328e83f
 ## explicit; go 1.17
 kubepack.dev/chart-doc-gen/api
-# kubepack.dev/kubepack v0.5.1
+# kubepack.dev/kubepack v0.5.2
 ## explicit; go 1.18
 kubepack.dev/kubepack/apis
 kubepack.dev/kubepack/apis/kubepack
 kubepack.dev/kubepack/apis/kubepack/v1alpha1
 kubepack.dev/kubepack/crds
 kubepack.dev/kubepack/pkg/lib
-# kubepack.dev/lib-helm v0.5.4
+# kubepack.dev/lib-helm v0.5.7-0.20221024120504-d029626cf65b
 ## explicit; go 1.18
 kubepack.dev/lib-helm/pkg/action
 kubepack.dev/lib-helm/pkg/application
@@ -1449,7 +1449,7 @@ kubepack.dev/lib-helm/pkg/kube
 kubepack.dev/lib-helm/pkg/repo
 kubepack.dev/lib-helm/pkg/storage/driver
 kubepack.dev/lib-helm/pkg/values
-# kubepack.dev/preset v0.0.3
+# kubepack.dev/preset v0.0.4-0.20220924153449-79d8f77c5e53
 ## explicit; go 1.18
 kubepack.dev/preset/apis/charts/v1alpha1
 kubepack.dev/preset/apis/store/v1alpha1
