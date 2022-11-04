@@ -53,6 +53,8 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
+var HelmRegistry = repo.NewDiskCacheRegistry()
+
 func main() {
 	kubeConfigFlags := genericclioptions.NewConfigFlags(true)
 	kubeConfigFlags.AddFlags(pflag.CommandLine)
@@ -272,7 +274,7 @@ func main() {
 				names = append(names, plaan.Spec.Bundle.Name)
 			}
 
-			table, err := lib.ComparePlans(lib.DefaultRegistry, url, names, version)
+			table, err := lib.ComparePlans(HelmRegistry, url, names, version)
 			if err != nil {
 				ctx.Error(http.StatusInternalServerError, err.Error())
 				return
@@ -313,7 +315,7 @@ func main() {
 				return
 			}
 
-			bv, err := lib.CreateBundleViewForBundle(lib.DefaultRegistry, &v1alpha1.ChartRepoRef{
+			bv, err := lib.CreateBundleViewForBundle(HelmRegistry, &v1alpha1.ChartRepoRef{
 				URL:     plaan.Spec.Bundle.URL,
 				Name:    plaan.Spec.Bundle.Name,
 				Version: p.Spec.LatestVersion,
@@ -365,7 +367,7 @@ func main() {
 				return
 			}
 
-			scripts, err := lib.GenerateHelm3Script(bs, lib.DefaultRegistry, order)
+			scripts, err := lib.GenerateHelm3Script(bs, HelmRegistry, order)
 			if err != nil {
 				ctx.Error(http.StatusInternalServerError, err.Error())
 				return
@@ -393,7 +395,7 @@ func main() {
 				return
 			}
 
-			scripts, err := lib.GenerateYAMLScript(bs, lib.DefaultRegistry, order)
+			scripts, err := lib.GenerateYAMLScript(bs, HelmRegistry, order)
 			if err != nil {
 				ctx.Error(http.StatusInternalServerError, err.Error())
 				return
@@ -444,7 +446,7 @@ func main() {
 			return
 		}
 
-		cfg, _, err := lib.DefaultRegistry.Get(url)
+		cfg, _, err := HelmRegistry.Get(url)
 		if err != nil {
 			ctx.Error(http.StatusInternalServerError, err.Error())
 			return
@@ -474,7 +476,7 @@ func main() {
 			return
 		}
 
-		cfg, _, err := lib.DefaultRegistry.Get(url)
+		cfg, _, err := HelmRegistry.Get(url)
 		if err != nil {
 			ctx.Error(http.StatusInternalServerError, err.Error())
 			return
@@ -514,7 +516,7 @@ func LoadEditorResources(ctx httpw.ResponseWriter, model appapi.Model) {
 		return
 	}
 
-	tpl, err := editor.LoadEditorModel(kc, lib.DefaultRegistry, appapi.ModelMetadata{
+	tpl, err := editor.LoadEditorModel(kc, HelmRegistry, appapi.ModelMetadata{
 		Metadata: model.Metadata,
 	})
 	if err != nil {
@@ -551,7 +553,7 @@ func LoadEditorManifest(ctx httpw.ResponseWriter, model appapi.Model) {
 		return
 	}
 
-	tpl, err := editor.LoadEditorModel(kc, lib.DefaultRegistry, appapi.ModelMetadata{
+	tpl, err := editor.LoadEditorModel(kc, HelmRegistry, appapi.ModelMetadata{
 		Metadata: model.Metadata,
 	})
 	if err != nil {
@@ -573,7 +575,7 @@ func LoadEditorModel(ctx httpw.ResponseWriter, model appapi.ModelMetadata) {
 		return
 	}
 
-	tpl, err := editor.LoadEditorModel(kc, lib.DefaultRegistry, model)
+	tpl, err := editor.LoadEditorModel(kc, HelmRegistry, model)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "LoadEditorModel", err.Error())
 		return
@@ -640,7 +642,7 @@ func PreviewOrderResources(ctx httpw.ResponseWriter) {
 		return
 	}
 
-	_, tpls, err := editor.RenderOrderTemplate(bs, lib.DefaultRegistry, order)
+	_, tpls, err := editor.RenderOrderTemplate(bs, HelmRegistry, order)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "RenderOrderTemplate", err.Error())
 		return
@@ -680,7 +682,7 @@ func PreviewOrderManifest(ctx httpw.ResponseWriter) {
 		return
 	}
 
-	manifest, _, err := editor.RenderOrderTemplate(bs, lib.DefaultRegistry, order)
+	manifest, _, err := editor.RenderOrderTemplate(bs, HelmRegistry, order)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "RenderOrderTemplate", err.Error())
 		return
@@ -738,7 +740,7 @@ func PreviewEditorResources(ctx httpw.ResponseWriter, opts map[string]interface{
 		return
 	}
 
-	_, tpls, err := editor.RenderChartTemplate(kc, lib.DefaultRegistry, opts)
+	_, tpls, err := editor.RenderChartTemplate(kc, HelmRegistry, opts)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "RenderChartTemplate", err.Error())
 		return
@@ -787,7 +789,7 @@ func PreviewEditorManifest(ctx httpw.ResponseWriter, opts map[string]interface{}
 		return
 	}
 
-	manifest, _, err := editor.RenderChartTemplate(kc, lib.DefaultRegistry, opts)
+	manifest, _, err := editor.RenderChartTemplate(kc, HelmRegistry, opts)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "RenderChartTemplate", err.Error())
 		return
@@ -807,7 +809,7 @@ func GenerateEditorModelFromOptions(ctx httpw.ResponseWriter, opts map[string]in
 		return
 	}
 
-	model, err := editor.GenerateEditorModel(kc, lib.DefaultRegistry, opts)
+	model, err := editor.GenerateEditorModel(kc, HelmRegistry, opts)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "GetChart", err.Error())
 		return
@@ -827,7 +829,7 @@ func GenerateEditorModelFromOptions(ctx httpw.ResponseWriter, opts map[string]in
 }
 
 func GetPackageFile(ctx httpw.ResponseWriter, params v1alpha1.ChartRepoRef) {
-	chrt, err := lib.DefaultRegistry.GetChart(params.URL, params.Name, params.Version)
+	chrt, err := HelmRegistry.GetChart(params.URL, params.Name, params.Version)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "GetChart", err.Error())
 		return
@@ -863,7 +865,7 @@ func GetValuesFile(ctx httpw.ResponseWriter, params chartsapi.ChartPresetRef) {
 		return
 	}
 
-	chrt, err := lib.DefaultRegistry.GetChart(params.URL, params.Name, params.Version)
+	chrt, err := HelmRegistry.GetChart(params.URL, params.Name, params.Version)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "GetChart", err.Error())
 		return
@@ -897,7 +899,7 @@ func GetValuesFile(ctx httpw.ResponseWriter, params chartsapi.ChartPresetRef) {
 func ListPackageFiles(ctx httpw.ResponseWriter, params v1alpha1.ChartRepoRef) {
 	// TODO: verify params
 
-	chrt, err := lib.DefaultRegistry.GetChart(params.URL, params.Name, params.Version)
+	chrt, err := HelmRegistry.GetChart(params.URL, params.Name, params.Version)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "GetChart", err.Error())
 		return
@@ -913,7 +915,7 @@ func ListPackageFiles(ctx httpw.ResponseWriter, params v1alpha1.ChartRepoRef) {
 }
 
 func CreateOrderForPackage(ctx httpw.ResponseWriter, params appapi.ChartOrder) {
-	order, err := editor.CreateChartOrder(lib.DefaultRegistry, params)
+	order, err := editor.CreateChartOrder(HelmRegistry, params)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "CreateChartOrder", err.Error())
 		return
@@ -942,7 +944,7 @@ func CreateOrderForPackage(ctx httpw.ResponseWriter, params appapi.ChartOrder) {
 func GetPackageViewForChart(ctx httpw.ResponseWriter, params v1alpha1.ChartRepoRef) {
 	// TODO: verify params
 
-	chrt, err := lib.DefaultRegistry.GetChart(params.URL, params.Name, params.Version)
+	chrt, err := HelmRegistry.GetChart(params.URL, params.Name, params.Version)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "GetChart", err.Error())
 		return
@@ -958,7 +960,7 @@ func GetPackageViewForChart(ctx httpw.ResponseWriter, params v1alpha1.ChartRepoR
 }
 
 func CreateOrderForBundle(ctx httpw.ResponseWriter, params v1alpha1.BundleView) {
-	order, err := lib.CreateOrder(lib.DefaultRegistry, params)
+	order, err := lib.CreateOrder(HelmRegistry, params)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "CreateDeployOrder", err.Error())
 		return
@@ -987,7 +989,7 @@ func CreateOrderForBundle(ctx httpw.ResponseWriter, params v1alpha1.BundleView) 
 func GetBundleViewForChart(ctx httpw.ResponseWriter, params v1alpha1.ChartRepoRef) {
 	// TODO: verify params
 
-	bv, err := lib.CreateBundleViewForChart(lib.DefaultRegistry, &params)
+	bv, err := lib.CreateBundleViewForChart(HelmRegistry, &params)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "CreateBundleViewForChart", err.Error())
 		return

@@ -305,7 +305,7 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 	ed, ok := resourceeditors.LoadDefaultByGVR(rd.Spec.Resource.GroupVersionResource())
 	if ok {
 		if ed.Spec.UI == nil {
-			ed.Spec.UI = &shared.UIParameters{}
+			ed.Spec.UI = &uiapi.UIParameters{}
 		}
 		ed.Spec.UI.Editor = &shared.ChartRepoRef{
 			Name:    chartName,

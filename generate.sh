@@ -85,3 +85,11 @@ go run cmd/fuse-chart/*.go \
     --resource.group=kubevault.com \
     --resource.version=v1alpha1 \
     --resource.name=vaultservers
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/repository/custom \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --sample-name=s3 \
+    --resource.group=stash.appscode.com \
+    --resource.version=v1alpha1 \
+    --resource.name=repositories
