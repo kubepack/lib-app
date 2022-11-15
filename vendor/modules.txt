@@ -1332,6 +1332,10 @@ k8s.io/klog/v2/internal/clock
 k8s.io/klog/v2/internal/dbg
 k8s.io/klog/v2/internal/serialize
 k8s.io/klog/v2/internal/severity
+# k8s.io/kube-aggregator v0.25.1
+## explicit; go 1.19
+k8s.io/kube-aggregator/pkg/apis/apiregistration
+k8s.io/kube-aggregator/pkg/apis/apiregistration/v1
 # k8s.io/kube-openapi v0.0.0-20220803164354-a70c9af30aea
 ## explicit; go 1.18
 k8s.io/kube-openapi/pkg/builder3/util
@@ -1407,7 +1411,7 @@ kmodules.xyz/client-go/tools/clientcmd
 kmodules.xyz/client-go/tools/converter
 kmodules.xyz/client-go/tools/parser
 kmodules.xyz/client-go/tools/wait
-# kmodules.xyz/resource-metadata v0.14.1-0.20221026061352-d80461714483
+# kmodules.xyz/resource-metadata v0.14.1-0.20221115043745-8385de426900
 ## explicit; go 1.18
 kmodules.xyz/resource-metadata/apis/meta
 kmodules.xyz/resource-metadata/apis/meta/v1alpha1
@@ -1431,7 +1435,7 @@ kubepack.dev/kubepack/apis/kubepack
 kubepack.dev/kubepack/apis/kubepack/v1alpha1
 kubepack.dev/kubepack/crds
 kubepack.dev/kubepack/pkg/lib
-# kubepack.dev/lib-helm v0.5.7-0.20221024120504-d029626cf65b
+# kubepack.dev/lib-helm v0.5.8-0.20221115072328-2f7710719569
 ## explicit; go 1.18
 kubepack.dev/lib-helm/pkg/action
 kubepack.dev/lib-helm/pkg/application

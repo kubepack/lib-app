@@ -17,6 +17,7 @@ limitations under the License.
 package handler
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 
@@ -31,6 +32,8 @@ import (
 	"github.com/pkg/errors"
 	ha "helm.sh/helm/v3/pkg/action"
 	"helm.sh/helm/v3/pkg/release"
+	"k8s.io/apimachinery/pkg/types"
+	apiregistrationapi "k8s.io/kube-aggregator/pkg/apis/apiregistration/v1"
 	cmdutil "k8s.io/kubectl/pkg/cmd/util"
 	meta_util "kmodules.xyz/client-go/meta"
 	"kmodules.xyz/resource-metadata/hub/resourceeditors"
@@ -60,6 +63,19 @@ func ApplyResource(f cmdutil.Factory, reg repo.IRegistry, model map[string]inter
 
 	deployer.WithRegistry(reg)
 
+	if ed.Spec.UI.Editor.SourceRef.Namespace == "" {
+		// k get apiservices v1alpha1.meta.k8s.appscode.com -o yaml
+		var apisvc apiregistrationapi.APIService
+		apisvcName := "v1alpha1.meta.k8s.appscode.com"
+		err := kc.Get(context.TODO(), types.NamespacedName{Name: apisvcName}, &apisvc)
+		if err != nil {
+			return nil, errors.Wrapf(err, "failed to detect namespace for HelmRepository %s", ed.Spec.UI.Editor.SourceRef.Name)
+		}
+		if apisvc.Spec.Service == nil {
+			return nil, errors.Wrapf(err, "failed to detect namespace for HelmRepository %s from Local APIService %s", ed.Spec.UI.Editor.SourceRef.Name, apisvcName)
+		}
+		ed.Spec.UI.Editor.SourceRef.Namespace = apisvc.Spec.Service.Namespace
+	}
 	chartURL, err := reg.Register(ed.Spec.UI.Editor.SourceRef)
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to register chart %+v", ed.Spec.UI.Editor)
