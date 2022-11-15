@@ -93,3 +93,11 @@ go run cmd/fuse-chart/*.go \
     --resource.group=stash.appscode.com \
     --resource.version=v1alpha1 \
     --resource.name=repositories
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/restoresession/custom \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --sample-name=restore-app \
+    --resource.group=stash.appscode.com \
+    --resource.version=v1beta1 \
+    --resource.name=restoresessions
