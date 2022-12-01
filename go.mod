@@ -28,9 +28,10 @@ require (
 	k8s.io/cli-runtime v0.25.2
 	k8s.io/client-go v0.25.3
 	k8s.io/klog/v2 v2.80.1
+	k8s.io/kube-aggregator v0.25.1
 	k8s.io/kubectl v0.25.2
 	kmodules.xyz/client-go v0.25.9
-	kmodules.xyz/resource-metadata v0.14.1-0.20221115043745-8385de426900
+	kmodules.xyz/resource-metadata v0.14.1
 	kmodules.xyz/sets v0.24.1-0.20220924062722-286d229d7793
 	kubepack.dev/chart-doc-gen v0.4.8-0.20220924070920-69adc328e83f
 	kubepack.dev/kubepack v0.5.2
@@ -215,7 +216,6 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	k8s.io/apiserver v0.25.3 // indirect
 	k8s.io/component-base v0.25.3 // indirect
-	k8s.io/kube-aggregator v0.25.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20220803164354-a70c9af30aea // indirect
 	k8s.io/utils v0.0.0-20220823124924-e9cbc92d1a73 // indirect
 	kmodules.xyz/apiversion v0.2.0 // indirect
