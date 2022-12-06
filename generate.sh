@@ -110,3 +110,11 @@ go run cmd/fuse-chart/*.go \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
     --resource.name=proxysqls
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/pgbouncer/custom \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --sample-name=pgbouncer \
+    --resource.group=kubedb.com \
+    --resource.version=v1alpha2 \
+    --resource.name=pgbouncers
