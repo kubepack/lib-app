@@ -118,3 +118,30 @@ go run cmd/fuse-chart/*.go \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
     --resource.name=pgbouncers
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/featuresets/opscenter-core \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --sample-name=opscenter-core \
+    --instance-name=opscenter-core \
+    --resource.group=ui.k8s.appscode.com \
+    --resource.version=v1alpha1 \
+    --resource.name=featuresets
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/featuresets/opscenter-essentials \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --sample-name=opscenter-essentials \
+    --instance-name=opscenter-essentials \
+    --resource.group=ui.k8s.appscode.com \
+    --resource.version=v1alpha1 \
+    --resource.name=featuresets
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/featuresets/opscenter-monitoring \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --sample-name=opscenter-monitoring \
+    --instance-name=opscenter-monitoring \
+    --resource.group=ui.k8s.appscode.com \
+    --resource.version=v1alpha1 \
+    --resource.name=featuresets

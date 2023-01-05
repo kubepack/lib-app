@@ -52,6 +52,7 @@ import (
 var (
 	sampleDir                  = ""
 	sampleName                 = ""
+	instanceName               = ""
 	chartDir                   = ""
 	editorChartName            = ""
 	optsChartName              = ""
@@ -80,6 +81,10 @@ func NewCmdFuse() *cobra.Command {
 
 			editorChartName = fmt.Sprintf("%s-%s-editor", safeGroupName(rd.Spec.Resource.Group), strings.ToLower(rd.Spec.Resource.Kind))
 			optsChartName = fmt.Sprintf("%s-%s-editor-options", safeGroupName(rd.Spec.Resource.Group), strings.ToLower(rd.Spec.Resource.Kind))
+			if instanceName != "" {
+				editorChartName = fmt.Sprintf("%s-%s-%s-editor", safeGroupName(rd.Spec.Resource.Group), strings.ToLower(rd.Spec.Resource.Kind), instanceName)
+				optsChartName = fmt.Sprintf("%s-%s-%s-editor-options", safeGroupName(rd.Spec.Resource.Group), strings.ToLower(rd.Spec.Resource.Kind), instanceName)
+			}
 
 			tplDir := filepath.Join(chartDir, editorChartName, "templates")
 			err = os.MkdirAll(tplDir, 0o755)
@@ -426,6 +431,7 @@ func NewCmdFuse() *cobra.Command {
 
 	cmd.Flags().StringVar(&sampleDir, "sample-dir", sampleDir, "Sample dir")
 	cmd.Flags().StringVar(&sampleName, "sample-name", sampleName, "Sample name used in yamls")
+	cmd.Flags().StringVar(&instanceName, "instance-name", instanceName, "Name of chart instance. Use to generate separate charts for same target but with different components.")
 	cmd.Flags().StringVar(&chartDir, "chart-dir", chartDir, "Charts dir")
 	cmd.Flags().StringSliceVar(&formTemplateFiles, "form-templates", formTemplateFiles, "Name of form template files in options chart")
 

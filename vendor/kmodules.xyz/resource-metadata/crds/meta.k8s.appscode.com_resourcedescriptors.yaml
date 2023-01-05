@@ -47,7 +47,8 @@ spec:
                     labels:
                       items:
                         enum:
-                        - auth_via
+                        - id
+                        - config
                         - backup_via
                         - catalog
                         - connect_via
@@ -190,7 +191,8 @@ spec:
                               properties:
                                 byLabel:
                                   enum:
-                                  - auth_via
+                                  - id
+                                  - config
                                   - backup_via
                                   - catalog
                                   - connect_via
@@ -297,10 +299,6 @@ spec:
                     type: string
                 required:
                 - group
-                - kind
-                - name
-                - scope
-                - version
                 type: object
               validation:
                 description: validation describes the schema used for validation and
