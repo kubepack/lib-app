@@ -52,6 +52,7 @@ import (
 var (
 	sampleDir                  = ""
 	sampleName                 = ""
+	instanceName               = ""
 	chartDir                   = ""
 	editorChartName            = ""
 	optsChartName              = ""
@@ -80,6 +81,10 @@ func NewCmdFuse() *cobra.Command {
 
 			editorChartName = fmt.Sprintf("%s-%s-editor", safeGroupName(rd.Spec.Resource.Group), strings.ToLower(rd.Spec.Resource.Kind))
 			optsChartName = fmt.Sprintf("%s-%s-editor-options", safeGroupName(rd.Spec.Resource.Group), strings.ToLower(rd.Spec.Resource.Kind))
+			if instanceName != "" {
+				editorChartName = fmt.Sprintf("%s-%s-%s-editor", safeGroupName(rd.Spec.Resource.Group), strings.ToLower(rd.Spec.Resource.Kind), instanceName)
+				optsChartName = fmt.Sprintf("%s-%s-%s-editor-options", safeGroupName(rd.Spec.Resource.Group), strings.ToLower(rd.Spec.Resource.Kind), instanceName)
+			}
 
 			tplDir := filepath.Join(chartDir, editorChartName, "templates")
 			err = os.MkdirAll(tplDir, 0o755)
@@ -426,6 +431,7 @@ func NewCmdFuse() *cobra.Command {
 
 	cmd.Flags().StringVar(&sampleDir, "sample-dir", sampleDir, "Sample dir")
 	cmd.Flags().StringVar(&sampleName, "sample-name", sampleName, "Sample name used in yamls")
+	cmd.Flags().StringVar(&instanceName, "instance-name", instanceName, "Name of chart instance. Use to generate separate charts for same target but with different components.")
 	cmd.Flags().StringVar(&chartDir, "chart-dir", chartDir, "Charts dir")
 	cmd.Flags().StringSliceVar(&formTemplateFiles, "form-templates", formTemplateFiles, "Name of form template files in options chart")
 
@@ -490,13 +496,50 @@ func GenerateChartMetadata(rd *v1alpha1.ResourceDescriptor, gks []metav1.GroupKi
 		panic(err)
 	}
 
-	chartMeta := chart.Metadata{
+	filename := filepath.Join(chartDir, editorChartName, "Chart.yaml")
+	chartMeta := newChartMeta(rd.Spec.Resource.Kind, gvrData, gkData)
+	if _, err := os.Stat(filename); err == nil {
+		chartMeta, err = overwriteFromOldMeta(filename, chartMeta)
+		if err != nil {
+			return err
+		}
+	}
+	data4, err := yaml.Marshal(chartMeta)
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(filename, data4, 0o644)
+}
+
+func overwriteFromOldMeta(filename string, chartMeta chart.Metadata) (chart.Metadata, error) {
+	data, err := os.ReadFile(filename)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return chartMeta, nil
+		}
+		return chartMeta, err
+	}
+
+	var oldChartMeta chart.Metadata
+	if err := yaml.Unmarshal(data, &oldChartMeta); err != nil {
+		return chartMeta, err
+	}
+	chartMeta.Version = oldChartMeta.Version
+	chartMeta.AppVersion = oldChartMeta.AppVersion
+	chartMeta.Description = oldChartMeta.Description
+	chartMeta.Icon = oldChartMeta.Icon
+
+	return chartMeta, nil
+}
+
+func newChartMeta(kind string, gvrData, gkData []byte) chart.Metadata {
+	return chart.Metadata{
 		Name:        editorChartName,
 		Home:        "https://byte.builders",
 		Sources:     nil,
 		Version:     "v0.4.11",
 		AppVersion:  "v0.4.11",
-		Description: fmt.Sprintf("%s Editor", rd.Spec.Resource.Kind),
+		Description: fmt.Sprintf("%s Editor", kind),
 		Keywords:    []string{"appscode"},
 		Maintainers: []*chart.Maintainer{
 			{
@@ -515,12 +558,6 @@ func GenerateChartMetadata(rd *v1alpha1.ResourceDescriptor, gks []metav1.GroupKi
 			"meta.x-helm.dev/resources": string(gkData),
 		},
 	}
-	data4, err := yaml.Marshal(chartMeta)
-	if err != nil {
-		return err
-	}
-	filename := filepath.Join(chartDir, editorChartName, "Chart.yaml")
-	return os.WriteFile(filename, data4, 0o644)
 }
 
 // toYAML takes an interface, marshals it to yaml, and returns a string. It will

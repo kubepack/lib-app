@@ -35,12 +35,6 @@ const (
 // +k8s:openapi-gen=true
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// +genclient
-// +genclient:nonNamespaced
-// +genclient:skipVerbs=updateStatus
-// +k8s:openapi-gen=true
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
 // +kubebuilder:object:root=true
 // +kubebuilder:resource:path=resourcedashboards,singular=resourcedashboard,scope=Cluster
 // +kubebuilder:subresource:status
@@ -61,9 +55,26 @@ const (
 )
 
 type ResourceDashboardSpec struct {
-	Resource   kmapi.ResourceID   `json:"resource"`
-	Provider   DashboardProvider  `json:"provider,omitempty"`
-	Dashboards []shared.Dashboard `json:"dashboards"`
+	Resource   kmapi.ResourceID  `json:"resource"`
+	Provider   DashboardProvider `json:"provider,omitempty"`
+	Dashboards []Dashboard       `json:"dashboards"`
+}
+
+type Dashboard struct {
+	// +optional
+	Title string `json:"title,omitempty"`
+	// +optional
+	Vars []shared.DashboardVar `json:"vars,omitempty"`
+	// +optional
+	Panels []PanelLinkRequest `json:"panels,omitempty"`
+	// +optional
+	If *shared.If `json:"if,omitempty"`
+}
+
+type PanelLinkRequest struct {
+	Title string `json:"title"`
+	// +optional
+	Width int `json:"width,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

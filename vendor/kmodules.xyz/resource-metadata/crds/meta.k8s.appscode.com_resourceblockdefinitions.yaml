@@ -62,7 +62,8 @@ spec:
                       properties:
                         byLabel:
                           enum:
-                          - auth_via
+                          - id
+                          - config
                           - backup_via
                           - catalog
                           - connect_via
@@ -253,10 +254,6 @@ spec:
                     type: string
                 required:
                 - group
-                - kind
-                - name
-                - scope
-                - version
                 type: object
             required:
             - blocks
