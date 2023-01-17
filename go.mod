@@ -30,12 +30,12 @@ require (
 	k8s.io/klog/v2 v2.80.1
 	k8s.io/kube-aggregator v0.25.1
 	k8s.io/kubectl v0.25.2
-	kmodules.xyz/client-go v0.25.14
-	kmodules.xyz/resource-metadata v0.15.1-0.20230106103925-0ebf8d836650
+	kmodules.xyz/client-go v0.25.16
+	kmodules.xyz/resource-metadata v0.15.1-0.20230117094051-5fc94d12e56a
 	kmodules.xyz/sets v0.24.1-0.20220924062722-286d229d7793
 	kubepack.dev/chart-doc-gen v0.4.8-0.20220924070920-69adc328e83f
-	kubepack.dev/kubepack v0.5.2
-	kubepack.dev/lib-helm v0.5.8-0.20221115072328-2f7710719569
+	kubepack.dev/kubepack v0.5.3-0.20221202122017-7e2dac11a985
+	kubepack.dev/lib-helm v0.5.9-0.20230117085205-19c23bc660c2
 	kubepack.dev/preset v0.0.4-0.20220924153449-79d8f77c5e53
 	sigs.k8s.io/application v0.0.0-00010101000000-000000000000
 	sigs.k8s.io/controller-runtime v0.13.0

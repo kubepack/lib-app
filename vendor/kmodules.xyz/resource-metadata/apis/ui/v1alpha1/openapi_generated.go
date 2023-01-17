@@ -317,6 +317,7 @@ func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenA
 		"kmodules.xyz/resource-metadata/apis/ui/v1alpha1.ActionTemplateGroup":   schema_resource_metadata_apis_ui_v1alpha1_ActionTemplateGroup(ref),
 		"kmodules.xyz/resource-metadata/apis/ui/v1alpha1.ChartInfo":             schema_resource_metadata_apis_ui_v1alpha1_ChartInfo(ref),
 		"kmodules.xyz/resource-metadata/apis/ui/v1alpha1.ComponentStatus":       schema_resource_metadata_apis_ui_v1alpha1_ComponentStatus(ref),
+		"kmodules.xyz/resource-metadata/apis/ui/v1alpha1.Dashboard":             schema_resource_metadata_apis_ui_v1alpha1_Dashboard(ref),
 		"kmodules.xyz/resource-metadata/apis/ui/v1alpha1.Feature":               schema_resource_metadata_apis_ui_v1alpha1_Feature(ref),
 		"kmodules.xyz/resource-metadata/apis/ui/v1alpha1.FeatureList":           schema_resource_metadata_apis_ui_v1alpha1_FeatureList(ref),
 		"kmodules.xyz/resource-metadata/apis/ui/v1alpha1.FeatureSet":            schema_resource_metadata_apis_ui_v1alpha1_FeatureSet(ref),
@@ -325,6 +326,7 @@ func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenA
 		"kmodules.xyz/resource-metadata/apis/ui/v1alpha1.FeatureSetStatus":      schema_resource_metadata_apis_ui_v1alpha1_FeatureSetStatus(ref),
 		"kmodules.xyz/resource-metadata/apis/ui/v1alpha1.FeatureSpec":           schema_resource_metadata_apis_ui_v1alpha1_FeatureSpec(ref),
 		"kmodules.xyz/resource-metadata/apis/ui/v1alpha1.FeatureStatus":         schema_resource_metadata_apis_ui_v1alpha1_FeatureStatus(ref),
+		"kmodules.xyz/resource-metadata/apis/ui/v1alpha1.PanelLinkRequest":      schema_resource_metadata_apis_ui_v1alpha1_PanelLinkRequest(ref),
 		"kmodules.xyz/resource-metadata/apis/ui/v1alpha1.Requirements":          schema_resource_metadata_apis_ui_v1alpha1_Requirements(ref),
 		"kmodules.xyz/resource-metadata/apis/ui/v1alpha1.ResourceDashboard":     schema_resource_metadata_apis_ui_v1alpha1_ResourceDashboard(ref),
 		"kmodules.xyz/resource-metadata/apis/ui/v1alpha1.ResourceDashboardList": schema_resource_metadata_apis_ui_v1alpha1_ResourceDashboardList(ref),
@@ -15419,6 +15421,57 @@ func schema_resource_metadata_apis_ui_v1alpha1_ComponentStatus(ref common.Refere
 	}
 }
 
+func schema_resource_metadata_apis_ui_v1alpha1_Dashboard(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Type: []string{"object"},
+				Properties: map[string]spec.Schema{
+					"title": {
+						SchemaProps: spec.SchemaProps{
+							Type:   []string{"string"},
+							Format: "",
+						},
+					},
+					"vars": {
+						SchemaProps: spec.SchemaProps{
+							Type: []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Default: map[string]interface{}{},
+										Ref:     ref("kmodules.xyz/resource-metadata/apis/shared.DashboardVar"),
+									},
+								},
+							},
+						},
+					},
+					"panels": {
+						SchemaProps: spec.SchemaProps{
+							Type: []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Default: map[string]interface{}{},
+										Ref:     ref("kmodules.xyz/resource-metadata/apis/ui/v1alpha1.PanelLinkRequest"),
+									},
+								},
+							},
+						},
+					},
+					"if": {
+						SchemaProps: spec.SchemaProps{
+							Ref: ref("kmodules.xyz/resource-metadata/apis/shared.If"),
+						},
+					},
+				},
+			},
+		},
+		Dependencies: []string{
+			"kmodules.xyz/resource-metadata/apis/shared.DashboardVar", "kmodules.xyz/resource-metadata/apis/shared.If", "kmodules.xyz/resource-metadata/apis/ui/v1alpha1.PanelLinkRequest"},
+	}
+}
+
 func schema_resource_metadata_apis_ui_v1alpha1_Feature(ref common.ReferenceCallback) common.OpenAPIDefinition {
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
@@ -15835,6 +15888,32 @@ func schema_resource_metadata_apis_ui_v1alpha1_FeatureStatus(ref common.Referenc
 	}
 }
 
+func schema_resource_metadata_apis_ui_v1alpha1_PanelLinkRequest(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Type: []string{"object"},
+				Properties: map[string]spec.Schema{
+					"title": {
+						SchemaProps: spec.SchemaProps{
+							Default: "",
+							Type:    []string{"string"},
+							Format:  "",
+						},
+					},
+					"width": {
+						SchemaProps: spec.SchemaProps{
+							Type:   []string{"integer"},
+							Format: "int32",
+						},
+					},
+				},
+				Required: []string{"title"},
+			},
+		},
+	}
+}
+
 func schema_resource_metadata_apis_ui_v1alpha1_Requirements(ref common.ReferenceCallback) common.OpenAPIDefinition {
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
@@ -15990,7 +16069,7 @@ func schema_resource_metadata_apis_ui_v1alpha1_ResourceDashboardSpec(ref common.
 								Schema: &spec.Schema{
 									SchemaProps: spec.SchemaProps{
 										Default: map[string]interface{}{},
-										Ref:     ref("kmodules.xyz/resource-metadata/apis/shared.Dashboard"),
+										Ref:     ref("kmodules.xyz/resource-metadata/apis/ui/v1alpha1.Dashboard"),
 									},
 								},
 							},
@@ -16001,7 +16080,7 @@ func schema_resource_metadata_apis_ui_v1alpha1_ResourceDashboardSpec(ref common.
 			},
 		},
 		Dependencies: []string{
-			"kmodules.xyz/client-go/api/v1.ResourceID", "kmodules.xyz/resource-metadata/apis/shared.Dashboard"},
+			"kmodules.xyz/client-go/api/v1.ResourceID", "kmodules.xyz/resource-metadata/apis/ui/v1alpha1.Dashboard"},
 	}
 }
 
