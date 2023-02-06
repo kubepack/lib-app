@@ -57,6 +57,7 @@ var (
 	editorChartName            = ""
 	optsChartName              = ""
 	formTemplateFiles []string = nil
+	generateCRD                = true
 	gvr               schema.GroupVersionResource
 	resourceSchema    = crdv1.JSONSchemaProps{
 		Type:       "object",
@@ -138,7 +139,7 @@ func NewCmdFuse() *cobra.Command {
 					resourceSchema.Properties[rsKey] = *descriptor.Spec.Validation.OpenAPIV3Schema.DeepCopy()
 				}
 
-				if IsCRD(gvr.Group) {
+				if IsCRD(gvr.Group) && generateCRD {
 					// Do not update the hub registry
 					descriptor = descriptor.DeepCopy()
 					if descriptor.Spec.Validation != nil && descriptor.Spec.Validation.OpenAPIV3Schema != nil {
@@ -172,8 +173,6 @@ func NewCmdFuse() *cobra.Command {
 									Served:  true,
 									Storage: true,
 									Schema:  descriptor.Spec.Validation,
-									// Subresources:             nil,
-									// AdditionalPrinterColumns: nil,
 								},
 							},
 							PreserveUnknownFields: false,
@@ -438,6 +437,8 @@ func NewCmdFuse() *cobra.Command {
 	cmd.Flags().StringVar(&gvr.Group, "resource.group", gvr.Group, "Resource api group")
 	cmd.Flags().StringVar(&gvr.Version, "resource.version", gvr.Version, "Resource api version")
 	cmd.Flags().StringVar(&gvr.Resource, "resource.name", gvr.Resource, "Resource plural")
+
+	cmd.Flags().BoolVar(&generateCRD, "gen-crd", generateCRD, "Generate CRD folder in the chart")
 
 	return cmd
 }

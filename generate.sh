@@ -126,7 +126,8 @@ go run cmd/fuse-chart/*.go \
     --instance-name=opscenter-core \
     --resource.group=ui.k8s.appscode.com \
     --resource.version=v1alpha1 \
-    --resource.name=featuresets
+    --resource.name=featuresets \
+    --gen-crd=false
 
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/featuresets/opscenter-essentials \
@@ -135,7 +136,8 @@ go run cmd/fuse-chart/*.go \
     --instance-name=opscenter-essentials \
     --resource.group=ui.k8s.appscode.com \
     --resource.version=v1alpha1 \
-    --resource.name=featuresets
+    --resource.name=featuresets \
+    --gen-crd=false
 
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/featuresets/opscenter-monitoring \
@@ -144,4 +146,5 @@ go run cmd/fuse-chart/*.go \
     --instance-name=opscenter-monitoring \
     --resource.group=ui.k8s.appscode.com \
     --resource.version=v1alpha1 \
-    --resource.name=featuresets
+    --resource.name=featuresets \
+    --gen-crd=false
