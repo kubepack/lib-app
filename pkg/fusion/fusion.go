@@ -94,11 +94,12 @@ func NewCmdFuse() *cobra.Command {
 			}
 
 			crdDir := filepath.Join(chartDir, editorChartName, "crds")
-			err = os.MkdirAll(crdDir, 0o755)
-			if err != nil {
-				return err
+			if generateCRD {
+				err = os.MkdirAll(crdDir, 0o755)
+				if err != nil {
+					return err
+				}
 			}
-
 			gkSet := ksets.NewMetaGroupKind()
 
 			err = parser.ProcessPath(sampleDir, func(ri parser.ResourceInfo) error {
