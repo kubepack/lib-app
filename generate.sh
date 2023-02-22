@@ -130,16 +130,6 @@ go run cmd/fuse-chart/*.go \
     --gen-crd=false
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/featuresets/opscenter-essentials \
-    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
-    --sample-name=opscenter-essentials \
-    --instance-name=opscenter-essentials \
-    --resource.group=ui.k8s.appscode.com \
-    --resource.version=v1alpha1 \
-    --resource.name=featuresets \
-    --gen-crd=false
-
-go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/featuresets/opscenter-monitoring \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --sample-name=opscenter-monitoring \
