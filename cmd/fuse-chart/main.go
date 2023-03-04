@@ -17,9 +17,6 @@ limitations under the License.
 package main
 
 import (
-	"math/rand"
-	"time"
-
 	"kubepack.dev/lib-app/pkg/fusion"
 
 	_ "go.uber.org/automaxprocs"
@@ -28,8 +25,6 @@ import (
 )
 
 func main() {
-	rand.Seed(time.Now().UnixNano())
-
 	rootCmd := fusion.NewCmdFuse()
 	logs.Init(rootCmd, false)
 	defer logs.FlushLogs()

@@ -18,10 +18,8 @@ package main
 
 import (
 	"log"
-	"math/rand"
 	"os"
 	"runtime"
-	"time"
 
 	"kubepack.dev/lib-app/pkg/simple"
 
@@ -29,8 +27,6 @@ import (
 )
 
 func main() {
-	rand.Seed(time.Now().UnixNano())
-
 	rootCmd := simple.NewCmdSimple()
 	logs.Init(rootCmd, false)
 	defer logs.FlushLogs()
