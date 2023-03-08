@@ -516,7 +516,7 @@ func LoadEditorResources(ctx httpw.ResponseWriter, model appapi.Model) {
 		return
 	}
 
-	tpl, err := editor.LoadEditorModel(kc, HelmRegistry, appapi.ModelMetadata{
+	tpl, err := editor.LoadResourceEditorModel(kc, HelmRegistry, appapi.ModelMetadata{
 		Metadata: model.Metadata,
 	})
 	if err != nil {
@@ -553,7 +553,7 @@ func LoadEditorManifest(ctx httpw.ResponseWriter, model appapi.Model) {
 		return
 	}
 
-	tpl, err := editor.LoadEditorModel(kc, HelmRegistry, appapi.ModelMetadata{
+	tpl, err := editor.LoadResourceEditorModel(kc, HelmRegistry, appapi.ModelMetadata{
 		Metadata: model.Metadata,
 	})
 	if err != nil {
@@ -575,7 +575,7 @@ func LoadEditorModel(ctx httpw.ResponseWriter, model appapi.ModelMetadata) {
 		return
 	}
 
-	tpl, err := editor.LoadEditorModel(kc, HelmRegistry, model)
+	tpl, err := editor.LoadResourceEditorModel(kc, HelmRegistry, model)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "LoadEditorModel", err.Error())
 		return
@@ -609,13 +609,13 @@ func ApplyResource(f cmdutil.Factory) func(ctx httpw.ResponseWriter, model map[s
 	return func(ctx httpw.ResponseWriter, model map[string]interface{}) {
 		kc, err := actionx.NewUncachedClient(f)
 		if err != nil {
-			ctx.Error(http.StatusInternalServerError, "ApplyResource", err.Error())
+			ctx.Error(http.StatusInternalServerError, "ApplyResourceEditor", err.Error())
 			return
 		}
 		reg := repo.NewCachedRegistry(kc, repo.DefaultDiskCache())
-		rls, err := handler.ApplyResource(f, reg, model, !ctx.R().QueryBool("installCRDs"))
+		rls, err := handler.ApplyResourceEditor(f, reg, model, !ctx.R().QueryBool("installCRDs"))
 		if err != nil {
-			ctx.Error(http.StatusInternalServerError, "ApplyResource", err.Error())
+			ctx.Error(http.StatusInternalServerError, "ApplyResourceEditor", err.Error())
 			return
 		}
 		ctx.JSON(http.StatusOK, rls.Info)
@@ -740,7 +740,7 @@ func PreviewEditorResources(ctx httpw.ResponseWriter, opts map[string]interface{
 		return
 	}
 
-	_, tpls, err := editor.RenderChartTemplate(kc, HelmRegistry, opts)
+	_, tpls, err := editor.RenderResourceEditorChart(kc, HelmRegistry, opts)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "RenderChartTemplate", err.Error())
 		return
@@ -789,7 +789,7 @@ func PreviewEditorManifest(ctx httpw.ResponseWriter, opts map[string]interface{}
 		return
 	}
 
-	manifest, _, err := editor.RenderChartTemplate(kc, HelmRegistry, opts)
+	manifest, _, err := editor.RenderResourceEditorChart(kc, HelmRegistry, opts)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "RenderChartTemplate", err.Error())
 		return
@@ -809,7 +809,7 @@ func GenerateEditorModelFromOptions(ctx httpw.ResponseWriter, opts map[string]in
 		return
 	}
 
-	model, err := editor.GenerateEditorModel(kc, HelmRegistry, opts)
+	model, err := editor.GenerateResourceEditorModel(kc, HelmRegistry, opts)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "GetChart", err.Error())
 		return

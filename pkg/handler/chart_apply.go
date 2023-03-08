@@ -21,6 +21,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"kubepack.dev/kubepack/apis/kubepack/v1alpha1"
 	appapi "kubepack.dev/lib-app/api/v1alpha1"
 	"kubepack.dev/lib-app/pkg/editor"
 	actionx "kubepack.dev/lib-helm/pkg/action"
@@ -39,7 +40,7 @@ import (
 	"kmodules.xyz/resource-metadata/hub/resourceeditors"
 )
 
-func ApplyResource(f cmdutil.Factory, reg repo.IRegistry, model map[string]interface{}, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
+func ApplyResourceEditor(f cmdutil.Factory, reg repo.IRegistry, model map[string]interface{}, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
 	var tm appapi.ModelMetadata
 	err := meta_util.DecodeObject(model, &tm)
 	if err != nil {
@@ -81,15 +82,46 @@ func ApplyResource(f cmdutil.Factory, reg repo.IRegistry, model map[string]inter
 		return nil, errors.Wrapf(err, "failed to register chart %+v", ed.Spec.UI.Editor)
 	}
 
+	chartRef := v1alpha1.ChartRepoRef{
+		URL:     chartURL,
+		Name:    ed.Spec.UI.Editor.Name,
+		Version: ed.Spec.UI.Editor.Version,
+	}
+	return applyResource(f, reg, chartRef, model, skipCRds, log...)
+}
+
+func ApplyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef v1alpha1.ChartRepoRef, model map[string]interface{}, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
+	return applyResource(f, reg, chartRef, model, skipCRds, log...)
+}
+
+func applyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef v1alpha1.ChartRepoRef, model map[string]interface{}, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
+	var tm appapi.ModelMetadata
+	err := meta_util.DecodeObject(model, &tm)
+	if err != nil {
+		return nil, errors.New("failed to parse Metadata for values")
+	}
+
+	kc, err := actionx.NewUncachedClient(f)
+	if err != nil {
+		return nil, err
+	}
+
+	deployer, err := actionx.NewDeployer(f, tm.Release.Namespace, driver.ApplicationsDriverName, log...)
+	if err != nil {
+		return nil, err
+	}
+
+	deployer.WithRegistry(reg)
+
 	var opts actionx.DeployOptions
-	opts.ChartURL = chartURL
-	opts.ChartName = ed.Spec.UI.Editor.Name
-	opts.Version = ed.Spec.UI.Editor.Version
+	opts.ChartURL = chartRef.URL
+	opts.ChartName = chartRef.Name
+	opts.Version = chartRef.Version
 
 	var vals map[string]interface{}
 	if _, ok := model["patch"]; ok {
 		// NOTE: Makes an assumption that this is a "edit" apply
-		tpl, err := editor.LoadEditorModel(kc, reg, appapi.ModelMetadata{
+		tpl, err := editor.LoadResourceEditorModel(kc, reg, appapi.ModelMetadata{
 			Metadata: tm.Metadata,
 		})
 		if err != nil {
