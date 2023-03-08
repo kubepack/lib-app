@@ -40,7 +40,7 @@ import (
 	"kmodules.xyz/resource-metadata/hub/resourceeditors"
 )
 
-func ApplyResource(f cmdutil.Factory, reg repo.IRegistry, model map[string]interface{}, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
+func ApplyResourceEditor(f cmdutil.Factory, reg repo.IRegistry, model map[string]interface{}, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
 	var tm appapi.ModelMetadata
 	err := meta_util.DecodeObject(model, &tm)
 	if err != nil {
@@ -90,7 +90,7 @@ func ApplyResource(f cmdutil.Factory, reg repo.IRegistry, model map[string]inter
 	return applyResource(f, reg, chartRef, model, skipCRds, log...)
 }
 
-func ApplyResource2(f cmdutil.Factory, reg repo.IRegistry, chartRef v1alpha1.ChartRepoRef, model map[string]interface{}, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
+func ApplyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef v1alpha1.ChartRepoRef, model map[string]interface{}, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
 	return applyResource(f, reg, chartRef, model, skipCRds, log...)
 }
 
@@ -121,7 +121,7 @@ func applyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef v1alpha1.Char
 	var vals map[string]interface{}
 	if _, ok := model["patch"]; ok {
 		// NOTE: Makes an assumption that this is a "edit" apply
-		tpl, err := editor.LoadEditorModel(kc, reg, appapi.ModelMetadata{
+		tpl, err := editor.LoadResourceEditorModel(kc, reg, appapi.ModelMetadata{
 			Metadata: tm.Metadata,
 		})
 		if err != nil {

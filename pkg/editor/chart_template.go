@@ -133,7 +133,7 @@ func RenderOrderTemplate(bs *lib.BlobStore, reg repo.IRegistry, order v1alpha1.O
 	return buf.String(), tpls, nil
 }
 
-func LoadEditorModel(kc client.Client, reg repo.IRegistry, opts appapi.ModelMetadata) (*appapi.EditorTemplate, error) {
+func LoadResourceEditorModel(kc client.Client, reg repo.IRegistry, opts appapi.ModelMetadata) (*appapi.EditorTemplate, error) {
 	ed, ok := resourceeditors.LoadByResourceID(kc, &opts.Resource)
 	if !ok {
 		return nil, fmt.Errorf("failed to load resource editor for %+v", opts.Resource)
@@ -146,7 +146,7 @@ func LoadEditorModel(kc client.Client, reg repo.IRegistry, opts appapi.ModelMeta
 	return loadEditorModel(kc, reg, chartRef, opts)
 }
 
-func LoadEditorModel2(kc client.Client, reg repo.IRegistry, chartRef v1alpha1.ChartRepoRef, opts appapi.ModelMetadata) (*appapi.EditorTemplate, error) {
+func LoadEditorModel(kc client.Client, reg repo.IRegistry, chartRef v1alpha1.ChartRepoRef, opts appapi.ModelMetadata) (*appapi.EditorTemplate, error) {
 	return loadEditorModel(kc, reg, chartRef, opts)
 }
 
@@ -329,7 +329,7 @@ func EditorChartValueManifest(kc client.Client, app *v1beta1.Application, mt app
 	return &tpl, nil
 }
 
-func GenerateEditorModel(kc client.Client, reg repo.IRegistry, opts map[string]interface{}) (*unstructured.Unstructured, error) {
+func GenerateResourceEditorModel(kc client.Client, reg repo.IRegistry, opts map[string]interface{}) (*unstructured.Unstructured, error) {
 	var spec appapi.ModelMetadata
 	err := meta_util.DecodeObject(opts, &spec)
 	if err != nil {
@@ -350,7 +350,7 @@ func GenerateEditorModel(kc client.Client, reg repo.IRegistry, opts map[string]i
 	return generateEditorModel(kc, reg, chartRef, spec, opts)
 }
 
-func GenerateEditorModel2(kc client.Client, reg repo.IRegistry, chartRef v1alpha1.ChartRepoRef, opts map[string]interface{}) (*unstructured.Unstructured, error) {
+func GenerateEditorModel(kc client.Client, reg repo.IRegistry, chartRef v1alpha1.ChartRepoRef, opts map[string]interface{}) (*unstructured.Unstructured, error) {
 	var spec appapi.ModelMetadata
 	err := meta_util.DecodeObject(opts, &spec)
 	if err != nil {
@@ -441,7 +441,7 @@ func generateEditorModel(
 	return model, err
 }
 
-func RenderChartTemplate(kc client.Client, reg repo.IRegistry, opts map[string]interface{}) (string, *appapi.ChartTemplate, error) {
+func RenderResourceEditorChart(kc client.Client, reg repo.IRegistry, opts map[string]interface{}) (string, *appapi.ChartTemplate, error) {
 	var spec appapi.ModelMetadata
 	err := meta_util.DecodeObject(opts, &spec)
 	if err != nil {
@@ -458,20 +458,20 @@ func RenderChartTemplate(kc client.Client, reg repo.IRegistry, opts map[string]i
 		Name:    ed.Spec.UI.Editor.Name,
 		Version: ed.Spec.UI.Editor.Version,
 	}
-	return renderChartTemplate(kc, reg, chartRef, spec, opts)
+	return renderChart(kc, reg, chartRef, spec, opts)
 }
 
-func RenderChartTemplate2(kc client.Client, reg repo.IRegistry, charRef v1alpha1.ChartRepoRef, opts map[string]interface{}) (string, *appapi.ChartTemplate, error) {
+func RenderChart(kc client.Client, reg repo.IRegistry, charRef v1alpha1.ChartRepoRef, opts map[string]interface{}) (string, *appapi.ChartTemplate, error) {
 	var spec appapi.ModelMetadata
 	err := meta_util.DecodeObject(opts, &spec)
 	if err != nil {
 		return "", nil, err
 	}
 
-	return renderChartTemplate(kc, reg, charRef, spec, opts)
+	return renderChart(kc, reg, charRef, spec, opts)
 }
 
-func renderChartTemplate(
+func renderChart(
 	kc client.Client,
 	reg repo.IRegistry,
 	charRef v1alpha1.ChartRepoRef,
