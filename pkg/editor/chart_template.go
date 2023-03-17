@@ -238,7 +238,8 @@ func EditorChartValueManifest(kc client.Client, app *v1beta1.Application, mt app
 		if err != nil {
 			return nil, err
 		}
-		for _, obj := range list.Items {
+		for idx := range list.Items {
+			obj := list.Items[idx]
 			// remove status
 			delete(obj.Object, "status")
 
