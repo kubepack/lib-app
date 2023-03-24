@@ -343,9 +343,9 @@ func GenerateResourceEditorModel(kc client.Client, reg repo.IRegistry, opts map[
 	}
 
 	chartRef := v1alpha1.ChartRepoRef{
-		URL:     helmRepositories[ed.Spec.UI.Options.SourceRef.Name],
-		Name:    ed.Spec.UI.Options.Name,
-		Version: ed.Spec.UI.Options.Version,
+		URL:     helmRepositories[ed.Spec.UI.Editor.SourceRef.Name],
+		Name:    ed.Spec.UI.Editor.Name,
+		Version: ed.Spec.UI.Editor.Version,
 	}
 
 	return generateEditorModel(kc, reg, chartRef, spec, opts)
