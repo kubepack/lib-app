@@ -342,13 +342,18 @@ func GenerateResourceEditorModel(kc client.Client, reg repo.IRegistry, opts map[
 		return nil, fmt.Errorf("failed to load resource editor for %+v", spec.Resource)
 	}
 
-	chartRef := v1alpha1.ChartRepoRef{
+	optionsChartRef := v1alpha1.ChartRepoRef{
+		URL:     helmRepositories[ed.Spec.UI.Options.SourceRef.Name],
+		Name:    ed.Spec.UI.Options.Name,
+		Version: ed.Spec.UI.Options.Version,
+	}
+	editorChartRef := v1alpha1.ChartRepoRef{
 		URL:     helmRepositories[ed.Spec.UI.Editor.SourceRef.Name],
 		Name:    ed.Spec.UI.Editor.Name,
 		Version: ed.Spec.UI.Editor.Version,
 	}
 
-	return generateEditorModel(kc, reg, chartRef, spec, opts)
+	return generateEditorModel(kc, reg, optionsChartRef, editorChartRef, spec, opts)
 }
 
 func GenerateEditorModel(kc client.Client, reg repo.IRegistry, chartRef v1alpha1.ChartRepoRef, opts map[string]interface{}) (*unstructured.Unstructured, error) {
@@ -357,13 +362,14 @@ func GenerateEditorModel(kc client.Client, reg repo.IRegistry, chartRef v1alpha1
 	if err != nil {
 		return nil, err
 	}
-	return generateEditorModel(kc, reg, chartRef, spec, opts)
+	return generateEditorModel(kc, reg, chartRef, chartRef, spec, opts)
 }
 
 func generateEditorModel(
 	kc client.Client,
 	reg repo.IRegistry,
-	chartRef v1alpha1.ChartRepoRef,
+	optionsChartRef v1alpha1.ChartRepoRef,
+	editorChartRef v1alpha1.ChartRepoRef,
 	spec appapi.ModelMetadata,
 	opts map[string]interface{},
 ) (*unstructured.Unstructured, error) {
@@ -376,9 +382,9 @@ func generateEditorModel(
 			name    string
 			version string
 		}{
-			url:     chartRef.URL,
-			name:    chartRef.Name,
-			version: chartRef.Version,
+			url:     editorChartRef.URL,
+			name:    editorChartRef.Name,
+			version: editorChartRef.Version,
 		}
 		chrt, err := reg.GetChart(ref.url, ref.name, ref.version)
 		if err != nil {
@@ -399,10 +405,10 @@ func generateEditorModel(
 	f1 := &EditorModelGenerator{
 		Registry: reg,
 		ChartRef: v1alpha1.ChartRef{
-			URL:  chartRef.URL,
-			Name: chartRef.Name,
+			URL:  optionsChartRef.URL,
+			Name: optionsChartRef.Name,
 		},
-		Version:     chartRef.Version,
+		Version:     optionsChartRef.Version,
 		ReleaseName: spec.Metadata.Release.Name,
 		Namespace:   spec.Metadata.Release.Namespace,
 		KubeVersion: "v1.22.0",
