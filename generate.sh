@@ -17,7 +17,7 @@
 go run cmd/gen-simple-editor/main.go --all --skipExisting=false
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/mongodb/sharded/prometheus.io/backupconfiguration/stash/tls/custom-auth/sharded \
+    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/mongodb/managed \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --form-templates=alert.yaml \
     --sample-name=mongodb \
