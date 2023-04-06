@@ -1425,7 +1425,7 @@ kmodules.xyz/client-go/tools/clientcmd
 kmodules.xyz/client-go/tools/converter
 kmodules.xyz/client-go/tools/parser
 kmodules.xyz/client-go/tools/wait
-# kmodules.xyz/resource-metadata v0.16.1-0.20230330063328-339e0589ed83
+# kmodules.xyz/resource-metadata v0.16.2
 ## explicit; go 1.18
 kmodules.xyz/resource-metadata/apis/meta
 kmodules.xyz/resource-metadata/apis/meta/v1alpha1
