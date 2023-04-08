@@ -17,16 +17,15 @@ limitations under the License.
 package editor
 
 import (
-	appapi "kubepack.dev/lib-app/api/v1alpha1"
-
 	meta_util "kmodules.xyz/client-go/meta"
+	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 )
 
-func ConvertChartTemplates(tpls []appapi.ChartTemplate, format meta_util.DataFormat) ([]appapi.ChartTemplateOutput, error) {
-	var out []appapi.ChartTemplateOutput
+func ConvertChartTemplates(tpls []releasesapi.ChartTemplate, format meta_util.DataFormat) ([]releasesapi.ChartTemplateOutput, error) {
+	var out []releasesapi.ChartTemplateOutput
 
 	for _, tpl := range tpls {
-		entry := appapi.ChartTemplateOutput{
+		entry := releasesapi.ChartTemplateOutput{
 			ChartRef:    tpl.ChartRef,
 			Version:     tpl.Version,
 			ReleaseName: tpl.ReleaseName,
@@ -39,7 +38,7 @@ func ConvertChartTemplates(tpls []appapi.ChartTemplate, format meta_util.DataFor
 			if err != nil {
 				return nil, err
 			}
-			entry.CRDs = append(entry.CRDs, appapi.BucketFileOutput{
+			entry.CRDs = append(entry.CRDs, releasesapi.BucketFileOutput{
 				URL:      crd.URL,
 				Key:      crd.Key,
 				Filename: crd.Filename,
@@ -51,7 +50,7 @@ func ConvertChartTemplates(tpls []appapi.ChartTemplate, format meta_util.DataFor
 			if err != nil {
 				return nil, err
 			}
-			entry.Resources = append(entry.Resources, appapi.ResourceFile{
+			entry.Resources = append(entry.Resources, releasesapi.ResourceFile{
 				Filename: r.Filename,
 				Data:     string(data),
 			})

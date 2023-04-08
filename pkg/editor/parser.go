@@ -20,12 +20,11 @@ import (
 	"sort"
 	"strings"
 
-	appapi "kubepack.dev/lib-app/api/v1alpha1"
-
 	"github.com/gobuffalo/flect"
 	core "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"kmodules.xyz/client-go/tools/parser"
+	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 )
 
 func ResourceKey(apiVersion, kind, chartName, name string) (string, error) {
@@ -78,7 +77,7 @@ func ResourceFilename(apiVersion, kind, chartName, name string) (string, string,
 	return flect.Underscore(kind), flect.Underscore(kind + nameSuffix), flect.Underscore(groupPrefix + kind + nameSuffix)
 }
 
-func ListResources(chartName string, data []byte) ([]appapi.ResourceObject, error) {
+func ListResources(chartName string, data []byte) ([]releasesapi.ResourceObject, error) {
 	s1map := map[string]int{}
 	s2map := map[string]int{}
 	s3map := map[string]int{}
@@ -106,7 +105,7 @@ func ListResources(chartName string, data []byte) ([]appapi.ResourceObject, erro
 		return nil, err
 	}
 
-	var resources []appapi.ResourceObject
+	var resources []releasesapi.ResourceObject
 
 	err = parser.ProcessResources(data, func(ri parser.ResourceInfo) error {
 		if ri.Object.GetNamespace() == "" {
@@ -123,7 +122,7 @@ func ListResources(chartName string, data []byte) ([]appapi.ResourceObject, erro
 			}
 		}
 
-		resources = append(resources, appapi.ResourceObject{
+		resources = append(resources, releasesapi.ResourceObject{
 			Filename: name,
 			Data:     ri.Object,
 		})

@@ -21,10 +21,9 @@ import (
 	"log"
 	"os"
 
-	appapi "kubepack.dev/lib-app/api/v1alpha1"
-
 	flag "github.com/spf13/pflag"
 	"sigs.k8s.io/yaml"
+	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 )
 
 var (
@@ -39,7 +38,7 @@ func main() {
 	flag.StringVar(&version, "version", version, "Version of bundle")
 	flag.Parse()
 
-	opts := appapi.EditorParameters{
+	opts := releasesapi.EditorParameters{
 		ValuesFile:  "values.yaml",
 		ValuesPatch: nil,
 	}

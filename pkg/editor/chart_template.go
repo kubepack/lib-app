@@ -23,9 +23,7 @@ import (
 	"fmt"
 	"time"
 
-	"kubepack.dev/kubepack/apis/kubepack/v1alpha1"
 	"kubepack.dev/kubepack/pkg/lib"
-	appapi "kubepack.dev/lib-app/api/v1alpha1"
 	"kubepack.dev/lib-helm/pkg/repo"
 
 	"github.com/google/uuid"
@@ -43,9 +41,10 @@ import (
 	meta_util "kmodules.xyz/client-go/meta"
 	"kmodules.xyz/client-go/tools/parser"
 	"kmodules.xyz/resource-metadata/hub/resourceeditors"
-	"sigs.k8s.io/application/api/app/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/yaml"
+	driversapi "x-helm.dev/apimachinery/apis/drivers/v1alpha1"
+	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 )
 
 var helmRepositories = map[string]string{
@@ -53,9 +52,9 @@ var helmRepositories = map[string]string{
 	"bytebuilders-ui": "https://bundles.byte.builders/ui/",
 }
 
-func RenderOrderTemplate(bs *lib.BlobStore, reg repo.IRegistry, order v1alpha1.Order) (string, []appapi.ChartTemplate, error) {
+func RenderOrderTemplate(bs *lib.BlobStore, reg repo.IRegistry, order releasesapi.Order) (string, []releasesapi.ChartTemplate, error) {
 	var buf bytes.Buffer
-	var tpls []appapi.ChartTemplate
+	var tpls []releasesapi.ChartTemplate
 
 	for _, pkg := range order.Spec.Packages {
 		if pkg.Chart == nil {
@@ -80,7 +79,7 @@ func RenderOrderTemplate(bs *lib.BlobStore, reg repo.IRegistry, order v1alpha1.O
 			return "", nil, err
 		}
 
-		tpl := appapi.ChartTemplate{
+		tpl := releasesapi.ChartTemplate{
 			ChartRef:    pkg.Chart.ChartRef,
 			Version:     pkg.Chart.Version,
 			ReleaseName: pkg.Chart.ReleaseName,
@@ -95,17 +94,17 @@ func RenderOrderTemplate(bs *lib.BlobStore, reg repo.IRegistry, order v1alpha1.O
 			if len(resources) != 1 {
 				return "", nil, fmt.Errorf("%d crds found in %s", len(resources), crd.Filename)
 			}
-			tpl.CRDs = append(tpl.CRDs, appapi.BucketObject{
+			tpl.CRDs = append(tpl.CRDs, releasesapi.BucketObject{
 				URL: crd.URL,
 				Key: crd.Key,
-				ResourceObject: appapi.ResourceObject{
+				ResourceObject: releasesapi.ResourceObject{
 					Filename: crd.Filename,
 					Data:     resources[0].Data,
 				},
 			})
 		}
 		if manifestFile != nil {
-			tpl.Manifest = &appapi.BucketFileRef{
+			tpl.Manifest = &releasesapi.BucketFileRef{
 				URL: manifestFile.URL,
 				Key: manifestFile.Key,
 			}
@@ -133,12 +132,12 @@ func RenderOrderTemplate(bs *lib.BlobStore, reg repo.IRegistry, order v1alpha1.O
 	return buf.String(), tpls, nil
 }
 
-func LoadResourceEditorModel(kc client.Client, reg repo.IRegistry, opts appapi.ModelMetadata) (*appapi.EditorTemplate, error) {
+func LoadResourceEditorModel(kc client.Client, reg repo.IRegistry, opts releasesapi.ModelMetadata) (*releasesapi.EditorTemplate, error) {
 	ed, ok := resourceeditors.LoadByResourceID(kc, &opts.Resource)
 	if !ok {
 		return nil, fmt.Errorf("failed to load resource editor for %+v", opts.Resource)
 	}
-	chartRef := v1alpha1.ChartRepoRef{
+	chartRef := releasesapi.ChartRepoRef{
 		URL:     helmRepositories[ed.Spec.UI.Editor.SourceRef.Name],
 		Name:    ed.Spec.UI.Editor.Name,
 		Version: ed.Spec.UI.Editor.Version,
@@ -146,17 +145,17 @@ func LoadResourceEditorModel(kc client.Client, reg repo.IRegistry, opts appapi.M
 	return loadEditorModel(kc, reg, chartRef, opts)
 }
 
-func LoadEditorModel(kc client.Client, reg repo.IRegistry, chartRef v1alpha1.ChartRepoRef, opts appapi.ModelMetadata) (*appapi.EditorTemplate, error) {
+func LoadEditorModel(kc client.Client, reg repo.IRegistry, chartRef releasesapi.ChartRepoRef, opts releasesapi.ModelMetadata) (*releasesapi.EditorTemplate, error) {
 	return loadEditorModel(kc, reg, chartRef, opts)
 }
 
-func loadEditorModel(kc client.Client, reg repo.IRegistry, chartRef v1alpha1.ChartRepoRef, opts appapi.ModelMetadata) (*appapi.EditorTemplate, error) {
+func loadEditorModel(kc client.Client, reg repo.IRegistry, chartRef releasesapi.ChartRepoRef, opts releasesapi.ModelMetadata) (*releasesapi.EditorTemplate, error) {
 	chrt, err := reg.GetChart(chartRef.URL, chartRef.Name, chartRef.Version)
 	if err != nil {
 		return nil, err
 	}
 
-	var app v1beta1.Application
+	var app driversapi.AppRelease
 	err = kc.Get(context.TODO(), client.ObjectKey{Namespace: opts.Release.Namespace, Name: opts.Release.Name}, &app)
 	if err != nil {
 		return nil, err
@@ -165,7 +164,7 @@ func loadEditorModel(kc client.Client, reg repo.IRegistry, chartRef v1alpha1.Cha
 	return EditorChartValueManifest(kc, &app, opts.Metadata.Release, chrt.Chart)
 }
 
-func EditorChartValueManifest(kc client.Client, app *v1beta1.Application, mt appapi.ObjectMeta, chrt *chart.Chart) (*appapi.EditorTemplate, error) {
+func EditorChartValueManifest(kc client.Client, app *driversapi.AppRelease, mt releasesapi.ObjectMeta, chrt *chart.Chart) (*releasesapi.EditorTemplate, error) {
 	selector, err := metav1.LabelSelectorAsSelector(app.Spec.Selector)
 	if err != nil {
 		return nil, err
@@ -258,7 +257,7 @@ func EditorChartValueManifest(kc client.Client, app *v1beta1.Application, mt app
 			}
 			if rsKeys.Has(rsKey) { // ski form objects
 				if _, ok := resourceMap[rsKey]; ok {
-					return nil, fmt.Errorf("duplicate resource key %s for application %s/%s", rsKey, app.Namespace, app.Name)
+					return nil, fmt.Errorf("duplicate resource key %s for AppRelease %s/%s", rsKey, app.Namespace, app.Name)
 				}
 				resourceMap[rsKey] = &obj
 			}
@@ -287,7 +286,7 @@ func EditorChartValueManifest(kc client.Client, app *v1beta1.Application, mt app
 		}
 	}
 
-	rsfiles := make([]appapi.ResourceObject, 0, len(resources))
+	rsfiles := make([]releasesapi.ResourceObject, 0, len(resources))
 	for _, obj := range resources {
 		s1, s2, s3 := ResourceFilename(obj.GetAPIVersion(), obj.GetKind(), mt.Name, obj.GetName())
 		name := s1
@@ -298,13 +297,13 @@ func EditorChartValueManifest(kc client.Client, app *v1beta1.Application, mt app
 				name = s2
 			}
 		}
-		rsfiles = append(rsfiles, appapi.ResourceObject{
+		rsfiles = append(rsfiles, releasesapi.ResourceObject{
 			Filename: name,
 			Data:     obj,
 		})
 	}
 
-	tpl := appapi.EditorTemplate{
+	tpl := releasesapi.EditorTemplate{
 		Manifest: buf.Bytes(),
 		Values: &unstructured.Unstructured{
 			Object: map[string]interface{}{
@@ -331,7 +330,7 @@ func EditorChartValueManifest(kc client.Client, app *v1beta1.Application, mt app
 }
 
 func GenerateResourceEditorModel(kc client.Client, reg repo.IRegistry, opts map[string]interface{}) (*unstructured.Unstructured, error) {
-	var spec appapi.ModelMetadata
+	var spec releasesapi.ModelMetadata
 	err := meta_util.DecodeObject(opts, &spec)
 	if err != nil {
 		return nil, err
@@ -342,12 +341,12 @@ func GenerateResourceEditorModel(kc client.Client, reg repo.IRegistry, opts map[
 		return nil, fmt.Errorf("failed to load resource editor for %+v", spec.Resource)
 	}
 
-	optionsChartRef := v1alpha1.ChartRepoRef{
+	optionsChartRef := releasesapi.ChartRepoRef{
 		URL:     helmRepositories[ed.Spec.UI.Options.SourceRef.Name],
 		Name:    ed.Spec.UI.Options.Name,
 		Version: ed.Spec.UI.Options.Version,
 	}
-	editorChartRef := v1alpha1.ChartRepoRef{
+	editorChartRef := releasesapi.ChartRepoRef{
 		URL:     helmRepositories[ed.Spec.UI.Editor.SourceRef.Name],
 		Name:    ed.Spec.UI.Editor.Name,
 		Version: ed.Spec.UI.Editor.Version,
@@ -356,8 +355,8 @@ func GenerateResourceEditorModel(kc client.Client, reg repo.IRegistry, opts map[
 	return generateEditorModel(kc, reg, optionsChartRef, editorChartRef, spec, opts)
 }
 
-func GenerateEditorModel(kc client.Client, reg repo.IRegistry, chartRef v1alpha1.ChartRepoRef, opts map[string]interface{}) (*unstructured.Unstructured, error) {
-	var spec appapi.ModelMetadata
+func GenerateEditorModel(kc client.Client, reg repo.IRegistry, chartRef releasesapi.ChartRepoRef, opts map[string]interface{}) (*unstructured.Unstructured, error) {
+	var spec releasesapi.ModelMetadata
 	err := meta_util.DecodeObject(opts, &spec)
 	if err != nil {
 		return nil, err
@@ -368,9 +367,9 @@ func GenerateEditorModel(kc client.Client, reg repo.IRegistry, chartRef v1alpha1
 func generateEditorModel(
 	kc client.Client,
 	reg repo.IRegistry,
-	optionsChartRef v1alpha1.ChartRepoRef,
-	editorChartRef v1alpha1.ChartRepoRef,
-	spec appapi.ModelMetadata,
+	optionsChartRef releasesapi.ChartRepoRef,
+	editorChartRef releasesapi.ChartRepoRef,
+	spec releasesapi.ModelMetadata,
 	opts map[string]interface{},
 ) (*unstructured.Unstructured, error) {
 	_, usesForm := opts["form"]
@@ -404,7 +403,7 @@ func generateEditorModel(
 
 	f1 := &EditorModelGenerator{
 		Registry: reg,
-		ChartRef: v1alpha1.ChartRef{
+		ChartRef: releasesapi.ChartRef{
 			URL:  optionsChartRef.URL,
 			Name: optionsChartRef.Name,
 		},
@@ -448,8 +447,8 @@ func generateEditorModel(
 	return model, err
 }
 
-func RenderResourceEditorChart(kc client.Client, reg repo.IRegistry, opts map[string]interface{}) (string, *appapi.ChartTemplate, error) {
-	var spec appapi.ModelMetadata
+func RenderResourceEditorChart(kc client.Client, reg repo.IRegistry, opts map[string]interface{}) (string, *releasesapi.ChartTemplate, error) {
+	var spec releasesapi.ModelMetadata
 	err := meta_util.DecodeObject(opts, &spec)
 	if err != nil {
 		return "", nil, err
@@ -460,7 +459,7 @@ func RenderResourceEditorChart(kc client.Client, reg repo.IRegistry, opts map[st
 		return "", nil, fmt.Errorf("failed to load resource editor for %+v", spec.Resource)
 	}
 
-	chartRef := v1alpha1.ChartRepoRef{
+	chartRef := releasesapi.ChartRepoRef{
 		URL:     helmRepositories[ed.Spec.UI.Editor.SourceRef.Name],
 		Name:    ed.Spec.UI.Editor.Name,
 		Version: ed.Spec.UI.Editor.Version,
@@ -468,8 +467,8 @@ func RenderResourceEditorChart(kc client.Client, reg repo.IRegistry, opts map[st
 	return renderChart(kc, reg, chartRef, spec, opts)
 }
 
-func RenderChart(kc client.Client, reg repo.IRegistry, charRef v1alpha1.ChartRepoRef, opts map[string]interface{}) (string, *appapi.ChartTemplate, error) {
-	var spec appapi.ModelMetadata
+func RenderChart(kc client.Client, reg repo.IRegistry, charRef releasesapi.ChartRepoRef, opts map[string]interface{}) (string, *releasesapi.ChartTemplate, error) {
+	var spec releasesapi.ModelMetadata
 	err := meta_util.DecodeObject(opts, &spec)
 	if err != nil {
 		return "", nil, err
@@ -481,13 +480,13 @@ func RenderChart(kc client.Client, reg repo.IRegistry, charRef v1alpha1.ChartRep
 func renderChart(
 	kc client.Client,
 	reg repo.IRegistry,
-	charRef v1alpha1.ChartRepoRef,
-	spec appapi.ModelMetadata,
+	charRef releasesapi.ChartRepoRef,
+	spec releasesapi.ModelMetadata,
 	opts map[string]interface{},
-) (string, *appapi.ChartTemplate, error) {
+) (string, *releasesapi.ChartTemplate, error) {
 	f1 := &EditorModelGenerator{
 		Registry: reg,
-		ChartRef: v1alpha1.ChartRef{
+		ChartRef: releasesapi.ChartRef{
 			URL:  charRef.URL,
 			Name: charRef.Name,
 		},
@@ -503,7 +502,7 @@ func renderChart(
 		return "", nil, err
 	}
 
-	tpl := appapi.ChartTemplate{
+	tpl := releasesapi.ChartTemplate{
 		ChartRef:    f1.ChartRef,
 		Version:     f1.Version,
 		ReleaseName: f1.ReleaseName,
@@ -519,8 +518,8 @@ func renderChart(
 		if len(resources) != 1 {
 			return "", nil, fmt.Errorf("%d crds found in %s", len(resources), crd.Name)
 		}
-		tpl.CRDs = append(tpl.CRDs, appapi.BucketObject{
-			ResourceObject: appapi.ResourceObject{
+		tpl.CRDs = append(tpl.CRDs, releasesapi.BucketObject{
+			ResourceObject: releasesapi.ResourceObject{
 				Filename: crd.Name,
 				Data:     resources[0].Object,
 			},
@@ -535,7 +534,7 @@ func renderChart(
 	return string(manifest), &tpl, nil
 }
 
-func CreateChartOrder(reg repo.IRegistry, opts appapi.ChartOrder) (*v1alpha1.Order, error) {
+func CreateChartOrder(reg repo.IRegistry, opts releasesapi.ChartOrder) (*releasesapi.Order, error) {
 	// editor chart
 	chrt, err := reg.GetChart(opts.URL, opts.Name, opts.Version)
 	if err != nil {
@@ -559,21 +558,21 @@ func CreateChartOrder(reg repo.IRegistry, opts appapi.ChartOrder) (*v1alpha1.Ord
 		return nil, err
 	}
 
-	order := v1alpha1.Order{
+	order := releasesapi.Order{
 		TypeMeta: metav1.TypeMeta{
-			APIVersion: v1alpha1.SchemeGroupVersion.String(),
-			Kind:       v1alpha1.ResourceKindOrder,
+			APIVersion: releasesapi.GroupVersion.String(),
+			Kind:       releasesapi.ResourceKindOrder,
 		}, ObjectMeta: metav1.ObjectMeta{
 			Name:              opts.ReleaseName,
 			Namespace:         opts.Namespace,
 			UID:               types.UID(uuid.New().String()),
 			CreationTimestamp: metav1.NewTime(time.Now()),
 		},
-		Spec: v1alpha1.OrderSpec{
-			Packages: []v1alpha1.PackageSelection{
+		Spec: releasesapi.OrderSpec{
+			Packages: []releasesapi.PackageSelection{
 				{
-					Chart: &v1alpha1.ChartSelection{
-						ChartRef: v1alpha1.ChartRef{
+					Chart: &releasesapi.ChartSelection{
+						ChartRef: releasesapi.ChartRef{
 							URL:  opts.URL,
 							Name: opts.Name,
 						},

@@ -21,8 +21,6 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"kubepack.dev/kubepack/apis/kubepack/v1alpha1"
-	appapi "kubepack.dev/lib-app/api/v1alpha1"
 	"kubepack.dev/lib-app/pkg/editor"
 	actionx "kubepack.dev/lib-helm/pkg/action"
 	"kubepack.dev/lib-helm/pkg/repo"
@@ -38,10 +36,11 @@ import (
 	cmdutil "k8s.io/kubectl/pkg/cmd/util"
 	meta_util "kmodules.xyz/client-go/meta"
 	"kmodules.xyz/resource-metadata/hub/resourceeditors"
+	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 )
 
 func ApplyResourceEditor(f cmdutil.Factory, reg repo.IRegistry, model map[string]interface{}, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
-	var tm appapi.ModelMetadata
+	var tm releasesapi.ModelMetadata
 	err := meta_util.DecodeObject(model, &tm)
 	if err != nil {
 		return nil, errors.New("failed to parse Metadata for values")
@@ -57,7 +56,7 @@ func ApplyResourceEditor(f cmdutil.Factory, reg repo.IRegistry, model map[string
 		return nil, fmt.Errorf("failed to load resource editor for %+v", tm.Resource)
 	}
 
-	deployer, err := actionx.NewDeployer(f, tm.Release.Namespace, driver.ApplicationsDriverName, log...)
+	deployer, err := actionx.NewDeployer(f, tm.Release.Namespace, driver.AppReleasesDriverName, log...)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +81,7 @@ func ApplyResourceEditor(f cmdutil.Factory, reg repo.IRegistry, model map[string
 		return nil, errors.Wrapf(err, "failed to register chart %+v", ed.Spec.UI.Editor)
 	}
 
-	chartRef := v1alpha1.ChartRepoRef{
+	chartRef := releasesapi.ChartRepoRef{
 		URL:     chartURL,
 		Name:    ed.Spec.UI.Editor.Name,
 		Version: ed.Spec.UI.Editor.Version,
@@ -90,12 +89,12 @@ func ApplyResourceEditor(f cmdutil.Factory, reg repo.IRegistry, model map[string
 	return applyResource(f, reg, chartRef, model, skipCRds, log...)
 }
 
-func ApplyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef v1alpha1.ChartRepoRef, model map[string]interface{}, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
+func ApplyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef releasesapi.ChartRepoRef, model map[string]interface{}, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
 	return applyResource(f, reg, chartRef, model, skipCRds, log...)
 }
 
-func applyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef v1alpha1.ChartRepoRef, model map[string]interface{}, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
-	var tm appapi.ModelMetadata
+func applyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef releasesapi.ChartRepoRef, model map[string]interface{}, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
+	var tm releasesapi.ModelMetadata
 	err := meta_util.DecodeObject(model, &tm)
 	if err != nil {
 		return nil, errors.New("failed to parse Metadata for values")
@@ -106,7 +105,7 @@ func applyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef v1alpha1.Char
 		return nil, err
 	}
 
-	deployer, err := actionx.NewDeployer(f, tm.Release.Namespace, driver.ApplicationsDriverName, log...)
+	deployer, err := actionx.NewDeployer(f, tm.Release.Namespace, driver.AppReleasesDriverName, log...)
 	if err != nil {
 		return nil, err
 	}
@@ -121,7 +120,7 @@ func applyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef v1alpha1.Char
 	var vals map[string]interface{}
 	if _, ok := model["patch"]; ok {
 		// NOTE: Makes an assumption that this is a "edit" apply
-		tpl, err := editor.LoadResourceEditorModel(kc, reg, appapi.ModelMetadata{
+		tpl, err := editor.LoadResourceEditorModel(kc, reg, releasesapi.ModelMetadata{
 			Metadata: tm.Metadata,
 		})
 		if err != nil {
@@ -191,8 +190,8 @@ func applyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef v1alpha1.Char
 	return rls, err
 }
 
-func DeleteResource(f cmdutil.Factory, release appapi.ObjectMeta, log ...ha.DebugLog) (*release.UninstallReleaseResponse, error) {
-	cmd, err := actionx.NewUninstaller(f, release.Namespace, driver.ApplicationsDriverName, log...)
+func DeleteResource(f cmdutil.Factory, release releasesapi.ObjectMeta, log ...ha.DebugLog) (*release.UninstallReleaseResponse, error) {
+	cmd, err := actionx.NewUninstaller(f, release.Namespace, driver.AppReleasesDriverName, log...)
 	if err != nil {
 		return nil, err
 	}

@@ -24,8 +24,6 @@ import (
 	"path"
 	"strconv"
 
-	"kubepack.dev/kubepack/apis/kubepack/v1alpha1"
-	appapi "kubepack.dev/lib-app/api/v1alpha1"
 	actionx "kubepack.dev/lib-helm/pkg/action"
 	libchart "kubepack.dev/lib-helm/pkg/chart"
 	"kubepack.dev/lib-helm/pkg/repo"
@@ -47,11 +45,12 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	yamllib "sigs.k8s.io/yaml"
+	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 )
 
 type TemplateRenderer struct {
 	Registry    repo.IRegistry
-	ChartRef    v1alpha1.ChartRef
+	ChartRef    releasesapi.ChartRef
 	Version     string
 	ReleaseName string
 	Namespace   string
@@ -65,8 +64,8 @@ type TemplateRenderer struct {
 	PublicURL string
 	// W         io.Writer
 
-	CRDs     []appapi.BucketFile
-	Manifest *appapi.BucketFile
+	CRDs     []releasesapi.BucketFile
+	Manifest *releasesapi.BucketFile
 }
 
 func (x *TemplateRenderer) Do() error {
@@ -172,7 +171,7 @@ func (x *TemplateRenderer) Do() error {
 			}
 
 			objectKey := "/" + path.Join(x.UID, "crds", crd.Name+".yaml")
-			x.CRDs = append(x.CRDs, appapi.BucketFile{
+			x.CRDs = append(x.CRDs, releasesapi.BucketFile{
 				URL:      x.PublicURL + objectKey,
 				Key:      objectKey,
 				Filename: crd.Filename,
@@ -250,7 +249,7 @@ func (x *TemplateRenderer) Do() error {
 
 	{
 		objectKey := "/" + path.Join(x.UID, "manifests", x.ReleaseName+".yaml")
-		x.Manifest = &appapi.BucketFile{
+		x.Manifest = &releasesapi.BucketFile{
 			URL:      x.PublicURL + objectKey,
 			Key:      objectKey,
 			Filename: "manifest.yaml",
@@ -276,7 +275,7 @@ func (x *TemplateRenderer) Do() error {
 	return nil
 }
 
-func (x *TemplateRenderer) Result() (crds []appapi.BucketFile, manifest *appapi.BucketFile) {
+func (x *TemplateRenderer) Result() (crds []releasesapi.BucketFile, manifest *releasesapi.BucketFile) {
 	crds = x.CRDs
 	manifest = x.Manifest
 
@@ -285,7 +284,7 @@ func (x *TemplateRenderer) Result() (crds []appapi.BucketFile, manifest *appapi.
 
 type EditorModelGenerator struct {
 	Registry    repo.IRegistry
-	ChartRef    v1alpha1.ChartRef
+	ChartRef    releasesapi.ChartRef
 	Version     string
 	ReleaseName string
 	Namespace   string

@@ -27,7 +27,6 @@ import (
 	"text/template"
 
 	docapi "kubepack.dev/chart-doc-gen/api"
-	appapi "kubepack.dev/lib-app/api/v1alpha1"
 	"kubepack.dev/lib-app/pkg/editor"
 	"kubepack.dev/lib-helm/pkg/action"
 	"kubepack.dev/lib-helm/pkg/repo"
@@ -47,6 +46,7 @@ import (
 	"kmodules.xyz/resource-metadata/hub"
 	ksets "kmodules.xyz/sets"
 	"sigs.k8s.io/yaml"
+	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 )
 
 var (
@@ -119,7 +119,7 @@ func NewCmdFuse() *cobra.Command {
 				// values
 				cp := ri.Object.DeepCopy()
 				delete(cp.Object, "status")
-				cp.Object["metadata"] = appapi.ObjectMeta{
+				cp.Object["metadata"] = releasesapi.ObjectMeta{
 					Name:      ri.Object.GetName(),
 					Namespace: ri.Object.GetNamespace(),
 				}
@@ -182,7 +182,7 @@ func NewCmdFuse() *cobra.Command {
 					if strings.HasSuffix(gvr.Group, ".k8s.io") ||
 						strings.HasSuffix(gvr.Group, "kubernetes.io") {
 						crd.Annotations = map[string]string{
-							"api-approved.kubernetes.io": "https://github.com/kubernetes-sigs/application/pull/2",
+							"api-approved.kubernetes.io": "https://github.com/kubernetes-sigs/appRelease/pull/2",
 						}
 					}
 
@@ -205,7 +205,7 @@ func NewCmdFuse() *cobra.Command {
 				}
 				defer f.Close()
 
-				objModel := appapi.ObjectModel{
+				objModel := releasesapi.ObjectModel{
 					Key:    rsKey,
 					Object: ri.Object,
 				}
@@ -343,9 +343,9 @@ func NewCmdFuse() *cobra.Command {
 				}
 
 				values := map[string]interface{}{
-					"metadata": appapi.Metadata{
+					"metadata": releasesapi.Metadata{
 						Resource: rd.Spec.Resource,
-						Release: appapi.ObjectMeta{
+						Release: releasesapi.ObjectMeta{
 							Name:      "RELEASE-NAME",
 							Namespace: "default",
 						},
@@ -554,7 +554,7 @@ func newChartMeta(kind string, gvrData, gkData []byte) chart.Metadata {
 		Condition:   "",
 		Deprecated:  false,
 		KubeVersion: ">= 1.14.0",
-		Type:        "application",
+		Type:        "appRelease",
 		Annotations: map[string]string{
 			"meta.x-helm.dev/editor":    string(gvrData),
 			"meta.x-helm.dev/resources": string(gkData),

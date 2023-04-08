@@ -24,7 +24,6 @@ import (
 	"strings"
 
 	docapi "kubepack.dev/chart-doc-gen/api"
-	appapi "kubepack.dev/lib-app/api/v1alpha1"
 
 	"github.com/spf13/cobra"
 	"helm.sh/helm/v3/pkg/chart"
@@ -39,6 +38,7 @@ import (
 	"kmodules.xyz/resource-metadata/hub"
 	"kmodules.xyz/resource-metadata/hub/resourceeditors"
 	"sigs.k8s.io/yaml"
+	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 )
 
 func NewCmdSimple() *cobra.Command {
@@ -169,7 +169,7 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 		if strings.HasSuffix(gvr.Group, ".k8s.io") ||
 			strings.HasSuffix(gvr.Group, "kubernetes.io") {
 			crd.Annotations = map[string]string{
-				"api-approved.kubernetes.io": "https://github.com/kubernetes-sigs/application/pull/2",
+				"api-approved.kubernetes.io": "https://github.com/kubernetes-sigs/appRelease/pull/2",
 			}
 		}
 
@@ -237,12 +237,12 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 			Group:   rd.Spec.Resource.Group,
 			Version: rd.Spec.Resource.Version,
 		}
-		v := appapi.SimpleValue{
+		v := releasesapi.SimpleValue{
 			TypeMeta: metav1.TypeMeta{
 				APIVersion: gv.String(),
 				Kind:       rd.Spec.Resource.Kind,
 			},
-			ObjectMeta: appapi.ObjectMeta{
+			ObjectMeta: releasesapi.ObjectMeta{
 				Name: strings.ToLower(rd.Spec.Resource.Kind),
 			},
 		}
@@ -353,7 +353,7 @@ func GenerateChartMetadata(chartDir, chartName string, rd *rsapi.ResourceDescrip
 		Condition:   "",
 		Deprecated:  false,
 		KubeVersion: ">= 1.14.0",
-		Type:        "application",
+		Type:        "appRelease",
 		Annotations: map[string]string{
 			"meta.x-helm.dev/editor": string(gvrData),
 		},
