@@ -23,16 +23,13 @@ import (
 	"sort"
 	"time"
 
-	"kubepack.dev/kubepack/apis/kubepack/v1alpha1"
 	"kubepack.dev/kubepack/pkg/lib"
-	appapi "kubepack.dev/lib-app/api/v1alpha1"
 	"kubepack.dev/lib-app/pkg/editor"
 	"kubepack.dev/lib-app/pkg/handler"
 	actionx "kubepack.dev/lib-helm/pkg/action"
 	"kubepack.dev/lib-helm/pkg/getter"
 	"kubepack.dev/lib-helm/pkg/repo"
 	"kubepack.dev/lib-helm/pkg/values"
-	chartsapi "kubepack.dev/preset/apis/charts/v1alpha1"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -51,6 +48,8 @@ import (
 	"kmodules.xyz/client-go/tools/converter"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	"sigs.k8s.io/yaml"
+	chartsapi "x-helm.dev/apimachinery/apis/charts/v1alpha1"
+	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 )
 
 var HelmRegistry = repo.NewDiskCacheRegistry()
@@ -75,27 +74,27 @@ func main() {
 
 	// PUBLIC
 	m.Route("/bundleview", func(m chi.Router) {
-		m.With(binding.JSON(v1alpha1.ChartRepoRef{})).Get("/", binding.HandlerFunc(GetBundleViewForChart))
+		m.With(binding.JSON(releasesapi.ChartRepoRef{})).Get("/", binding.HandlerFunc(GetBundleViewForChart))
 
 		// Generate Order for a BundleView
-		m.With(binding.JSON(v1alpha1.BundleView{})).Post("/orders", binding.HandlerFunc(CreateOrderForBundle))
+		m.With(binding.JSON(releasesapi.BundleView{})).Post("/orders", binding.HandlerFunc(CreateOrderForBundle))
 	})
 
 	// PUBLIC
 	m.Route("/packageview", func(m chi.Router) {
-		m.With(binding.JSON(v1alpha1.ChartRepoRef{})).Get("/", binding.HandlerFunc(GetPackageViewForChart))
+		m.With(binding.JSON(releasesapi.ChartRepoRef{})).Get("/", binding.HandlerFunc(GetPackageViewForChart))
 
 		// PUBLIC
-		m.With(binding.JSON(v1alpha1.ChartRepoRef{})).Get("/files", binding.HandlerFunc(ListPackageFiles))
+		m.With(binding.JSON(releasesapi.ChartRepoRef{})).Get("/files", binding.HandlerFunc(ListPackageFiles))
 
 		// PUBLIC
-		m.With(binding.JSON(v1alpha1.ChartRepoRef{})).Get("/files/*", binding.HandlerFunc(GetPackageFile))
+		m.With(binding.JSON(releasesapi.ChartRepoRef{})).Get("/files/*", binding.HandlerFunc(GetPackageFile))
 
 		// PUBLIC
 		m.With(binding.JSON(chartsapi.ChartPresetRef{})).Get("/values", binding.HandlerFunc(GetValuesFile))
 
 		// Generate Order for a Editor PackageView / Chart
-		m.With(binding.JSON(appapi.ChartOrder{})).Post("/orders", binding.HandlerFunc(CreateOrderForPackage))
+		m.With(binding.JSON(releasesapi.ChartOrder{})).Post("/orders", binding.HandlerFunc(CreateOrderForPackage))
 	})
 
 	m.Route("/editor", func(m chi.Router) {
@@ -344,7 +343,7 @@ func main() {
 	// Should we store Order UID in a table per User?
 	m.Route("/deploy/orders", func(m chi.Router) {
 		// Generate Order for a single chart and optional values patch
-		m.With(binding.JSON(v1alpha1.Order{})).Post("/", binding.HandlerFunc(CreateOrder))
+		m.With(binding.JSON(releasesapi.Order{})).Post("/", binding.HandlerFunc(CreateOrder))
 		m.Get("/{id}/render/manifest", binding.HandlerFunc(PreviewOrderManifest))
 		m.Get("/{id}/render/resources", binding.HandlerFunc(PreviewOrderResources))
 		m.Get("/{id}/helm3", binding.HandlerFunc(func(ctx httpw.ResponseWriter) {
@@ -360,7 +359,7 @@ func main() {
 				return
 			}
 
-			var order v1alpha1.Order
+			var order releasesapi.Order
 			err = yaml.Unmarshal(data, &order)
 			if err != nil {
 				ctx.Error(http.StatusInternalServerError, err.Error())
@@ -388,7 +387,7 @@ func main() {
 				return
 			}
 
-			var order v1alpha1.Order
+			var order releasesapi.Order
 			err = yaml.Unmarshal(data, &order)
 			if err != nil {
 				ctx.Error(http.StatusInternalServerError, err.Error())
@@ -414,15 +413,15 @@ func main() {
 			m.Delete("/namespaces/{namespace}/releases/{releaseName}", binding.HandlerFunc(DeleteResource(f)))
 
 			// PUT Model from Existing Installations
-			m.With(binding.JSON(appapi.ModelMetadata{})).Put("/model", binding.HandlerFunc(LoadEditorModel))
+			m.With(binding.JSON(releasesapi.ModelMetadata{})).Put("/model", binding.HandlerFunc(LoadEditorModel))
 
 			// redundant apis
 			// can be replaced by getting the model, then using the /editor apis
-			m.With(binding.JSON(appapi.Model{})).Put("/manifest", binding.HandlerFunc(LoadEditorManifest))
+			m.With(binding.JSON(releasesapi.Model{})).Put("/manifest", binding.HandlerFunc(LoadEditorManifest))
 
 			// redundant apis
 			// can be replaced by getting the model, then using the /editor apis
-			m.With(binding.JSON(appapi.Model{})).Put("/resources", binding.HandlerFunc(LoadEditorResources))
+			m.With(binding.JSON(releasesapi.Model{})).Put("/resources", binding.HandlerFunc(LoadEditorResources))
 		})
 
 		m.Post("/deploy/{id}", binding.HandlerFunc(func(ctx httpw.ResponseWriter) {
@@ -504,7 +503,7 @@ func main() {
 	}
 }
 
-func LoadEditorResources(ctx httpw.ResponseWriter, model appapi.Model) {
+func LoadEditorResources(ctx httpw.ResponseWriter, model releasesapi.Model) {
 	cfg, err := config.GetConfig()
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, err.Error())
@@ -516,7 +515,7 @@ func LoadEditorResources(ctx httpw.ResponseWriter, model appapi.Model) {
 		return
 	}
 
-	tpl, err := editor.LoadResourceEditorModel(kc, HelmRegistry, appapi.ModelMetadata{
+	tpl, err := editor.LoadResourceEditorModel(kc, HelmRegistry, releasesapi.ModelMetadata{
 		Metadata: model.Metadata,
 	})
 	if err != nil {
@@ -524,7 +523,7 @@ func LoadEditorResources(ctx httpw.ResponseWriter, model appapi.Model) {
 		return
 	}
 
-	var out appapi.ResourceOutput
+	var out releasesapi.ResourceOutput
 	format := meta_util.NewDataFormat(ctx.R().QueryTrim("format"), meta_util.YAMLFormat)
 
 	for _, r := range tpl.Resources {
@@ -533,7 +532,7 @@ func LoadEditorResources(ctx httpw.ResponseWriter, model appapi.Model) {
 			ctx.Error(http.StatusInternalServerError, "MarshalResource", err.Error())
 			return
 		}
-		out.Resources = append(out.Resources, appapi.ResourceFile{
+		out.Resources = append(out.Resources, releasesapi.ResourceFile{
 			Filename: r.Filename + "." + string(format),
 			Data:     string(data),
 		})
@@ -541,7 +540,7 @@ func LoadEditorResources(ctx httpw.ResponseWriter, model appapi.Model) {
 	ctx.JSON(http.StatusOK, out)
 }
 
-func LoadEditorManifest(ctx httpw.ResponseWriter, model appapi.Model) {
+func LoadEditorManifest(ctx httpw.ResponseWriter, model releasesapi.Model) {
 	cfg, err := config.GetConfig()
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, err.Error())
@@ -553,7 +552,7 @@ func LoadEditorManifest(ctx httpw.ResponseWriter, model appapi.Model) {
 		return
 	}
 
-	tpl, err := editor.LoadResourceEditorModel(kc, HelmRegistry, appapi.ModelMetadata{
+	tpl, err := editor.LoadResourceEditorModel(kc, HelmRegistry, releasesapi.ModelMetadata{
 		Metadata: model.Metadata,
 	})
 	if err != nil {
@@ -563,7 +562,7 @@ func LoadEditorManifest(ctx httpw.ResponseWriter, model appapi.Model) {
 	_, _ = ctx.Write(tpl.Manifest)
 }
 
-func LoadEditorModel(ctx httpw.ResponseWriter, model appapi.ModelMetadata) {
+func LoadEditorModel(ctx httpw.ResponseWriter, model releasesapi.ModelMetadata) {
 	cfg, err := config.GetConfig()
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, err.Error())
@@ -592,7 +591,7 @@ func LoadEditorModel(ctx httpw.ResponseWriter, model appapi.ModelMetadata) {
 
 func DeleteResource(f cmdutil.Factory) func(ctx httpw.ResponseWriter) {
 	return func(ctx httpw.ResponseWriter) {
-		release := appapi.ObjectMeta{
+		release := releasesapi.ObjectMeta{
 			Name:      ctx.R().Params("releaseName"),
 			Namespace: ctx.R().Params("namespace"),
 		}
@@ -635,7 +634,7 @@ func PreviewOrderResources(ctx httpw.ResponseWriter) {
 		return
 	}
 
-	var order v1alpha1.Order
+	var order releasesapi.Order
 	err = yaml.Unmarshal(data, &order)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "UnmarshalOrder", err.Error())
@@ -675,7 +674,7 @@ func PreviewOrderManifest(ctx httpw.ResponseWriter) {
 		return
 	}
 
-	var order v1alpha1.Order
+	var order releasesapi.Order
 	err = yaml.Unmarshal(data, &order)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "UnmarshalOrder", err.Error())
@@ -690,15 +689,15 @@ func PreviewOrderManifest(ctx httpw.ResponseWriter) {
 	_, _ = ctx.Write([]byte(manifest))
 }
 
-func CreateOrder(ctx httpw.ResponseWriter, order v1alpha1.Order) {
+func CreateOrder(ctx httpw.ResponseWriter, order releasesapi.Order) {
 	if len(order.Spec.Packages) == 0 {
 		ctx.Error(http.StatusBadRequest, "missing package selection for order")
 		return
 	}
 
 	order.TypeMeta = metav1.TypeMeta{
-		APIVersion: v1alpha1.SchemeGroupVersion.String(),
-		Kind:       v1alpha1.ResourceKindOrder,
+		APIVersion: releasesapi.GroupVersion.String(),
+		Kind:       releasesapi.ResourceKindOrder,
 	}
 	order.ObjectMeta = metav1.ObjectMeta{
 		UID:               types.UID(uuid.New().String()),
@@ -749,7 +748,7 @@ func PreviewEditorResources(ctx httpw.ResponseWriter, opts map[string]interface{
 		tpls.CRDs = nil
 	}
 
-	var out appapi.ResourceOutput
+	var out releasesapi.ResourceOutput
 	format := meta_util.NewDataFormat(ctx.R().QueryTrim("format"), meta_util.YAMLFormat)
 
 	for _, crd := range tpls.CRDs {
@@ -758,7 +757,7 @@ func PreviewEditorResources(ctx httpw.ResponseWriter, opts map[string]interface{
 			ctx.Error(http.StatusInternalServerError, "MarshalCRD", err.Error())
 			return
 		}
-		out.CRDs = append(out.CRDs, appapi.ResourceFile{
+		out.CRDs = append(out.CRDs, releasesapi.ResourceFile{
 			Filename: crd.Filename + "." + string(format),
 			Data:     string(data),
 		})
@@ -769,7 +768,7 @@ func PreviewEditorResources(ctx httpw.ResponseWriter, opts map[string]interface{
 			ctx.Error(http.StatusInternalServerError, "MarshalResource", err.Error())
 			return
 		}
-		out.Resources = append(out.Resources, appapi.ResourceFile{
+		out.Resources = append(out.Resources, releasesapi.ResourceFile{
 			Filename: r.Filename + "." + string(format),
 			Data:     string(data),
 		})
@@ -828,7 +827,7 @@ func GenerateEditorModelFromOptions(ctx httpw.ResponseWriter, opts map[string]in
 	ctx.JSON(http.StatusOK, model)
 }
 
-func GetPackageFile(ctx httpw.ResponseWriter, params v1alpha1.ChartRepoRef) {
+func GetPackageFile(ctx httpw.ResponseWriter, params releasesapi.ChartRepoRef) {
 	chrt, err := HelmRegistry.GetChart(params.URL, params.Name, params.Version)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "GetChart", err.Error())
@@ -896,7 +895,7 @@ func GetValuesFile(ctx httpw.ResponseWriter, params chartsapi.ChartPresetRef) {
 	_, _ = ctx.Write(data)
 }
 
-func ListPackageFiles(ctx httpw.ResponseWriter, params v1alpha1.ChartRepoRef) {
+func ListPackageFiles(ctx httpw.ResponseWriter, params releasesapi.ChartRepoRef) {
 	// TODO: verify params
 
 	chrt, err := HelmRegistry.GetChart(params.URL, params.Name, params.Version)
@@ -914,7 +913,7 @@ func ListPackageFiles(ctx httpw.ResponseWriter, params v1alpha1.ChartRepoRef) {
 	ctx.JSON(http.StatusOK, files)
 }
 
-func CreateOrderForPackage(ctx httpw.ResponseWriter, params appapi.ChartOrder) {
+func CreateOrderForPackage(ctx httpw.ResponseWriter, params releasesapi.ChartOrder) {
 	order, err := editor.CreateChartOrder(HelmRegistry, params)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "CreateChartOrder", err.Error())
@@ -941,7 +940,7 @@ func CreateOrderForPackage(ctx httpw.ResponseWriter, params appapi.ChartOrder) {
 	ctx.JSON(http.StatusOK, order)
 }
 
-func GetPackageViewForChart(ctx httpw.ResponseWriter, params v1alpha1.ChartRepoRef) {
+func GetPackageViewForChart(ctx httpw.ResponseWriter, params releasesapi.ChartRepoRef) {
 	// TODO: verify params
 
 	chrt, err := HelmRegistry.GetChart(params.URL, params.Name, params.Version)
@@ -959,7 +958,7 @@ func GetPackageViewForChart(ctx httpw.ResponseWriter, params v1alpha1.ChartRepoR
 	ctx.JSON(http.StatusOK, pv)
 }
 
-func CreateOrderForBundle(ctx httpw.ResponseWriter, params v1alpha1.BundleView) {
+func CreateOrderForBundle(ctx httpw.ResponseWriter, params releasesapi.BundleView) {
 	order, err := lib.CreateOrder(HelmRegistry, params)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "CreateDeployOrder", err.Error())
@@ -986,7 +985,7 @@ func CreateOrderForBundle(ctx httpw.ResponseWriter, params v1alpha1.BundleView) 
 	ctx.JSON(http.StatusOK, order)
 }
 
-func GetBundleViewForChart(ctx httpw.ResponseWriter, params v1alpha1.ChartRepoRef) {
+func GetBundleViewForChart(ctx httpw.ResponseWriter, params releasesapi.ChartRepoRef) {
 	// TODO: verify params
 
 	bv, err := lib.CreateBundleViewForChart(HelmRegistry, &params)

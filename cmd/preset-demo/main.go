@@ -19,13 +19,11 @@ package main
 import (
 	"fmt"
 	"path/filepath"
-	"sort"
 
 	"kubepack.dev/lib-helm/pkg/action"
 	actionx "kubepack.dev/lib-helm/pkg/action"
 	"kubepack.dev/lib-helm/pkg/repo"
 	"kubepack.dev/lib-helm/pkg/values"
-	chartsapi "kubepack.dev/preset/apis/charts/v1alpha1"
 
 	flag "github.com/spf13/pflag"
 	"gomodules.xyz/x/crypto/rand"
@@ -35,6 +33,7 @@ import (
 	"k8s.io/client-go/util/homedir"
 	"k8s.io/klog/v2"
 	clientcmdutil "kmodules.xyz/client-go/tools/clientcmd"
+	chartsapi "x-helm.dev/apimachinery/apis/charts/v1alpha1"
 )
 
 var HelmRegistry = repo.NewDiskCacheRegistry()
@@ -69,7 +68,7 @@ func main() {
 		// Name:           name,
 		// Version:        version,
 		PresetGroup:    chartsapi.GroupVersion.Group,
-		PresetKind:     chartsapi.ResourceKindVendorChartPreset,
+		PresetKind:     chartsapi.ResourceKindClusterChartPreset,
 		PresetName:     "unified",
 		PresetSelector: "",
 		Namespace:      "default",
@@ -94,12 +93,6 @@ func DD(getter genericclioptions.RESTClientGetter, ref chartsapi.ChartPresetRef)
 	if err != nil {
 		return err
 	}
-
-	vpsMap, err := values.LoadVendorPresets(chrt.Chart)
-	if err != nil {
-		return err
-	}
-	PrintGPS(vpsMap)
 
 	vals, err := values.MergePresetValues(kc, chrt.Chart, ref)
 	if err != nil {
@@ -135,15 +128,4 @@ func DD(getter genericclioptions.RESTClientGetter, ref chartsapi.ChartPresetRef)
 	}
 	fmt.Println(rel)
 	return nil
-}
-
-func PrintGPS(cpsMap map[string]*chartsapi.VendorChartPreset) {
-	names := make([]string, 0, len(cpsMap))
-	for k := range cpsMap {
-		names = append(names, k)
-	}
-	sort.Strings(names)
-	for _, name := range names {
-		fmt.Println(name)
-	}
 }

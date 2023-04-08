@@ -11,15 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 SHELL=/bin/bash -o pipefail
 
 GO_PKG   := kubepack.dev
 REPO     := $(notdir $(shell pwd))
 BIN      := fuse-chart
 COMPRESS ?= no
-
-# https://github.com/appscodelabs/gengo-builder
-CODE_GENERATOR_IMAGE ?= ghcr.io/appscode/gengo:release-1.25
 
 # This version-strategy uses git tags to set the version string
 git_branch       := $(shell git rev-parse --abbrev-ref HEAD)
@@ -45,7 +43,7 @@ endif
 ### These variables should not need tweaking.
 ###
 
-SRC_PKGS := api cmd pkg
+SRC_PKGS := cmd pkg
 SRC_DIRS := $(SRC_PKGS) # directories which hold app source (not vendored)
 
 DOCKER_PLATFORMS := linux/amd64 linux/arm64
@@ -91,32 +89,21 @@ build-%:
 
 all-build: $(addprefix build-, $(subst /,_, $(BIN_PLATFORMS)))
 
-version:
-	@echo ::set-output name=version::$(VERSION)
-	@echo ::set-output name=version_strategy::$(version_strategy)
-	@echo ::set-output name=git_tag::$(git_tag)
-	@echo ::set-output name=git_branch::$(git_branch)
-	@echo ::set-output name=commit_hash::$(commit_hash)
-	@echo ::set-output name=commit_timestamp::$(commit_timestamp)
-
-# Generate a typed clientset
-.PHONY: clientset
-clientset:
-	@docker run --rm	                                 \
-		-u $$(id -u):$$(id -g)                           \
-		-v /tmp:/.cache                                  \
-		-v $$(pwd):$(DOCKER_REPO_ROOT)                   \
-		-w $(DOCKER_REPO_ROOT)                           \
-		--env HTTP_PROXY=$(HTTP_PROXY)                   \
-		--env HTTPS_PROXY=$(HTTPS_PROXY)                 \
-		$(CODE_GENERATOR_IMAGE)                          \
-		deepcopy-gen                                     \
-			--go-header-file "./hack/license/go.txt"     \
-			--input-dirs "$(GO_PKG)/$(REPO)/api/v1alpha1" \
-			--output-file-base zz_generated.deepcopy
+version: version-PROD version-DBG
+	@echo IMAGE=$(IMAGE)
+	@echo BIN=$(BIN)
+	@echo version=$(VERSION)
+	@echo version_strategy=$(version_strategy)
+	@echo git_tag=$(git_tag)
+	@echo git_branch=$(git_branch)
+	@echo commit_hash=$(commit_hash)
+	@echo commit_timestamp=$(commit_timestamp)
+version-%:
+	@echo TAG_$*=$(TAG_$*)
 
 .PHONY: gen
-gen: clientset
+gen:
+	@true
 
 fmt: $(BUILD_DIRS)
 	@docker run                                                 \
