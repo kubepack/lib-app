@@ -2439,7 +2439,7 @@ kmodules.xyz/client-go/tools/clusterid
 kmodules.xyz/client-go/tools/converter
 kmodules.xyz/client-go/tools/parser
 kmodules.xyz/client-go/tools/wait
-# kmodules.xyz/resource-metadata v0.16.3-0.20230412025105-b284e4a3c1d8
+# kmodules.xyz/resource-metadata v0.17.0
 ## explicit; go 1.18
 kmodules.xyz/resource-metadata/apis/meta
 kmodules.xyz/resource-metadata/apis/meta/v1alpha1
@@ -2456,10 +2456,10 @@ kmodules.xyz/sets
 # kubepack.dev/chart-doc-gen v0.4.7
 ## explicit; go 1.17
 kubepack.dev/chart-doc-gen/api
-# kubepack.dev/kubepack v0.6.1-0.20230412140543-e23f8199cd50
+# kubepack.dev/kubepack v0.6.1
 ## explicit; go 1.18
 kubepack.dev/kubepack/pkg/lib
-# kubepack.dev/lib-helm v0.6.1-0.20230412141255-6877d6a98629
+# kubepack.dev/lib-helm v0.6.1
 ## explicit; go 1.18
 kubepack.dev/lib-helm/pkg/action
 kubepack.dev/lib-helm/pkg/chart
