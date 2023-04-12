@@ -19,6 +19,7 @@ package main
 import (
 	"fmt"
 	"path/filepath"
+	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 
 	"kubepack.dev/lib-helm/pkg/action"
 	actionx "kubepack.dev/lib-helm/pkg/action"
@@ -63,10 +64,15 @@ func main() {
 	}
 	getter := clientcmdutil.NewClientGetter(&kubeconfig)
 
-	ref := chartsapi.ChartPresetRef{
-		// URL:            url,
-		// Name:           name,
-		// Version:        version,
+	ref := chartsapi.ChartPresetFlatRef{
+		ChartSourceFlatRef: releasesapi.ChartSourceFlatRef{
+			Name:            name,
+			Version:         version,
+			SourceAPIGroup:  releasesapi.SourceGroupLegacy,
+			SourceKind:      releasesapi.SourceKindLegacy,
+			SourceNamespace: "",
+			SourceName:      url,
+		},
 		PresetGroup:    chartsapi.GroupVersion.Group,
 		PresetKind:     chartsapi.ResourceKindClusterChartPreset,
 		PresetName:     "unified",
@@ -83,13 +89,13 @@ func main() {
 	}
 }
 
-func DD(getter genericclioptions.RESTClientGetter, ref chartsapi.ChartPresetRef) error {
+func DD(getter genericclioptions.RESTClientGetter, ref chartsapi.ChartPresetFlatRef) error {
 	kc, err := actionx.NewUncachedClient(getter)
 	if err != nil {
 		return err
 	}
 
-	chrt, err := HelmRegistry.GetChart(ref.URL, ref.Name, ref.Version)
+	chrt, err := HelmRegistry.GetChart(ref.ChartSourceFlatRef.ToAPIObject())
 	if err != nil {
 		return err
 	}
@@ -105,9 +111,7 @@ func DD(getter genericclioptions.RESTClientGetter, ref chartsapi.ChartPresetRef)
 	}
 	i.WithRegistry(HelmRegistry).
 		WithOptions(action.InstallOptions{
-			ChartURL:  ref.URL,
-			ChartName: ref.Name,
-			Version:   ref.Version,
+			ChartSourceFlatRef: ref.ChartSourceFlatRef,
 			Options: values.Options{
 				ReplaceValues: vals,
 			},

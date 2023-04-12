@@ -47,11 +47,6 @@ import (
 	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 )
 
-var helmRepositories = map[string]string{
-	"appscode":        "https://charts.appscode.com/stable/",
-	"bytebuilders-ui": "https://bundles.byte.builders/ui/",
-}
-
 func RenderOrderTemplate(bs *lib.BlobStore, reg repo.IRegistry, order releasesapi.Order) (string, []releasesapi.ChartTemplate, error) {
 	var buf bytes.Buffer
 	var tpls []releasesapi.ChartTemplate
@@ -62,9 +57,12 @@ func RenderOrderTemplate(bs *lib.BlobStore, reg repo.IRegistry, order releasesap
 		}
 
 		f1 := &TemplateRenderer{
-			Registry:    reg,
-			ChartRef:    pkg.Chart.ChartRef,
-			Version:     pkg.Chart.Version,
+			Registry: reg,
+			ChartSourceRef: releasesapi.ChartSourceRef{
+				Name:      pkg.Chart.ChartRef.Name,
+				Version:   pkg.Chart.Version,
+				SourceRef: pkg.Chart.ChartRef.SourceRef,
+			},
 			ReleaseName: pkg.Chart.ReleaseName,
 			Namespace:   pkg.Chart.Namespace,
 			KubeVersion: "v1.22.0",
@@ -80,8 +78,11 @@ func RenderOrderTemplate(bs *lib.BlobStore, reg repo.IRegistry, order releasesap
 		}
 
 		tpl := releasesapi.ChartTemplate{
-			ChartRef:    pkg.Chart.ChartRef,
-			Version:     pkg.Chart.Version,
+			ChartSourceRef: releasesapi.ChartSourceRef{
+				Name:      pkg.Chart.Name,
+				Version:   pkg.Chart.Version,
+				SourceRef: pkg.Chart.SourceRef,
+			},
 			ReleaseName: pkg.Chart.ReleaseName,
 			Namespace:   pkg.Chart.Namespace,
 		}
@@ -112,7 +113,7 @@ func RenderOrderTemplate(bs *lib.BlobStore, reg repo.IRegistry, order releasesap
 			if err != nil {
 				return "", nil, err
 			}
-			_, err = fmt.Fprintf(&buf, "---\n# Source: %s - %s@%s\n", f1.ChartRef.URL, f1.ChartRef.Name, f1.Version)
+			_, err = fmt.Fprintf(&buf, "---\n# Source: %s - %s@%s\n", f1.ChartSourceRef.SourceRef.Name, f1.ChartSourceRef.Name, f1.Version)
 			if err != nil {
 				return "", nil, err
 			}
@@ -137,20 +138,15 @@ func LoadResourceEditorModel(kc client.Client, reg repo.IRegistry, opts releases
 	if !ok {
 		return nil, fmt.Errorf("failed to load resource editor for %+v", opts.Resource)
 	}
-	chartRef := releasesapi.ChartRepoRef{
-		URL:     helmRepositories[ed.Spec.UI.Editor.SourceRef.Name],
-		Name:    ed.Spec.UI.Editor.Name,
-		Version: ed.Spec.UI.Editor.Version,
-	}
+	return loadEditorModel(kc, reg, *ed.Spec.UI.Editor, opts)
+}
+
+func LoadEditorModel(kc client.Client, reg repo.IRegistry, chartRef releasesapi.ChartSourceRef, opts releasesapi.ModelMetadata) (*releasesapi.EditorTemplate, error) {
 	return loadEditorModel(kc, reg, chartRef, opts)
 }
 
-func LoadEditorModel(kc client.Client, reg repo.IRegistry, chartRef releasesapi.ChartRepoRef, opts releasesapi.ModelMetadata) (*releasesapi.EditorTemplate, error) {
-	return loadEditorModel(kc, reg, chartRef, opts)
-}
-
-func loadEditorModel(kc client.Client, reg repo.IRegistry, chartRef releasesapi.ChartRepoRef, opts releasesapi.ModelMetadata) (*releasesapi.EditorTemplate, error) {
-	chrt, err := reg.GetChart(chartRef.URL, chartRef.Name, chartRef.Version)
+func loadEditorModel(kc client.Client, reg repo.IRegistry, chartRef releasesapi.ChartSourceRef, opts releasesapi.ModelMetadata) (*releasesapi.EditorTemplate, error) {
+	chrt, err := reg.GetChart(chartRef)
 	if err != nil {
 		return nil, err
 	}
@@ -341,21 +337,10 @@ func GenerateResourceEditorModel(kc client.Client, reg repo.IRegistry, opts map[
 		return nil, fmt.Errorf("failed to load resource editor for %+v", spec.Resource)
 	}
 
-	optionsChartRef := releasesapi.ChartRepoRef{
-		URL:     helmRepositories[ed.Spec.UI.Options.SourceRef.Name],
-		Name:    ed.Spec.UI.Options.Name,
-		Version: ed.Spec.UI.Options.Version,
-	}
-	editorChartRef := releasesapi.ChartRepoRef{
-		URL:     helmRepositories[ed.Spec.UI.Editor.SourceRef.Name],
-		Name:    ed.Spec.UI.Editor.Name,
-		Version: ed.Spec.UI.Editor.Version,
-	}
-
-	return generateEditorModel(kc, reg, optionsChartRef, editorChartRef, spec, opts)
+	return generateEditorModel(kc, reg, *ed.Spec.UI.Options, *ed.Spec.UI.Editor, spec, opts)
 }
 
-func GenerateEditorModel(kc client.Client, reg repo.IRegistry, chartRef releasesapi.ChartRepoRef, opts map[string]interface{}) (*unstructured.Unstructured, error) {
+func GenerateEditorModel(kc client.Client, reg repo.IRegistry, chartRef releasesapi.ChartSourceRef, opts map[string]interface{}) (*unstructured.Unstructured, error) {
 	var spec releasesapi.ModelMetadata
 	err := meta_util.DecodeObject(opts, &spec)
 	if err != nil {
@@ -367,8 +352,8 @@ func GenerateEditorModel(kc client.Client, reg repo.IRegistry, chartRef releases
 func generateEditorModel(
 	kc client.Client,
 	reg repo.IRegistry,
-	optionsChartRef releasesapi.ChartRepoRef,
-	editorChartRef releasesapi.ChartRepoRef,
+	optionsChartRef releasesapi.ChartSourceRef,
+	editorChartRef releasesapi.ChartSourceRef,
 	spec releasesapi.ModelMetadata,
 	opts map[string]interface{},
 ) (*unstructured.Unstructured, error) {
@@ -376,18 +361,9 @@ func generateEditorModel(
 	rsKeys := sets.NewString()
 
 	if usesForm {
-		ref := struct {
-			url     string
-			name    string
-			version string
-		}{
-			url:     editorChartRef.URL,
-			name:    editorChartRef.Name,
-			version: editorChartRef.Version,
-		}
-		chrt, err := reg.GetChart(ref.url, ref.name, ref.version)
+		chrt, err := reg.GetChart(editorChartRef)
 		if err != nil {
-			return nil, errors.Wrapf(err, "failed to load resource editor chart %+v", ref)
+			return nil, errors.Wrapf(err, "failed to load resource editor chart %+v", editorChartRef)
 		}
 		if data, ok := chrt.Chart.Metadata.Annotations["meta.x-helm.dev/editor"]; ok && data != "" {
 			// store reference rsKeys
@@ -397,21 +373,17 @@ func generateEditorModel(
 				}
 			}
 		} else {
-			return nil, fmt.Errorf("editor chart %+v is missing annotation key meta.x-helm.dev/editor", ref)
+			return nil, fmt.Errorf("editor chart %+v is missing annotation key meta.x-helm.dev/editor", editorChartRef)
 		}
 	}
 
 	f1 := &EditorModelGenerator{
-		Registry: reg,
-		ChartRef: releasesapi.ChartRef{
-			URL:  optionsChartRef.URL,
-			Name: optionsChartRef.Name,
-		},
-		Version:     optionsChartRef.Version,
-		ReleaseName: spec.Metadata.Release.Name,
-		Namespace:   spec.Metadata.Release.Namespace,
-		KubeVersion: "v1.22.0",
-		Values:      opts,
+		Registry:       reg,
+		ChartSourceRef: optionsChartRef,
+		ReleaseName:    spec.Metadata.Release.Name,
+		Namespace:      spec.Metadata.Release.Namespace,
+		KubeVersion:    "v1.22.0",
+		Values:         opts,
 	}
 	err := f1.Do(kc)
 	if err != nil {
@@ -459,15 +431,10 @@ func RenderResourceEditorChart(kc client.Client, reg repo.IRegistry, opts map[st
 		return "", nil, fmt.Errorf("failed to load resource editor for %+v", spec.Resource)
 	}
 
-	chartRef := releasesapi.ChartRepoRef{
-		URL:     helmRepositories[ed.Spec.UI.Editor.SourceRef.Name],
-		Name:    ed.Spec.UI.Editor.Name,
-		Version: ed.Spec.UI.Editor.Version,
-	}
-	return renderChart(kc, reg, chartRef, spec, opts)
+	return renderChart(kc, reg, *ed.Spec.UI.Editor, spec, opts)
 }
 
-func RenderChart(kc client.Client, reg repo.IRegistry, charRef releasesapi.ChartRepoRef, opts map[string]interface{}) (string, *releasesapi.ChartTemplate, error) {
+func RenderChart(kc client.Client, reg repo.IRegistry, charRef releasesapi.ChartSourceRef, opts map[string]interface{}) (string, *releasesapi.ChartTemplate, error) {
 	var spec releasesapi.ModelMetadata
 	err := meta_util.DecodeObject(opts, &spec)
 	if err != nil {
@@ -480,16 +447,13 @@ func RenderChart(kc client.Client, reg repo.IRegistry, charRef releasesapi.Chart
 func renderChart(
 	kc client.Client,
 	reg repo.IRegistry,
-	charRef releasesapi.ChartRepoRef,
+	charRef releasesapi.ChartSourceRef,
 	spec releasesapi.ModelMetadata,
 	opts map[string]interface{},
 ) (string, *releasesapi.ChartTemplate, error) {
 	f1 := &EditorModelGenerator{
-		Registry: reg,
-		ChartRef: releasesapi.ChartRef{
-			URL:  charRef.URL,
-			Name: charRef.Name,
-		},
+		Registry:       reg,
+		ChartSourceRef: charRef,
 		Version:        charRef.Version,
 		ReleaseName:    spec.Release.Name,
 		Namespace:      spec.Release.Namespace,
@@ -503,10 +467,9 @@ func renderChart(
 	}
 
 	tpl := releasesapi.ChartTemplate{
-		ChartRef:    f1.ChartRef,
-		Version:     f1.Version,
-		ReleaseName: f1.ReleaseName,
-		Namespace:   f1.Namespace,
+		ChartSourceRef: f1.ChartSourceRef,
+		ReleaseName:    f1.ReleaseName,
+		Namespace:      f1.Namespace,
 	}
 
 	crds, manifest := f1.Result()
@@ -536,7 +499,8 @@ func renderChart(
 
 func CreateChartOrder(reg repo.IRegistry, opts releasesapi.ChartOrder) (*releasesapi.Order, error) {
 	// editor chart
-	chrt, err := reg.GetChart(opts.URL, opts.Name, opts.Version)
+	obj := opts.ChartSourceFlatRef.ToAPIObject()
+	chrt, err := reg.GetChart(obj)
 	if err != nil {
 		return nil, err
 	}
@@ -573,8 +537,8 @@ func CreateChartOrder(reg repo.IRegistry, opts releasesapi.ChartOrder) (*release
 				{
 					Chart: &releasesapi.ChartSelection{
 						ChartRef: releasesapi.ChartRef{
-							URL:  opts.URL,
-							Name: opts.Name,
+							Name:      opts.Name,
+							SourceRef: obj.SourceRef,
 						},
 						Version:     opts.Version,
 						ReleaseName: opts.ReleaseName,

@@ -33,7 +33,6 @@ import (
 	"k8s.io/client-go/util/homedir"
 	kmapi "kmodules.xyz/client-go/api/v1"
 	rsapi "kmodules.xyz/resource-metadata/apis/meta/v1alpha1"
-	"kmodules.xyz/resource-metadata/apis/shared"
 	uiapi "kmodules.xyz/resource-metadata/apis/ui/v1alpha1"
 	"kmodules.xyz/resource-metadata/hub"
 	"kmodules.xyz/resource-metadata/hub/resourceeditors"
@@ -307,12 +306,12 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 		if ed.Spec.UI == nil {
 			ed.Spec.UI = &uiapi.UIParameters{}
 		}
-		ed.Spec.UI.Editor = &shared.ChartRepoRef{
+		ed.Spec.UI.Editor = &releasesapi.ChartSourceRef{
 			Name:    chartName,
 			Version: "v0.4.11",
 			SourceRef: kmapi.TypedObjectReference{
-				APIGroup:  "source.toolkit.fluxcd.io",
-				Kind:      "HelmRepository",
+				APIGroup:  releasesapi.SourceGroupHelmRepository,
+				Kind:      releasesapi.SourceKindHelmRepository,
 				Namespace: "",
 				Name:      "bytebuilders-ui",
 			},

@@ -26,11 +26,10 @@ func ConvertChartTemplates(tpls []releasesapi.ChartTemplate, format meta_util.Da
 
 	for _, tpl := range tpls {
 		entry := releasesapi.ChartTemplateOutput{
-			ChartRef:    tpl.ChartRef,
-			Version:     tpl.Version,
-			ReleaseName: tpl.ReleaseName,
-			Namespace:   tpl.Namespace,
-			Manifest:    tpl.Manifest,
+			ChartSourceRef: tpl.ChartSourceRef,
+			ReleaseName:    tpl.ReleaseName,
+			Namespace:      tpl.Namespace,
+			Manifest:       tpl.Manifest,
 		}
 
 		for _, crd := range tpl.CRDs {

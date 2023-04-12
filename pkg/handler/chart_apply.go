@@ -76,24 +76,15 @@ func ApplyResourceEditor(f cmdutil.Factory, reg repo.IRegistry, model map[string
 		}
 		ed.Spec.UI.Editor.SourceRef.Namespace = apisvc.Spec.Service.Namespace
 	}
-	chartURL, err := reg.Register(ed.Spec.UI.Editor.SourceRef)
-	if err != nil {
-		return nil, errors.Wrapf(err, "failed to register chart %+v", ed.Spec.UI.Editor)
-	}
 
-	chartRef := releasesapi.ChartRepoRef{
-		URL:     chartURL,
-		Name:    ed.Spec.UI.Editor.Name,
-		Version: ed.Spec.UI.Editor.Version,
-	}
+	return applyResource(f, reg, *ed.Spec.UI.Editor, model, skipCRds, log...)
+}
+
+func ApplyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef releasesapi.ChartSourceRef, model map[string]interface{}, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
 	return applyResource(f, reg, chartRef, model, skipCRds, log...)
 }
 
-func ApplyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef releasesapi.ChartRepoRef, model map[string]interface{}, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
-	return applyResource(f, reg, chartRef, model, skipCRds, log...)
-}
-
-func applyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef releasesapi.ChartRepoRef, model map[string]interface{}, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
+func applyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef releasesapi.ChartSourceRef, model map[string]interface{}, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
 	var tm releasesapi.ModelMetadata
 	err := meta_util.DecodeObject(model, &tm)
 	if err != nil {
@@ -113,9 +104,7 @@ func applyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef releasesapi.C
 	deployer.WithRegistry(reg)
 
 	var opts actionx.DeployOptions
-	opts.ChartURL = chartRef.URL
-	opts.ChartName = chartRef.Name
-	opts.Version = chartRef.Version
+	opts.ChartSourceFlatRef.FromAPIObject(chartRef)
 
 	var vals map[string]interface{}
 	if _, ok := model["patch"]; ok {

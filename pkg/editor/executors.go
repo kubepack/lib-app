@@ -49,9 +49,8 @@ import (
 )
 
 type TemplateRenderer struct {
-	Registry    repo.IRegistry
-	ChartRef    releasesapi.ChartRef
-	Version     string
+	Registry repo.IRegistry
+	releasesapi.ChartSourceRef
 	ReleaseName string
 	Namespace   string
 	KubeVersion string
@@ -80,7 +79,7 @@ func (x *TemplateRenderer) Do() error {
 	dirCRD := blob.PrefixedBucket(bucket, x.UID+"/crds/")
 	defer dirCRD.Close()
 
-	chrt, err := x.Registry.GetChart(x.ChartRef.URL, x.ChartRef.Name, x.Version)
+	chrt, err := x.Registry.GetChart(x.ChartSourceRef)
 	if err != nil {
 		return err
 	}
@@ -283,8 +282,8 @@ func (x *TemplateRenderer) Result() (crds []releasesapi.BucketFile, manifest *re
 }
 
 type EditorModelGenerator struct {
-	Registry    repo.IRegistry
-	ChartRef    releasesapi.ChartRef
+	Registry repo.IRegistry
+	releasesapi.ChartSourceRef
 	Version     string
 	ReleaseName string
 	Namespace   string
@@ -300,7 +299,7 @@ type EditorModelGenerator struct {
 }
 
 func (x *EditorModelGenerator) Do(kc client.Client) error {
-	chrt, err := x.Registry.GetChart(x.ChartRef.URL, x.ChartRef.Name, x.Version)
+	chrt, err := x.Registry.GetChart(x.ChartSourceRef)
 	if err != nil {
 		return err
 	}
@@ -323,7 +322,7 @@ func (x *EditorModelGenerator) Do(kc client.Client) error {
 	}
 
 	if chrt.Metadata.Deprecated {
-		klog.Warningf("WARNING: chart url=%s,name=%s,version=%s is deprecated", x.ChartRef.URL, x.ChartRef.Name, x.Version)
+		klog.Warningf("WARNING: chart %+v is deprecated", x.ChartSourceRef)
 	}
 
 	if req := chrt.Metadata.Dependencies; req != nil {
@@ -386,7 +385,7 @@ func (x *EditorModelGenerator) Do(kc client.Client) error {
 					return err
 				}
 			} else {
-				return fmt.Errorf("chart url=%s,name=%s,version=%s is missing annotation key meta.x-helm.dev/editor", x.ChartRef.URL, x.ChartRef.Name, x.Version)
+				return fmt.Errorf("chart %+v is missing annotation key meta.x-helm.dev/editor", x.ChartSourceRef)
 			}
 		}
 	}

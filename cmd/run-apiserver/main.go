@@ -74,7 +74,7 @@ func main() {
 
 	// PUBLIC
 	m.Route("/bundleview", func(m chi.Router) {
-		m.With(binding.JSON(releasesapi.ChartRepoRef{})).Get("/", binding.HandlerFunc(GetBundleViewForChart))
+		m.With(binding.JSON(releasesapi.ChartSourceFlatRef{})).Get("/", binding.HandlerFunc(GetBundleViewForChart))
 
 		// Generate Order for a BundleView
 		m.With(binding.JSON(releasesapi.BundleView{})).Post("/orders", binding.HandlerFunc(CreateOrderForBundle))
@@ -82,16 +82,16 @@ func main() {
 
 	// PUBLIC
 	m.Route("/packageview", func(m chi.Router) {
-		m.With(binding.JSON(releasesapi.ChartRepoRef{})).Get("/", binding.HandlerFunc(GetPackageViewForChart))
+		m.With(binding.JSON(releasesapi.ChartSourceFlatRef{})).Get("/", binding.HandlerFunc(GetPackageViewForChart))
 
 		// PUBLIC
-		m.With(binding.JSON(releasesapi.ChartRepoRef{})).Get("/files", binding.HandlerFunc(ListPackageFiles))
+		m.With(binding.JSON(releasesapi.ChartSourceFlatRef{})).Get("/files", binding.HandlerFunc(ListPackageFiles))
 
 		// PUBLIC
-		m.With(binding.JSON(releasesapi.ChartRepoRef{})).Get("/files/*", binding.HandlerFunc(GetPackageFile))
+		m.With(binding.JSON(releasesapi.ChartSourceFlatRef{})).Get("/files/*", binding.HandlerFunc(GetPackageFile))
 
 		// PUBLIC
-		m.With(binding.JSON(chartsapi.ChartPresetRef{})).Get("/values", binding.HandlerFunc(GetValuesFile))
+		m.With(binding.JSON(chartsapi.ChartPresetFlatRef{})).Get("/values", binding.HandlerFunc(GetValuesFile))
 
 		// Generate Order for a Editor PackageView / Chart
 		m.With(binding.JSON(releasesapi.ChartOrder{})).Post("/orders", binding.HandlerFunc(CreateOrderForPackage))
@@ -611,7 +611,7 @@ func ApplyResource(f cmdutil.Factory) func(ctx httpw.ResponseWriter, model map[s
 			ctx.Error(http.StatusInternalServerError, "ApplyResourceEditor", err.Error())
 			return
 		}
-		reg := repo.NewCachedRegistry(kc, repo.DefaultDiskCache())
+		reg := repo.NewRegistry(kc, repo.DefaultDiskCache())
 		rls, err := handler.ApplyResourceEditor(f, reg, model, !ctx.R().QueryBool("installCRDs"))
 		if err != nil {
 			ctx.Error(http.StatusInternalServerError, "ApplyResourceEditor", err.Error())
@@ -827,8 +827,8 @@ func GenerateEditorModelFromOptions(ctx httpw.ResponseWriter, opts map[string]in
 	ctx.JSON(http.StatusOK, model)
 }
 
-func GetPackageFile(ctx httpw.ResponseWriter, params releasesapi.ChartRepoRef) {
-	chrt, err := HelmRegistry.GetChart(params.URL, params.Name, params.Version)
+func GetPackageFile(ctx httpw.ResponseWriter, params releasesapi.ChartSourceFlatRef) {
+	chrt, err := HelmRegistry.GetChart(params.ToAPIObject())
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "GetChart", err.Error())
 		return
@@ -852,7 +852,7 @@ func GetPackageFile(ctx httpw.ResponseWriter, params releasesapi.ChartRepoRef) {
 	ctx.WriteHeader(http.StatusNotFound)
 }
 
-func GetValuesFile(ctx httpw.ResponseWriter, params chartsapi.ChartPresetRef) {
+func GetValuesFile(ctx httpw.ResponseWriter, params chartsapi.ChartPresetFlatRef) {
 	cfg, err := config.GetConfig()
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, err.Error())
@@ -864,7 +864,7 @@ func GetValuesFile(ctx httpw.ResponseWriter, params chartsapi.ChartPresetRef) {
 		return
 	}
 
-	chrt, err := HelmRegistry.GetChart(params.URL, params.Name, params.Version)
+	chrt, err := HelmRegistry.GetChart(params.ToAPIObject())
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "GetChart", err.Error())
 		return
@@ -895,10 +895,10 @@ func GetValuesFile(ctx httpw.ResponseWriter, params chartsapi.ChartPresetRef) {
 	_, _ = ctx.Write(data)
 }
 
-func ListPackageFiles(ctx httpw.ResponseWriter, params releasesapi.ChartRepoRef) {
+func ListPackageFiles(ctx httpw.ResponseWriter, params releasesapi.ChartSourceFlatRef) {
 	// TODO: verify params
 
-	chrt, err := HelmRegistry.GetChart(params.URL, params.Name, params.Version)
+	chrt, err := HelmRegistry.GetChart(params.ToAPIObject())
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "GetChart", err.Error())
 		return
@@ -940,16 +940,16 @@ func CreateOrderForPackage(ctx httpw.ResponseWriter, params releasesapi.ChartOrd
 	ctx.JSON(http.StatusOK, order)
 }
 
-func GetPackageViewForChart(ctx httpw.ResponseWriter, params releasesapi.ChartRepoRef) {
+func GetPackageViewForChart(ctx httpw.ResponseWriter, params releasesapi.ChartSourceFlatRef) {
 	// TODO: verify params
 
-	chrt, err := HelmRegistry.GetChart(params.URL, params.Name, params.Version)
+	chrt, err := HelmRegistry.GetChart(params.ToAPIObject())
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "GetChart", err.Error())
 		return
 	}
 
-	pv, err := lib.CreatePackageView(params.URL, chrt.Chart)
+	pv, err := lib.CreatePackageView(params.ToAPIObject().SourceRef, chrt.Chart)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "CreatePackageView", err.Error())
 		return
@@ -985,10 +985,10 @@ func CreateOrderForBundle(ctx httpw.ResponseWriter, params releasesapi.BundleVie
 	ctx.JSON(http.StatusOK, order)
 }
 
-func GetBundleViewForChart(ctx httpw.ResponseWriter, params releasesapi.ChartRepoRef) {
+func GetBundleViewForChart(ctx httpw.ResponseWriter, params releasesapi.ChartSourceFlatRef) {
 	// TODO: verify params
 
-	bv, err := lib.CreateBundleViewForChart(HelmRegistry, &params)
+	bv, err := lib.CreateBundleViewForChart(HelmRegistry, params.ToAPIObject())
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "CreateBundleViewForChart", err.Error())
 		return
