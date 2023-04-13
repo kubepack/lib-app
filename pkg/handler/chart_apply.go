@@ -77,6 +77,9 @@ func ApplyResourceEditor(f cmdutil.Factory, reg repo.IRegistry, model map[string
 		ed.Spec.UI.Editor.SourceRef.Namespace = apisvc.Spec.Service.Namespace
 	}
 
+	if ed.Spec.UI.Editor == nil {
+		return nil, fmt.Errorf("missing editor chart for %+v", ed.Spec.Resource.GroupVersionKind())
+	}
 	return applyResource(f, reg, *ed.Spec.UI.Editor, model, skipCRds, log...)
 }
 

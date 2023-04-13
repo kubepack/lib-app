@@ -19,7 +19,6 @@ package main
 import (
 	"fmt"
 	"path/filepath"
-	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 
 	"kubepack.dev/lib-helm/pkg/action"
 	actionx "kubepack.dev/lib-helm/pkg/action"
@@ -35,6 +34,7 @@ import (
 	"k8s.io/klog/v2"
 	clientcmdutil "kmodules.xyz/client-go/tools/clientcmd"
 	chartsapi "x-helm.dev/apimachinery/apis/charts/v1alpha1"
+	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 )
 
 var HelmRegistry = repo.NewDiskCacheRegistry()

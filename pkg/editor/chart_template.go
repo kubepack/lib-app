@@ -138,6 +138,10 @@ func LoadResourceEditorModel(kc client.Client, reg repo.IRegistry, opts releases
 	if !ok {
 		return nil, fmt.Errorf("failed to load resource editor for %+v", opts.Resource)
 	}
+
+	if ed.Spec.UI.Editor == nil {
+		return nil, fmt.Errorf("missing editor chart for %+v", ed.Spec.Resource.GroupVersionKind())
+	}
 	return loadEditorModel(kc, reg, *ed.Spec.UI.Editor, opts)
 }
 
@@ -337,6 +341,12 @@ func GenerateResourceEditorModel(kc client.Client, reg repo.IRegistry, opts map[
 		return nil, fmt.Errorf("failed to load resource editor for %+v", spec.Resource)
 	}
 
+	if ed.Spec.UI.Options == nil {
+		return nil, fmt.Errorf("missing options chart for %+v", ed.Spec.Resource.GroupVersionKind())
+	}
+	if ed.Spec.UI.Editor == nil {
+		return nil, fmt.Errorf("missing editor chart for %+v", ed.Spec.Resource.GroupVersionKind())
+	}
 	return generateEditorModel(kc, reg, *ed.Spec.UI.Options, *ed.Spec.UI.Editor, spec, opts)
 }
 
@@ -431,6 +441,9 @@ func RenderResourceEditorChart(kc client.Client, reg repo.IRegistry, opts map[st
 		return "", nil, fmt.Errorf("failed to load resource editor for %+v", spec.Resource)
 	}
 
+	if ed.Spec.UI.Editor == nil {
+		return "", nil, fmt.Errorf("missing editor chart for %+v", ed.Spec.Resource.GroupVersionKind())
+	}
 	return renderChart(kc, reg, *ed.Spec.UI.Editor, spec, opts)
 }
 
