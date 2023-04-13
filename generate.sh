@@ -120,6 +120,14 @@ go run cmd/fuse-chart/*.go \
     --resource.name=pgbouncers
 
 go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/kafka/custom \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --sample-name=kafka \
+    --resource.group=kubedb.com \
+    --resource.version=v1alpha2 \
+    --resource.name=kafkas
+
+go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/featuresets/opscenter-core \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --sample-name=opscenter-core \
