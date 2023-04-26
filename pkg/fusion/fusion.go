@@ -539,8 +539,8 @@ func newChartMeta(kind string, gvrData, gkData []byte) chart.Metadata {
 		Name:        editorChartName,
 		Home:        "https://byte.builders",
 		Sources:     nil,
-		Version:     "v0.4.11",
-		AppVersion:  "v0.4.11",
+		Version:     "v0.4.14",
+		AppVersion:  "v0.4.14",
 		Description: fmt.Sprintf("%s Editor", kind),
 		Keywords:    []string{"appscode"},
 		Maintainers: []*chart.Maintainer{
@@ -554,7 +554,7 @@ func newChartMeta(kind string, gvrData, gkData []byte) chart.Metadata {
 		Condition:   "",
 		Deprecated:  false,
 		KubeVersion: ">= 1.14.0",
-		Type:        "appRelease",
+		Type:        "application",
 		Annotations: map[string]string{
 			"meta.x-helm.dev/editor":    string(gvrData),
 			"meta.x-helm.dev/resources": string(gkData),

@@ -308,7 +308,7 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 		}
 		ed.Spec.UI.Editor = &releasesapi.ChartSourceRef{
 			Name:    chartName,
-			Version: "v0.4.11",
+			Version: "v0.4.14",
 			SourceRef: kmapi.TypedObjectReference{
 				APIGroup:  releasesapi.SourceGroupHelmRepository,
 				Kind:      releasesapi.SourceKindHelmRepository,
@@ -337,8 +337,8 @@ func GenerateChartMetadata(chartDir, chartName string, rd *rsapi.ResourceDescrip
 		Name:        chartName,
 		Home:        "https://byte.builders",
 		Sources:     nil,
-		Version:     "v0.4.11",
-		AppVersion:  "v0.4.11",
+		Version:     "v0.4.14",
+		AppVersion:  "v0.4.14",
 		Description: fmt.Sprintf("%s Editor", rd.Spec.Resource.Kind),
 		Keywords:    []string{"appscode"},
 		Maintainers: []*chart.Maintainer{
@@ -352,7 +352,7 @@ func GenerateChartMetadata(chartDir, chartName string, rd *rsapi.ResourceDescrip
 		Condition:   "",
 		Deprecated:  false,
 		KubeVersion: ">= 1.14.0",
-		Type:        "appRelease",
+		Type:        "application",
 		Annotations: map[string]string{
 			"meta.x-helm.dev/editor": string(gvrData),
 		},

@@ -17,7 +17,7 @@
 go run cmd/gen-simple-editor/main.go --all --skipExisting=false
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/mongodb/managed \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/mongodb/managed \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --form-templates=alert.yaml \
     --sample-name=mongodb \
@@ -26,7 +26,7 @@ go run cmd/fuse-chart/*.go \
     --resource.name=mongodbs
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/postgres/cluster/prometheus.io/backupconfiguration/stash/tls/custom-auth/custom-auth-mode/custom-config/custom-pg-coordinator/custom-uid \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/postgres/cluster/prometheus.io/backupconfiguration/stash/tls/custom-auth/custom-auth-mode/custom-config/custom-pg-coordinator/custom-uid \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --form-templates=alert.yaml \
     --sample-name=postgres \
@@ -35,7 +35,7 @@ go run cmd/fuse-chart/*.go \
     --resource.name=postgreses
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/mariadb/cluster/prometheus.io/backupconfiguration/stash/tls/custom-auth/config-file/customize-pod-template \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/mariadb/cluster/prometheus.io/backupconfiguration/stash/tls/custom-auth/config-file/customize-pod-template \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --form-templates=alert.yaml \
     --sample-name=mariadb \
@@ -44,7 +44,7 @@ go run cmd/fuse-chart/*.go \
     --resource.name=mariadbs
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/elasticsearch/custom \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/elasticsearch/custom \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --form-templates=alert.yaml \
     --sample-name=elasticsearch \
@@ -53,7 +53,7 @@ go run cmd/fuse-chart/*.go \
     --resource.name=elasticsearches
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/mysql/group-replication/prometheus.io/backupconfiguration/stash/tls/custom-auth/config-file/customize-pod-template \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/mysql/group-replication/prometheus.io/backupconfiguration/stash/tls/custom-auth/config-file/customize-pod-template \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --form-templates=alert.yaml \
     --sample-name=mysql \
@@ -62,7 +62,7 @@ go run cmd/fuse-chart/*.go \
     --resource.name=mysqls
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/redis/sentinel/prometheus.io/backupconfiguration/stash/tls/custom-auth/custom-config \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/redis/sentinel/prometheus.io/backupconfiguration/stash/tls/custom-auth/custom-config \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --form-templates=alert.yaml \
     --sample-name=redis \
@@ -71,7 +71,7 @@ go run cmd/fuse-chart/*.go \
     --resource.name=redises
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/redissentinel/prometheus.io/tls/custom-auth \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/redissentinel/prometheus.io/tls/custom-auth \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --sample-name=redissentinel \
     --resource.group=kubedb.com \
@@ -79,7 +79,7 @@ go run cmd/fuse-chart/*.go \
     --resource.name=redissentinels
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/kubevault/vaultserver/custom \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/kubevault/vaultserver/custom \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --sample-name=vault \
     --resource.group=kubevault.com \
@@ -87,7 +87,7 @@ go run cmd/fuse-chart/*.go \
     --resource.name=vaultservers
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/repository/custom \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/repository/custom \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --sample-name=s3 \
     --resource.group=stash.appscode.com \
@@ -95,7 +95,7 @@ go run cmd/fuse-chart/*.go \
     --resource.name=repositories
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/restoresession/custom \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/restoresession/custom \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --sample-name=restore-app \
     --resource.group=stash.appscode.com \
@@ -103,7 +103,7 @@ go run cmd/fuse-chart/*.go \
     --resource.name=restoresessions
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/proxysql/custom \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/proxysql/custom \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --form-templates=alert.yaml \
     --sample-name=proxysql \
@@ -112,7 +112,7 @@ go run cmd/fuse-chart/*.go \
     --resource.name=proxysqls
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/pgbouncer/custom \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/pgbouncer/custom \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --sample-name=pgbouncer \
     --resource.group=kubedb.com \
@@ -120,7 +120,7 @@ go run cmd/fuse-chart/*.go \
     --resource.name=pgbouncers
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/kafka/custom \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/kafka/custom \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --sample-name=kafka \
     --resource.group=kubedb.com \
@@ -128,7 +128,7 @@ go run cmd/fuse-chart/*.go \
     --resource.name=kafkas
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/featuresets/opscenter-core \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-core \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --sample-name=opscenter-core \
     --instance-name=opscenter-core \
@@ -138,7 +138,7 @@ go run cmd/fuse-chart/*.go \
     --gen-crd=false
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/featuresets/opscenter-monitoring \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-monitoring \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --sample-name=opscenter-monitoring \
     --instance-name=opscenter-monitoring \
@@ -148,7 +148,7 @@ go run cmd/fuse-chart/*.go \
     --gen-crd=false
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/featuresets/opscenter-datastore \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-datastore \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --sample-name=opscenter-datastore \
     --instance-name=opscenter-datastore \
@@ -158,7 +158,7 @@ go run cmd/fuse-chart/*.go \
     --gen-crd=false
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/featuresets/opscenter-backup \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-backup \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --sample-name=opscenter-backup \
     --instance-name=opscenter-backup \
@@ -168,7 +168,7 @@ go run cmd/fuse-chart/*.go \
     --gen-crd=false
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/github.com/appscode/ui-samples/featuresets/opscenter-security \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-security \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --sample-name=opscenter-security \
     --instance-name=opscenter-security \
