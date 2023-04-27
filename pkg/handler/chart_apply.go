@@ -36,6 +36,7 @@ import (
 	cmdutil "k8s.io/kubectl/pkg/cmd/util"
 	meta_util "kmodules.xyz/client-go/meta"
 	"kmodules.xyz/resource-metadata/hub/resourceeditors"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 )
 
@@ -63,24 +64,26 @@ func ApplyResourceEditor(f cmdutil.Factory, reg repo.IRegistry, model map[string
 
 	deployer.WithRegistry(reg)
 
-	if ed.Spec.UI.Editor.SourceRef.Namespace == "" {
-		// k get apiservices v1alpha1.meta.k8s.appscode.com -o yaml
-		var apisvc apiregistrationapi.APIService
-		apisvcName := "v1alpha1.meta.k8s.appscode.com"
-		err := kc.Get(context.TODO(), types.NamespacedName{Name: apisvcName}, &apisvc)
-		if err != nil {
-			return nil, errors.Wrapf(err, "failed to detect namespace for HelmRepository %s", ed.Spec.UI.Editor.SourceRef.Name)
-		}
-		if apisvc.Spec.Service == nil {
-			return nil, errors.Wrapf(err, "failed to detect namespace for HelmRepository %s from Local APIService %s", ed.Spec.UI.Editor.SourceRef.Name, apisvcName)
-		}
-		ed.Spec.UI.Editor.SourceRef.Namespace = apisvc.Spec.Service.Namespace
-	}
-
 	if ed.Spec.UI.Editor == nil {
 		return nil, fmt.Errorf("missing editor chart for %+v", ed.Spec.Resource.GroupVersionKind())
 	}
+
 	return applyResource(f, reg, *ed.Spec.UI.Editor, model, skipCRds, log...)
+}
+
+func getSourceRefNamespace(kc client.Client, sourceName string) (string, error) {
+	// k get apiservices v1alpha1.meta.k8s.appscode.com -o yaml
+	var apisvc apiregistrationapi.APIService
+	apisvcName := "v1alpha1.meta.k8s.appscode.com"
+	err := kc.Get(context.TODO(), types.NamespacedName{Name: apisvcName}, &apisvc)
+	if err != nil {
+		return "", errors.Wrapf(err, "failed to detect namespace for HelmRepository %s", sourceName)
+	}
+	if apisvc.Spec.Service == nil {
+		return "", errors.Wrapf(err, "failed to detect namespace for HelmRepository %s from Local APIService %s", sourceName, apisvcName)
+	}
+
+	return apisvc.Spec.Service.Namespace, nil
 }
 
 func ApplyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef releasesapi.ChartSourceRef, model map[string]interface{}, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
@@ -107,6 +110,15 @@ func applyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef releasesapi.C
 	deployer.WithRegistry(reg)
 
 	var opts actionx.DeployOptions
+
+	if chartRef.SourceRef.Namespace == "" {
+		ns, err := getSourceRefNamespace(kc, chartRef.SourceRef.Name)
+		if err != nil {
+			return nil, err
+		}
+
+		chartRef.SourceRef.Namespace = ns
+	}
 	opts.ChartSourceFlatRef.FromAPIObject(chartRef)
 
 	var vals map[string]interface{}
