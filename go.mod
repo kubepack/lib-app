@@ -34,8 +34,8 @@ require (
 	kmodules.xyz/resource-metadata v0.17.1
 	kmodules.xyz/sets v0.24.0
 	kubepack.dev/chart-doc-gen v0.4.7
-	kubepack.dev/kubepack v0.6.3
-	kubepack.dev/lib-helm v0.6.4-0.20230426095146-48fdda31d07f
+	kubepack.dev/kubepack v0.6.4
+	kubepack.dev/lib-helm v0.6.4
 	sigs.k8s.io/controller-runtime v0.13.1
 	sigs.k8s.io/yaml v1.3.0
 	x-helm.dev/apimachinery v0.0.8
