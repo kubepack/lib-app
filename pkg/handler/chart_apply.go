@@ -17,7 +17,6 @@ limitations under the License.
 package handler
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 
@@ -31,12 +30,9 @@ import (
 	"github.com/pkg/errors"
 	ha "helm.sh/helm/v3/pkg/action"
 	"helm.sh/helm/v3/pkg/release"
-	"k8s.io/apimachinery/pkg/types"
-	apiregistrationapi "k8s.io/kube-aggregator/pkg/apis/apiregistration/v1"
 	cmdutil "k8s.io/kubectl/pkg/cmd/util"
 	meta_util "kmodules.xyz/client-go/meta"
 	"kmodules.xyz/resource-metadata/hub/resourceeditors"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 )
 
@@ -71,21 +67,6 @@ func ApplyResourceEditor(f cmdutil.Factory, reg repo.IRegistry, model map[string
 	return applyResource(f, reg, *ed.Spec.UI.Editor, model, skipCRds, log...)
 }
 
-func getSourceRefNamespace(kc client.Client, sourceName string) (string, error) {
-	// k get apiservices v1alpha1.meta.k8s.appscode.com -o yaml
-	var apisvc apiregistrationapi.APIService
-	apisvcName := "v1alpha1.meta.k8s.appscode.com"
-	err := kc.Get(context.TODO(), types.NamespacedName{Name: apisvcName}, &apisvc)
-	if err != nil {
-		return "", errors.Wrapf(err, "failed to detect namespace for HelmRepository %s", sourceName)
-	}
-	if apisvc.Spec.Service == nil {
-		return "", errors.Wrapf(err, "failed to detect namespace for HelmRepository %s from Local APIService %s", sourceName, apisvcName)
-	}
-
-	return apisvc.Spec.Service.Namespace, nil
-}
-
 func ApplyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef releasesapi.ChartSourceRef, model map[string]interface{}, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
 	return applyResource(f, reg, chartRef, model, skipCRds, log...)
 }
@@ -112,11 +93,10 @@ func applyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef releasesapi.C
 	var opts actionx.DeployOptions
 
 	if chartRef.SourceRef.Namespace == "" {
-		ns, err := getSourceRefNamespace(kc, chartRef.SourceRef.Name)
+		ns, err := editor.DefaultSourceRefNamespace(kc, chartRef.SourceRef.Name)
 		if err != nil {
 			return nil, err
 		}
-
 		chartRef.SourceRef.Namespace = ns
 	}
 	opts.ChartSourceFlatRef.FromAPIObject(chartRef)

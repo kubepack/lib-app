@@ -37,7 +37,6 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/sets"
-	apiregistrationapi "k8s.io/kube-aggregator/pkg/apis/apiregistration/v1"
 	"kmodules.xyz/client-go/discovery"
 	meta_util "kmodules.xyz/client-go/meta"
 	"kmodules.xyz/client-go/tools/parser"
@@ -152,11 +151,10 @@ func LoadEditorModel(kc client.Client, reg repo.IRegistry, chartRef releasesapi.
 
 func loadEditorModel(kc client.Client, reg repo.IRegistry, chartRef releasesapi.ChartSourceRef, opts releasesapi.ModelMetadata) (*releasesapi.EditorTemplate, error) {
 	if chartRef.SourceRef.Namespace == "" {
-		ns, err := getSourceRefNamespace(kc, chartRef.SourceRef.Name)
+		ns, err := DefaultSourceRefNamespace(kc, chartRef.SourceRef.Name)
 		if err != nil {
 			return nil, err
 		}
-
 		chartRef.SourceRef.Namespace = ns
 	}
 
@@ -378,11 +376,10 @@ func generateEditorModel(
 	opts map[string]interface{},
 ) (*unstructured.Unstructured, error) {
 	if optionsChartRef.SourceRef.Namespace == "" {
-		ns, err := getSourceRefNamespace(kc, optionsChartRef.SourceRef.Name)
+		ns, err := DefaultSourceRefNamespace(kc, optionsChartRef.SourceRef.Name)
 		if err != nil {
 			return nil, err
 		}
-
 		optionsChartRef.SourceRef.Namespace = ns
 	}
 	if editorChartRef.SourceRef.Namespace == "" {
@@ -451,21 +448,6 @@ func generateEditorModel(
 	return model, err
 }
 
-func getSourceRefNamespace(kc client.Client, sourceName string) (string, error) {
-	// k get apiservices v1alpha1.meta.k8s.appscode.com -o yaml
-	var apisvc apiregistrationapi.APIService
-	apisvcName := "v1alpha1.meta.k8s.appscode.com"
-	err := kc.Get(context.TODO(), types.NamespacedName{Name: apisvcName}, &apisvc)
-	if err != nil {
-		return "", errors.Wrapf(err, "failed to detect namespace for HelmRepository %s", sourceName)
-	}
-	if apisvc.Spec.Service == nil {
-		return "", errors.Wrapf(err, "failed to detect namespace for HelmRepository %s from Local APIService %s", sourceName, apisvcName)
-	}
-
-	return apisvc.Spec.Service.Namespace, nil
-}
-
 func RenderResourceEditorChart(kc client.Client, reg repo.IRegistry, opts map[string]interface{}) (string, *releasesapi.ChartTemplate, error) {
 	var spec releasesapi.ModelMetadata
 	err := meta_util.DecodeObject(opts, &spec)
@@ -502,11 +484,10 @@ func renderChart(
 	opts map[string]interface{},
 ) (string, *releasesapi.ChartTemplate, error) {
 	if chartRef.SourceRef.Namespace == "" {
-		ns, err := getSourceRefNamespace(kc, chartRef.SourceRef.Name)
+		ns, err := DefaultSourceRefNamespace(kc, chartRef.SourceRef.Name)
 		if err != nil {
 			return "", nil, err
 		}
-
 		chartRef.SourceRef.Namespace = ns
 	}
 
