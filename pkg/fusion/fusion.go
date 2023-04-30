@@ -100,13 +100,14 @@ func NewCmdFuse() *cobra.Command {
 					return err
 				}
 			}
-			gkSet := ksets.NewMetaGroupKind()
+			gvkSet := ksets.NewMetaGroupVersionKind()
 
 			err = parser.ProcessPath(sampleDir, func(ri parser.ResourceInfo) error {
 				gvk := ri.Object.GetObjectKind().GroupVersionKind()
-				gkSet.Insert(metav1.GroupKind{
-					Group: gvk.Group,
-					Kind:  gvk.Kind,
+				gvkSet.Insert(metav1.GroupVersionKind{
+					Group:   gvk.Group,
+					Version: gvk.Version,
+					Kind:    gvk.Kind,
 				})
 
 				rsKey, err := editor.ResourceKey(ri.Object.GetAPIVersion(), ri.Object.GetKind(), sampleName, ri.Object.GetName())
@@ -266,21 +267,21 @@ func NewCmdFuse() *cobra.Command {
 					}
 
 					if content, ok := files[filename]; ok {
-						gks, _, err := parser.ExtractComponents([]byte(content))
+						gvks, _, err := parser.ExtractComponentGVKs([]byte(content))
 						if err != nil {
 							return err
 						}
-						for gk := range gks {
-							if gkSet.Has(gk) {
-								return fmt.Errorf("%s contains resource type %+v also found in sample yaml", filename, gk)
+						for gvk := range gvks {
+							if gvkSet.Has(gvk) {
+								return fmt.Errorf("%s contains resource type %+v also found in sample yaml", filename, gvk)
 							}
 						}
 					}
 				}
 			}
 
-			gks := gkSet.List()
-			err = GenerateChartMetadata(rd, gks)
+			gvks := gvkSet.List()
+			err = GenerateChartMetadata(rd, gvks)
 			if err != nil {
 				return err
 			}
@@ -444,7 +445,7 @@ func NewCmdFuse() *cobra.Command {
 	return cmd
 }
 
-func GenerateChartMetadata(rd *v1alpha1.ResourceDescriptor, gks []metav1.GroupKind) error {
+func GenerateChartMetadata(rd *v1alpha1.ResourceDescriptor, gvks []metav1.GroupVersionKind) error {
 	gvr := metav1.GroupVersionResource{
 		Group:    rd.Spec.Resource.Group,
 		Version:  rd.Spec.Resource.Version,
@@ -486,20 +487,20 @@ func GenerateChartMetadata(rd *v1alpha1.ResourceDescriptor, gks []metav1.GroupKi
 	//		},
 	//	}
 	//}
-	sort.Slice(gks, func(i, j int) bool {
-		if gks[i].Group == gks[j].Group {
-			return gks[i].Kind < gks[j].Kind
+	sort.Slice(gvks, func(i, j int) bool {
+		if gvks[i].Group == gvks[j].Group {
+			return gvks[i].Kind < gvks[j].Kind
 		}
-		return gks[i].Group < gks[j].Group
+		return gvks[i].Group < gvks[j].Group
 	})
 
-	gkData, err := yaml.Marshal(gks)
+	gvkData, err := yaml.Marshal(gvks)
 	if err != nil {
 		panic(err)
 	}
 
 	filename := filepath.Join(chartDir, editorChartName, "Chart.yaml")
-	chartMeta := newChartMeta(rd.Spec.Resource.Kind, gvrData, gkData)
+	chartMeta := newChartMeta(rd.Spec.Resource.Kind, gvrData, gvkData)
 	if _, err := os.Stat(filename); err == nil {
 		chartMeta, err = overwriteFromOldMeta(filename, chartMeta)
 		if err != nil {
@@ -534,7 +535,7 @@ func overwriteFromOldMeta(filename string, chartMeta chart.Metadata) (chart.Meta
 	return chartMeta, nil
 }
 
-func newChartMeta(kind string, gvrData, gkData []byte) chart.Metadata {
+func newChartMeta(kind string, gvrData, gvkData []byte) chart.Metadata {
 	return chart.Metadata{
 		Name:        editorChartName,
 		Home:        "https://byte.builders",
@@ -557,7 +558,7 @@ func newChartMeta(kind string, gvrData, gkData []byte) chart.Metadata {
 		Type:        "application",
 		Annotations: map[string]string{
 			"meta.x-helm.dev/editor":    string(gvrData),
-			"meta.x-helm.dev/resources": string(gkData),
+			"meta.x-helm.dev/resources": string(gvkData),
 		},
 	}
 }
