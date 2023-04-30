@@ -182,51 +182,17 @@ func EditorChartValueManifest(kc client.Client, app *driversapi.AppRelease, mt r
 	resourceMap := map[string]interface{}{}
 
 	// detect apiVersion from defaultValues in chart
-	gkToVersion := map[metav1.GroupKind]string{}
-	rsKeys := sets.NewString()
-	for rsKey, x := range chrt.Values["resources"].(map[string]interface{}) {
-		rsKeys.Insert(rsKey)
-		var tm metav1.TypeMeta
-
-		err = meta_util.DecodeObject(x.(map[string]interface{}), &tm)
-		if err != nil {
-			return nil, fmt.Errorf("failed to parse TypeMeta for rsKey %s in chart name=%s version=%s values", rsKey, chrt.Name(), chrt.Metadata.Version)
-		}
-		gv, err := schema.ParseGroupVersion(tm.APIVersion)
-		if err != nil {
-			return nil, err
-		}
-		gkToVersion[metav1.GroupKind{
-			Group: gv.Group,
-			Kind:  tm.Kind,
-		}] = gv.Version
-	}
+	rsKeys := sets.NewString(app.Spec.ResourceKeys...)
 
 	mapper := discovery.NewResourceMapper(kc.RESTMapper())
 	_, usesForm := chrt.Values["form"]
 
 	var resources []*unstructured.Unstructured
-	for _, gk := range app.Spec.ComponentGroupKinds {
-		version, ok := gkToVersion[gk]
-		if !ok {
-			if !usesForm {
-				return nil, fmt.Errorf("failed to detect version for GK %#v in chart name=%s version=%s values", gk, chrt.Name(), chrt.Metadata.Version)
-			} else {
-				mapping, err := kc.RESTMapper().RESTMapping(schema.GroupKind{
-					Group: gk.Group,
-					Kind:  gk.Kind,
-				})
-				if err != nil {
-					return nil, err
-				}
-				version = mapping.GroupVersionKind.Version
-			}
-		}
-
+	for _, gvk := range app.Spec.Components {
 		gvk := schema.GroupVersionKind{
-			Group:   gk.Group,
-			Version: version,
-			Kind:    gk.Kind,
+			Group:   gvk.Group,
+			Version: gvk.Version,
+			Kind:    gvk.Kind,
 		}
 		namespaced, err := mapper.IsGVKNamespaced(gvk)
 		if meta.IsNoMatchError(err) {
@@ -326,9 +292,8 @@ func EditorChartValueManifest(kc client.Client, app *driversapi.AppRelease, mt r
 	}
 	if usesForm {
 		// https://github.com/kubepack/lib-helm/commit/4279003342a502f328f3c9a6334f4ab5bfdf900d
-		if f, ok := app.Annotations["form.release.x-helm.dev/"+mt.Name]; ok {
-			var form map[string]interface{}
-			if err = json.Unmarshal([]byte(f), &form); err == nil {
+		if app.Spec.Release.Form != nil {
+			if form, err := runtime.DefaultUnstructuredConverter.ToUnstructured(app.Spec.Release.Form); err == nil {
 				tpl.Values.Object["form"] = form
 			}
 		}
