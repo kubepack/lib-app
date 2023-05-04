@@ -1,0 +1,56 @@
+apiVersion: kubedb.com/v1alpha2
+kind: MariaDB
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"kubedb.com/v1alpha2","kind":"MariaDB","metadata":{"annotations":{"meta.helm.sh/release-name":"mariadb-test","meta.helm.sh/release-namespace":"demo"},"creationTimestamp":"2023-05-04T15:36:09Z","generation":1,"labels":{"app.kubernetes.io/instance":"mariadb-test","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/name":"mariadbs.kubedb.com","demo":"sakib"},"managedFields":[{"apiVersion":"kubedb.com/v1alpha2","fieldsType":"FieldsV1","fieldsV1":{"f:metadata":{"f:annotations":{".":{},"f:kubectl.kubernetes.io/last-applied-configuration":{},"f:meta.helm.sh/release-name":{},"f:meta.helm.sh/release-namespace":{}},"f:labels":{".":{},"f:app.kubernetes.io/instance":{},"f:app.kubernetes.io/managed-by":{},"f:app.kubernetes.io/name":{}}},"f:spec":{".":{},"f:allowedSchemas":{".":{},"f:namespaces":{".":{},"f:from":{}}},"f:healthChecker":{".":{},"f:failureThreshold":{},"f:periodSeconds":{},"f:timeoutSeconds":{}},"f:monitor":{".":{},"f:agent":{},"f:prometheus":{".":{},"f:exporter":{".":{},"f:port":{},"f:resources":{".":{},"f:requests":{".":{},"f:cpu":{},"f:memory":{}}}},"f:serviceMonitor":{".":{},"f:interval":{},"f:labels":{}}}},"f:podTemplate":{".":{},"f:spec":{".":{},"f:resources":{".":{},"f:limits":{".":{},"f:cpu":{},"f:memory":{}}}}},"f:replicas":{},"f:storage":{".":{},"f:accessModes":{},"f:resources":{".":{},"f:requests":{".":{},"f:storage":{}}},"f:storageClassName":{}},"f:storageType":{},"f:terminationPolicy":{},"f:version":{}}},"manager":"___go_build_kubepack_dev_lib_app_cmd_run_apiserver","operation":"Update","time":"2023-05-04T15:36:09Z"}],"name":"mariadb-test","namespace":"demo","resourceVersion":"3665","uid":"084ab473-1a3b-4800-9fee-c65e3bbe5383"},"spec":{"allowedSchemas":{"namespaces":{"from":"Same"}},"healthChecker":{"failureThreshold":1,"periodSeconds":10,"timeoutSeconds":10},"monitor":{"agent":"prometheus.io/operator","prometheus":{"exporter":{"port":56790,"resources":{"requests":{"cpu":"100m","memory":"128Mi"}}},"serviceMonitor":{"interval":"30s","labels":{}}}},"podTemplate":{"spec":{"resources":{"limits":{"cpu":".5","memory":"1024Mi"}}}},"replicas":1,"storage":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"10Gi"}},"storageClassName":"linode-block-storage-retain"},"storageType":"Durable","terminationPolicy":"WipeOut","version":"10.5.8"}}
+    meta.helm.sh/release-name: mariadb-test
+    meta.helm.sh/release-namespace: demo
+  creationTimestamp: "2023-05-04T15:36:09Z"
+  generation: 1
+  labels:
+    app.kubernetes.io/instance: mariadb-test
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: mariadbs.kubedb.com
+    demo: sakib
+  name: mariadb-test
+  namespace: demo
+  resourceVersion: "3781"
+  uid: 084ab473-1a3b-4800-9fee-c65e3bbe5383
+spec:
+  allowedSchemas:
+    namespaces:
+      from: Same
+  healthChecker:
+    failureThreshold: 1
+    periodSeconds: 10
+    timeoutSeconds: 10
+  monitor:
+    agent: prometheus.io/operator
+    prometheus:
+      exporter:
+        port: 56790
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+      serviceMonitor:
+        interval: 30s
+        labels: {}
+  podTemplate:
+    spec:
+      resources:
+        limits:
+          cpu: ".5"
+          memory: 1024Mi
+  replicas: 1
+  storage:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+    storageClassName: linode-block-storage-retain
+  storageType: Durable
+  terminationPolicy: WipeOut
+  version: 10.5.8

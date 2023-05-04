@@ -1,0 +1,232 @@
+metadata:
+  creationTimestamp: null
+  labels:
+    owner: helm
+    release.x-helm.dev/name: mariadb-test
+    release.x-helm.dev/status: deployed
+  name: mariadb-test
+  namespace: demo
+spec:
+  components:
+  - group: ""
+    kind: Secret
+    version: v1
+  - group: cert-manager.io
+    kind: Issuer
+    version: v1
+  - group: kubedb.com
+    kind: MariaDB
+    version: v1alpha2
+  - group: monitoring.coreos.com
+    kind: PrometheusRule
+    version: v1
+  - group: monitoring.coreos.com
+    kind: ServiceMonitor
+    version: v1
+  - group: stash.appscode.com
+    kind: BackupConfiguration
+    version: v1beta1
+  - group: stash.appscode.com
+    kind: Repository
+    version: v1alpha1
+  - group: stash.appscode.com
+    kind: RestoreSession
+    version: v1beta1
+  descriptor:
+    description: MariaDB Editor
+    icons:
+    - src: https://cdn.appscode.com/images/products/bytebuilders/bytebuilders-512x512.png
+      type: image/png
+    keywords:
+    - appscode
+    links:
+    - description: website
+      url: https://byte.builders
+    maintainers:
+    - email: support@appscode.com
+      name: appscode
+    type: application
+    version: v0.4.14
+  editor:
+    group: kubedb.com
+    resource: mariadbs
+    version: v1alpha2
+  formKeys:
+  - monitoringCoreosComPrometheusRule
+  release:
+    firstDeployed: "2023-05-04T17:13:11Z"
+    form:
+      alert:
+        additionalRuleLabels: {}
+        annotations: {}
+        enabled: true
+        groups:
+          cluster:
+            enabled: true
+            rules:
+              galeraReplicationLatencyTooLong:
+                duration: 5m
+                enabled: true
+                severity: warning
+                val: 0.1
+          database:
+            enabled: true
+            rules:
+              mysqlHighIncomingBytes:
+                duration: 0m
+                enabled: true
+                severity: critical
+                val: 1048576
+              mysqlHighOutgoingBytes:
+                duration: 0m
+                enabled: true
+                severity: critical
+                val: 1048576
+              mysqlHighQPS:
+                duration: 0m
+                enabled: true
+                severity: critical
+                val: 1000
+              mysqlHighThreadsRunning:
+                duration: 2m
+                enabled: true
+                severity: warning
+                val: 60
+              mysqlInnoDBLogWaits:
+                duration: 0m
+                enabled: true
+                severity: warning
+                val: 10
+              mysqlInstanceDown:
+                duration: 0m
+                enabled: true
+                severity: critical
+              mysqlRestarted:
+                duration: 0m
+                enabled: true
+                severity: warning
+                val: 60
+              mysqlServiceDown:
+                duration: 0m
+                enabled: true
+                severity: critical
+              mysqlSlowQueries:
+                duration: 2m
+                enabled: true
+                severity: warning
+              mysqlTooManyConnections:
+                duration: 2m
+                enabled: true
+                severity: warning
+                val: 80
+              mysqlTooManyOpenFiles:
+                duration: 2m
+                enabled: true
+                severity: warning
+                val: 80
+          opsManager:
+            enabled: true
+            rules:
+              opsRequestFailed:
+                duration: 0m
+                enabled: true
+                severity: critical
+              opsRequestOnProgress:
+                duration: 0m
+                enabled: true
+                severity: info
+              opsRequestStatusProgressingToLong:
+                duration: 30m
+                enabled: true
+                severity: critical
+          provisioner:
+            enabled: true
+            rules:
+              appPhaseCritical:
+                duration: 15m
+                enabled: true
+                severity: warning
+              appPhaseNotReady:
+                duration: 1m
+                enabled: true
+                severity: critical
+          schemaManager:
+            enabled: true
+            rules:
+              schemaExpired:
+                duration: 0m
+                enabled: true
+                severity: warning
+              schemaFailed:
+                duration: 0m
+                enabled: true
+                severity: warning
+              schemaInProgressForTooLong:
+                duration: 30m
+                enabled: true
+                severity: warning
+              schemaPendingForTooLong:
+                duration: 30m
+                enabled: true
+                severity: warning
+              schemaTerminatingForTooLong:
+                duration: 30m
+                enabled: true
+                severity: warning
+          stash:
+            enabled: true
+            rules:
+              backupSessionFailed:
+                duration: 0m
+                enabled: true
+                severity: critical
+              backupSessionPeriodTooLong:
+                duration: 0m
+                enabled: true
+                severity: warning
+                val: 1800
+              noBackupSessionForTooLong:
+                duration: 0m
+                enabled: true
+                severity: warning
+                val: 18000
+              repositoryCorrupted:
+                duration: 5m
+                enabled: true
+                severity: critical
+              repositoryStorageRunningLow:
+                duration: 5m
+                enabled: true
+                severity: warning
+                val: 10737418240
+              restoreSessionFailed:
+                duration: 0m
+                enabled: true
+                severity: critical
+              restoreSessionPeriodTooLong:
+                duration: 0m
+                enabled: true
+                severity: warning
+                val: 1800
+        labels:
+          release: kube-prometheus-stack
+    lastDeployed: "2023-05-04T17:13:11Z"
+    name: mariadb-test
+    status: deployed
+    version: "1"
+  resourceKeys:
+  - certManagerIoIssuer_ca
+  - kubedbComMariaDB
+  - monitoringCoreosComServiceMonitor
+  - secret_auth
+  - secret_config
+  - stashAppscodeComBackupConfiguration
+  - stashAppscodeComRepository_init_repo
+  - stashAppscodeComRepository_repo
+  - stashAppscodeComRestoreSession_init
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: mariadb-test
+      app.kubernetes.io/name: mariadbs.kubedb.com
+status: {}
+

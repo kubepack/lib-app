@@ -1735,8 +1735,8 @@ kubepack.dev/chart-doc-gen v0.4.7 h1:SN+p8dXKoOCrpJBfYXNlTJWmU+PtKPnvkZdDjlatMao
 kubepack.dev/chart-doc-gen v0.4.7/go.mod h1:cUKd7EHAQrxKj156uk+TVG31aEGn/oxYLzZolgxcv6U=
 kubepack.dev/kubepack v0.6.5-0.20230430191512-e45228dff467 h1:L957qp2WEjGs4pkpooxcqDL5EsbSGclNeffkUUZZKOU=
 kubepack.dev/kubepack v0.6.5-0.20230430191512-e45228dff467/go.mod h1:i8Sb93dEhJsK/qb54z6LtMv5dBJTwdEuYVPObbifDCo=
-kubepack.dev/lib-helm v0.6.5-0.20230504144257-efb7d0eab7b6 h1:SQ0CfAEIj4ZW0DvF3+rKAlodci/fmR2rGoXOh2hHZGg=
-kubepack.dev/lib-helm v0.6.5-0.20230504144257-efb7d0eab7b6/go.mod h1:h1RPsJf4fFRrsF2PwWcSBTfLYeUmLOZ+DO3tDY8yblM=
+kubepack.dev/lib-helm v0.6.5-0.20230504171641-5a1e5103d2db h1:iq3RNdWTgU4cOwyGrhbIIwCAKT0+3YrWgon1L8knBBw=
+kubepack.dev/lib-helm v0.6.5-0.20230504171641-5a1e5103d2db/go.mod h1:h1RPsJf4fFRrsF2PwWcSBTfLYeUmLOZ+DO3tDY8yblM=
 nhooyr.io/websocket v1.8.7/go.mod h1:B70DZP8IakI65RVQ51MsWP/8jndNma26DVA/nFSCgW0=
 oras.land/oras-go v1.2.0 h1:yoKosVIbsPoFMqAIFHTnrmOuafHal+J/r+I5bdbVWu4=
 oras.land/oras-go v1.2.0/go.mod h1:pFNs7oHp2dYsYMSS82HaX5l4mpnGO7hbpPN6EWH2ltc=
