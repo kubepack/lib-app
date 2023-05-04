@@ -60,7 +60,7 @@ func run() error {
 	}
 	reg := repo.NewRegistry(kc, repo.DefaultDiskCache())
 
-	app, err := editor.CreateAppReleaseIfMissing(kc, reg, model)
+	app, err := editor.CreateAppReleaseIfMissing(cfg, kc, reg, model)
 	if err != nil {
 		return err
 	}

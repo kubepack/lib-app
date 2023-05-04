@@ -23,15 +23,21 @@ import (
 	"kubepack.dev/lib-helm/pkg/repo"
 	"kubepack.dev/lib-helm/pkg/storage/driver"
 
+	"k8s.io/client-go/rest"
 	"kmodules.xyz/resource-metadata/hub/resourceeditors"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	driversapi "x-helm.dev/apimachinery/apis/drivers/v1alpha1"
 	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 )
 
-func CreateAppReleaseIfMissing(kc client.Client, reg *repo.Registry, model releasesapi.Metadata) (*driversapi.AppRelease, error) {
+func CreateAppReleaseIfMissing(restcfg *rest.Config, kc client.Client, reg *repo.Registry, model releasesapi.Metadata) (*driversapi.AppRelease, error) {
+	err := driver.EnsureAppReleaseCRD(restcfg, kc.RESTMapper())
+	if err != nil {
+		return nil, err
+	}
+
 	var app driversapi.AppRelease
-	err := kc.Get(context.TODO(), client.ObjectKey{Namespace: model.Release.Namespace, Name: model.Release.Name}, &app)
+	err = kc.Get(context.TODO(), client.ObjectKey{Namespace: model.Release.Namespace, Name: model.Release.Name}, &app)
 	if err == nil || client.IgnoreNotFound(err) != nil {
 		return &app, err // err == nil, means AppRelease exists
 	}
