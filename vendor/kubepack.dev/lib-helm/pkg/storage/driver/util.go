@@ -48,13 +48,3 @@ func ParseKey(key string) (string, int, error) {
 	}
 	return rlsName, version, nil
 }
-
-func relevantReleases(lbls map[string]string) []string {
-	var result []string
-	for k, v := range lbls {
-		if k == labelScopeReleaseName {
-			result = append(result, v)
-		}
-	}
-	return result
-}

@@ -66,6 +66,7 @@ var (
 	resourceValues = map[string]*unstructured.Unstructured{}
 	registry       = hub.NewRegistryOfKnownResources()
 	resourceKeys   = sets.NewString()
+	formKeys       = sets.NewString()
 	HelmRegistry   = repo.NewDiskCacheRegistry()
 )
 
@@ -100,11 +101,11 @@ func NewCmdFuse() *cobra.Command {
 					return err
 				}
 			}
-			gvkSet := ksets.NewMetaGroupVersionKind()
+			resourceGVKSet := ksets.NewMetaGroupVersionKind()
 
 			err = parser.ProcessPath(sampleDir, func(ri parser.ResourceInfo) error {
 				gvk := ri.Object.GetObjectKind().GroupVersionKind()
-				gvkSet.Insert(metav1.GroupVersionKind{
+				resourceGVKSet.Insert(metav1.GroupVersionKind{
 					Group:   gvk.Group,
 					Version: gvk.Version,
 					Kind:    gvk.Kind,
@@ -251,6 +252,7 @@ func NewCmdFuse() *cobra.Command {
 				}
 				_, files, err := i.WithRegistry(HelmRegistry).
 					ForChart(filepath.Join(chartDir, optsChartName), optsChartName, "").
+					WithReleaseName(sampleName).
 					Run()
 				if err != nil {
 					return err
@@ -266,22 +268,24 @@ func NewCmdFuse() *cobra.Command {
 						return err
 					}
 
-					if content, ok := files[filename]; ok {
-						gvks, _, err := parser.ExtractComponentGVKs([]byte(content))
+					for _, obj := range files[filename] {
+						err := parser.ProcessResources([]byte(obj), func(ri parser.ResourceInfo) error {
+							rsKey, err := editor.ResourceKey(ri.Object.GetAPIVersion(), ri.Object.GetKind(), sampleName, ri.Object.GetName())
+							if err != nil {
+								return err
+							}
+							formKeys.Insert(rsKey)
+							return nil
+						})
 						if err != nil {
 							return err
-						}
-						for gvk := range gvks {
-							if gvkSet.Has(gvk) {
-								return fmt.Errorf("%s contains resource type %+v also found in sample yaml", filename, gvk)
-							}
 						}
 					}
 				}
 			}
 
-			gvks := gvkSet.List()
-			err = GenerateChartMetadata(rd, gvks)
+			resourceGVKs := resourceGVKSet.List()
+			err = GenerateChartMetadata(rd, resourceGVKs, resourceKeys.List(), formKeys.List())
 			if err != nil {
 				return err
 			}
@@ -445,7 +449,7 @@ func NewCmdFuse() *cobra.Command {
 	return cmd
 }
 
-func GenerateChartMetadata(rd *v1alpha1.ResourceDescriptor, gvks []metav1.GroupVersionKind) error {
+func GenerateChartMetadata(rd *v1alpha1.ResourceDescriptor, resourceGVKs []metav1.GroupVersionKind, resourceKeys, formKeys []string) error {
 	gvr := metav1.GroupVersionResource{
 		Group:    rd.Spec.Resource.Group,
 		Version:  rd.Spec.Resource.Version,
@@ -487,20 +491,20 @@ func GenerateChartMetadata(rd *v1alpha1.ResourceDescriptor, gvks []metav1.GroupV
 	//		},
 	//	}
 	//}
-	sort.Slice(gvks, func(i, j int) bool {
-		if gvks[i].Group == gvks[j].Group {
-			return gvks[i].Kind < gvks[j].Kind
+	sort.Slice(resourceGVKs, func(i, j int) bool {
+		if resourceGVKs[i].Group == resourceGVKs[j].Group {
+			return resourceGVKs[i].Kind < resourceGVKs[j].Kind
 		}
-		return gvks[i].Group < gvks[j].Group
+		return resourceGVKs[i].Group < resourceGVKs[j].Group
 	})
 
-	gvkData, err := yaml.Marshal(gvks)
+	gvkData, err := yaml.Marshal(resourceGVKs)
 	if err != nil {
 		panic(err)
 	}
 
 	filename := filepath.Join(chartDir, editorChartName, "Chart.yaml")
-	chartMeta := newChartMeta(rd.Spec.Resource.Kind, gvrData, gvkData)
+	chartMeta := newChartMeta(rd.Spec.Resource.Kind, gvrData, gvkData, resourceKeys, formKeys)
 	if _, err := os.Stat(filename); err == nil {
 		chartMeta, err = overwriteFromOldMeta(filename, chartMeta)
 		if err != nil {
@@ -535,8 +539,11 @@ func overwriteFromOldMeta(filename string, chartMeta chart.Metadata) (chart.Meta
 	return chartMeta, nil
 }
 
-func newChartMeta(kind string, gvrData, gvkData []byte) chart.Metadata {
-	return chart.Metadata{
+func newChartMeta(kind string, edditorGVR, resources []byte, resourceKeys, formKeys []string) chart.Metadata {
+	sort.Strings(resourceKeys)
+	sort.Strings(formKeys)
+
+	md := chart.Metadata{
 		Name:        editorChartName,
 		Home:        "https://byte.builders",
 		Sources:     nil,
@@ -557,10 +564,17 @@ func newChartMeta(kind string, gvrData, gvkData []byte) chart.Metadata {
 		KubeVersion: ">= 1.14.0",
 		Type:        "application",
 		Annotations: map[string]string{
-			"meta.x-helm.dev/editor":    string(gvrData),
-			"meta.x-helm.dev/resources": string(gvkData),
+			"meta.x-helm.dev/editor":    string(edditorGVR),
+			"meta.x-helm.dev/resources": string(resources),
 		},
 	}
+	if len(resourceKeys) > 0 {
+		md.Annotations["meta.x-helm.dev/resource-keys"] = strings.Join(resourceKeys, ",")
+	}
+	if len(formKeys) > 0 {
+		md.Annotations["meta.x-helm.dev/form-keys"] = strings.Join(formKeys, ",")
+	}
+	return md
 }
 
 // toYAML takes an interface, marshals it to yaml, and returns a string. It will

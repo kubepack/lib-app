@@ -21,6 +21,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
 	"time"
 
 	"kubepack.dev/kubepack/pkg/lib"
@@ -37,7 +38,6 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/sets"
-	"kmodules.xyz/client-go/discovery"
 	meta_util "kmodules.xyz/client-go/meta"
 	"kmodules.xyz/client-go/tools/parser"
 	"kmodules.xyz/resource-metadata/hub/resourceeditors"
@@ -182,39 +182,38 @@ func EditorChartValueManifest(kc client.Client, app *driversapi.AppRelease, mt r
 	resourceMap := map[string]interface{}{}
 
 	// detect apiVersion from defaultValues in chart
-	rsKeys := sets.NewString(app.Spec.ResourceKeys...)
+	resourceKeys := sets.NewString(app.Spec.ResourceKeys...)
+	formKeys := sets.NewString(app.Spec.FormKeys...)
 
-	mapper := discovery.NewResourceMapper(kc.RESTMapper())
 	_, usesForm := chrt.Values["form"]
 
 	var resources []*unstructured.Unstructured
 	for _, gvk := range app.Spec.Components {
-		gvk := schema.GroupVersionKind{
+		var list unstructured.UnstructuredList
+		list.SetGroupVersionKind(schema.GroupVersionKind{
 			Group:   gvk.Group,
 			Version: gvk.Version,
 			Kind:    gvk.Kind,
-		}
-		namespaced, err := mapper.IsGVKNamespaced(gvk)
+		})
+		err = kc.List(context.TODO(), &list, client.MatchingLabelsSelector{Selector: selector}, client.InNamespace(mt.Namespace))
 		if meta.IsNoMatchError(err) {
 			continue // CRD type not installed, so skip it
-		}
-		if err != nil {
-			return nil, errors.Wrapf(err, "failed to detect if gvk %v is namespaced", gvk)
-		}
-		var list unstructured.UnstructuredList
-		list.SetGroupVersionKind(gvk)
-		opts := []client.ListOption{client.MatchingLabelsSelector{Selector: selector}}
-		if namespaced {
-			opts = append(opts, client.InNamespace(mt.Namespace))
-		}
-		err = kc.List(context.TODO(), &list, opts...)
-		if err != nil {
+		} else if err != nil {
 			return nil, err
 		}
 		for idx := range list.Items {
 			obj := list.Items[idx]
 			// remove status
 			delete(obj.Object, "status")
+
+			rsKey, err := ResourceKey(obj.GetAPIVersion(), obj.GetKind(), mt.Name, obj.GetName())
+			if err != nil {
+				return nil, err
+			}
+
+			if !resourceKeys.Has(rsKey) && !formKeys.Has(rsKey) {
+				continue
+			}
 
 			resources = append(resources, &obj)
 
@@ -225,11 +224,7 @@ func EditorChartValueManifest(kc client.Client, app *driversapi.AppRelease, mt r
 			}
 			buf.Write(data)
 
-			rsKey, err := ResourceKey(obj.GetAPIVersion(), obj.GetKind(), mt.Name, obj.GetName())
-			if err != nil {
-				return nil, err
-			}
-			if rsKeys.Has(rsKey) { // ski form objects
+			if resourceKeys.Has(rsKey) { // ski form objects
 				if _, ok := resourceMap[rsKey]; ok {
 					return nil, fmt.Errorf("duplicate resource key %s for AppRelease %s/%s", rsKey, app.Namespace, app.Name)
 				}
@@ -352,20 +347,15 @@ func generateEditorModel(
 	}
 
 	_, usesForm := opts["form"]
-	rsKeys := sets.NewString()
+	var resourceKeys sets.String
 
 	if usesForm {
 		chrt, err := reg.GetChart(editorChartRef)
 		if err != nil {
 			return nil, errors.Wrapf(err, "failed to load resource editor chart %+v", editorChartRef)
 		}
-		if data, ok := chrt.Chart.Metadata.Annotations["meta.x-helm.dev/editor"]; ok && data != "" {
-			// store reference rsKeys
-			if refResources, ok := chrt.Chart.Values["resources"].(map[string]interface{}); ok {
-				for key := range refResources {
-					rsKeys.Insert(key)
-				}
-			}
+		if data, ok := chrt.Chart.Metadata.Annotations["meta.x-helm.dev/resource-keys"]; ok && data != "" {
+			resourceKeys = sets.NewString(strings.Split(data, ",")...)
 		} else {
 			return nil, fmt.Errorf("editor chart %+v is missing annotation key meta.x-helm.dev/editor", editorChartRef)
 		}
@@ -384,7 +374,7 @@ func generateEditorModel(
 		return nil, err
 	}
 
-	resourceValues := map[string]interface{}{}
+	resourceMap := map[string]interface{}{}
 	_, manifest := f1.Result()
 	err = parser.ProcessResources(manifest, func(ri parser.ResourceInfo) error {
 		rsKey, err := ResourceKey(ri.Object.GetAPIVersion(), ri.Object.GetKind(), spec.Metadata.Release.Name, ri.Object.GetName())
@@ -393,8 +383,8 @@ func generateEditorModel(
 		}
 
 		// values
-		if !usesForm || rsKeys.Has(rsKey) {
-			resourceValues[rsKey] = ri.Object
+		if !usesForm || resourceKeys.Has(rsKey) {
+			resourceMap[rsKey] = ri.Object
 		}
 		return nil
 	})
@@ -404,7 +394,7 @@ func generateEditorModel(
 	model := &unstructured.Unstructured{
 		Object: map[string]interface{}{
 			"metadata":  opts["metadata"],
-			"resources": resourceValues,
+			"resources": resourceMap,
 		},
 	}
 	if form, ok := opts["form"]; ok {

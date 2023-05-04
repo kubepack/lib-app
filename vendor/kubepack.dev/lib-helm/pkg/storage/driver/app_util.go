@@ -33,6 +33,7 @@ import (
 	"helm.sh/helm/v3/pkg/release"
 	rspb "helm.sh/helm/v3/pkg/release"
 	helmtime "helm.sh/helm/v3/pkg/time"
+	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -174,6 +175,7 @@ func newAppReleaseObject(rls *rspb.Release) (*driversapi.AppRelease, error) {
 		}
 
 		obj.Spec.ResourceKeys = strings.Split(rls.Chart.Metadata.Annotations["meta.x-helm.dev/resource-keys"], ",")
+		obj.Spec.FormKeys = strings.Split(rls.Chart.Metadata.Annotations["meta.x-helm.dev/form-keys"], ",")
 	}
 
 	components, _, err := parser.ExtractComponentGVKs([]byte(rls.Manifest))
@@ -211,79 +213,69 @@ func newAppReleaseObject(rls *rspb.Release) (*driversapi.AppRelease, error) {
 // decodeRelease decodes the bytes of data into a release
 // type. Data must contain a base64 encoded gzipped string of a
 // valid release, otherwise an error is returned.
-func decodeReleaseFromApp(kc client.Client, app *driversapi.AppRelease, rlsNames []string) ([]*rspb.Release, error) {
-	if len(rlsNames) == 0 {
-		rlsNames = relevantReleases(app.Labels)
+func decodeReleaseFromApp(kc client.Client, app *driversapi.AppRelease) (*rspb.Release, error) {
+	var rls rspb.Release
+
+	rls.Name = app.Name
+	rls.Namespace = app.Namespace
+	rls.Version, _ = strconv.Atoi(app.Spec.Release.Version)
+
+	// This is not needed or used from release
+	//chartURL, ok := app.Annotations[apis.LabelChartURL]
+	//if !ok {
+	//	return nil, fmt.Errorf("missing %s annotation on AppRelease %s/%s", apis.LabelChartURL, app.Namespace, app.Name)
+	//}
+	//chartName, ok := app.Annotations[apis.LabelChartName]
+	//if !ok {
+	//	return nil, fmt.Errorf("missing %s annotation on AppRelease %s/%s", apis.LabelChartName, app.Namespace, app.Name)
+	//}
+	//chartVersion, ok := app.Annotations[apis.LabelChartVersion]
+	//if !ok {
+	//	return nil, fmt.Errorf("missing %s annotation on AppRelease %s/%s", apis.LabelChartVersion, app.Namespace, app.Name)
+	//}
+	//chrt, err := lib.DefaultRegistry.GetChart(chartURL, chartName, chartVersion)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//rls.Chart = chrt.Chart
+
+	rls.Info = &release.Info{
+		Description: app.Spec.Descriptor.Description,
+		Status:      release.Status(app.Spec.Release.Status),
+		Notes:       app.Spec.Descriptor.Notes,
+	}
+	rls.Info.FirstDeployed = helmtime.Time{Time: app.Spec.Release.FirstDeployed.Time}
+	rls.Info.LastDeployed = helmtime.Time{Time: app.Spec.Release.LastDeployed.Time}
+
+	editorGVR := app.Spec.Editor
+	rlm := types.NamespacedName{
+		Name:      rls.Name,
+		Namespace: rls.Namespace,
+	}
+	tpl, err := EditorChartValueManifest(kc, app, rlm, editorGVR)
+	if err != nil {
+		return nil, err
 	}
 
-	releases := make([]*rspb.Release, 0, len(rlsNames))
+	rls.Manifest = string(tpl.Manifest)
 
-	for _, rlsName := range rlsNames {
-		var rls rspb.Release
-
-		rls.Name = rlsName
-		rls.Namespace = app.Namespace
-		rls.Version, _ = strconv.Atoi(app.Spec.Release.Version)
-
-		// This is not needed or used from release
-		//chartURL, ok := app.Annotations[apis.LabelChartURL]
-		//if !ok {
-		//	return nil, fmt.Errorf("missing %s annotation on AppRelease %s/%s", apis.LabelChartURL, app.Namespace, app.Name)
-		//}
-		//chartName, ok := app.Annotations[apis.LabelChartName]
-		//if !ok {
-		//	return nil, fmt.Errorf("missing %s annotation on AppRelease %s/%s", apis.LabelChartName, app.Namespace, app.Name)
-		//}
-		//chartVersion, ok := app.Annotations[apis.LabelChartVersion]
-		//if !ok {
-		//	return nil, fmt.Errorf("missing %s annotation on AppRelease %s/%s", apis.LabelChartVersion, app.Namespace, app.Name)
-		//}
-		//chrt, err := lib.DefaultRegistry.GetChart(chartURL, chartName, chartVersion)
-		//if err != nil {
-		//	return nil, err
-		//}
-		//rls.Chart = chrt.Chart
-
-		rls.Info = &release.Info{
-			Description: app.Spec.Descriptor.Description,
-			Status:      release.Status(app.Spec.Release.Status),
-			Notes:       app.Spec.Descriptor.Notes,
+	if editorGVR != nil {
+		rls.Chart = &chart.Chart{
+			Values: map[string]interface{}{},
 		}
-		rls.Info.FirstDeployed = helmtime.Time{Time: app.Spec.Release.FirstDeployed.Time}
-		rls.Info.LastDeployed = helmtime.Time{Time: app.Spec.Release.LastDeployed.Time}
-
-		editorGVR := app.Spec.Editor
-		rlm := types.NamespacedName{
-			Name:      rls.Name,
-			Namespace: rls.Namespace,
-		}
-		tpl, err := EditorChartValueManifest(kc, app, rlm, editorGVR)
-		if err != nil {
-			return nil, err
-		}
-
-		rls.Manifest = string(tpl.Manifest)
-
-		if editorGVR != nil {
-			rls.Chart = &chart.Chart{
-				Values: map[string]interface{}{},
+		if app.Spec.Release.Form != nil {
+			if form, err := runtime.DefaultUnstructuredConverter.ToUnstructured(app.Spec.Release.Form); err == nil {
+				tpl.Values.Object["form"] = form
 			}
-			if app.Spec.Release.Form != nil {
-				if form, err := runtime.DefaultUnstructuredConverter.ToUnstructured(app.Spec.Release.Form); err == nil {
-					tpl.Values.Object["form"] = form
-				}
-			}
-			rls.Chart.Values = tpl.Values.Object
-			rls.Config = tpl.Values.Object
 		}
-		// else
-		// keep tls.Chart nil and see if that causes panics
-		// we don't want to load chart from remote here anymore, because we want to embed chart in Go binary
-
-		releases = append(releases, &rls)
+		rls.Chart.Values = tpl.Values.Object
+		rls.Config = tpl.Values.Object
 	}
+	// else
+	// keep tls.Chart nil and see if that causes panics
+	// we don't want to load chart from remote here anymore, because we want to embed chart in Go binary
 
-	return releases, nil
+	return &rls, nil
 }
 
 func EditorChartValueManifest(kc client.Client, app *driversapi.AppRelease, rls types.NamespacedName, editorGVR *metav1.GroupVersionResource) (*EditorTemplate, error) {
@@ -299,6 +291,7 @@ func EditorChartValueManifest(kc client.Client, app *driversapi.AppRelease, rls 
 	var buf bytes.Buffer
 	resourceMap := map[string]interface{}{}
 	resourceKeys := sets.NewString(app.Spec.ResourceKeys...)
+	formKeys := sets.NewString(app.Spec.FormKeys...)
 
 	for _, gvk := range app.Spec.Components {
 		var list unstructured.UnstructuredList
@@ -308,7 +301,9 @@ func EditorChartValueManifest(kc client.Client, app *driversapi.AppRelease, rls 
 			Kind:    gvk.Kind,
 		})
 		err = kc.List(context.TODO(), &list, client.InNamespace(rls.Namespace), client.MatchingLabelsSelector{Selector: selector})
-		if err != nil {
+		if meta.IsNoMatchError(err) {
+			continue
+		} else if err != nil {
 			return nil, err
 		}
 		for _, obj := range list.Items {
@@ -328,7 +323,7 @@ func EditorChartValueManifest(kc client.Client, app *driversapi.AppRelease, rls 
 					continue
 				}
 			} else {
-				if resourceKeys.Len() > 0 && !resourceKeys.Has(rsKey) {
+				if !resourceKeys.Has(rsKey) && !formKeys.Has(rsKey) {
 					continue
 				}
 			}
@@ -343,10 +338,12 @@ func EditorChartValueManifest(kc client.Client, app *driversapi.AppRelease, rls 
 			}
 			buf.Write(data)
 
-			if _, ok := resourceMap[rsKey]; ok {
-				return nil, fmt.Errorf("duplicate resource key %s for AppRelease %s/%s", rsKey, app.Namespace, app.Name)
+			if resourceKeys.Has(rsKey) {
+				if _, ok := resourceMap[rsKey]; ok {
+					return nil, fmt.Errorf("duplicate resource key %s for AppRelease %s/%s", rsKey, app.Namespace, app.Name)
+				}
+				resourceMap[rsKey] = &obj
 			}
-			resourceMap[rsKey] = &obj
 		}
 	}
 

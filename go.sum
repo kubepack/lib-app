@@ -1735,8 +1735,8 @@ kubepack.dev/chart-doc-gen v0.4.7 h1:SN+p8dXKoOCrpJBfYXNlTJWmU+PtKPnvkZdDjlatMao
 kubepack.dev/chart-doc-gen v0.4.7/go.mod h1:cUKd7EHAQrxKj156uk+TVG31aEGn/oxYLzZolgxcv6U=
 kubepack.dev/kubepack v0.6.5-0.20230430191512-e45228dff467 h1:L957qp2WEjGs4pkpooxcqDL5EsbSGclNeffkUUZZKOU=
 kubepack.dev/kubepack v0.6.5-0.20230430191512-e45228dff467/go.mod h1:i8Sb93dEhJsK/qb54z6LtMv5dBJTwdEuYVPObbifDCo=
-kubepack.dev/lib-helm v0.6.5-0.20230504005050-2fed2aa68081 h1:LmIFTLRnoiT4CfPdCXlT1aT4cHbUn64PV31zN6QT6dI=
-kubepack.dev/lib-helm v0.6.5-0.20230504005050-2fed2aa68081/go.mod h1:q9wR+pXgA2C1pOC+MZWJXYvc6otwQihx8SX2A8WWrZ0=
+kubepack.dev/lib-helm v0.6.5-0.20230504144257-efb7d0eab7b6 h1:SQ0CfAEIj4ZW0DvF3+rKAlodci/fmR2rGoXOh2hHZGg=
+kubepack.dev/lib-helm v0.6.5-0.20230504144257-efb7d0eab7b6/go.mod h1:h1RPsJf4fFRrsF2PwWcSBTfLYeUmLOZ+DO3tDY8yblM=
 nhooyr.io/websocket v1.8.7/go.mod h1:B70DZP8IakI65RVQ51MsWP/8jndNma26DVA/nFSCgW0=
 oras.land/oras-go v1.2.0 h1:yoKosVIbsPoFMqAIFHTnrmOuafHal+J/r+I5bdbVWu4=
 oras.land/oras-go v1.2.0/go.mod h1:pFNs7oHp2dYsYMSS82HaX5l4mpnGO7hbpPN6EWH2ltc=
@@ -1760,5 +1760,5 @@ sigs.k8s.io/structured-merge-diff/v4 v4.2.3/go.mod h1:qjx8mGObPmV2aSZepjQjbmb2ih
 sigs.k8s.io/yaml v1.2.0/go.mod h1:yfXDCHCao9+ENCvLSE62v9VSji2MKu5jeNfTrofGhJc=
 sigs.k8s.io/yaml v1.3.0 h1:a2VclLzOGrwOHDiV8EfBGhvjHvP46CtW5j6POvhYGGo=
 sigs.k8s.io/yaml v1.3.0/go.mod h1:GeOyir5tyXNByN85N/dRIT9es5UQNerPYEKK56eTBm8=
-x-helm.dev/apimachinery v0.0.9-0.20230430191007-eaa20f4bc638 h1:MQFEJH8buwdlgKSZTs0XZkTgDREVX5ddRwb6D6M+ZuI=
-x-helm.dev/apimachinery v0.0.9-0.20230430191007-eaa20f4bc638/go.mod h1:4P/kgSsP5YNYfcsjxuruZArDE1bU/Yn86LbPFUv2mPA=
+x-helm.dev/apimachinery v0.0.9-0.20230504073133-059a2432d5a2 h1:RKqmG0TpQcCsJ2XEOJ8Be9b8UDWEVFlDS4EYxxCbOco=
+x-helm.dev/apimachinery v0.0.9-0.20230504073133-059a2432d5a2/go.mod h1:4P/kgSsP5YNYfcsjxuruZArDE1bU/Yn86LbPFUv2mPA=

@@ -109,13 +109,13 @@ func (d *AppReleases) Get(key string) (*rspb.Release, error) {
 	obj := &result.Items[0]
 
 	// found the configmap, decode the base64 data string
-	r, err := decodeReleaseFromApp(d.kc, obj, []string{relName})
+	rls, err := decodeReleaseFromApp(d.kc, obj)
 	if err != nil {
 		d.Log("get: failed to decode data %q: %s", key, err)
 		return nil, err
 	}
 	// return the release object
-	return r[0], nil
+	return rls, nil
 }
 
 // List fetches all releases and returns the list releases such
@@ -136,15 +136,13 @@ func (d *AppReleases) List(filter func(*rspb.Release) bool) ([]*rspb.Release, er
 	// iterate over the configmaps object list
 	// and decode each release
 	for _, item := range list.Items {
-		releases, err := decodeReleaseFromApp(d.kc, &item, nil)
+		rls, err := decodeReleaseFromApp(d.kc, &item)
 		if err != nil {
 			d.Log("list: failed to decode release: %v: %s", item, err)
 			continue
 		}
-		for _, rls := range releases {
-			if filter(rls) {
-				results = append(results, rls)
-			}
+		if filter(rls) {
+			results = append(results, rls)
 		}
 	}
 	return results, nil
@@ -174,12 +172,12 @@ func (d *AppReleases) Query(labels map[string]string) ([]*rspb.Release, error) {
 
 	var results []*rspb.Release
 	for _, item := range list.Items {
-		releases, err := decodeReleaseFromApp(d.kc, &item, relevantReleases(labels))
+		rls, err := decodeReleaseFromApp(d.kc, &item)
 		if err != nil {
 			d.Log("query: failed to decode release: %s", err)
 			continue
 		}
-		results = append(results, releases...)
+		results = append(results, rls)
 	}
 	return results, nil
 }
