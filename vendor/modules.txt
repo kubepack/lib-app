@@ -1562,7 +1562,7 @@ kubepack.dev/chart-doc-gen/api
 # kubepack.dev/kubepack v0.6.5-0.20230430191512-e45228dff467
 ## explicit; go 1.18
 kubepack.dev/kubepack/pkg/lib
-# kubepack.dev/lib-helm v0.6.5-0.20230504144257-efb7d0eab7b6
+# kubepack.dev/lib-helm v0.6.5-0.20230504171641-5a1e5103d2db
 ## explicit; go 1.18
 kubepack.dev/lib-helm/pkg/action
 kubepack.dev/lib-helm/pkg/chart

@@ -270,6 +270,12 @@ func NewCmdFuse() *cobra.Command {
 
 					for _, obj := range files[filename] {
 						err := parser.ProcessResources([]byte(obj), func(ri parser.ResourceInfo) error {
+							resourceGVKSet.Insert(metav1.GroupVersionKind{
+								Group:   ri.Object.GetObjectKind().GroupVersionKind().Group,
+								Version: ri.Object.GetObjectKind().GroupVersionKind().Version,
+								Kind:    ri.Object.GetKind(),
+							})
+
 							rsKey, err := editor.ResourceKey(ri.Object.GetAPIVersion(), ri.Object.GetKind(), sampleName, ri.Object.GetName())
 							if err != nil {
 								return err
@@ -459,38 +465,7 @@ func GenerateChartMetadata(rd *v1alpha1.ResourceDescriptor, resourceGVKs []metav
 	if err != nil {
 		panic(err)
 	}
-	//if rd.Spec.Resource.Group == "kubedb.com" {
-	//	gks = []metav1.GroupKind{
-	//		{
-	//			Group: rd.Spec.Resource.Group,
-	//			Kind:  rd.Spec.Resource.Kind,
-	//		},
-	//		{
-	//			Group: "",
-	//			Kind:  "Secret",
-	//		},
-	//		{
-	//			Group: "cert-manager.io",
-	//			Kind:  "Issuer",
-	//		},
-	//		{
-	//			Group: "monitoring.coreos.com",
-	//			Kind:  "ServiceMonitor",
-	//		},
-	//		{
-	//			Group: "stash.appscode.com",
-	//			Kind:  "Repository",
-	//		},
-	//		{
-	//			Group: "stash.appscode.com",
-	//			Kind:  "BackupConfiguration",
-	//		},
-	//		{
-	//			Group: "stash.appscode.com",
-	//			Kind:  "RestoreSession",
-	//		},
-	//	}
-	//}
+
 	sort.Slice(resourceGVKs, func(i, j int) bool {
 		if resourceGVKs[i].Group == resourceGVKs[j].Group {
 			return resourceGVKs[i].Kind < resourceGVKs[j].Kind
