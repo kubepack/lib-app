@@ -22,10 +22,8 @@ import (
 	"kubepack.dev/lib-app/pkg/editor"
 	actionx "kubepack.dev/lib-helm/pkg/action"
 	"kubepack.dev/lib-helm/pkg/repo"
-	"kubepack.dev/lib-helm/pkg/storage/driver"
 
 	kmapi "kmodules.xyz/client-go/api/v1"
-	"kmodules.xyz/resource-metadata/hub/resourceeditors"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	"sigs.k8s.io/yaml"
 	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
@@ -62,39 +60,15 @@ func run() error {
 	}
 	reg := repo.NewRegistry(kc, repo.DefaultDiskCache())
 
-	ed, ok := resourceeditors.LoadByResourceID(kc, &model.Resource)
-	if !ok {
-		return fmt.Errorf("failed to load resource editor for %+v", model.Resource)
-	}
-
-	if ed.Spec.UI.Editor == nil {
-		return fmt.Errorf("missing editor chart for %+v", ed.Spec.Resource.GroupVersionKind())
-	}
-	chartRef := *ed.Spec.UI.Editor
-
-	if chartRef.SourceRef.Namespace == "" {
-		ns, err := editor.DefaultSourceRefNamespace(kc, chartRef.SourceRef.Name)
-		if err != nil {
-			return err
-		}
-		chartRef.SourceRef.Namespace = ns
-	}
-
-	chrt, err := reg.GetChart(chartRef)
+	app, err := editor.CreateAppReleaseIfMissing(kc, reg, model)
 	if err != nil {
 		return err
 	}
 
-	appr, err := driver.GenerateAppReleaseObject(chrt.Chart, model)
-	if err != nil {
-		return err
-	}
-
-	data, err := yaml.Marshal(appr)
+	data, err := yaml.Marshal(app)
 	if err != nil {
 		return err
 	}
 	fmt.Println(string(data))
-
 	return nil
 }
