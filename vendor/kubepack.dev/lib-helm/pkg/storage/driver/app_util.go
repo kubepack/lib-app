@@ -47,6 +47,14 @@ import (
 
 var empty = struct{}{}
 
+func mustNewAppReleaseObject(rls *rspb.Release) *driversapi.AppRelease {
+	out, err := newAppReleaseObject(rls)
+	if err != nil {
+		panic(err)
+	}
+	return out
+}
+
 // newAppReleaseSecretsObject constructs a kubernetes AppRelease object
 // to store a release. Each configmap data entry is the base64
 // encoded gzipped string of a release.
@@ -59,13 +67,8 @@ var empty = struct{}{}
 //	"status"         - status of the release (see pkg/release/status.go for variants)
 //	"owner"          - owner of the configmap, currently "helm".
 //	"name"           - name of the release.
-func newAppReleaseObject(rls *rspb.Release) *driversapi.AppRelease {
+func newAppReleaseObject(rls *rspb.Release) (*driversapi.AppRelease, error) {
 	const owner = "helm"
-
-	/*
-		LabelChartFirstDeployed = "first-deployed.meta.helm.sh/"
-		LabelChartLastDeployed  = "last-deployed.meta.helm.sh/"
-	*/
 
 	appName := rls.Name
 	if partOf, ok := rls.Chart.Metadata.Annotations["app.kubernetes.io/part-of"]; ok {
@@ -77,9 +80,11 @@ func newAppReleaseObject(rls *rspb.Release) *driversapi.AppRelease {
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      appName,
 			Namespace: rls.Namespace,
+			// labels are required by https://github.com/x-helm/helm/blob/ac-1.25.1/pkg/storage/storage.go#L140-L144
 			Labels: map[string]string{
-				"owner": owner,
-				fmt.Sprintf("%s/%s", labelScopeReleaseName, rls.Name): rls.Name,
+				"owner":                 owner,
+				labelScopeReleaseName:   rls.Name,
+				labelScopeReleaseStatus: release.StatusDeployed.String(),
 			},
 		},
 		Spec: driversapi.AppReleaseSpec{
@@ -98,15 +103,16 @@ func newAppReleaseObject(rls *rspb.Release) *driversapi.AppRelease {
 				Notes: rls.Info.Notes,
 			},
 			Release: driversapi.ReleaseInfo{
-				Name:          rls.Name,
-				Version:       strconv.Itoa(rls.Version),
-				Status:        string(rls.Info.Status),
+				Name:    rls.Name,
+				Version: strconv.Itoa(rls.Version),
+				Status:  release.StatusDeployed.String(),
+				// Status:        string(rls.Info.Status),
 				FirstDeployed: &metav1.Time{Time: rls.Info.FirstDeployed.Time.UTC()},
 				LastDeployed:  &metav1.Time{Time: rls.Info.LastDeployed.Time.UTC()},
 			},
-			Components: nil,
-			Selector:   nil,
-			// ResourceKeys:
+			Components:   nil,
+			Selector:     nil,
+			ResourceKeys: nil,
 		},
 	}
 	if rls.Chart.Metadata.Icon != "" {
@@ -133,65 +139,58 @@ func newAppReleaseObject(rls *rspb.Release) *driversapi.AppRelease {
 		})
 	}
 
+	if data, ok := rls.Chart.Metadata.Annotations["meta.x-helm.dev/editor"]; ok && data != "" {
+		var gvr metav1.GroupVersionResource
+		if err := json.Unmarshal([]byte(data), &gvr); err != nil {
+			return nil, err
+		} else {
+			obj.Spec.Editor = &gvr
+		}
+	}
+
 	//lbl := map[string]string{
 	//	"app.kubernetes.io/managed-by": "Helm",
 	//}
-	lbl := make(map[string]string)
+	lbl := map[string]string{}
 	if partOf, ok := rls.Chart.Metadata.Annotations["app.kubernetes.io/part-of"]; ok && partOf != "" {
 		lbl["app.kubernetes.io/part-of"] = partOf
 	} else {
 		lbl["app.kubernetes.io/instance"] = rls.Name
 
-		// ref : https://github.com/kubepack/helm/blob/ac-1.21.0/pkg/action/validate.go#L208-L214
-		if data, ok := rls.Chart.Metadata.Annotations["meta.x-helm.dev/editor"]; ok && data != "" {
-			var gvr metav1.GroupVersionResource
-			if err := json.Unmarshal([]byte(data), &gvr); err == nil {
-				lbl["app.kubernetes.io/name"] = fmt.Sprintf("%s.%s", gvr.Resource, gvr.Group)
-			}
+		// ref : https://github.com/x-helm/helm/blob/ac-1.25.1/pkg/action/validate.go#L211-L217
+		if obj.Spec.Editor != nil {
+			lbl["app.kubernetes.io/name"] = fmt.Sprintf("%s.%s", obj.Spec.Editor.Resource, obj.Spec.Editor.Group)
 		}
 	}
 	obj.Spec.Selector = &metav1.LabelSelector{
 		MatchLabels: lbl,
 	}
 
-	if editorGVR, ok := rls.Chart.Metadata.Annotations["meta.x-helm.dev/editor"]; ok {
-		var gvr metav1.GroupVersionResource
-		if err := json.Unmarshal([]byte(editorGVR), &gvr); err != nil {
-			panic(err)
-		} else {
-			obj.Spec.Editor = &gvr
-		}
-
+	if obj.Spec.Editor != nil {
 		if f, ok := rls.Config["form"]; ok {
 			if fd, err := json.Marshal(f); err == nil {
 				obj.Spec.Release.Form = &runtime.RawExtension{Raw: fd}
 			}
 		}
 
-		if resources, ok, err := unstructured.NestedMap(rls.Chart.Values, "resources"); err == nil && ok {
-			resourceKeys := make([]string, 0, len(resources))
-			for k := range resources {
-				resourceKeys = append(resourceKeys, k)
-			}
-			sort.Strings(resourceKeys)
-			obj.Spec.ResourceKeys = resourceKeys
-		}
+		obj.Spec.ResourceKeys = strings.Split(rls.Chart.Metadata.Annotations["meta.x-helm.dev/resource-keys"], ",")
 	}
 
 	components, _, err := parser.ExtractComponentGVKs([]byte(rls.Manifest))
 	if err != nil {
 		// WARNING(tamal): This error should never happen
-		panic(err)
+		return nil, err
 	}
 
+	// TODO(tamal): Should it be merged or be if/else based on whether it is an editor chart
 	if data, ok := rls.Chart.Metadata.Annotations["meta.x-helm.dev/resources"]; ok && data != "" {
 		var gvks []metav1.GroupVersionKind
 		err := yaml.Unmarshal([]byte(data), &gvks)
 		if err != nil {
-			panic(err)
+			return nil, err
 		}
-		for _, gk := range gvks {
-			components[gk] = empty
+		for _, gvk := range gvks {
+			components[gvk] = empty
 		}
 	}
 	gvks := make([]metav1.GroupVersionKind, 0, len(components))
@@ -206,7 +205,7 @@ func newAppReleaseObject(rls *rspb.Release) *driversapi.AppRelease {
 	})
 	obj.Spec.Components = gvks
 
-	return obj
+	return obj, nil
 }
 
 // decodeRelease decodes the bytes of data into a release
@@ -219,10 +218,10 @@ func decodeReleaseFromApp(kc client.Client, app *driversapi.AppRelease, rlsNames
 
 	releases := make([]*rspb.Release, 0, len(rlsNames))
 
-	for range rlsNames {
+	for _, rlsName := range rlsNames {
 		var rls rspb.Release
 
-		rls.Name = app.Spec.Release.Name
+		rls.Name = rlsName
 		rls.Namespace = app.Namespace
 		rls.Version, _ = strconv.Atoi(app.Spec.Release.Version)
 
@@ -279,7 +278,7 @@ func decodeReleaseFromApp(kc client.Client, app *driversapi.AppRelease, rlsNames
 		}
 		// else
 		// keep tls.Chart nil and see if that causes panics
-		// we don't want to load chart from remote here any more, because we want to embed chart in Go binary
+		// we don't want to load chart from remote here anymore, because we want to embed chart in Go binary
 
 		releases = append(releases, &rls)
 	}

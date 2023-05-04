@@ -1133,7 +1133,7 @@ gopkg.in/yaml.v2
 # gopkg.in/yaml.v3 v3.0.1
 ## explicit
 gopkg.in/yaml.v3
-# helm.sh/helm/v3 v3.10.3 => github.com/x-helm/helm/v3 v3.10.2-0.20230430184223-44219d018af9
+# helm.sh/helm/v3 v3.10.3 => github.com/x-helm/helm/v3 v3.10.2-0.20230503230011-a8f5ce951c95
 ## explicit; go 1.18
 helm.sh/helm/v3/internal/fileutil
 helm.sh/helm/v3/internal/ignore
@@ -1562,7 +1562,7 @@ kubepack.dev/chart-doc-gen/api
 # kubepack.dev/kubepack v0.6.5-0.20230430191512-e45228dff467
 ## explicit; go 1.18
 kubepack.dev/kubepack/pkg/lib
-# kubepack.dev/lib-helm v0.6.5-0.20230430191216-30788b05f46d
+# kubepack.dev/lib-helm v0.6.5-0.20230504005050-2fed2aa68081
 ## explicit; go 1.18
 kubepack.dev/lib-helm/pkg/action
 kubepack.dev/lib-helm/pkg/chart
@@ -1755,4 +1755,4 @@ x-helm.dev/apimachinery/apis/products/v1alpha1
 x-helm.dev/apimachinery/apis/releases/v1alpha1
 x-helm.dev/apimachinery/apis/shared
 x-helm.dev/apimachinery/crds
-# helm.sh/helm/v3 => github.com/x-helm/helm/v3 v3.10.2-0.20230430184223-44219d018af9
+# helm.sh/helm/v3 => github.com/x-helm/helm/v3 v3.10.2-0.20230503230011-a8f5ce951c95

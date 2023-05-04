@@ -35,7 +35,7 @@ require (
 	kmodules.xyz/sets v0.25.0
 	kubepack.dev/chart-doc-gen v0.4.7
 	kubepack.dev/kubepack v0.6.5-0.20230430191512-e45228dff467
-	kubepack.dev/lib-helm v0.6.5-0.20230430191216-30788b05f46d
+	kubepack.dev/lib-helm v0.6.5-0.20230504005050-2fed2aa68081
 	sigs.k8s.io/controller-runtime v0.13.1
 	sigs.k8s.io/yaml v1.3.0
 	x-helm.dev/apimachinery v0.0.9-0.20230430191007-eaa20f4bc638
@@ -249,4 +249,4 @@ require (
 	sigs.k8s.io/structured-merge-diff/v4 v4.2.3 // indirect
 )
 
-replace helm.sh/helm/v3 => github.com/x-helm/helm/v3 v3.10.2-0.20230430184223-44219d018af9
+replace helm.sh/helm/v3 => github.com/x-helm/helm/v3 v3.10.2-0.20230503230011-a8f5ce951c95

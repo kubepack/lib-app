@@ -53,13 +53,6 @@ func ApplyResourceEditor(f cmdutil.Factory, reg repo.IRegistry, model map[string
 		return nil, fmt.Errorf("failed to load resource editor for %+v", tm.Resource)
 	}
 
-	deployer, err := actionx.NewDeployer(f, tm.Release.Namespace, driver.AppReleasesDriverName, log...)
-	if err != nil {
-		return nil, err
-	}
-
-	deployer.WithRegistry(reg)
-
 	if ed.Spec.UI.Editor == nil {
 		return nil, fmt.Errorf("missing editor chart for %+v", ed.Spec.Resource.GroupVersionKind())
 	}

@@ -38,7 +38,8 @@ import (
 )
 
 const (
-	labelScopeReleaseName = "name.release.x-helm.dev" // "/${name}" : ""
+	labelScopeReleaseName   = "release.x-helm.dev/name"
+	labelScopeReleaseStatus = "release.x-helm.dev/status"
 )
 
 var _ driver.Driver = (*AppReleases)(nil)
@@ -77,7 +78,7 @@ func (d *AppReleases) Get(key string) (*rspb.Release, error) {
 
 	selector, err := metav1.LabelSelectorAsSelector(&metav1.LabelSelector{
 		MatchLabels: map[string]string{
-			fmt.Sprintf("%s/%s", labelScopeReleaseName, relName): relName,
+			labelScopeReleaseName: relName,
 		},
 	})
 	if err != nil {
@@ -187,7 +188,7 @@ func (d *AppReleases) Query(labels map[string]string) ([]*rspb.Release, error) {
 // AppRelease already exists, ErrReleaseExists is returned.
 func (d *AppReleases) Create(_ string, rls *rspb.Release) error {
 	// create a new configmap to hold the release
-	obj := newAppReleaseObject(rls)
+	obj := mustNewAppReleaseObject(rls)
 
 	// push the configmap object out into the kubiverse
 	_, _, err := cu.CreateOrPatch(context.Background(), d.kc, obj, func(o client.Object, createOp bool) client.Object {
@@ -244,7 +245,7 @@ func (d *AppReleases) Update(_ string, rls *rspb.Release) error {
 	}
 
 	// create a new configmap object to hold the release
-	obj := newAppReleaseObject(rls)
+	obj := mustNewAppReleaseObject(rls)
 	obj.Spec.Release.ModifiedAt = &metav1.Time{Time: time.Now().UTC()}
 
 	// push the configmap object out into the kubiverse
@@ -285,7 +286,7 @@ func (d *AppReleases) Delete(key string) (rls *rspb.Release, err error) {
 		return nil, err
 	}
 	if err = d.kc.DeleteAllOf(context.Background(), new(driversapi.AppRelease), client.MatchingLabels{
-		fmt.Sprintf("%s/%s", labelScopeReleaseName, relName): relName,
+		labelScopeReleaseName: relName,
 	}); err != nil {
 		return rls, err
 	}

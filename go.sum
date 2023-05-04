@@ -1002,8 +1002,8 @@ github.com/ugorji/go/codec v1.1.7/go.mod h1:Ax+UKWsSmolVDwsd+7N3ZtXu+yMGCf907BLY
 github.com/unrolled/render v1.4.0/go.mod h1:cK4RSTTVdND5j9EYEc0LAMOvdG11JeiKjyjfyZRvV2w=
 github.com/unrolled/render v1.6.0 h1:CMhr7HKRAzVI1RltKSo8JMRaokFi60ObV9I5uSxETJE=
 github.com/unrolled/render v1.6.0/go.mod h1:NoaP3JGGHcYDAqu6gTDz01E2TMqBybJ8dpR6qqRBVPQ=
-github.com/x-helm/helm/v3 v3.10.2-0.20230430184223-44219d018af9 h1:MlYL1IFvu59i6Jeov57gfqWHDY8cXN1071PtK4M6vWU=
-github.com/x-helm/helm/v3 v3.10.2-0.20230430184223-44219d018af9/go.mod h1:CXOcs02AYvrlPMWARNYNRgf2rNP7gLJQsi/Ubd4EDrI=
+github.com/x-helm/helm/v3 v3.10.2-0.20230503230011-a8f5ce951c95 h1:ODVqUVdxZW44Peu2huvamoF/qhFJIIZdGIeNUC/l6IA=
+github.com/x-helm/helm/v3 v3.10.2-0.20230503230011-a8f5ce951c95/go.mod h1:CXOcs02AYvrlPMWARNYNRgf2rNP7gLJQsi/Ubd4EDrI=
 github.com/xeipuuv/gojsonpointer v0.0.0-20180127040702-4e3ac2762d5f/go.mod h1:N2zxlSyiKSe5eX1tZViRH5QA0qijqEDrYZiPEAiq3wU=
 github.com/xeipuuv/gojsonpointer v0.0.0-20190905194746-02993c407bfb h1:zGWFAtiMcyryUHoUjUJX0/lt1H2+i2Ka2n+D3DImSNo=
 github.com/xeipuuv/gojsonpointer v0.0.0-20190905194746-02993c407bfb/go.mod h1:N2zxlSyiKSe5eX1tZViRH5QA0qijqEDrYZiPEAiq3wU=
@@ -1735,8 +1735,8 @@ kubepack.dev/chart-doc-gen v0.4.7 h1:SN+p8dXKoOCrpJBfYXNlTJWmU+PtKPnvkZdDjlatMao
 kubepack.dev/chart-doc-gen v0.4.7/go.mod h1:cUKd7EHAQrxKj156uk+TVG31aEGn/oxYLzZolgxcv6U=
 kubepack.dev/kubepack v0.6.5-0.20230430191512-e45228dff467 h1:L957qp2WEjGs4pkpooxcqDL5EsbSGclNeffkUUZZKOU=
 kubepack.dev/kubepack v0.6.5-0.20230430191512-e45228dff467/go.mod h1:i8Sb93dEhJsK/qb54z6LtMv5dBJTwdEuYVPObbifDCo=
-kubepack.dev/lib-helm v0.6.5-0.20230430191216-30788b05f46d h1:qWGay874xb/Nt2Ot3ao+4sJm7QI0Ul+9B9Jzn5YyDmE=
-kubepack.dev/lib-helm v0.6.5-0.20230430191216-30788b05f46d/go.mod h1:LzTmCDMEjIK3k8U99DE/OMYlzbC2357xN7h0+XnccGA=
+kubepack.dev/lib-helm v0.6.5-0.20230504005050-2fed2aa68081 h1:LmIFTLRnoiT4CfPdCXlT1aT4cHbUn64PV31zN6QT6dI=
+kubepack.dev/lib-helm v0.6.5-0.20230504005050-2fed2aa68081/go.mod h1:q9wR+pXgA2C1pOC+MZWJXYvc6otwQihx8SX2A8WWrZ0=
 nhooyr.io/websocket v1.8.7/go.mod h1:B70DZP8IakI65RVQ51MsWP/8jndNma26DVA/nFSCgW0=
 oras.land/oras-go v1.2.0 h1:yoKosVIbsPoFMqAIFHTnrmOuafHal+J/r+I5bdbVWu4=
 oras.land/oras-go v1.2.0/go.mod h1:pFNs7oHp2dYsYMSS82HaX5l4mpnGO7hbpPN6EWH2ltc=

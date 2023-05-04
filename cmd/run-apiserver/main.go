@@ -18,6 +18,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"path"
 	"sort"
@@ -574,7 +575,8 @@ func LoadEditorModel(ctx httpw.ResponseWriter, model releasesapi.ModelMetadata) 
 		return
 	}
 
-	tpl, err := editor.LoadResourceEditorModel(kc, HelmRegistry, model)
+	reg := repo.NewRegistry(kc, repo.DefaultDiskCache())
+	tpl, err := editor.LoadResourceEditorModel(kc, reg, model)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "LoadEditorModel", err.Error())
 		return
@@ -614,6 +616,7 @@ func ApplyResource(f cmdutil.Factory) func(ctx httpw.ResponseWriter, model map[s
 		reg := repo.NewRegistry(kc, repo.DefaultDiskCache())
 		rls, err := handler.ApplyResourceEditor(f, reg, model, !ctx.R().QueryBool("installCRDs"))
 		if err != nil {
+			fmt.Println(err.Error())
 			ctx.Error(http.StatusInternalServerError, "ApplyResourceEditor", err.Error())
 			return
 		}
