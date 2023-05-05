@@ -1542,7 +1542,7 @@ kmodules.xyz/client-go/tools/clusterid
 kmodules.xyz/client-go/tools/converter
 kmodules.xyz/client-go/tools/parser
 kmodules.xyz/client-go/tools/wait
-# kmodules.xyz/resource-metadata v0.17.1
+# kmodules.xyz/resource-metadata v0.17.2
 ## explicit; go 1.18
 kmodules.xyz/resource-metadata/apis/meta
 kmodules.xyz/resource-metadata/apis/meta/v1alpha1
@@ -1559,10 +1559,10 @@ kmodules.xyz/sets
 # kubepack.dev/chart-doc-gen v0.4.7
 ## explicit; go 1.17
 kubepack.dev/chart-doc-gen/api
-# kubepack.dev/kubepack v0.6.5-0.20230430191512-e45228dff467
+# kubepack.dev/kubepack v0.7.0
 ## explicit; go 1.18
 kubepack.dev/kubepack/pkg/lib
-# kubepack.dev/lib-helm v0.6.5-0.20230504235627-6f85f96818ac
+# kubepack.dev/lib-helm v0.7.0
 ## explicit; go 1.18
 kubepack.dev/lib-helm/pkg/action
 kubepack.dev/lib-helm/pkg/chart
@@ -1746,7 +1746,7 @@ sigs.k8s.io/structured-merge-diff/v4/value
 # sigs.k8s.io/yaml v1.3.0
 ## explicit; go 1.12
 sigs.k8s.io/yaml
-# x-helm.dev/apimachinery v0.0.9-0.20230504073133-059a2432d5a2
+# x-helm.dev/apimachinery v0.0.9
 ## explicit; go 1.19
 x-helm.dev/apimachinery/apis
 x-helm.dev/apimachinery/apis/charts/v1alpha1

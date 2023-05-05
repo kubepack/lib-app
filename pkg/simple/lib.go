@@ -62,6 +62,11 @@ func NewCmdSimple() *cobra.Command {
 			}
 
 			registry.Visit(func(key string, rd *rsapi.ResourceDescriptor) {
+				if rd.Spec.Resource.Group == "ui.k8s.appscode.com" &&
+					(rd.Spec.Resource.Kind == "Feature" || rd.Spec.Resource.Kind == "FeatureSet") {
+					return
+				}
+
 				err := GenerateSimpleEditorChart(chartDir, descriptorDir, rd.Spec.Resource.GroupVersionResource(), registry, skipExisting)
 				if err != nil {
 					panic(err)
