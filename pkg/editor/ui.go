@@ -30,7 +30,7 @@ import (
 	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 )
 
-func CreateAppReleaseIfMissing(restcfg *rest.Config, kc client.Client, reg *repo.Registry, model releasesapi.Metadata) (*driversapi.AppRelease, error) {
+func CreateAppReleaseIfMissing(restcfg *rest.Config, kc client.Client, reg repo.IRegistry, model releasesapi.Metadata) (*driversapi.AppRelease, error) {
 	err := driver.EnsureAppReleaseCRD(restcfg, kc.RESTMapper())
 	if err != nil {
 		return nil, err
