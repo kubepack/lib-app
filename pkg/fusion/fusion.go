@@ -258,7 +258,7 @@ func NewCmdFuse() *cobra.Command {
 					return err
 				}
 
-				err = copyWithReplace(chartDir, optsChartName, editorChartName, "templates/_helpers.tpl", false)
+				err = copyWithReplace(chartDir, optsChartName, editorChartName, "templates/_helpers.tpl", true)
 				if err != nil {
 					return err
 				}
