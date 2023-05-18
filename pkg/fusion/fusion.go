@@ -522,8 +522,8 @@ func newChartMeta(kind string, edditorGVR, resources []byte, resourceKeys, formK
 		Name:        editorChartName,
 		Home:        "https://byte.builders",
 		Sources:     nil,
-		Version:     "v0.4.14",
-		AppVersion:  "v0.4.14",
+		Version:     "v0.4.15",
+		AppVersion:  "v0.4.15",
 		Description: fmt.Sprintf("%s Editor", kind),
 		Keywords:    []string{"appscode"},
 		Maintainers: []*chart.Maintainer{
