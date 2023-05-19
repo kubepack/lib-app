@@ -81,6 +81,7 @@ go run cmd/fuse-chart/*.go \
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/kubevault/vaultserver/custom \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --form-templates=alert.yaml \
     --sample-name=vault \
     --resource.group=kubevault.com \
     --resource.version=v1alpha1 \
