@@ -313,7 +313,7 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 		}
 		ed.Spec.UI.Editor = &releasesapi.ChartSourceRef{
 			Name:    chartName,
-			Version: "v0.4.15",
+			Version: "v0.4.16",
 			SourceRef: kmapi.TypedObjectReference{
 				APIGroup:  releasesapi.SourceGroupHelmRepository,
 				Kind:      releasesapi.SourceKindHelmRepository,
@@ -342,8 +342,8 @@ func GenerateChartMetadata(chartDir, chartName string, rd *rsapi.ResourceDescrip
 		Name:        chartName,
 		Home:        "https://byte.builders",
 		Sources:     nil,
-		Version:     "v0.4.15",
-		AppVersion:  "v0.4.15",
+		Version:     "v0.4.16",
+		AppVersion:  "v0.4.16",
 		Description: fmt.Sprintf("%s Editor", rd.Spec.Resource.Kind),
 		Keywords:    []string{"appscode"},
 		Maintainers: []*chart.Maintainer{

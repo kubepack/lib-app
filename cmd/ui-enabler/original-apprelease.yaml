@@ -55,7 +55,7 @@ spec:
 
         kubectl --namespace demo get mariadbs.kubedb.com mariadb-test
     type: application
-    version: v0.4.15
+    version: v0.4.16
   editor:
     group: kubedb.com
     resource: mariadbs
