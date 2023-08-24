@@ -12,7 +12,8 @@ spec:
   connections:
   - labels:
     - exposed_by
-    namespacePath: metadata.namespace
+    namespace:
+      path: metadata.namespace
     references:
     - '{.spec.clientConfig.service.name}'
     target:
@@ -21,12 +22,69 @@ spec:
     type: MatchRef
   - labels:
     - config
-    namespacePath: metadata.namespace
+    namespace:
+      path: metadata.namespace
     references:
     - '{.spec.clientConfig.secret.name}'
     target:
       apiVersion: v1
       kind: Secret
+    type: MatchRef
+  - labels:
+    - connect_via
+    references:
+    - '{.spec.appRef.name},{.spec.appRef.namespace},{.spec.appRef.kind},{.spec.appRef.apiGroup}'
+    target:
+      apiVersion: kubedb.com/v1alpha2
+      kind: Postgres
+    type: MatchRef
+  - labels:
+    - connect_via
+    references:
+    - '{.spec.appRef.name},{.spec.appRef.namespace},{.spec.appRef.kind},{.spec.appRef.apiGroup}'
+    target:
+      apiVersion: kubedb.com/v1alpha2
+      kind: Elasticsearch
+    type: MatchRef
+  - labels:
+    - connect_via
+    references:
+    - '{.spec.appRef.name},{.spec.appRef.namespace},{.spec.appRef.kind},{.spec.appRef.apiGroup}'
+    target:
+      apiVersion: kubedb.com/v1alpha2
+      kind: MariaDB
+    type: MatchRef
+  - labels:
+    - connect_via
+    references:
+    - '{.spec.appRef.name},{.spec.appRef.namespace},{.spec.appRef.kind},{.spec.appRef.apiGroup}'
+    target:
+      apiVersion: kubedb.com/v1alpha2
+      kind: MongoDB
+    type: MatchRef
+  - labels:
+    - connect_via
+    references:
+    - '{.spec.appRef.name},{.spec.appRef.namespace},{.spec.appRef.kind},{.spec.appRef.apiGroup}'
+    target:
+      apiVersion: kubedb.com/v1alpha2
+      kind: MySQL
+    type: MatchRef
+  - labels:
+    - connect_via
+    references:
+    - '{.spec.appRef.name},{.spec.appRef.namespace},{.spec.appRef.kind},{.spec.appRef.apiGroup}'
+    target:
+      apiVersion: kubedb.com/v1alpha2
+      kind: Redis
+    type: MatchRef
+  - labels:
+    - connect_via
+    references:
+    - '{.spec.appRef.name},{.spec.appRef.namespace},{.spec.appRef.kind},{.spec.appRef.apiGroup}'
+    target:
+      apiVersion: kubevault.com/v1alpha2
+      kind: VaultServer
     type: MatchRef
   resource:
     group: appcatalog.appscode.com

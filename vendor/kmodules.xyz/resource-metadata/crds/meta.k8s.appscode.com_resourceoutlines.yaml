@@ -169,23 +169,28 @@ spec:
                   query:
                     properties:
                       byLabel:
-                        description: ENUM(backup_via,catalog,cert_issuer,config,connect_via,exposed_by,id,located_on,monitored_by,offshoot,ops,policy,recommended_for,restore_into,scaled_by,view)
+                        description: ENUM(authn,authz,auth_secret,backup_via,catalog,cert_issuer,config,connect_via,exposed_by,located_on,monitored_by,ocm_bind,offshoot,ops,placed_into,policy,recommended_for,restore_into,scaled_by,storage,view)
                         enum:
+                        - authn
+                        - authz
+                        - auth_secret
                         - backup_via
                         - catalog
                         - cert_issuer
                         - config
                         - connect_via
                         - exposed_by
-                        - id
                         - located_on
                         - monitored_by
+                        - ocm_bind
                         - offshoot
                         - ops
+                        - placed_into
                         - policy
                         - recommended_for
                         - restore_into
                         - scaled_by
+                        - storage
                         - view
                         type: string
                       raw:
@@ -402,23 +407,28 @@ spec:
                                 query:
                                   properties:
                                     byLabel:
-                                      description: ENUM(backup_via,catalog,cert_issuer,config,connect_via,exposed_by,id,located_on,monitored_by,offshoot,ops,policy,recommended_for,restore_into,scaled_by,view)
+                                      description: ENUM(authn,authz,auth_secret,backup_via,catalog,cert_issuer,config,connect_via,exposed_by,located_on,monitored_by,ocm_bind,offshoot,ops,placed_into,policy,recommended_for,restore_into,scaled_by,storage,view)
                                       enum:
+                                      - authn
+                                      - authz
+                                      - auth_secret
                                       - backup_via
                                       - catalog
                                       - cert_issuer
                                       - config
                                       - connect_via
                                       - exposed_by
-                                      - id
                                       - located_on
                                       - monitored_by
+                                      - ocm_bind
                                       - offshoot
                                       - ops
+                                      - placed_into
                                       - policy
                                       - recommended_for
                                       - restore_into
                                       - scaled_by
+                                      - storage
                                       - view
                                       type: string
                                     raw:
@@ -661,23 +671,28 @@ spec:
                               query:
                                 properties:
                                   byLabel:
-                                    description: ENUM(backup_via,catalog,cert_issuer,config,connect_via,exposed_by,id,located_on,monitored_by,offshoot,ops,policy,recommended_for,restore_into,scaled_by,view)
+                                    description: ENUM(authn,authz,auth_secret,backup_via,catalog,cert_issuer,config,connect_via,exposed_by,located_on,monitored_by,ocm_bind,offshoot,ops,placed_into,policy,recommended_for,restore_into,scaled_by,storage,view)
                                     enum:
+                                    - authn
+                                    - authz
+                                    - auth_secret
                                     - backup_via
                                     - catalog
                                     - cert_issuer
                                     - config
                                     - connect_via
                                     - exposed_by
-                                    - id
                                     - located_on
                                     - monitored_by
+                                    - ocm_bind
                                     - offshoot
                                     - ops
+                                    - placed_into
                                     - policy
                                     - recommended_for
                                     - restore_into
                                     - scaled_by
+                                    - storage
                                     - view
                                     type: string
                                   raw:
@@ -893,23 +908,28 @@ spec:
                               query:
                                 properties:
                                   byLabel:
-                                    description: ENUM(backup_via,catalog,cert_issuer,config,connect_via,exposed_by,id,located_on,monitored_by,offshoot,ops,policy,recommended_for,restore_into,scaled_by,view)
+                                    description: ENUM(authn,authz,auth_secret,backup_via,catalog,cert_issuer,config,connect_via,exposed_by,located_on,monitored_by,ocm_bind,offshoot,ops,placed_into,policy,recommended_for,restore_into,scaled_by,storage,view)
                                     enum:
+                                    - authn
+                                    - authz
+                                    - auth_secret
                                     - backup_via
                                     - catalog
                                     - cert_issuer
                                     - config
                                     - connect_via
                                     - exposed_by
-                                    - id
                                     - located_on
                                     - monitored_by
+                                    - ocm_bind
                                     - offshoot
                                     - ops
+                                    - placed_into
                                     - policy
                                     - recommended_for
                                     - restore_into
                                     - scaled_by
+                                    - storage
                                     - view
                                     type: string
                                   raw:
@@ -1155,23 +1175,28 @@ spec:
                   query:
                     properties:
                       byLabel:
-                        description: ENUM(backup_via,catalog,cert_issuer,config,connect_via,exposed_by,id,located_on,monitored_by,offshoot,ops,policy,recommended_for,restore_into,scaled_by,view)
+                        description: ENUM(authn,authz,auth_secret,backup_via,catalog,cert_issuer,config,connect_via,exposed_by,located_on,monitored_by,ocm_bind,offshoot,ops,placed_into,policy,recommended_for,restore_into,scaled_by,storage,view)
                         enum:
+                        - authn
+                        - authz
+                        - auth_secret
                         - backup_via
                         - catalog
                         - cert_issuer
                         - config
                         - connect_via
                         - exposed_by
-                        - id
                         - located_on
                         - monitored_by
+                        - ocm_bind
                         - offshoot
                         - ops
+                        - placed_into
                         - policy
                         - recommended_for
                         - restore_into
                         - scaled_by
+                        - storage
                         - view
                         type: string
                       raw:
