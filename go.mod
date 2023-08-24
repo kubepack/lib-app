@@ -18,7 +18,7 @@ require (
 	go.wandrs.dev/http v0.0.2
 	gocloud.dev v0.26.0
 	gomodules.xyz/jsonpatch/v3 v3.0.1
-	gomodules.xyz/logs v0.0.6
+	gomodules.xyz/logs v0.0.7
 	gomodules.xyz/x v0.0.14
 	gopkg.in/yaml.v3 v3.0.1
 	helm.sh/helm/v3 v3.10.3

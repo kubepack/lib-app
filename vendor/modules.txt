@@ -961,7 +961,7 @@ gomodules.xyz/jsonpatch/v2
 # gomodules.xyz/jsonpatch/v3 v3.0.1
 ## explicit; go 1.12
 gomodules.xyz/jsonpatch/v3
-# gomodules.xyz/logs v0.0.6
+# gomodules.xyz/logs v0.0.7
 ## explicit; go 1.16
 gomodules.xyz/logs
 # gomodules.xyz/orderedmap v0.1.0
