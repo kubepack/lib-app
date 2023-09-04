@@ -25,6 +25,8 @@ import (
 
 	docapi "kubepack.dev/chart-doc-gen/api"
 
+	"github.com/google/go-containerregistry/pkg/authn"
+	"github.com/google/go-containerregistry/pkg/crane"
 	"github.com/spf13/cobra"
 	"helm.sh/helm/v3/pkg/chart"
 	crdv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -40,16 +42,21 @@ import (
 	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 )
 
-func NewCmdSimple() *cobra.Command {
-	var (
-		descriptorDir = homedir.HomeDir() + "/go/src/kmodules.xyz/resource-metadata/hub/resourcedescriptors/"
-		chartDir      = homedir.HomeDir() + "/go/src/go.bytebuilders.dev/ui-wizards/charts"
-		gvr           schema.GroupVersionResource
-		all           bool
-		skipExisting  bool
+const repoName = "bytebuilders-ui"
 
-		registry = hub.NewRegistryOfKnownResources()
-	)
+var (
+	descriptorDir  = homedir.HomeDir() + "/go/src/kmodules.xyz/resource-metadata/hub/resourcedescriptors/"
+	chartDir       = homedir.HomeDir() + "/go/src/go.bytebuilders.dev/ui-wizards/charts"
+	chartVersion   = "v0.4.16"
+	chartUseDigest = false
+	gvr            schema.GroupVersionResource
+	all            bool
+	skipExisting   bool
+
+	registry = hub.NewRegistryOfKnownResources()
+)
+
+func NewCmdSimple() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:               "simple-chart",
 		Short:             `Generate simple chart`,
@@ -77,6 +84,8 @@ func NewCmdSimple() *cobra.Command {
 	}
 
 	cmd.Flags().StringVar(&chartDir, "chart-dir", chartDir, "Charts dir")
+	cmd.Flags().StringVar(&chartVersion, "chart-version", chartVersion, "Chart version")
+	cmd.Flags().BoolVar(&chartUseDigest, "chart-use-digest", chartUseDigest, "Use digest instead of tag")
 	cmd.Flags().BoolVar(&all, "all", all, "Generate editor charts for all")
 	cmd.Flags().BoolVar(&skipExisting, "skipExisting", skipExisting, "Skip existing chart")
 	cmd.Flags().StringVar(&descriptorDir, "descriptor-dir", descriptorDir, "Resource descriptor dir")
@@ -312,15 +321,15 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 			ed.Spec.UI = &uiapi.UIParameters{}
 		}
 		ed.Spec.UI.Editor = &releasesapi.ChartSourceRef{
-			Name:    chartName,
-			Version: "v0.4.16",
+			Name: chartName,
 			SourceRef: kmapi.TypedObjectReference{
 				APIGroup:  releasesapi.SourceGroupHelmRepository,
 				Kind:      releasesapi.SourceKindHelmRepository,
 				Namespace: "",
-				Name:      "bytebuilders-ui",
+				Name:      repoName,
 			},
 		}
+		ed.Spec.UI.Editor.Version = getDigestOrVersion(repoName, ed.Spec.UI.Editor.Name, chartVersion)
 		return UpdateEditor(ed, filepath.Join(filepath.Dir(descriptorDir), uiapi.ResourceResourceEditors))
 	}
 
@@ -342,8 +351,8 @@ func GenerateChartMetadata(chartDir, chartName string, rd *rsapi.ResourceDescrip
 		Name:        chartName,
 		Home:        "https://byte.builders",
 		Sources:     nil,
-		Version:     "v0.4.16",
-		AppVersion:  "v0.4.16",
+		Version:     chartVersion,
+		AppVersion:  chartVersion,
 		Description: fmt.Sprintf("%s Editor", rd.Spec.Resource.Kind),
 		Keywords:    []string{"appscode"},
 		Maintainers: []*chart.Maintainer{
@@ -356,7 +365,7 @@ func GenerateChartMetadata(chartDir, chartName string, rd *rsapi.ResourceDescrip
 		APIVersion:  "v2",
 		Condition:   "",
 		Deprecated:  false,
-		KubeVersion: ">= 1.14.0",
+		KubeVersion: ">= 1.20.0",
 		Type:        "application",
 		Annotations: map[string]string{
 			"meta.x-helm.dev/editor": string(gvrData),
@@ -407,4 +416,18 @@ func UpdateEditor(rd *uiapi.ResourceEditor, dir string) error {
 		return err
 	}
 	return os.WriteFile(filename, data, 0o644)
+}
+
+func getDigestOrVersion(repo, bin, ver string) string {
+	if !chartUseDigest {
+		return ver
+	}
+	if repo != repoName {
+		return ver
+	}
+	digest, err := crane.Digest(fmt.Sprintf("r.byte.builders/charts/%s:%s", bin, ver), crane.WithAuthFromKeychain(authn.DefaultKeychain))
+	if err == nil {
+		return digest
+	}
+	return ver
 }

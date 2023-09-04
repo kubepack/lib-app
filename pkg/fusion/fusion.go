@@ -54,6 +54,8 @@ var (
 	sampleName                 = ""
 	instanceName               = ""
 	chartDir                   = ""
+	chartVersion               = "v0.4.16"
+	chartUseDigest             = false
 	editorChartName            = ""
 	optsChartName              = ""
 	formTemplateFiles []string = nil
@@ -444,6 +446,9 @@ func NewCmdFuse() *cobra.Command {
 	cmd.Flags().StringVar(&sampleName, "sample-name", sampleName, "Sample name used in yamls")
 	cmd.Flags().StringVar(&instanceName, "instance-name", instanceName, "Name of chart instance. Use to generate separate charts for same target but with different components.")
 	cmd.Flags().StringVar(&chartDir, "chart-dir", chartDir, "Charts dir")
+	cmd.Flags().StringVar(&chartVersion, "chart-version", chartVersion, "Chart version")
+	cmd.Flags().BoolVar(&chartUseDigest, "chart-use-digest", chartUseDigest, "Use digest instead of tag")
+
 	cmd.Flags().StringSliceVar(&formTemplateFiles, "form-templates", formTemplateFiles, "Name of form template files in options chart")
 
 	cmd.Flags().StringVar(&gvr.Group, "resource.group", gvr.Group, "Resource api group")
@@ -522,8 +527,8 @@ func newChartMeta(kind string, edditorGVR, resources []byte, resourceKeys, formK
 		Name:        editorChartName,
 		Home:        "https://byte.builders",
 		Sources:     nil,
-		Version:     "v0.4.16",
-		AppVersion:  "v0.4.16",
+		Version:     chartVersion,
+		AppVersion:  chartVersion,
 		Description: fmt.Sprintf("%s Editor", kind),
 		Keywords:    []string{"appscode"},
 		Maintainers: []*chart.Maintainer{
@@ -536,7 +541,7 @@ func newChartMeta(kind string, edditorGVR, resources []byte, resourceKeys, formK
 		APIVersion:  "v2",
 		Condition:   "",
 		Deprecated:  false,
-		KubeVersion: ">= 1.14.0",
+		KubeVersion: ">= 1.20.0",
 		Type:        "application",
 		Annotations: map[string]string{
 			"meta.x-helm.dev/editor":    string(edditorGVR),
