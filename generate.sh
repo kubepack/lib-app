@@ -17,22 +17,21 @@
 go run cmd/gen-simple-editor/main.go --all --skipExisting=false
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/mongodb/managed \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/elasticsearch/custom \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --form-templates=alert.yaml \
-    --sample-name=mongodb \
+    --sample-name=elasticsearch \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
-    --resource.name=mongodbs
+    --resource.name=elasticsearches
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/postgres/cluster/prometheus.io/backupconfiguration/stash/tls/custom-auth/custom-auth-mode/custom-config/custom-pg-coordinator/custom-uid \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/kafka/custom \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
-    --form-templates=alert.yaml \
-    --sample-name=postgres \
+    --sample-name=kafka \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
-    --resource.name=postgreses
+    --resource.name=kafkas
 
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/mariadb/cluster/prometheus.io/backupconfiguration/stash/tls/custom-auth/config-file/customize-pod-template \
@@ -44,13 +43,13 @@ go run cmd/fuse-chart/*.go \
     --resource.name=mariadbs
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/elasticsearch/custom \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/mongodb/managed \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --form-templates=alert.yaml \
-    --sample-name=elasticsearch \
+    --sample-name=mongodb \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
-    --resource.name=elasticsearches
+    --resource.name=mongodbs
 
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/mysql/group-replication/prometheus.io/backupconfiguration/stash/tls/custom-auth/config-file/customize-pod-template \
@@ -60,6 +59,32 @@ go run cmd/fuse-chart/*.go \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
     --resource.name=mysqls
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/pgbouncer/custom \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --sample-name=pgbouncer \
+    --resource.group=kubedb.com \
+    --resource.version=v1alpha2 \
+    --resource.name=pgbouncers
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/postgres/cluster/prometheus.io/backupconfiguration/stash/tls/custom-auth/custom-auth-mode/custom-config/custom-pg-coordinator/custom-uid \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --form-templates=alert.yaml \
+    --sample-name=postgres \
+    --resource.group=kubedb.com \
+    --resource.version=v1alpha2 \
+    --resource.name=postgreses
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/proxysql/custom \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --form-templates=alert.yaml \
+    --sample-name=proxysql \
+    --resource.group=kubedb.com \
+    --resource.version=v1alpha2 \
+    --resource.name=proxysqls
 
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/redis/sentinel/prometheus.io/backupconfiguration/stash/tls/custom-auth/custom-config \
@@ -102,31 +127,6 @@ go run cmd/fuse-chart/*.go \
     --resource.group=stash.appscode.com \
     --resource.version=v1beta1 \
     --resource.name=restoresessions
-
-go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/proxysql/custom \
-    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
-    --form-templates=alert.yaml \
-    --sample-name=proxysql \
-    --resource.group=kubedb.com \
-    --resource.version=v1alpha2 \
-    --resource.name=proxysqls
-
-go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/pgbouncer/custom \
-    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
-    --sample-name=pgbouncer \
-    --resource.group=kubedb.com \
-    --resource.version=v1alpha2 \
-    --resource.name=pgbouncers
-
-go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/kafka/custom \
-    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
-    --sample-name=kafka \
-    --resource.group=kubedb.com \
-    --resource.version=v1alpha2 \
-    --resource.name=kafkas
 
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-core \
