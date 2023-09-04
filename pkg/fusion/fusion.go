@@ -28,6 +28,7 @@ import (
 
 	docapi "kubepack.dev/chart-doc-gen/api"
 	"kubepack.dev/lib-app/pkg/editor"
+	"kubepack.dev/lib-app/pkg/utils"
 	"kubepack.dev/lib-helm/pkg/action"
 	"kubepack.dev/lib-helm/pkg/repo"
 
@@ -54,8 +55,8 @@ var (
 	sampleName                 = ""
 	instanceName               = ""
 	chartDir                   = ""
-	chartVersion               = "v0.4.16"
-	chartUseDigest             = false
+	chartVersion               = utils.ChartVersion
+	chartUseDigest             = utils.ChartUseDigest
 	editorChartName            = ""
 	optsChartName              = ""
 	formTemplateFiles []string = nil

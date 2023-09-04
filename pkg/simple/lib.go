@@ -24,6 +24,7 @@ import (
 	"strings"
 
 	docapi "kubepack.dev/chart-doc-gen/api"
+	"kubepack.dev/lib-app/pkg/utils"
 
 	"github.com/google/go-containerregistry/pkg/authn"
 	"github.com/google/go-containerregistry/pkg/crane"
@@ -47,8 +48,8 @@ const repoName = "bytebuilders-ui"
 var (
 	descriptorDir  = homedir.HomeDir() + "/go/src/kmodules.xyz/resource-metadata/hub/resourcedescriptors/"
 	chartDir       = homedir.HomeDir() + "/go/src/go.bytebuilders.dev/ui-wizards/charts"
-	chartVersion   = "v0.4.16"
-	chartUseDigest = false
+	chartVersion   = utils.ChartVersion
+	chartUseDigest = utils.ChartUseDigest
 	gvr            schema.GroupVersionResource
 	all            bool
 	skipExisting   bool
