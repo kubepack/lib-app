@@ -31,15 +31,15 @@ require (
 	k8s.io/klog/v2 v2.80.1
 	k8s.io/kube-aggregator v0.25.1
 	k8s.io/kubectl v0.25.3
-	kmodules.xyz/client-go v0.25.31-0.20230821150743-c39e39ccaa08
-	kmodules.xyz/resource-metadata v0.17.13-0.20230824052617-8c73d3ff5a13
+	kmodules.xyz/client-go v0.25.32
+	kmodules.xyz/resource-metadata v0.17.17-0.20230906180350-35e6699b3dae
 	kmodules.xyz/sets v0.25.0
 	kubepack.dev/chart-doc-gen v0.4.7
 	kubepack.dev/kubepack v0.7.1-0.20230525102401-a03c57bc421a
-	kubepack.dev/lib-helm v0.7.2-0.20230822155610-5737c9a861ec
+	kubepack.dev/lib-helm v0.7.2-0.20230906111915-1ac73fba63d5
 	sigs.k8s.io/controller-runtime v0.13.1
 	sigs.k8s.io/yaml v1.3.0
-	x-helm.dev/apimachinery v0.0.9
+	x-helm.dev/apimachinery v0.0.10
 )
 
 require (

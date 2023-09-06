@@ -27,7 +27,7 @@ spec:
         apiGroup: source.toolkit.fluxcd.io
         kind: HelmRepository
         name: bytebuilders-ui
-      version: sha256:39a6e5fe241dfc35c7fff2c70881fd6ed573c8c929b26a18636626faad4058f8
+      version: sha256:d0e14ec5d9ff6b4aceccc5f401febfabd39c63eaa8b70245a3239bc63252c3c6
     options:
       name: kubedbcom-perconaxtradb-editor-options
       sourceRef:
@@ -35,3 +35,8 @@ spec:
         kind: HelmRepository
         name: bytebuilders-ui
       version: v0.4.16
+  variants:
+  - name: ""
+    selector:
+      matchLabels:
+        cluster.x-k8s.io/is-default-preset: "true"
