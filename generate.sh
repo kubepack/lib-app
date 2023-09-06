@@ -20,6 +20,9 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/elasticsearch/custom \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --form-templates=alert.yaml \
+    --form-templates=capa.yaml \
+    --form-templates=capg.yaml \
+    --form-templates=capz.yaml \
     --sample-name=elasticsearch \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
@@ -37,6 +40,9 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/mariadb/cluster/prometheus.io/backupconfiguration/stash/tls/custom-auth/config-file/customize-pod-template \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --form-templates=alert.yaml \
+    --form-templates=capa.yaml \
+    --form-templates=capg.yaml \
+    --form-templates=capz.yaml \
     --sample-name=mariadb \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
@@ -46,6 +52,9 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/mongodb/managed \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --form-templates=alert.yaml \
+    --form-templates=capa.yaml \
+    --form-templates=capg.yaml \
+    --form-templates=capz.yaml \
     --sample-name=mongodb \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
@@ -55,6 +64,9 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/mysql/group-replication/prometheus.io/backupconfiguration/stash/tls/custom-auth/config-file/customize-pod-template \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --form-templates=alert.yaml \
+    --form-templates=capa.yaml \
+    --form-templates=capg.yaml \
+    --form-templates=capz.yaml \
     --sample-name=mysql \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
@@ -72,6 +84,9 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/postgres/cluster/prometheus.io/backupconfiguration/stash/tls/custom-auth/custom-auth-mode/custom-config/custom-pg-coordinator/custom-uid \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --form-templates=alert.yaml \
+    --form-templates=capa.yaml \
+    --form-templates=capg.yaml \
+    --form-templates=capz.yaml \
     --sample-name=postgres \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
@@ -81,6 +96,9 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/proxysql/custom \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --form-templates=alert.yaml \
+    --form-templates=capa.yaml \
+    --form-templates=capg.yaml \
+    --form-templates=capz.yaml \
     --sample-name=proxysql \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
@@ -90,6 +108,9 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/redis/sentinel/prometheus.io/backupconfiguration/stash/tls/custom-auth/custom-config \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --form-templates=alert.yaml \
+    --form-templates=capa.yaml \
+    --form-templates=capg.yaml \
+    --form-templates=capz.yaml \
     --sample-name=redis \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
@@ -107,6 +128,9 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/kubevault/vaultserver/custom \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --form-templates=alert.yaml \
+    --form-templates=capa.yaml \
+    --form-templates=capg.yaml \
+    --form-templates=capz.yaml \
     --sample-name=vault \
     --resource.group=kubevault.com \
     --resource.version=v1alpha1 \
