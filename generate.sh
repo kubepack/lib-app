@@ -14,11 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-go run cmd/gen-simple-editor/main.go --all --skipExisting=false
+CHART_VERSION=${CHART_VERSION:-v0.4.17}
+
+go run cmd/gen-simple-editor/main.go --all --skipExisting=false \
+    --chart-version=$CHART_VERSION
 
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/elasticsearch/custom \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
     --form-templates=alert.yaml \
     --form-templates=capa.yaml \
     --form-templates=capg.yaml \
@@ -31,6 +35,7 @@ go run cmd/fuse-chart/*.go \
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/kafka/custom \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
     --sample-name=kafka \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
@@ -39,6 +44,7 @@ go run cmd/fuse-chart/*.go \
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/mariadb/cluster/prometheus.io/backupconfiguration/stash/tls/custom-auth/config-file/customize-pod-template \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
     --form-templates=alert.yaml \
     --form-templates=capa.yaml \
     --form-templates=capg.yaml \
@@ -51,6 +57,7 @@ go run cmd/fuse-chart/*.go \
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/mongodb/managed \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
     --form-templates=alert.yaml \
     --form-templates=capa.yaml \
     --form-templates=capg.yaml \
@@ -63,6 +70,7 @@ go run cmd/fuse-chart/*.go \
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/mysql/group-replication/prometheus.io/backupconfiguration/stash/tls/custom-auth/config-file/customize-pod-template \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
     --form-templates=alert.yaml \
     --form-templates=capa.yaml \
     --form-templates=capg.yaml \
@@ -75,6 +83,7 @@ go run cmd/fuse-chart/*.go \
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/pgbouncer/custom \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
     --sample-name=pgbouncer \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
@@ -83,6 +92,7 @@ go run cmd/fuse-chart/*.go \
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/postgres/cluster/prometheus.io/backupconfiguration/stash/tls/custom-auth/custom-auth-mode/custom-config/custom-pg-coordinator/custom-uid \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
     --form-templates=alert.yaml \
     --form-templates=capa.yaml \
     --form-templates=capg.yaml \
@@ -95,6 +105,7 @@ go run cmd/fuse-chart/*.go \
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/proxysql/custom \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
     --form-templates=alert.yaml \
     --form-templates=capa.yaml \
     --form-templates=capg.yaml \
@@ -107,6 +118,7 @@ go run cmd/fuse-chart/*.go \
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/redis/sentinel/prometheus.io/backupconfiguration/stash/tls/custom-auth/custom-config \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
     --form-templates=alert.yaml \
     --form-templates=capa.yaml \
     --form-templates=capg.yaml \
@@ -119,6 +131,7 @@ go run cmd/fuse-chart/*.go \
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/redissentinel/prometheus.io/tls/custom-auth \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
     --sample-name=redissentinel \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
@@ -127,6 +140,7 @@ go run cmd/fuse-chart/*.go \
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/kubevault/vaultserver/custom \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
     --form-templates=alert.yaml \
     --form-templates=capa.yaml \
     --form-templates=capg.yaml \
@@ -139,6 +153,7 @@ go run cmd/fuse-chart/*.go \
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/repository/custom \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
     --sample-name=s3 \
     --resource.group=stash.appscode.com \
     --resource.version=v1alpha1 \
@@ -147,6 +162,7 @@ go run cmd/fuse-chart/*.go \
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/restoresession/custom \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
     --sample-name=restore-app \
     --resource.group=stash.appscode.com \
     --resource.version=v1beta1 \
@@ -155,6 +171,7 @@ go run cmd/fuse-chart/*.go \
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-core \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
     --sample-name=opscenter-core \
     --instance-name=opscenter-core \
     --resource.group=ui.k8s.appscode.com \
@@ -165,6 +182,7 @@ go run cmd/fuse-chart/*.go \
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-monitoring \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
     --sample-name=opscenter-monitoring \
     --instance-name=opscenter-monitoring \
     --resource.group=ui.k8s.appscode.com \
@@ -175,6 +193,7 @@ go run cmd/fuse-chart/*.go \
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-datastore \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
     --sample-name=opscenter-datastore \
     --instance-name=opscenter-datastore \
     --resource.group=ui.k8s.appscode.com \
@@ -185,6 +204,7 @@ go run cmd/fuse-chart/*.go \
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-backup \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
     --sample-name=opscenter-backup \
     --instance-name=opscenter-backup \
     --resource.group=ui.k8s.appscode.com \
@@ -195,6 +215,7 @@ go run cmd/fuse-chart/*.go \
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-security \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
     --sample-name=opscenter-security \
     --instance-name=opscenter-security \
     --resource.group=ui.k8s.appscode.com \
@@ -205,6 +226,7 @@ go run cmd/fuse-chart/*.go \
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-manageddb \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
     --sample-name=opscenter-manageddb \
     --instance-name=opscenter-manageddb \
     --resource.group=ui.k8s.appscode.com \
@@ -215,6 +237,7 @@ go run cmd/fuse-chart/*.go \
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-cost \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
     --sample-name=opscenter-cost \
     --instance-name=opscenter-cost \
     --resource.group=ui.k8s.appscode.com \
