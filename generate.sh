@@ -244,3 +244,14 @@ go run cmd/fuse-chart/*.go \
     --resource.version=v1alpha1 \
     --resource.name=featuresets \
     --gen-crd=false
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-ocm \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=opscenter-ocm \
+    --instance-name=opscenter-ocm \
+    --resource.group=ui.k8s.appscode.com \
+    --resource.version=v1alpha1 \
+    --resource.name=featuresets \
+    --gen-crd=false
