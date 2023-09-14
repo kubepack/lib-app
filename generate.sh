@@ -224,17 +224,6 @@ go run cmd/fuse-chart/*.go \
     --gen-crd=false
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-manageddb \
-    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
-    --chart-version=$CHART_VERSION \
-    --sample-name=opscenter-manageddb \
-    --instance-name=opscenter-manageddb \
-    --resource.group=ui.k8s.appscode.com \
-    --resource.version=v1alpha1 \
-    --resource.name=featuresets \
-    --gen-crd=false
-
-go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-cost \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
@@ -251,6 +240,50 @@ go run cmd/fuse-chart/*.go \
     --chart-version=$CHART_VERSION \
     --sample-name=opscenter-ocm \
     --instance-name=opscenter-ocm \
+    --resource.group=ui.k8s.appscode.com \
+    --resource.version=v1alpha1 \
+    --resource.name=featuresets \
+    --gen-crd=false
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-networking \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=opscenter-networking \
+    --instance-name=opscenter-networking \
+    --resource.group=ui.k8s.appscode.com \
+    --resource.version=v1alpha1 \
+    --resource.name=featuresets \
+    --gen-crd=false
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/dbaas-capa \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=dbaas-capa \
+    --instance-name=dbaas-capa \
+    --resource.group=ui.k8s.appscode.com \
+    --resource.version=v1alpha1 \
+    --resource.name=featuresets \
+    --gen-crd=false
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/dbaas-capg \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=dbaas-capg \
+    --instance-name=dbaas-capg \
+    --resource.group=ui.k8s.appscode.com \
+    --resource.version=v1alpha1 \
+    --resource.name=featuresets \
+    --gen-crd=false
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/dbaas-capz \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=dbaas-capz \
+    --instance-name=dbaas-capz \
     --resource.group=ui.k8s.appscode.com \
     --resource.version=v1alpha1 \
     --resource.name=featuresets \
