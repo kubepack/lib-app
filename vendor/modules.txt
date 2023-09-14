@@ -344,7 +344,7 @@ github.com/containerd/stargz-snapshotter/estargz/errorutil
 # github.com/cubewise-code/go-mime v0.0.0-20200519001935-8c5762b177d8
 ## explicit
 github.com/cubewise-code/go-mime
-# github.com/cyphar/filepath-securejoin v0.2.3
+# github.com/cyphar/filepath-securejoin v0.2.4
 ## explicit; go 1.13
 github.com/cyphar/filepath-securejoin
 # github.com/davecgh/go-spew v1.1.1
@@ -1598,7 +1598,7 @@ kubepack.dev/chart-doc-gen/api
 # kubepack.dev/kubepack v0.7.1-0.20230525102401-a03c57bc421a
 ## explicit; go 1.18
 kubepack.dev/kubepack/pkg/lib
-# kubepack.dev/lib-helm v0.7.2-0.20230906111915-1ac73fba63d5
+# kubepack.dev/lib-helm v0.7.2-0.20230914003543-cc1b248b0138
 ## explicit; go 1.18
 kubepack.dev/lib-helm/pkg/action
 kubepack.dev/lib-helm/pkg/chart

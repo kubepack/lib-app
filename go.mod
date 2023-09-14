@@ -36,7 +36,7 @@ require (
 	kmodules.xyz/sets v0.25.0
 	kubepack.dev/chart-doc-gen v0.4.7
 	kubepack.dev/kubepack v0.7.1-0.20230525102401-a03c57bc421a
-	kubepack.dev/lib-helm v0.7.2-0.20230906111915-1ac73fba63d5
+	kubepack.dev/lib-helm v0.7.2-0.20230914003543-cc1b248b0138
 	sigs.k8s.io/controller-runtime v0.13.1
 	sigs.k8s.io/yaml v1.3.0
 	x-helm.dev/apimachinery v0.0.10
@@ -96,7 +96,7 @@ require (
 	github.com/containerd/containerd v1.6.6 // indirect
 	github.com/containerd/stargz-snapshotter/estargz v0.12.1 // indirect
 	github.com/cubewise-code/go-mime v0.0.0-20200519001935-8c5762b177d8 // indirect
-	github.com/cyphar/filepath-securejoin v0.2.3 // indirect
+	github.com/cyphar/filepath-securejoin v0.2.4 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/docker/cli v20.10.22+incompatible // indirect
 	github.com/docker/distribution v2.8.1+incompatible // indirect

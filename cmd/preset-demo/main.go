@@ -73,11 +73,11 @@ func main() {
 			SourceNamespace: "",
 			SourceName:      url,
 		},
-		PresetGroup:    chartsapi.GroupVersion.Group,
-		PresetKind:     chartsapi.ResourceKindClusterChartPreset,
-		PresetName:     "unified",
-		PresetSelector: "",
-		Namespace:      "default",
+		// PresetGroup:    chartsapi.GroupVersion.Group,
+		// PresetKind:     chartsapi.ResourceKindClusterChartPreset,
+		PresetName: "unified",
+		// PresetSelector: "",
+		Namespace: "default",
 	}
 	// encoder := form.NewEncoder()
 	// encoder.SetTagName("json")
