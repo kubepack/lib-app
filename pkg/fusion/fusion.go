@@ -674,5 +674,12 @@ func copyWithReplace(chartDir, optsChartName, editorChartName, filename string, 
 		return err
 	}
 	data = bytes.ReplaceAll(data, []byte(optsChartName), []byte(editorChartName))
+
+	if !ioutilz.PathExists(filepath.Dir(dst)) {
+		err = os.MkdirAll(filepath.Dir(dst), 0o755)
+		if err != nil {
+			return err
+		}
+	}
 	return os.WriteFile(dst, data, 0o644)
 }
