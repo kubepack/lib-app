@@ -257,6 +257,17 @@ go run cmd/fuse-chart/*.go \
     --gen-crd=false
 
 go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-presets \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=opscenter-presets \
+    --instance-name=opscenter-presets \
+    --resource.group=ui.k8s.appscode.com \
+    --resource.version=v1alpha1 \
+    --resource.name=featuresets \
+    --gen-crd=false
+
+go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/dbaas-capa \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
