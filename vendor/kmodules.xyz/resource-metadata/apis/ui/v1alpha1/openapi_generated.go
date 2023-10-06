@@ -308,6 +308,7 @@ func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenA
 		"kmodules.xyz/resource-metadata/apis/shared.If":                         schema_kmodulesxyz_resource_metadata_apis_shared_If(ref),
 		"kmodules.xyz/resource-metadata/apis/shared.ResourceLocator":            schema_kmodulesxyz_resource_metadata_apis_shared_ResourceLocator(ref),
 		"kmodules.xyz/resource-metadata/apis/shared.ResourceQuery":              schema_kmodulesxyz_resource_metadata_apis_shared_ResourceQuery(ref),
+		"kmodules.xyz/resource-metadata/apis/shared.SourceLocator":              schema_kmodulesxyz_resource_metadata_apis_shared_SourceLocator(ref),
 		"kmodules.xyz/resource-metadata/apis/shared.UIParameterTemplate":        schema_kmodulesxyz_resource_metadata_apis_shared_UIParameterTemplate(ref),
 		"kmodules.xyz/resource-metadata/apis/shared.UIParameters":               schema_kmodulesxyz_resource_metadata_apis_shared_UIParameters(ref),
 		"kmodules.xyz/resource-metadata/apis/ui/v1alpha1.ActionTemplate":        schema_resource_metadata_apis_ui_v1alpha1_ActionTemplate(ref),
@@ -14788,8 +14789,15 @@ func schema_kmodulesxyz_resource_metadata_apis_shared_ActionTemplate(ref common.
 							Ref: ref("x-helm.dev/apimachinery/apis/releases/v1alpha1.ChartSourceRef"),
 						},
 					},
+					"enforceQuota": {
+						SchemaProps: spec.SchemaProps{
+							Default: false,
+							Type:    []string{"boolean"},
+							Format:  "",
+						},
+					},
 				},
-				Required: []string{"operationId", "flow"},
+				Required: []string{"operationId", "flow", "enforceQuota"},
 			},
 		},
 		Dependencies: []string{
@@ -15037,6 +15045,32 @@ func schema_kmodulesxyz_resource_metadata_apis_shared_ResourceQuery(ref common.R
 	}
 }
 
+func schema_kmodulesxyz_resource_metadata_apis_shared_SourceLocator(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Type: []string{"object"},
+				Properties: map[string]spec.Schema{
+					"resource": {
+						SchemaProps: spec.SchemaProps{
+							Default: map[string]interface{}{},
+							Ref:     ref("kmodules.xyz/client-go/api/v1.ResourceID"),
+						},
+					},
+					"ref": {
+						SchemaProps: spec.SchemaProps{
+							Default: map[string]interface{}{},
+							Ref:     ref("kmodules.xyz/client-go/api/v1.ObjectReference"),
+						},
+					},
+				},
+			},
+		},
+		Dependencies: []string{
+			"kmodules.xyz/client-go/api/v1.ObjectReference", "kmodules.xyz/client-go/api/v1.ResourceID"},
+	}
+}
+
 func schema_kmodulesxyz_resource_metadata_apis_shared_UIParameterTemplate(ref common.ReferenceCallback) common.OpenAPIDefinition {
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
@@ -15051,6 +15085,13 @@ func schema_kmodulesxyz_resource_metadata_apis_shared_UIParameterTemplate(ref co
 					"editor": {
 						SchemaProps: spec.SchemaProps{
 							Ref: ref("x-helm.dev/apimachinery/apis/releases/v1alpha1.ChartSourceRef"),
+						},
+					},
+					"enforceQuota": {
+						SchemaProps: spec.SchemaProps{
+							Default: false,
+							Type:    []string{"boolean"},
+							Format:  "",
 						},
 					},
 					"actions": {
@@ -15081,6 +15122,7 @@ func schema_kmodulesxyz_resource_metadata_apis_shared_UIParameterTemplate(ref co
 						},
 					},
 				},
+				Required: []string{"enforceQuota"},
 			},
 		},
 		Dependencies: []string{
@@ -15195,8 +15237,15 @@ func schema_resource_metadata_apis_ui_v1alpha1_ActionTemplate(ref common.Referen
 							Ref: ref("x-helm.dev/apimachinery/apis/releases/v1alpha1.ChartSourceRef"),
 						},
 					},
+					"enforceQuota": {
+						SchemaProps: spec.SchemaProps{
+							Default: false,
+							Type:    []string{"boolean"},
+							Format:  "",
+						},
+					},
 				},
-				Required: []string{"operationId", "flow"},
+				Required: []string{"operationId", "flow", "enforceQuota"},
 			},
 		},
 		Dependencies: []string{
@@ -15665,7 +15714,7 @@ func schema_resource_metadata_apis_ui_v1alpha1_FeatureSetSpec(ref common.Referen
 							},
 						},
 					},
-					"required": {
+					"recommended": {
 						SchemaProps: spec.SchemaProps{
 							Description: "Required specify whether this feature set is mandatory or not for using the UI.",
 							Type:        []string{"boolean"},
@@ -15810,7 +15859,7 @@ func schema_resource_metadata_apis_ui_v1alpha1_FeatureSpec(ref common.ReferenceC
 							Format:      "",
 						},
 					},
-					"required": {
+					"recommended": {
 						SchemaProps: spec.SchemaProps{
 							Description: "Required specifies whether this feature is mandatory or not for enabling the respecting FeatureSet.",
 							Type:        []string{"boolean"},
@@ -16277,6 +16326,13 @@ func schema_resource_metadata_apis_ui_v1alpha1_UIParameters(ref common.Reference
 							Ref: ref("x-helm.dev/apimachinery/apis/releases/v1alpha1.ChartSourceRef"),
 						},
 					},
+					"enforceQuota": {
+						SchemaProps: spec.SchemaProps{
+							Default: false,
+							Type:    []string{"boolean"},
+							Format:  "",
+						},
+					},
 					"instanceLabelPaths": {
 						SchemaProps: spec.SchemaProps{
 							Description: "app.kubernetes.io/instance label must be updated at these paths when refilling metadata",
@@ -16305,6 +16361,7 @@ func schema_resource_metadata_apis_ui_v1alpha1_UIParameters(ref common.Reference
 						},
 					},
 				},
+				Required: []string{"enforceQuota"},
 			},
 		},
 		Dependencies: []string{

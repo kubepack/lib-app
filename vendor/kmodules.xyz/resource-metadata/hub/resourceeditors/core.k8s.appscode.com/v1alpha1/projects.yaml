@@ -4,14 +4,14 @@ metadata:
   creationTimestamp: null
   labels:
     k8s.io/group: core.k8s.appscode.com
-    k8s.io/kind: ResourceCalculator
-    k8s.io/resource: resourcecalculators
+    k8s.io/kind: Project
+    k8s.io/resource: projects
     k8s.io/version: v1alpha1
-  name: core.k8s.appscode.com-v1alpha1-resourcecalculators
+  name: core.k8s.appscode.com-v1alpha1-projects
 spec:
   resource:
     group: core.k8s.appscode.com
-    kind: ResourceCalculator
-    name: resourcecalculators
-    scope: Namespaced
+    kind: Project
+    name: projects
+    scope: Cluster
     version: v1alpha1

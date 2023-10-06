@@ -3,7 +3,7 @@ module kubepack.dev/lib-app
 go 1.18
 
 require (
-	github.com/Masterminds/semver/v3 v3.2.0
+	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/Masterminds/sprig/v3 v3.2.2
 	github.com/evanphx/json-patch/v5 v5.6.0
 	github.com/go-chi/chi/v5 v5.0.8
@@ -31,15 +31,15 @@ require (
 	k8s.io/klog/v2 v2.80.1
 	k8s.io/kube-aggregator v0.25.1
 	k8s.io/kubectl v0.25.3
-	kmodules.xyz/client-go v0.25.34
-	kmodules.xyz/resource-metadata v0.17.18
+	kmodules.xyz/client-go v0.25.38
+	kmodules.xyz/resource-metadata v0.17.25-0.20231006102558-311a1a2eaa10
 	kmodules.xyz/sets v0.25.0
 	kubepack.dev/chart-doc-gen v0.4.7
-	kubepack.dev/kubepack v0.7.1-0.20230525102401-a03c57bc421a
-	kubepack.dev/lib-helm v0.7.2
+	kubepack.dev/kubepack v0.7.1-0.20230901212424-4c57e72d1c27
+	kubepack.dev/lib-helm v0.7.3
 	sigs.k8s.io/controller-runtime v0.13.1
 	sigs.k8s.io/yaml v1.3.0
-	x-helm.dev/apimachinery v0.0.11
+	x-helm.dev/apimachinery v0.0.12
 )
 
 require (
@@ -226,8 +226,10 @@ require (
 	gomodules.xyz/encoding v0.0.7 // indirect
 	gomodules.xyz/flags v0.1.3 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.4.0 // indirect
+	gomodules.xyz/mergo v0.3.13 // indirect
 	gomodules.xyz/orderedmap v0.1.0 // indirect
 	gomodules.xyz/password-generator v0.2.7 // indirect
+	gomodules.xyz/pointer v0.1.0 // indirect
 	gomodules.xyz/sets v0.2.1 // indirect
 	gomodules.xyz/wait v0.2.0 // indirect
 	google.golang.org/api v0.104.0 // indirect
@@ -243,6 +245,8 @@ require (
 	k8s.io/utils v0.0.0-20221108210102-8e77b1f39fe2 // indirect
 	kmodules.xyz/apiversion v0.2.0 // indirect
 	kmodules.xyz/apply v0.25.0 // indirect
+	kmodules.xyz/offshoot-api v0.25.0 // indirect
+	kmodules.xyz/resource-metrics v0.25.3 // indirect
 	oras.land/oras-go v1.2.0 // indirect
 	sigs.k8s.io/cli-utils v0.34.0 // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
@@ -251,4 +255,4 @@ require (
 	sigs.k8s.io/structured-merge-diff/v4 v4.2.3 // indirect
 )
 
-replace helm.sh/helm/v3 => github.com/x-helm/helm/v3 v3.10.2-0.20230503230011-a8f5ce951c95
+replace helm.sh/helm/v3 => github.com/x-helm/helm/v3 v3.10.2-0.20230910175645-ad538d5bfc73
