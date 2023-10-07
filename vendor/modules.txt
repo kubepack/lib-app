@@ -864,12 +864,6 @@ go.starlark.net/resolve
 go.starlark.net/starlark
 go.starlark.net/starlarkstruct
 go.starlark.net/syntax
-# go.uber.org/automaxprocs v1.5.2
-## explicit; go 1.18
-go.uber.org/automaxprocs
-go.uber.org/automaxprocs/internal/cgroups
-go.uber.org/automaxprocs/internal/runtime
-go.uber.org/automaxprocs/maxprocs
 # go.wandrs.dev/binding v0.0.2
 ## explicit; go 1.16
 go.wandrs.dev/binding

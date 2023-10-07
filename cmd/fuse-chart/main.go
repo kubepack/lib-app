@@ -19,7 +19,6 @@ package main
 import (
 	"kubepack.dev/lib-app/pkg/fusion"
 
-	_ "go.uber.org/automaxprocs"
 	"gomodules.xyz/logs"
 	"k8s.io/klog/v2"
 )

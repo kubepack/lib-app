@@ -118,6 +118,12 @@ func NewCmdFuse() *cobra.Command {
 		Short:             `Fuse YAMLs`,
 		DisableAutoGenTag: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
+			if instanceName == "" {
+				fmt.Printf("%+v\n", gvr)
+			} else {
+				fmt.Printf("%+v, name=%s\n", gvr, instanceName)
+			}
+
 			err := LoadHelmRepositories()
 			if err != nil {
 				return err

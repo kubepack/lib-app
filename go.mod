@@ -16,7 +16,6 @@ require (
 	github.com/spf13/pflag v1.0.5
 	github.com/unrolled/render v1.6.0
 	go.bytebuilders.dev/installer v0.1.1-0.20231005122651-08f231587391
-	go.uber.org/automaxprocs v1.5.2
 	go.wandrs.dev/binding v0.0.2
 	go.wandrs.dev/http v0.0.2
 	gocloud.dev v0.26.0
