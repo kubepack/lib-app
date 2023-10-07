@@ -7,6 +7,7 @@ require (
 	github.com/Masterminds/sprig/v3 v3.2.2
 	github.com/evanphx/json-patch/v5 v5.6.0
 	github.com/fluxcd/helm-controller/api v0.26.0
+	github.com/fluxcd/source-controller/api v0.33.0
 	github.com/go-chi/chi/v5 v5.0.8
 	github.com/gobuffalo/flect v0.3.0
 	github.com/google/go-containerregistry v0.13.0
@@ -116,7 +117,6 @@ require (
 	github.com/fluxcd/pkg/apis/meta v0.18.0 // indirect
 	github.com/fluxcd/pkg/oci v0.17.0 // indirect
 	github.com/fluxcd/pkg/version v0.2.0 // indirect
-	github.com/fluxcd/source-controller/api v0.33.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/fvbommel/sortorder v1.0.1 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.2 // indirect

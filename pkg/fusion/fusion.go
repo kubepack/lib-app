@@ -34,7 +34,7 @@ import (
 
 	"github.com/Masterminds/sprig/v3"
 	"github.com/fluxcd/helm-controller/api/v2beta1"
-	_ "github.com/fluxcd/helm-controller/api/v2beta1"
+	fluxsrc "github.com/fluxcd/source-controller/api/v1beta2"
 	"github.com/spf13/cobra"
 	installer "go.bytebuilders.dev/installer/apis/installer/v1alpha1"
 	ioutilz "gomodules.xyz/x/ioutil"
@@ -52,6 +52,7 @@ import (
 	"kmodules.xyz/resource-metadata/apis/meta/v1alpha1"
 	"kmodules.xyz/resource-metadata/hub"
 	ksets "kmodules.xyz/sets"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/yaml"
 	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 )
@@ -77,12 +78,16 @@ var (
 	resourceKeys   = sets.NewString()
 	formKeys       = sets.NewString()
 
-	HelmRegistry     = repo.NewDiskCacheRegistry()
+	HelmRegistry     repo.IRegistry
 	HelmRepositories = map[string]string{}
 )
 
 func LoadHelmRepositories() error {
-	chrt, err := HelmRegistry.GetChart(releasesapi.ChartSourceRef{
+	var src []client.Object
+
+	diskCache := repo.DefaultDiskCache()
+	reg := repo.NewRegistry(nil, diskCache)
+	chrt, err := reg.GetChart(releasesapi.ChartSourceRef{
 		Name:    "opscenter-features",
 		Version: "",
 		SourceRef: kmapi.TypedObjectReference{
@@ -106,9 +111,29 @@ func LoadHelmRepositories() error {
 
 			for k, v := range val.Repositories {
 				HelmRepositories[k] = v.URL
+
+				t := "default"
+				if strings.HasPrefix(v.URL, "oci://") {
+					t = "oci"
+				}
+
+				src = append(src, &fluxsrc.HelmRepository{
+					TypeMeta: metav1.TypeMeta{},
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      k,
+						Namespace: "kubeops",
+					},
+					Spec: fluxsrc.HelmRepositorySpec{
+						URL:     v.URL,
+						Type:    t,
+						Timeout: &v.Interval,
+					},
+				})
 			}
 		}
 	}
+
+	HelmRegistry = repo.NewRegistry(NewFakeClient(src...), diskCache)
 	return nil
 }
 
@@ -206,7 +231,7 @@ func NewCmdFuse() *cobra.Command {
 						if !found {
 							return fmt.Errorf("failed to detect URL for Helm Repository %s", hr.Spec.Chart.Spec.SourceRef.Name)
 						}
-						chrt, err := HelmRegistry.GetChart(releasesapi.ChartSourceRef{
+						ref := releasesapi.ChartSourceRef{
 							Name:    hr.Spec.Chart.Spec.Chart,
 							Version: hr.Spec.Chart.Spec.Version,
 							SourceRef: kmapi.TypedObjectReference{
@@ -215,7 +240,20 @@ func NewCmdFuse() *cobra.Command {
 								Namespace: "",
 								Name:      repoURL,
 							},
-						})
+						}
+						if strings.HasPrefix(repoURL, "oci://") {
+							ref = releasesapi.ChartSourceRef{
+								Name:    hr.Spec.Chart.Spec.Chart,
+								Version: hr.Spec.Chart.Spec.Version,
+								SourceRef: kmapi.TypedObjectReference{
+									APIGroup:  releasesapi.SourceGroupHelmRepository,
+									Kind:      releasesapi.SourceKindHelmRepository,
+									Namespace: hr.Spec.Chart.Spec.SourceRef.Namespace,
+									Name:      hr.Spec.Chart.Spec.SourceRef.Name,
+								},
+							}
+						}
+						chrt, err := HelmRegistry.GetChart(ref)
 						if err != nil {
 							return err
 						}
