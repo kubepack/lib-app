@@ -25,11 +25,15 @@ import (
 )
 
 func main() {
+	if err := realMain(); err != nil {
+		klog.Fatalln(err)
+	}
+}
+
+func realMain() error {
 	rootCmd := fusion.NewCmdFuse()
 	logs.Init(rootCmd, false)
 	defer logs.FlushLogs()
 
-	if err := rootCmd.Execute(); err != nil {
-		klog.ErrorS(err, "command failed")
-	}
+	return rootCmd.Execute()
 }

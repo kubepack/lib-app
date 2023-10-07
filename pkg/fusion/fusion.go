@@ -33,15 +33,21 @@ import (
 	"kubepack.dev/lib-helm/pkg/repo"
 
 	"github.com/Masterminds/sprig/v3"
+	"github.com/fluxcd/helm-controller/api/v2beta1"
+	_ "github.com/fluxcd/helm-controller/api/v2beta1"
 	"github.com/spf13/cobra"
+	installer "go.bytebuilders.dev/installer/apis/installer/v1alpha1"
 	ioutilz "gomodules.xyz/x/ioutil"
 	y3 "gopkg.in/yaml.v3"
 	"helm.sh/helm/v3/pkg/chart"
+	"helm.sh/helm/v3/pkg/chartutil"
 	crdv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/sets"
+	kmapi "kmodules.xyz/client-go/api/v1"
 	"kmodules.xyz/client-go/tools/parser"
 	"kmodules.xyz/resource-metadata/apis/meta/v1alpha1"
 	"kmodules.xyz/resource-metadata/hub"
@@ -70,8 +76,41 @@ var (
 	registry       = hub.NewRegistryOfKnownResources()
 	resourceKeys   = sets.NewString()
 	formKeys       = sets.NewString()
-	HelmRegistry   = repo.NewDiskCacheRegistry()
+
+	HelmRegistry     = repo.NewDiskCacheRegistry()
+	HelmRepositories = map[string]string{}
 )
+
+func LoadHelmRepositories() error {
+	chrt, err := HelmRegistry.GetChart(releasesapi.ChartSourceRef{
+		Name:    "opscenter-features",
+		Version: "",
+		SourceRef: kmapi.TypedObjectReference{
+			APIGroup:  releasesapi.SourceGroupLegacy,
+			Kind:      releasesapi.SourceKindLegacy,
+			Namespace: "",
+			Name:      "https://charts.appscode.com/stable/",
+		},
+	})
+	if err != nil {
+		return err
+	}
+
+	var val installer.OpscenterFeaturesSpec
+	for _, f := range chrt.Raw {
+		if f.Name == chartutil.ValuesfileName {
+			err = yaml.Unmarshal(f.Data, &val)
+			if err != nil {
+				return err
+			}
+
+			for k, v := range val.Repositories {
+				HelmRepositories[k] = v.URL
+			}
+		}
+	}
+	return nil
+}
 
 func NewCmdFuse() *cobra.Command {
 	cmd := &cobra.Command{
@@ -79,6 +118,11 @@ func NewCmdFuse() *cobra.Command {
 		Short:             `Fuse YAMLs`,
 		DisableAutoGenTag: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
+			err := LoadHelmRepositories()
+			if err != nil {
+				return err
+			}
+
 			rd, err := registry.LoadByGVR(gvr)
 			if err != nil {
 				return err
@@ -142,7 +186,49 @@ func NewCmdFuse() *cobra.Command {
 
 				if descriptor.Spec.Validation != nil && descriptor.Spec.Validation.OpenAPIV3Schema != nil {
 					delete(descriptor.Spec.Validation.OpenAPIV3Schema.Properties, "status")
-					resourceSchema.Properties[rsKey] = *descriptor.Spec.Validation.OpenAPIV3Schema.DeepCopy()
+					props := *descriptor.Spec.Validation.OpenAPIV3Schema.DeepCopy()
+
+					if ri.Object.GetAPIVersion() == v2beta1.GroupVersion.String() &&
+						ri.Object.GetKind() == v2beta1.HelmReleaseKind {
+						var hr v2beta1.HelmRelease
+						err := runtime.DefaultUnstructuredConverter.FromUnstructured(ri.Object.UnstructuredContent(), &hr)
+						if err != nil {
+							return err
+						}
+
+						repoURL, found := HelmRepositories[hr.Spec.Chart.Spec.SourceRef.Name]
+						if !found {
+							return fmt.Errorf("failed to detect URL for Helm Repository %s", hr.Spec.Chart.Spec.SourceRef.Name)
+						}
+						chrt, err := HelmRegistry.GetChart(releasesapi.ChartSourceRef{
+							Name:    hr.Spec.Chart.Spec.Chart,
+							Version: hr.Spec.Chart.Spec.Version,
+							SourceRef: kmapi.TypedObjectReference{
+								APIGroup:  releasesapi.SourceGroupLegacy,
+								Kind:      releasesapi.SourceKindLegacy,
+								Namespace: "",
+								Name:      repoURL,
+							},
+						})
+						if err != nil {
+							return err
+						}
+
+						for _, f := range chrt.Raw {
+							if f.Name == "values.openapiv3_schema.yaml" {
+								var vp crdv1.JSONSchemaProps
+								err = yaml.Unmarshal(f.Data, &vp)
+								if err != nil {
+									return err
+								}
+
+								// spec[properties].values[properties]
+								props.Properties["spec"].Properties["values"] = vp
+							}
+						}
+					}
+
+					resourceSchema.Properties[rsKey] = props
 				}
 
 				if IsCRD(gvr.Group) && generateCRD {

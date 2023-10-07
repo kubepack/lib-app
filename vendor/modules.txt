@@ -121,12 +121,9 @@ github.com/Masterminds/sprig/v3
 # github.com/Masterminds/squirrel v1.5.3
 ## explicit; go 1.14
 github.com/Masterminds/squirrel
-# github.com/PuerkitoBio/purell v1.1.1
-## explicit
+# github.com/PuerkitoBio/purell v1.2.0
+## explicit; go 1.19
 github.com/PuerkitoBio/purell
-# github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578
-## explicit
-github.com/PuerkitoBio/urlesc
 # github.com/alessio/shellescape v1.4.1
 ## explicit; go 1.14
 github.com/alessio/shellescape
@@ -310,7 +307,7 @@ github.com/aws/smithy-go/waiter
 # github.com/beorn7/perks v1.0.1
 ## explicit; go 1.11
 github.com/beorn7/perks/quantile
-# github.com/cespare/xxhash/v2 v2.1.2
+# github.com/cespare/xxhash/v2 v2.2.0
 ## explicit; go 1.11
 github.com/cespare/xxhash/v2
 # github.com/chai2010/gettext-go v1.0.2
@@ -421,8 +418,8 @@ github.com/exponent-io/jsonpath
 # github.com/fatih/camelcase v1.0.0
 ## explicit
 github.com/fatih/camelcase
-# github.com/fatih/color v1.13.0
-## explicit; go 1.13
+# github.com/fatih/color v1.15.0
+## explicit; go 1.17
 github.com/fatih/color
 # github.com/fatih/structs v1.1.0
 ## explicit
@@ -629,7 +626,7 @@ github.com/huandu/xstrings
 # github.com/imdario/mergo v0.3.13
 ## explicit; go 1.13
 github.com/imdario/mergo
-# github.com/inconshreveable/mousetrap v1.0.1
+# github.com/inconshreveable/mousetrap v1.1.0
 ## explicit; go 1.18
 github.com/inconshreveable/mousetrap
 # github.com/jmespath/go-jmespath v0.4.0
@@ -689,7 +686,7 @@ github.com/mattn/go-colorable
 # github.com/mattn/go-ieproxy v0.0.1
 ## explicit; go 1.14
 github.com/mattn/go-ieproxy
-# github.com/mattn/go-isatty v0.0.16
+# github.com/mattn/go-isatty v0.0.18
 ## explicit; go 1.15
 github.com/mattn/go-isatty
 # github.com/mattn/go-runewidth v0.0.13
@@ -798,7 +795,7 @@ github.com/sirupsen/logrus
 # github.com/spf13/cast v1.5.0
 ## explicit; go 1.18
 github.com/spf13/cast
-# github.com/spf13/cobra v1.6.1
+# github.com/spf13/cobra v1.7.0
 ## explicit; go 1.15
 github.com/spf13/cobra
 # github.com/spf13/pflag v1.0.5
@@ -829,6 +826,10 @@ github.com/yudai/gojsondiff/formatter
 # github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82
 ## explicit
 github.com/yudai/golcs
+# go.bytebuilders.dev/installer v0.1.1-0.20231005122651-08f231587391
+## explicit; go 1.18
+go.bytebuilders.dev/installer/apis/installer
+go.bytebuilders.dev/installer/apis/installer/v1alpha1
 # go.etcd.io/etcd/api/v3 v3.6.0-alpha.0
 ## explicit; go 1.17
 go.etcd.io/etcd/api/v3/v3rpc/rpctypes
@@ -851,6 +852,10 @@ go.opencensus.io/trace
 go.opencensus.io/trace/internal
 go.opencensus.io/trace/propagation
 go.opencensus.io/trace/tracestate
+# go.openviz.dev/installer v0.0.0-20230802073927-bc7c337886e9
+## explicit; go 1.18
+go.openviz.dev/installer/apis/installer
+go.openviz.dev/installer/apis/installer/v1alpha1
 # go.starlark.net v0.0.0-20200306205701-8dd3e2ee1dd5
 ## explicit; go 1.13
 go.starlark.net/internal/compile
@@ -1004,7 +1009,7 @@ gomodules.xyz/mergo
 # gomodules.xyz/orderedmap v0.1.0
 ## explicit; go 1.12
 gomodules.xyz/orderedmap
-# gomodules.xyz/password-generator v0.2.7
+# gomodules.xyz/password-generator v0.2.9
 ## explicit; go 1.15
 gomodules.xyz/password-generator
 # gomodules.xyz/pointer v0.1.0
@@ -1016,8 +1021,8 @@ gomodules.xyz/sets
 # gomodules.xyz/wait v0.2.0
 ## explicit; go 1.14
 gomodules.xyz/wait
-# gomodules.xyz/x v0.0.14
-## explicit; go 1.17
+# gomodules.xyz/x v0.0.15
+## explicit; go 1.18
 gomodules.xyz/x/crypto/rand
 gomodules.xyz/x/ioutil
 gomodules.xyz/x/strings
@@ -1587,7 +1592,10 @@ kmodules.xyz/client-go/tools/clusterid
 kmodules.xyz/client-go/tools/converter
 kmodules.xyz/client-go/tools/parser
 kmodules.xyz/client-go/tools/wait
-# kmodules.xyz/offshoot-api v0.25.0
+# kmodules.xyz/objectstore-api v0.25.1
+## explicit; go 1.18
+kmodules.xyz/objectstore-api/api/v1
+# kmodules.xyz/offshoot-api v0.25.4
 ## explicit; go 1.18
 kmodules.xyz/offshoot-api/api/v1
 # kmodules.xyz/resource-metadata v0.17.25-0.20231006102558-311a1a2eaa10
@@ -1607,6 +1615,10 @@ kmodules.xyz/resource-metrics/api
 # kmodules.xyz/sets v0.25.0
 ## explicit; go 1.18
 kmodules.xyz/sets
+# kubeops.dev/external-dns-operator v0.0.5
+## explicit; go 1.18
+kubeops.dev/external-dns-operator/apis/external
+kubeops.dev/external-dns-operator/apis/external/v1alpha1
 # kubepack.dev/chart-doc-gen v0.4.7
 ## explicit; go 1.17
 kubepack.dev/chart-doc-gen/api
@@ -1797,6 +1809,11 @@ sigs.k8s.io/structured-merge-diff/v4/value
 # sigs.k8s.io/yaml v1.3.0
 ## explicit; go 1.12
 sigs.k8s.io/yaml
+# stash.appscode.dev/apimachinery v0.31.1
+## explicit; go 1.18
+stash.appscode.dev/apimachinery/apis/stash
+stash.appscode.dev/apimachinery/apis/stash/v1alpha1
+stash.appscode.dev/apimachinery/crds
 # x-helm.dev/apimachinery v0.0.12
 ## explicit; go 1.19
 x-helm.dev/apimachinery/apis

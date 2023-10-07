@@ -75,7 +75,7 @@ func main() {
 		},
 		// PresetGroup:    chartsapi.GroupVersion.Group,
 		// PresetKind:     chartsapi.ResourceKindClusterChartPreset,
-		PresetName: "unified",
+		Variant: "unified",
 		// PresetSelector: "",
 		Namespace: "default",
 	}
