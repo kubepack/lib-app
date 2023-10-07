@@ -419,7 +419,7 @@ func NewCmdFuse() *cobra.Command {
 						ValuesExample: "-- generate from values file --",
 					},
 					Prerequisites: []string{
-						"Kubernetes 1.16+",
+						"Kubernetes 1.20+",
 					},
 					Release: docapi.ReleaseInfo{
 						Name:      editorChartName,

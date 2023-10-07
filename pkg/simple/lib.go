@@ -296,7 +296,7 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 				ValuesExample: "-- generate from values file --",
 			},
 			Prerequisites: []string{
-				"Kubernetes 1.16+",
+				"Kubernetes 1.20+",
 			},
 			Release: docapi.ReleaseInfo{
 				Name:      chartName,
