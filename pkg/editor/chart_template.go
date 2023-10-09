@@ -268,6 +268,7 @@ func EditorChartValueManifest(kc client.Client, app *driversapi.AppRelease, mt r
 		}
 		rsfiles = append(rsfiles, releasesapi.ResourceObject{
 			Filename: name,
+			Key:      MustResourceKey(obj.GetAPIVersion(), obj.GetKind(), mt.Name, obj.GetName()),
 			Data:     obj,
 		})
 	}

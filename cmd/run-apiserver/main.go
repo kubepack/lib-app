@@ -535,6 +535,7 @@ func LoadEditorResources(ctx httpw.ResponseWriter, model releasesapi.Model) {
 		}
 		out.Resources = append(out.Resources, releasesapi.ResourceFile{
 			Filename: r.Filename + "." + string(format),
+			Key:      r.Key,
 			Data:     string(data),
 		})
 	}
@@ -773,6 +774,7 @@ func PreviewEditorResources(ctx httpw.ResponseWriter, opts map[string]interface{
 		}
 		out.Resources = append(out.Resources, releasesapi.ResourceFile{
 			Filename: r.Filename + "." + string(format),
+			Key:      r.Key,
 			Data:     string(data),
 		})
 	}
