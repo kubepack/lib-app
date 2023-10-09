@@ -78,6 +78,14 @@ func ResourceKey(apiVersion, kind, chartName, name string) (string, error) {
 	return result, nil
 }
 
+func MustResourceKey(apiVersion, kind, chartName, name string) string {
+	key, err := ResourceKey(apiVersion, kind, chartName, name)
+	if err != nil {
+		panic(err)
+	}
+	return key
+}
+
 func ResourceFilename(apiVersion, kind, chartName, name string) (string, string, string) {
 	gv, err := schema.ParseGroupVersion(apiVersion)
 	if err != nil {
@@ -147,6 +155,7 @@ func ListResources(chartName string, data []byte) ([]releasesapi.ResourceObject,
 
 		resources = append(resources, releasesapi.ResourceObject{
 			Filename: name,
+			Key:      MustResourceKey(ri.Object.GetAPIVersion(), ri.Object.GetKind(), chartName, ri.Object.GetName()),
 			Data:     ri.Object,
 		})
 		return nil

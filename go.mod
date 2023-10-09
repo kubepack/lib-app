@@ -41,7 +41,7 @@ require (
 	kubepack.dev/lib-helm v0.7.3
 	sigs.k8s.io/controller-runtime v0.13.1
 	sigs.k8s.io/yaml v1.3.0
-	x-helm.dev/apimachinery v0.0.12
+	x-helm.dev/apimachinery v0.0.13
 )
 
 require (

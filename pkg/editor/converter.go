@@ -51,6 +51,7 @@ func ConvertChartTemplates(tpls []releasesapi.ChartTemplate, format meta_util.Da
 			}
 			entry.Resources = append(entry.Resources, releasesapi.ResourceFile{
 				Filename: r.Filename,
+				Key:      r.Key,
 				Data:     string(data),
 			})
 		}
