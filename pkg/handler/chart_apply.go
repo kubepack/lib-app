@@ -158,7 +158,7 @@ func applyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef releasesapi.C
 	opts.Atomic = false
 	opts.SkipCRDs = skipCRds
 	opts.SubNotes = false
-	opts.DisableOpenAPIValidation = false
+	opts.DisableOpenAPIValidation = true
 	opts.IncludeCRDs = false
 
 	deployer.WithOptions(opts)
