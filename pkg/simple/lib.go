@@ -70,9 +70,17 @@ func NewCmdSimple() *cobra.Command {
 			}
 
 			registry.Visit(func(key string, rd *rsapi.ResourceDescriptor) {
-				if rd.Spec.Resource.Group == "ui.k8s.appscode.com" &&
-					(rd.Spec.Resource.Kind == "Feature" || rd.Spec.Resource.Kind == "FeatureSet") {
-					return
+				if rd.Spec.Resource.Group == "ui.k8s.appscode.com" {
+					if rd.Spec.Resource.Kind == "FeatureSet" {
+						chartName := fmt.Sprintf("%s-%s-{.metdata.release.name}-editor", safeGroupName(rd.Spec.Resource.Group), strings.ToLower(rd.Spec.Resource.Kind))
+						err := UpdateEditor(rd, chartName, descriptorDir)
+						if err != nil {
+							panic(err)
+						}
+						return
+					} else if rd.Spec.Resource.Kind == "Feature" {
+						return
+					}
 				}
 
 				err := GenerateSimpleEditorChart(chartDir, descriptorDir, rd.Spec.Resource.GroupVersionResource(), registry, skipExisting)
@@ -316,6 +324,10 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 		}
 	}
 
+	return UpdateEditor(rd, chartName, descriptorDir)
+}
+
+func UpdateEditor(rd *rsapi.ResourceDescriptor, chartName string, descriptorDir string) error {
 	ed, ok := resourceeditors.LoadDefaultByGVR(rd.Spec.Resource.GroupVersionResource())
 	if ok {
 		if ed.Spec.UI == nil {
@@ -331,9 +343,8 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 			},
 		}
 		ed.Spec.UI.Editor.Version = getDigestOrVersion(repoName, ed.Spec.UI.Editor.Name, chartVersion)
-		return UpdateEditor(ed, filepath.Join(filepath.Dir(descriptorDir), uiapi.ResourceResourceEditors))
+		return WriteResourceEditor(ed, filepath.Join(filepath.Dir(descriptorDir), uiapi.ResourceResourceEditors))
 	}
-
 	return nil
 }
 
@@ -400,7 +411,7 @@ func IsCRD(group string) bool {
 		!strings.HasSuffix(group, ".kubernetes.io")
 }
 
-func UpdateEditor(rd *uiapi.ResourceEditor, dir string) error {
+func WriteResourceEditor(rd *uiapi.ResourceEditor, dir string) error {
 	data, err := yaml.Marshal(rd)
 	if err != nil {
 		return err

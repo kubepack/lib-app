@@ -19,6 +19,7 @@ package editor
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"kubepack.dev/lib-helm/pkg/repo"
 	"kubepack.dev/lib-helm/pkg/storage/driver"
@@ -53,6 +54,10 @@ func CreateAppReleaseIfMissing(restcfg *rest.Config, kc client.Client, reg repo.
 		return nil, fmt.Errorf("missing editor chart for %+v", ed.Spec.Resource.GroupVersionKind())
 	}
 	chartRef := *ed.Spec.UI.Editor
+
+	// For featureset editor charts
+	chartRef.Name = strings.ReplaceAll(chartRef.Name, "{.metadata.release.name}", model.Release.Name)
+	chartRef.Name = strings.ReplaceAll(chartRef.Name, "{.metadata.release.namespace}", model.Release.Namespace)
 
 	if chartRef.SourceRef.Namespace == "" {
 		ns, err := DefaultSourceRefNamespace(kc, chartRef.SourceRef.Name)
