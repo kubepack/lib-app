@@ -1,0 +1,24 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  annotations:
+    meta.helm.sh/release-name: opscenter-features
+    meta.helm.sh/release-namespace: kubeops
+  creationTimestamp: "2023-10-27T03:03:04Z"
+  finalizers:
+  - finalizers.fluxcd.io
+  generation: 3
+  labels:
+    app.kubernetes.io/managed-by: Helm
+    helm.toolkit.fluxcd.io/name: opscenter-features
+    helm.toolkit.fluxcd.io/namespace: kubeops
+  name: bytebuilders-ui
+  namespace: kubeops
+  resourceVersion: "5344"
+  uid: 18277ba0-064e-4440-96ef-3b3e1898be1f
+spec:
+  interval: 30m0s
+  provider: generic
+  timeout: 1m0s
+  type: oci
+  url: oci://r.appscode.com/charts

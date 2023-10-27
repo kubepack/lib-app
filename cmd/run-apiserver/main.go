@@ -868,6 +868,7 @@ func GetValuesFile(ctx httpw.ResponseWriter, params chartsapi.ChartPresetFlatRef
 		ctx.Error(http.StatusInternalServerError, err.Error())
 		return
 	}
+	HelmRegistry = repo.NewRegistry(kc, repo.DefaultDiskCache())
 
 	chrt, err := HelmRegistry.GetChart(params.ToAPIObject())
 	if err != nil {
@@ -878,6 +879,12 @@ func GetValuesFile(ctx httpw.ResponseWriter, params chartsapi.ChartPresetFlatRef
 	vals, err := values.MergePresetValues(kc, chrt.Chart, params)
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "MergePresetValues", err.Error())
+		return
+	}
+
+	vals, err = editor.UpdateFeatureValues(kc, chrt.Chart, vals)
+	if err != nil {
+		ctx.Error(http.StatusInternalServerError, "UpdateFeatureValues", err.Error())
 		return
 	}
 
