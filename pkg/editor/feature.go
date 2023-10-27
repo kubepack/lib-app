@@ -19,8 +19,10 @@ package editor
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"strings"
 
+	"github.com/pkg/errors"
 	"helm.sh/helm/v3/pkg/chart"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -53,7 +55,15 @@ func UpdateFeatureValues(kc client.Client, chrt *chart.Chart, vals map[string]an
 			if !strings.HasPrefix(k, "helmToolkitFluxcdIoHelmRelease_") {
 				continue
 			}
-			featureName := strings.TrimPrefix(k, "helmToolkitFluxcdIoHelmRelease_")
+
+			obj := o.(map[string]interface{})
+			featureName, found, err := unstructured.NestedString(obj, "metadata", "name")
+			if err != nil {
+				return nil, errors.Wrap(err, "can't detect feature name")
+			} else if !found {
+				return nil, fmt.Errorf("feature name not found for key %s", k)
+			}
+
 			var feature unstructured.Unstructured
 			feature.SetAPIVersion(fsGVR.Group + "/" + fsGVR.Version)
 			feature.SetKind("Feature")
@@ -61,7 +71,6 @@ func UpdateFeatureValues(kc client.Client, chrt *chart.Chart, vals map[string]an
 			if err == nil {
 				defVal, found, err := unstructured.NestedFieldNoCopy(feature.UnstructuredContent(), "spec", "values")
 				if err == nil && found {
-					obj := o.(map[string]interface{})
 					err = unstructured.SetNestedField(obj, defVal, "spec", "values")
 					if err != nil {
 						return nil, err
