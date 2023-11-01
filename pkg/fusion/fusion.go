@@ -211,10 +211,18 @@ func NewCmdFuse() *cobra.Command {
 				// values
 				cp := ri.Object.DeepCopy()
 				delete(cp.Object, "status")
-				cp.Object["metadata"] = releasesapi.ObjectMeta{
-					Name:      ri.Object.GetName(),
-					Namespace: ri.Object.GetNamespace(),
+				md := map[string]any{
+					"name":      ri.Object.GetName(),
+					"namespace": ri.Object.GetNamespace(),
 				}
+				objGK := ri.Object.GroupVersionKind().GroupKind()
+				if objGK.Group == "helm.toolkit.fluxcd.io" && objGK.Kind == "HelmRelease" {
+					md["labels"] = map[string]string{
+						"ace.appscode.com/feature": ri.Object.GetName(),
+					}
+				}
+				cp.Object["metadata"] = md
+
 				resourceValues[rsKey] = cp
 
 				// schema
