@@ -47,6 +47,18 @@ type IngressNginxSpec struct {
 	Controller IngressNginxController `json:"controller"`
 	// +optional
 	TCP map[string]string `json:"tcp,omitempty"`
+	// +optional
+	DefaultBackend IngressNginxDefaultBackend `json:"defaultBackend"`
+}
+
+type IngressNginxDefaultBackend struct {
+	Enabled bool                            `json:"enabled"`
+	Name    string                          `json:"name"`
+	Image   IngressNginxDefaultBackendImage `json:"image"`
+}
+
+type IngressNginxDefaultBackendImage struct {
+	Registry string `json:"registry"`
 }
 
 type IngressNginxController struct {
@@ -60,8 +72,13 @@ type IngressNginxController struct {
 	NodeSelector map[string]string              `json:"nodeSelector"`
 	Service      *IngressNginxControllerService `json:"service,omitempty"`
 	//+optional
-	Resources         core.ResourceRequirements     `json:"resources"`
-	AdmissionWebhooks IngressNginxAdmissionWebhooks `json:"admissionWebhooks"`
+	Resources         core.ResourceRequirements           `json:"resources"`
+	AdmissionWebhooks IngressNginxAdmissionWebhooks       `json:"admissionWebhooks"`
+	NetworkPolicy     IngressNginxControllerNetworkPolicy `json:"networkPolicy"`
+}
+
+type IngressNginxControllerNetworkPolicy struct {
+	Enabled bool `json:"enabled"`
 }
 
 type IngressNginxControllerImage struct {

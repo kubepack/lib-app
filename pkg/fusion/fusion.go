@@ -25,6 +25,7 @@ import (
 	"sort"
 	"strings"
 	"text/template"
+	"time"
 
 	docapi "kubepack.dev/chart-doc-gen/api"
 	"kubepack.dev/lib-app/pkg/editor"
@@ -109,7 +110,7 @@ func LoadHelmRepositories() error {
 				return err
 			}
 
-			for k, v := range val.Repositories {
+			for k, v := range val.Helm.Repositories {
 				HelmRepositories[k] = v.URL
 
 				t := "default"
@@ -117,18 +118,29 @@ func LoadHelmRepositories() error {
 					t = "oci"
 				}
 
-				src = append(src, &fluxsrc.HelmRepository{
+				hr := &fluxsrc.HelmRepository{
 					TypeMeta: metav1.TypeMeta{},
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      k,
 						Namespace: "kubeops",
 					},
 					Spec: fluxsrc.HelmRepositorySpec{
-						URL:     v.URL,
-						Type:    t,
-						Timeout: &v.Interval,
+						URL:  v.URL,
+						Type: t,
 					},
-				})
+				}
+				if v.Interval != nil {
+					hr.Spec.Interval = *v.Interval
+				} else {
+					hr.Spec.Interval = metav1.Duration{Duration: 30 * time.Minute}
+				}
+				if v.Timeout != nil {
+					hr.Spec.Timeout = v.Timeout
+				} else {
+					hr.Spec.Timeout = &metav1.Duration{Duration: time.Minute}
+				}
+
+				src = append(src, hr)
 			}
 		}
 	}

@@ -19,6 +19,7 @@ package v1alpha1
 import (
 	core "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"kmodules.xyz/resource-metadata/apis/shared"
 )
 
 const (
@@ -70,17 +71,30 @@ type AceOptionsSpec struct {
 
 type RegistrySpec struct {
 	//+optional
-	RegistryFQDN string `json:"registryFQDN"`
+	Image shared.ImageRegistrySpec `json:"image"`
 	//+optional
-	Registry string `json:"registry"`
+	Credentials RepositoryCredential `json:"credentials"`
 	//+optional
-	PreserveOrganization bool `json:"preserveOrganization"`
+	Helm HelmOptions `json:"helm"`
 	//+optional
 	AllowNondistributableArtifacts bool `json:"allowNondistributableArtifacts"`
 	//+optional
 	Insecure bool `json:"insecure"`
+}
+
+type RepositoryCredential struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+type HelmOptions struct {
 	//+optional
-	ImagePullSecrets []string `json:"imagePullSecrets"`
+	Repositories HelmRepositories `json:"repositories"`
+}
+
+type HelmRepositories struct {
+	//+optional
+	AppscodeChartsOci string `json:"appscode-charts-oci"`
 }
 
 type AceOptionsComponentSpec struct {
@@ -152,8 +166,12 @@ type AceOptionsInfraCloudServices struct {
 }
 
 type AceOptionsInfraObjstore struct {
-	Host   string       `json:"host"`
-	Bucket string       `json:"bucket"`
+	Bucket string `json:"bucket"`
+	Prefix string `json:"prefix,omitempty"`
+	// Required for s3 type buckets other than AWS s3 buckets
+	Endpoint string `json:"endpoint,omitempty"`
+	// Required for s3 buckets
+	Region string       `json:"region,omitempty"`
 	Auth   ObjstoreAuth `json:"auth"`
 }
 
@@ -169,9 +187,10 @@ type AceOptionsInfraKms struct {
 }
 
 type AceOptionsSettings struct {
-	DB    AceOptionsDBSettings    `json:"db"`
-	Cache AceOptionsCacheSettings `json:"cache"`
-	SMTP  AceOptionsSMTPSettings  `json:"smtp"`
+	DB              AceOptionsDBSettings    `json:"db"`
+	Cache           AceOptionsCacheSettings `json:"cache"`
+	SMTP            AceOptionsSMTPSettings  `json:"smtp"`
+	DomainWhiteList []string                `json:"domainWhiteList"`
 }
 
 type AceOptionsDBSettings struct {
@@ -185,6 +204,7 @@ type AceOptionsCacheSettings struct {
 }
 
 type AceOptionsSMTPSettings struct {
+	Enabled    bool   `json:"enabled"`
 	Host       string `json:"host"`
 	TlsEnabled bool   `json:"tlsEnabled"`
 	From       string `json:"from"`
@@ -223,13 +243,14 @@ type AceDeploymentContext struct {
 	RequesterUsername    string         `json:"requesterUsername,omitempty"`
 	ProxyServiceDomain   string         `json:"proxyServiceDomain,omitempty"`
 	Token                string         `json:"token,omitempty"`
-	// ClusterID is used to uniquely identify a Kubernetes cluster.
-	// To find out, run: <code>kubectl get ns kube-system -o=jsonpath='{.metadata.uid}'</code>
+	// +optional
+	OfflineInstaller bool `json:"offlineInstaller"`
+	// WARNING!!! Update docs in schema/ace-options/patch.yaml
 	// +optional
 	ClusterID string `json:"clusterID"`
 	// +optional
-	PublicIPs []string `json:"publicIPs"`
-	License   string   `json:"license,omitempty"`
+	PublicIPs []string          `json:"publicIPs"`
+	Licenses  map[string]string `json:"licenses,omitempty"`
 	// +optional
 	Admin AcePlatformAdmin `json:"admin"`
 }

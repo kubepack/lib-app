@@ -277,19 +277,24 @@ type NatsImageRef struct {
 }
 
 type NatsBootconfigSpec struct {
-	Image           NatsImageRef          `json:"image"`
-	SecurityContext *core.SecurityContext `json:"securityContext"`
+	Image NatsImageRef `json:"image"`
+	//+optional
+	Resources       core.ResourceRequirements `json:"resources"`
+	SecurityContext *core.SecurityContext     `json:"securityContext"`
 }
 
 type NatsboxSpec struct {
-	Enabled          bool                  `json:"enabled"`
-	Image            NatsImageRef          `json:"image"`
-	SecurityContext  *core.SecurityContext `json:"securityContext"`
-	AdditionalLabels map[string]string     `json:"additionalLabels"`
-	ImagePullSecrets []string              `json:"imagePullSecrets"`
-	PodAnnotations   map[string]string     `json:"podAnnotations"`
-	PodLabels        map[string]string     `json:"podLabels"`
-	Affinity         *core.Affinity        `json:"affinity"`
+	Enabled bool         `json:"enabled"`
+	Image   NatsImageRef `json:"image"`
+	//+optional
+	Resources        core.ResourceRequirements `json:"resources"`
+	Annotations      map[string]string         `json:"annotations"`
+	SecurityContext  *core.SecurityContext     `json:"securityContext"`
+	AdditionalLabels map[string]string         `json:"additionalLabels"`
+	ImagePullSecrets []string                  `json:"imagePullSecrets"`
+	PodAnnotations   map[string]string         `json:"podAnnotations"`
+	PodLabels        map[string]string         `json:"podLabels"`
+	Affinity         *core.Affinity            `json:"affinity"`
 	//+optional
 	NodeSelector      map[string]string  `json:"nodeSelector"`
 	Tolerations       []core.Toleration  `json:"tolerations"`
@@ -298,10 +303,11 @@ type NatsboxSpec struct {
 }
 
 type NatsReloaderSpec struct {
-	Enabled         bool                  `json:"enabled"`
-	Image           NatsImageRef          `json:"image"`
-	SecurityContext *core.SecurityContext `json:"securityContext"`
-	ExtraConfigs    []string              `json:"extraConfigs"`
+	Enabled         bool                      `json:"enabled"`
+	Image           NatsImageRef              `json:"image"`
+	Resources       core.ResourceRequirements `json:"resources"`
+	SecurityContext *core.SecurityContext     `json:"securityContext"`
+	ExtraConfigs    []string                  `json:"extraConfigs"`
 }
 
 type NatsExporterSpec struct {

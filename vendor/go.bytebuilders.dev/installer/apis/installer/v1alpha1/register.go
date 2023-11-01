@@ -68,6 +68,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&CapiClusterPresetsList{},
 		&CertManagerWebhookAce{},
 		&CertManagerWebhookAceList{},
+		&ClusterImporter{},
+		&ClusterImporterList{},
 		&ClusterUi{},
 		&ClusterUiList{},
 		&DeployUi{},

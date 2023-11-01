@@ -18,7 +18,7 @@ package v1alpha1
 
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/runtime"
+	"kmodules.xyz/resource-metadata/apis/shared"
 )
 
 const (
@@ -47,15 +47,7 @@ type AceInstallerSpec struct {
 	NameOverride     string `json:"nameOverride"`
 	FullnameOverride string `json:"fullnameOverride"`
 
-	Repositories map[string]*HelmRepository `json:"repositories"`
-	Registry     RegistryInfo               `json:"registry"`
-	Releases     map[string]*HelmRelease    `json:"releases"`
-}
-
-type HelmRelease struct {
-	Enabled bool                  `json:"enabled"`
-	Version string                `json:"version"`
-	Values  *runtime.RawExtension `json:"values,omitempty"`
+	shared.BootstrapPresets `json:",inline,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

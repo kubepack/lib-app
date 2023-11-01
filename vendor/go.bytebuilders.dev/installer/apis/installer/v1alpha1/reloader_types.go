@@ -72,6 +72,7 @@ type ReloaderDetails struct {
 	ReloadStrategy         string                      `json:"reloadStrategy"`
 	IgnoreNamespaces       string                      `json:"ignoreNamespaces"`
 	NamespaceSelector      string                      `json:"namespaceSelector"`
+	ResourceLabelSelector  string                      `json:"resourceLabelSelector"`
 	LogFormat              string                      `json:"logFormat"`
 	WatchGlobally          bool                        `json:"watchGlobally"`
 	ReadOnlyRootFileSystem bool                        `json:"readOnlyRootFileSystem"`
@@ -108,6 +109,16 @@ type ReloaderDeploymentSpec struct {
 	Resources                core.ResourceRequirements `json:"resources"`
 	Pod                      ReloaderPodSpec           `json:"pod"`
 	PriorityClassName        string                    `json:"priorityClassName"`
+	// TopologySpreadConstraints describes how a group of pods ought to spread across topology
+	// domains. Scheduler will schedule pods in a way which abides by the constraints.
+	// All topologySpreadConstraints are ANDed.
+	// +optional
+	// +patchMergeKey=topologyKey
+	// +patchStrategy=merge
+	// +listType=map
+	// +listMapKey=topologyKey
+	// +listMapKey=whenUnsatisfiable
+	TopologySpreadConstraints []core.TopologySpreadConstraint `json:"topologySpreadConstraints" patchStrategy:"merge" patchMergeKey:"topologyKey"`
 }
 
 type ReloaderLabels struct {
