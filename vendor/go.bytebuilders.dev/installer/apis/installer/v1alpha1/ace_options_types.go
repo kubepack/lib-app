@@ -253,6 +253,29 @@ type AceDeploymentContext struct {
 	Licenses  map[string]string `json:"licenses,omitempty"`
 	// +optional
 	Admin AcePlatformAdmin `json:"admin"`
+
+	GeneratedValues `json:",inline,omitempty"`
+}
+
+type GeneratedValues struct {
+	// +optional
+	AdminPassword string `json:"adminPassword"`
+	// +optional
+	BackupPassword string `json:"backupPassword"`
+	// +optional
+	PostgresPassword string `json:"postgresPassword"`
+	// +optional
+	RedisPassword string `json:"redisPassword"`
+	// +optional
+	Oauth2JWTSecret string `json:"oauth2JWTSecret"`
+	// +optional
+	CsrfSecretKey string `json:"csrfSecretKey"`
+	// +optional
+	S3AccessKeyID string `json:"s3AccessKeyID"`
+	// +optional
+	S3AccessKeySecret string `json:"s3AccessKeySecret"`
+	// +optional
+	Nats map[string]string `json:"nats"`
 }
 
 type AcePlatformAdmin struct {
