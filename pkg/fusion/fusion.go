@@ -81,6 +81,7 @@ var (
 
 	HelmRegistry     repo.IRegistry
 	HelmRepositories = map[string]string{}
+	ChartVersions    = map[string]string{}
 )
 
 func LoadHelmRepositories() error {
@@ -141,6 +142,10 @@ func LoadHelmRepositories() error {
 				}
 
 				src = append(src, hr)
+			}
+
+			for k, v := range val.Helm.Releases {
+				ChartVersions[k] = v.Version
 			}
 		}
 	}
@@ -212,13 +217,31 @@ func NewCmdFuse() *cobra.Command {
 				cp := ri.Object.DeepCopy()
 				delete(cp.Object, "status")
 				md := map[string]any{
-					"name":      ri.Object.GetName(),
-					"namespace": ri.Object.GetNamespace(),
+					"name":      cp.GetName(),
+					"namespace": cp.GetNamespace(),
 				}
-				objGK := ri.Object.GroupVersionKind().GroupKind()
+				objGK := cp.GroupVersionKind().GroupKind()
 				if objGK.Group == "helm.toolkit.fluxcd.io" && objGK.Kind == "HelmRelease" {
 					md["labels"] = map[string]string{
-						"ace.appscode.com/feature": ri.Object.GetName(),
+						"ace.appscode.com/feature": cp.GetName(),
+					}
+
+					/*
+						spec:
+						  chart:
+						    spec:
+						      chart: aws-ebs-csi-driver
+						      version: "2.23.0"
+					*/
+					chartName, found, err := unstructured.NestedString(cp.UnstructuredContent(), "spec", "chart", "spec", "chart")
+					if found && err == nil {
+						ver := ChartVersions[chartName]
+						if ver != "" {
+							err = unstructured.SetNestedField(cp.UnstructuredContent(), ver, "spec", "chart", "spec", "version")
+							if err != nil {
+								return err
+							}
+						}
 					}
 				}
 				cp.Object["metadata"] = md

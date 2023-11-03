@@ -846,7 +846,7 @@ github.com/yudai/gojsondiff/formatter
 # github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82
 ## explicit
 github.com/yudai/golcs
-# go.bytebuilders.dev/installer v0.1.1-0.20231101164301-491ffee81d0f
+# go.bytebuilders.dev/installer v0.1.1-0.20231103171032-eba4c6de3981
 ## explicit; go 1.18
 go.bytebuilders.dev/installer/apis/installer
 go.bytebuilders.dev/installer/apis/installer/v1alpha1
@@ -1626,7 +1626,7 @@ kmodules.xyz/objectstore-api/api/v1
 # kmodules.xyz/offshoot-api v0.25.4
 ## explicit; go 1.18
 kmodules.xyz/offshoot-api/api/v1
-# kmodules.xyz/resource-metadata v0.17.39-0.20231101070123-9cfd0519c7f9
+# kmodules.xyz/resource-metadata v0.17.39-0.20231103105934-f83b3e928f11
 ## explicit; go 1.18
 kmodules.xyz/resource-metadata/apis/meta
 kmodules.xyz/resource-metadata/apis/meta/v1alpha1

@@ -16,7 +16,7 @@ require (
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/pflag v1.0.5
 	github.com/unrolled/render v1.6.0
-	go.bytebuilders.dev/installer v0.1.1-0.20231101164301-491ffee81d0f
+	go.bytebuilders.dev/installer v0.1.1-0.20231103171032-eba4c6de3981
 	go.wandrs.dev/binding v0.0.2
 	go.wandrs.dev/http v0.0.2
 	gocloud.dev v0.26.0
@@ -34,7 +34,7 @@ require (
 	k8s.io/kube-aggregator v0.25.1
 	k8s.io/kubectl v0.25.3
 	kmodules.xyz/client-go v0.25.40
-	kmodules.xyz/resource-metadata v0.17.39-0.20231101070123-9cfd0519c7f9
+	kmodules.xyz/resource-metadata v0.17.39-0.20231103105934-f83b3e928f11
 	kmodules.xyz/sets v0.25.0
 	kubepack.dev/chart-doc-gen v0.4.7
 	kubepack.dev/kubepack v0.7.1-0.20230901212424-4c57e72d1c27

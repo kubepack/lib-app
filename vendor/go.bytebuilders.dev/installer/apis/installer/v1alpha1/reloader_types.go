@@ -18,6 +18,7 @@ package v1alpha1
 
 import (
 	core "k8s.io/api/core/v1"
+	networking "k8s.io/api/networking/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -62,6 +63,7 @@ type ReloaderKubernetes struct {
 }
 
 type ReloaderDetails struct {
+	AutoReloadAll          bool                        `json:"autoReloadAll"`
 	IsArgoRollouts         bool                        `json:"isArgoRollouts"`
 	IsOpenshift            bool                        `json:"isOpenshift"`
 	IgnoreSecrets          bool                        `json:"ignoreSecrets"`
@@ -86,6 +88,8 @@ type ReloaderDetails struct {
 	ServiceMonitor         ReloaderServiceMonitorSpec  `json:"serviceMonitor"`
 	PodMonitor             ReloaderPodMonitorSpec      `json:"podMonitor"`
 	PodDisruptionBudget    ReloaderPodDisruptionBudget `json:"podDisruptionBudget"`
+	Netpol                 ReloaderNetpol              `json:"netpol"`
+	WebhookUrl             string                      `json:"webhookUrl"`
 }
 
 type ReloaderLegacy struct {
@@ -192,6 +196,14 @@ type ReloaderPodMonitorSpec struct {
 
 type ReloaderPodDisruptionBudget struct {
 	Enabled bool `json:"enabled"`
+}
+
+type ReloaderNetpol struct {
+	Enabled bool `json:"enabled"`
+	// +optional
+	From []networking.NetworkPolicyPeer `json:"from"`
+	// +optional
+	To []networking.NetworkPolicyPeer `json:"to"`
 }
 
 // EnvVar represents an environment variable present in a Container.
