@@ -17,7 +17,7 @@
 CHART_VERSION=${CHART_VERSION:-v0.4.18}
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/ocm-spoke \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/ocm-hub \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
     --sample-name=ocm-hub \
