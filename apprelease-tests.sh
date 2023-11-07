@@ -47,7 +47,7 @@ $ kubectl apply -f - <<EOF
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  name: bytebuilders-ui
+  name: appscode-charts-oci
   namespace: kubeops
 spec:
   interval: 30m

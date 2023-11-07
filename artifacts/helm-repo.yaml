@@ -12,7 +12,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     helm.toolkit.fluxcd.io/name: opscenter-features
     helm.toolkit.fluxcd.io/namespace: kubeops
-  name: bytebuilders-ui
+  name: appscode-charts-oci
   namespace: kubeops
   resourceVersion: "5344"
   uid: 18277ba0-064e-4440-96ef-3b3e1898be1f

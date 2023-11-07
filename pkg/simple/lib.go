@@ -43,7 +43,7 @@ import (
 	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 )
 
-const repoName = "bytebuilders-ui"
+const repoName = "appscode-charts-oci"
 
 var (
 	descriptorDir  = homedir.HomeDir() + "/go/src/kmodules.xyz/resource-metadata/hub/resourcedescriptors/"
@@ -296,7 +296,7 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 			},
 			Repository: docapi.RepositoryInfo{
 				URL:  "https://bundles.byte.builders/ui/",
-				Name: "bytebuilders-ui",
+				Name: "appscode-charts-oci",
 			},
 			Chart: docapi.ChartInfo{
 				Name:          chartName,

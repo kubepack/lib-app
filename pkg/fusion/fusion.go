@@ -584,7 +584,7 @@ func NewCmdFuse() *cobra.Command {
 					},
 					Repository: docapi.RepositoryInfo{
 						URL:  "https://bundles.byte.builders/ui/",
-						Name: "bytebuilders-ui",
+						Name: "appscode-charts-oci",
 					},
 					Chart: docapi.ChartInfo{
 						Name:          editorChartName,
