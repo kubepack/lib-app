@@ -49,4 +49,3 @@ go run cmd/fuse-chart/*.go \
 # $HOME/go/src/go.bytebuilders.dev/ui-samples/aws/rds/mariadb
 # $HOME/go/src/go.bytebuilders.dev/ui-samples/aws/rds/mysql
 # $HOME/go/src/go.bytebuilders.dev/ui-samples/aws/rds/postgres
-
