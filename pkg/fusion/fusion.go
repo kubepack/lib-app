@@ -154,19 +154,48 @@ func LoadHelmRepositories() error {
 	return nil
 }
 
+func checkSamples() error {
+	type key struct {
+		Group string
+		Kind  string
+		Name  string
+	}
+	objects := map[key]string{}
+
+	return parser.ProcessPath(sampleDir, func(ri parser.ResourceInfo) error {
+		k := key{
+			Group: ri.Object.GetObjectKind().GroupVersionKind().Group,
+			Kind:  ri.Object.GetKind(),
+			Name:  ri.Object.GetName(),
+		}
+
+		filename, found := objects[k]
+		if !found {
+			objects[k] = ri.Filename
+			return nil
+		}
+		return fmt.Errorf("%+v found in %s and %s", k, filename, ri.Filename)
+	})
+}
+
 func NewCmdFuse() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:               "fuse-chart",
 		Short:             `Fuse YAMLs`,
 		DisableAutoGenTag: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
+			err := checkSamples()
+			if err != nil {
+				return err
+			}
+
 			if instanceName == "" {
 				fmt.Printf("%+v\n", gvr)
 			} else {
 				fmt.Printf("%+v, name=%s\n", gvr, instanceName)
 			}
 
-			err := LoadHelmRepositories()
+			err = LoadHelmRepositories()
 			if err != nil {
 				return err
 			}

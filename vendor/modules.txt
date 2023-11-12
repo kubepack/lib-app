@@ -1600,7 +1600,7 @@ kmodules.xyz/apiversion
 # kmodules.xyz/apply v0.25.0
 ## explicit; go 1.18
 kmodules.xyz/apply
-# kmodules.xyz/client-go v0.25.40
+# kmodules.xyz/client-go v0.25.41-0.20231112002402-f295d04d1a6b
 ## explicit; go 1.18
 kmodules.xyz/client-go
 kmodules.xyz/client-go/api/v1
