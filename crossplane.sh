@@ -16,32 +16,41 @@
 
 CHART_VERSION=${CHART_VERSION:-v0.4.18}
 
-# go run cmd/fuse-chart/*.go \
-#     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/aws/documentdb \
-#     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
-#     --chart-version=$CHART_VERSION \
-#     --sample-name=example \
-#     --resource.group=docdb.aws.kubedb.com \
-#     --resource.version=v1alpha1 \
-#     --resource.name=clusters
-
-# go run cmd/fuse-chart/*.go \
-#     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/aws/dynamodb \
-#     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
-#     --chart-version=$CHART_VERSION \
-#     --sample-name=example \
-#     --resource.group=dynamodb.aws.kubedb.com \
-#     --resource.version=v1alpha1 \
-#     --resource.name=tables
-
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/aws/rds/postgres \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/aws/documentdb \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
     --sample-name=example \
-    --resource.group=rds.aws.kubedb.com \
+    --resource.group=docdb.aws.kubedb.com \
     --resource.version=v1alpha1 \
     --resource.name=clusters
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/aws/dynamodb \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=example \
+    --resource.group=dynamodb.aws.kubedb.com \
+    --resource.version=v1alpha1 \
+    --resource.name=tables
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/aws/elasticache \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=example \
+    --resource.group=elasticache.aws.kubedb.com \
+    --resource.version=v1alpha1 \
+    --resource.name=clusters
+
+# go run cmd/fuse-chart/*.go \
+#     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/aws/rds/postgres \
+#     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+#     --chart-version=$CHART_VERSION \
+#     --sample-name=example \
+#     --resource.group=rds.aws.kubedb.com \
+#     --resource.version=v1alpha1 \
+#     --resource.name=clusters
 
 # $HOME/go/src/go.bytebuilders.dev/ui-samples/aws/documentdb
 # $HOME/go/src/go.bytebuilders.dev/ui-samples/aws/dynamodb
