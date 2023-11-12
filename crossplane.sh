@@ -43,14 +43,14 @@ go run cmd/fuse-chart/*.go \
     --resource.version=v1alpha1 \
     --resource.name=clusters
 
-# go run cmd/fuse-chart/*.go \
-#     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/aws/rds/postgres \
-#     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
-#     --chart-version=$CHART_VERSION \
-#     --sample-name=example \
-#     --resource.group=rds.aws.kubedb.com \
-#     --resource.version=v1alpha1 \
-#     --resource.name=clusters
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/aws/rds/postgres \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=example \
+    --resource.group=rds.aws.kubedb.com \
+    --resource.version=v1alpha1 \
+    --resource.name=clusters
 
 # $HOME/go/src/go.bytebuilders.dev/ui-samples/aws/documentdb
 # $HOME/go/src/go.bytebuilders.dev/ui-samples/aws/dynamodb
