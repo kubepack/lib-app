@@ -79,6 +79,7 @@ type AceSpec struct {
 	NodeSelector map[string]string `json:"nodeSelector"`
 	Tolerations  []core.Toleration `json:"tolerations"`
 	Affinity     *core.Affinity    `json:"affinity"`
+	Branding     AceBrandingSpec   `json:"branding"`
 }
 
 type AceBilling struct {

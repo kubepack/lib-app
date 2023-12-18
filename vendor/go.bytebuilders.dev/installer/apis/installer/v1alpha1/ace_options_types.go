@@ -17,6 +17,9 @@ limitations under the License.
 package v1alpha1
 
 import (
+	"fmt"
+	"net/url"
+
 	core "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"kmodules.xyz/resource-metadata/apis/shared"
@@ -67,6 +70,7 @@ type AceOptionsSpec struct {
 	DNSProxy      AceOptionsComponentSpec `json:"dns-proxy"`
 	SMTPRelay     AceOptionsComponentSpec `json:"smtprelay"`
 	Minio         AceOptionsComponentSpec `json:"minio"`
+	Branding      AceBrandingSpec         `json:"branding"`
 }
 
 type RegistrySpec struct {
@@ -165,6 +169,36 @@ type AceOptionsInfraCloudServices struct {
 	Kms *AceOptionsInfraKms `json:"kms,omitempty"`
 }
 
+func (cs *AceOptionsInfraCloudServices) ObjStoreURL() string {
+	if cs.Provider == ObjstoreProviderS3 {
+		ur, _ := url.Parse(cs.Objstore.Bucket)
+		values := ur.Query()
+		values.Set("region", cs.Objstore.Region)
+		if cs.Objstore.Endpoint != "" {
+			values.Set("endpoint", cs.Objstore.Endpoint)
+		}
+		ur.RawQuery = values.Encode()
+		return ur.String()
+	}
+	return cs.Objstore.Bucket
+}
+
+func (cs *AceOptionsInfraCloudServices) GenerateExportEnv() string {
+	switch cs.Provider {
+	case ObjstoreProviderS3:
+		return fmt.Sprintf(`export AWS_ACCESS_KEY_ID=%s
+export AWS_SECRET_ACCESS_KEY=%s`, cs.Objstore.Auth.S3.AwsAccessKeyID, cs.Objstore.Auth.S3.AwsSecretAccessKey)
+	case ObjstoreProviderGCS:
+		return fmt.Sprintf(`echo %s > google_credentials.json
+export GOOGLE_APPLICATION_CREDENTIALS=google_credentials.json`, cs.Objstore.Auth.GCS.GoogleServiceAccountJSONKey)
+	case ObjstoreProviderAzure:
+		return fmt.Sprintf(`export AZURE_STORAGE_ACCOUNT=%s
+export AZURE_STORAGE_KEY=%s`, cs.Objstore.Auth.Azure.AzureAccountName, cs.Objstore.Auth.Azure.AzureAccountKey)
+	default:
+		return ""
+	}
+}
+
 type AceOptionsInfraObjstore struct {
 	Bucket string `json:"bucket"`
 	Prefix string `json:"prefix,omitempty"`
@@ -254,6 +288,9 @@ type AceDeploymentContext struct {
 	// +optional
 	Admin AcePlatformAdmin `json:"admin"`
 
+	PromotedToProduction bool             `json:"promotedToProduction,omitempty"`
+	PromotionValues      *PromotionValues `json:"promotionValues,omitempty"`
+
 	GeneratedValues `json:",inline,omitempty"`
 }
 
@@ -276,6 +313,10 @@ type GeneratedValues struct {
 	S3AccessKeySecret string `json:"s3AccessKeySecret"`
 	// +optional
 	Nats map[string]string `json:"nats"`
+}
+
+type PromotionValues struct {
+	Minio AceOptionsInfraObjstore `json:"minio,omitempty"`
 }
 
 type AcePlatformAdmin struct {
