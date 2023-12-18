@@ -91,7 +91,7 @@ func LoadHelmRepositories() error {
 	reg := repo.NewRegistry(nil, diskCache)
 	chrt, err := reg.GetChart(releasesapi.ChartSourceRef{
 		Name:    "opscenter-features",
-		Version: "",
+		Version: "v2023.12.5",
 		SourceRef: kmapi.TypedObjectReference{
 			APIGroup:  releasesapi.SourceGroupLegacy,
 			Kind:      releasesapi.SourceKindLegacy,
@@ -147,6 +147,7 @@ func LoadHelmRepositories() error {
 			for k, v := range val.Helm.Releases {
 				ChartVersions[k] = v.Version
 			}
+			ChartVersions["ace-ocm-addons"] = chrt.Metadata.Version
 		}
 	}
 
@@ -278,7 +279,7 @@ func NewCmdFuse() *cobra.Command {
 				resourceValues[rsKey] = cp
 
 				// schema
-				gvr, err := registry.GVR(ri.Object.GetObjectKind().GroupVersionKind())
+				gvr, err := registry.GVR(cp.GetObjectKind().GroupVersionKind())
 				if err != nil {
 					return err
 				}
@@ -291,10 +292,10 @@ func NewCmdFuse() *cobra.Command {
 					delete(descriptor.Spec.Validation.OpenAPIV3Schema.Properties, "status")
 					props := *descriptor.Spec.Validation.OpenAPIV3Schema.DeepCopy()
 
-					if ri.Object.GetAPIVersion() == v2beta1.GroupVersion.String() &&
-						ri.Object.GetKind() == v2beta1.HelmReleaseKind {
+					if cp.GetAPIVersion() == v2beta1.GroupVersion.String() &&
+						cp.GetKind() == v2beta1.HelmReleaseKind {
 						var hr v2beta1.HelmRelease
-						err := runtime.DefaultUnstructuredConverter.FromUnstructured(ri.Object.UnstructuredContent(), &hr)
+						err := runtime.DefaultUnstructuredConverter.FromUnstructured(cp.UnstructuredContent(), &hr)
 						if err != nil {
 							return err
 						}
@@ -414,7 +415,7 @@ func NewCmdFuse() *cobra.Command {
 
 				objModel := releasesapi.ObjectModel{
 					Key:    rsKey,
-					Object: ri.Object,
+					Object: cp,
 				}
 				modelJSON, err := json.Marshal(objModel)
 				if err != nil {
