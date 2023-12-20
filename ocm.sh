@@ -20,7 +20,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/ocm-hub \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
-    --sample-name=ocm-hub \
+    --sample-name=not-used \
     --instance-name=ocm-hub \
     --resource.group=ui.k8s.appscode.com \
     --resource.version=v1alpha1 \
@@ -31,7 +31,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/ocm-mc \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
-    --sample-name=ocm-mc \
+    --sample-name=not-used \
     --instance-name=ocm-mc \
     --resource.group=ui.k8s.appscode.com \
     --resource.version=v1alpha1 \
@@ -42,7 +42,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/ocm-spoke \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
-    --sample-name=ocm-spoke \
+    --sample-name=not-used \
     --instance-name=ocm-spoke \
     --resource.group=ui.k8s.appscode.com \
     --resource.version=v1alpha1 \
@@ -53,7 +53,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/vcluster \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
-    --sample-name=vcluster \
+    --sample-name=not-used \
     --instance-name=vcluster \
     --resource.group=ui.k8s.appscode.com \
     --resource.version=v1alpha1 \
