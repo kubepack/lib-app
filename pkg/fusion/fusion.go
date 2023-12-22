@@ -253,7 +253,7 @@ func NewCmdFuse() *cobra.Command {
 				objGK := cp.GroupVersionKind().GroupKind()
 				if objGK.Group == "helm.toolkit.fluxcd.io" && objGK.Kind == "HelmRelease" {
 					md["labels"] = map[string]string{
-						"ace.appscode.com/feature": cp.GetName(),
+						"app.kubernetes.io/component": cp.GetName(),
 					}
 
 					/*

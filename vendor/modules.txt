@@ -1626,7 +1626,7 @@ kmodules.xyz/objectstore-api/api/v1
 # kmodules.xyz/offshoot-api v0.25.4
 ## explicit; go 1.18
 kmodules.xyz/offshoot-api/api/v1
-# kmodules.xyz/resource-metadata v0.17.43-0.20231220183906-05fd8caa9730
+# kmodules.xyz/resource-metadata v0.17.43
 ## explicit; go 1.18
 kmodules.xyz/resource-metadata/apis/meta
 kmodules.xyz/resource-metadata/apis/meta/v1alpha1
