@@ -172,7 +172,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-core \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
-    --sample-name=opscenter-core \
+    --sample-name=not-used \
     --instance-name=opscenter-core \
     --resource.group=ui.k8s.appscode.com \
     --resource.version=v1alpha1 \
@@ -183,7 +183,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-monitoring \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
-    --sample-name=opscenter-monitoring \
+    --sample-name=not-used \
     --instance-name=opscenter-monitoring \
     --resource.group=ui.k8s.appscode.com \
     --resource.version=v1alpha1 \
@@ -194,7 +194,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-datastore \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
-    --sample-name=opscenter-datastore \
+    --sample-name=not-used \
     --instance-name=opscenter-datastore \
     --resource.group=ui.k8s.appscode.com \
     --resource.version=v1alpha1 \
@@ -205,7 +205,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-backup \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
-    --sample-name=opscenter-backup \
+    --sample-name=not-used \
     --instance-name=opscenter-backup \
     --resource.group=ui.k8s.appscode.com \
     --resource.version=v1alpha1 \
@@ -216,7 +216,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-security \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
-    --sample-name=opscenter-security \
+    --sample-name=not-used \
     --instance-name=opscenter-security \
     --resource.group=ui.k8s.appscode.com \
     --resource.version=v1alpha1 \
@@ -227,7 +227,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-cost \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
-    --sample-name=opscenter-cost \
+    --sample-name=not-used \
     --instance-name=opscenter-cost \
     --resource.group=ui.k8s.appscode.com \
     --resource.version=v1alpha1 \
@@ -238,7 +238,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-networking \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
-    --sample-name=opscenter-networking \
+    --sample-name=not-used \
     --instance-name=opscenter-networking \
     --resource.group=ui.k8s.appscode.com \
     --resource.version=v1alpha1 \
@@ -249,7 +249,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-tools \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
-    --sample-name=opscenter-tools \
+    --sample-name=not-used \
     --instance-name=opscenter-tools \
     --resource.group=ui.k8s.appscode.com \
     --resource.version=v1alpha1 \
@@ -260,7 +260,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-presets \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
-    --sample-name=opscenter-presets \
+    --sample-name=not-used \
     --instance-name=opscenter-presets \
     --resource.group=ui.k8s.appscode.com \
     --resource.version=v1alpha1 \
@@ -271,7 +271,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/dbaas-capa \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
-    --sample-name=dbaas-capa \
+    --sample-name=not-used \
     --instance-name=dbaas-capa \
     --resource.group=ui.k8s.appscode.com \
     --resource.version=v1alpha1 \
@@ -282,7 +282,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/dbaas-capg \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
-    --sample-name=dbaas-capg \
+    --sample-name=not-used \
     --instance-name=dbaas-capg \
     --resource.group=ui.k8s.appscode.com \
     --resource.version=v1alpha1 \
@@ -293,7 +293,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/dbaas-capz \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
-    --sample-name=dbaas-capz \
+    --sample-name=not-used \
     --instance-name=dbaas-capz \
     --resource.group=ui.k8s.appscode.com \
     --resource.version=v1alpha1 \
@@ -306,6 +306,17 @@ go run cmd/fuse-chart/*.go \
     --chart-version=$CHART_VERSION \
     --sample-name=not-used \
     --instance-name=crossplane \
+    --resource.group=ui.k8s.appscode.com \
+    --resource.version=v1alpha1 \
+    --resource.name=featuresets \
+    --gen-crd=false
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/opscenter-storage \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=not-used \
+    --instance-name=opscenter-storage \
     --resource.group=ui.k8s.appscode.com \
     --resource.version=v1alpha1 \
     --resource.name=featuresets \
