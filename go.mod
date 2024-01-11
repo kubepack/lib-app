@@ -33,8 +33,8 @@ require (
 	k8s.io/klog/v2 v2.110.1
 	k8s.io/kube-aggregator v0.29.0
 	k8s.io/kubectl v0.29.0
-	kmodules.xyz/client-go v0.29.5
-	kmodules.xyz/resource-metadata v0.18.2-0.20240101021508-7630737cb0e6
+	kmodules.xyz/client-go v0.29.6
+	kmodules.xyz/resource-metadata v0.18.2-0.20240111013716-d20938743f0c
 	kmodules.xyz/sets v0.29.0
 	kubepack.dev/chart-doc-gen v0.4.7
 	kubepack.dev/kubepack v0.29.0
@@ -222,6 +222,7 @@ require (
 	go.starlark.net v0.0.0-20230525235612-a134d8f9ddca // indirect
 	go.wandrs.dev/inject v0.0.1 // indirect
 	golang.org/x/crypto v0.17.0 // indirect
+	golang.org/x/exp v0.0.0-20220827204233-334a2380cb91 // indirect
 	golang.org/x/net v0.19.0 // indirect
 	golang.org/x/oauth2 v0.14.0 // indirect
 	golang.org/x/sync v0.5.0 // indirect
