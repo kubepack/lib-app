@@ -163,8 +163,7 @@ func applyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef releasesapi.C
 
 	deployer.WithOptions(opts)
 
-	rls, _, err := deployer.Run()
-	return rls, err
+	return deployer.Run()
 }
 
 func DeleteResource(f cmdutil.Factory, release releasesapi.ObjectMeta, log ...ha.DebugLog) (*release.UninstallReleaseResponse, error) {

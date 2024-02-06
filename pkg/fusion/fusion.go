@@ -76,8 +76,8 @@ var (
 	}
 	resourceValues = map[string]*unstructured.Unstructured{}
 	registry       = hub.NewRegistryOfKnownResources()
-	resourceKeys   = sets.NewString()
-	formKeys       = sets.NewString()
+	resourceKeys   = sets.New[string]()
+	formKeys       = sets.New[string]()
 
 	HelmRegistry     repo.IRegistry
 	HelmRepositories = map[string]string{}
@@ -497,7 +497,7 @@ func NewCmdFuse() *cobra.Command {
 			}
 
 			resourceGVKs := resourceGVKSet.List()
-			err = GenerateChartMetadata(rd, resourceGVKs, resourceKeys.List(), formKeys.List())
+			err = GenerateChartMetadata(rd, resourceGVKs, sets.List(resourceKeys), sets.List(formKeys))
 			if err != nil {
 				return err
 			}
@@ -523,9 +523,9 @@ func NewCmdFuse() *cobra.Command {
 					}
 					if v, ok := optSchema.Properties["form"]; ok {
 						chartSchema.Properties["form"] = v
-						required := sets.NewString(chartSchema.Required...)
+						required := sets.New[string](chartSchema.Required...)
 						required.Insert("form")
-						chartSchema.Required = required.List()
+						chartSchema.Required = sets.List(required)
 					}
 				}
 
