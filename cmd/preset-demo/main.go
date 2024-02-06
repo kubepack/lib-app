@@ -126,7 +126,7 @@ func DD(getter genericclioptions.RESTClientGetter, ref chartsapi.ChartPresetFlat
 			Atomic:       false,
 			SkipCRDs:     false,
 		})
-	rel, _, err := i.Run()
+	rel, err := i.Run()
 	if err != nil {
 		return err
 	}

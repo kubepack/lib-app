@@ -182,8 +182,8 @@ func EditorChartValueManifest(kc client.Client, app *driversapi.AppRelease, mt r
 	resourceMap := map[string]interface{}{}
 
 	// detect apiVersion from defaultValues in chart
-	resourceKeys := sets.NewString(app.Spec.ResourceKeys...)
-	formKeys := sets.NewString(app.Spec.FormKeys...)
+	resourceKeys := sets.New[string](app.Spec.ResourceKeys...)
+	formKeys := sets.New[string](app.Spec.FormKeys...)
 
 	_, usesForm := chrt.Values["form"]
 
@@ -351,7 +351,7 @@ func generateEditorModel(
 	}
 
 	_, usesForm := opts["form"]
-	var resourceKeys sets.String
+	var resourceKeys sets.Set[string]
 
 	if usesForm {
 		chrt, err := reg.GetChart(editorChartRef)
@@ -359,7 +359,7 @@ func generateEditorModel(
 			return nil, errors.Wrapf(err, "failed to load resource editor chart %+v", editorChartRef)
 		}
 		if data, ok := chrt.Chart.Metadata.Annotations["meta.x-helm.dev/resource-keys"]; ok && data != "" {
-			resourceKeys = sets.NewString(strings.Split(data, ",")...)
+			resourceKeys = sets.New[string](strings.Split(data, ",")...)
 		} else {
 			return nil, fmt.Errorf("editor chart %+v is missing annotation key meta.x-helm.dev/editor", editorChartRef)
 		}
