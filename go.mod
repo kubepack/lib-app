@@ -34,7 +34,7 @@ require (
 	k8s.io/kube-aggregator v0.29.0
 	k8s.io/kubectl v0.29.0
 	kmodules.xyz/client-go v0.29.6
-	kmodules.xyz/resource-metadata v0.18.2-0.20240205132124-d5898b9bd3c1
+	kmodules.xyz/resource-metadata v0.18.2-0.20240207094312-483c108adb08
 	kmodules.xyz/sets v0.29.0
 	kubepack.dev/chart-doc-gen v0.4.7
 	kubepack.dev/kubepack v0.29.1
@@ -274,4 +274,4 @@ require (
 	stash.appscode.dev/apimachinery v0.32.0 // indirect
 )
 
-replace helm.sh/helm/v3 => github.com/x-helm/helm/v3 v3.12.0-dev.1.0.20240206205405-69d3cacf7454
+replace helm.sh/helm/v3 => github.com/x-helm/helm/v3 v3.14.1-0.20240206205405-69d3cacf7454

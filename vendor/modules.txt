@@ -1276,7 +1276,7 @@ gopkg.in/yaml.v2
 # gopkg.in/yaml.v3 v3.0.1
 ## explicit
 gopkg.in/yaml.v3
-# helm.sh/helm/v3 v3.14.0 => github.com/x-helm/helm/v3 v3.12.0-dev.1.0.20240206205405-69d3cacf7454
+# helm.sh/helm/v3 v3.14.0 => github.com/x-helm/helm/v3 v3.14.1-0.20240206205405-69d3cacf7454
 ## explicit; go 1.21
 helm.sh/helm/v3/internal/fileutil
 helm.sh/helm/v3/internal/resolver
@@ -1722,7 +1722,7 @@ kmodules.xyz/objectstore-api/api/v1
 # kmodules.xyz/offshoot-api v0.29.0
 ## explicit; go 1.21.5
 kmodules.xyz/offshoot-api/api/v1
-# kmodules.xyz/resource-metadata v0.18.2-0.20240205132124-d5898b9bd3c1
+# kmodules.xyz/resource-metadata v0.18.2-0.20240207094312-483c108adb08
 ## explicit; go 1.21.5
 kmodules.xyz/resource-metadata/apis/meta
 kmodules.xyz/resource-metadata/apis/meta/v1alpha1
@@ -1949,4 +1949,4 @@ x-helm.dev/apimachinery/apis/products/v1alpha1
 x-helm.dev/apimachinery/apis/releases/v1alpha1
 x-helm.dev/apimachinery/apis/shared
 x-helm.dev/apimachinery/crds
-# helm.sh/helm/v3 => github.com/x-helm/helm/v3 v3.12.0-dev.1.0.20240206205405-69d3cacf7454
+# helm.sh/helm/v3 => github.com/x-helm/helm/v3 v3.14.1-0.20240206205405-69d3cacf7454

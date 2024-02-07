@@ -1021,8 +1021,8 @@ github.com/unrolled/render v1.6.0/go.mod h1:NoaP3JGGHcYDAqu6gTDz01E2TMqBybJ8dpR6
 github.com/urfave/cli v1.22.12/go.mod h1:sSBEIC79qR6OvcmsD4U3KABeOTxDqQtdDnaFuUN30b8=
 github.com/vbatts/tar-split v0.11.3 h1:hLFqsOLQ1SsppQNTMpkpPXClLDfC2A3Zgy9OUU+RVck=
 github.com/vbatts/tar-split v0.11.3/go.mod h1:9QlHN18E+fEH7RdG+QAJJcuya3rqT7eXSTY7wGrAokY=
-github.com/x-helm/helm/v3 v3.12.0-dev.1.0.20240206205405-69d3cacf7454 h1:4SmXMfNmVfwqMwIW/JBETsprTwExK2fLUU+m51JcS7o=
-github.com/x-helm/helm/v3 v3.12.0-dev.1.0.20240206205405-69d3cacf7454/go.mod h1:2itvvDv2WSZXTllknfQo6j7u3VVgMAvm8POCDgYH424=
+github.com/x-helm/helm/v3 v3.14.1-0.20240206205405-69d3cacf7454 h1:dEcpHgApbl1n9SKjn1IchWmaWzOLdFSJmuTOUjR1+5g=
+github.com/x-helm/helm/v3 v3.14.1-0.20240206205405-69d3cacf7454/go.mod h1:2itvvDv2WSZXTllknfQo6j7u3VVgMAvm8POCDgYH424=
 github.com/xeipuuv/gojsonpointer v0.0.0-20180127040702-4e3ac2762d5f/go.mod h1:N2zxlSyiKSe5eX1tZViRH5QA0qijqEDrYZiPEAiq3wU=
 github.com/xeipuuv/gojsonpointer v0.0.0-20190905194746-02993c407bfb h1:zGWFAtiMcyryUHoUjUJX0/lt1H2+i2Ka2n+D3DImSNo=
 github.com/xeipuuv/gojsonpointer v0.0.0-20190905194746-02993c407bfb/go.mod h1:N2zxlSyiKSe5eX1tZViRH5QA0qijqEDrYZiPEAiq3wU=
@@ -1756,8 +1756,8 @@ kmodules.xyz/objectstore-api v0.29.0 h1:dK53fQXdoboyW/EyBBAMjykT8u7jstKrM1DS4RJv
 kmodules.xyz/objectstore-api v0.29.0/go.mod h1:Kxmv6F7Kd/7EoKX3X2xIzhHT++zlj2qdXLcp/8avUYI=
 kmodules.xyz/offshoot-api v0.29.0 h1:GHLhxxT9jU1N8+FvOCCeJNyU5g0duYS46UGrs6AHNLY=
 kmodules.xyz/offshoot-api v0.29.0/go.mod h1:5NxhBblXoDHWStx9HCDJR2KFTwYjEZ7i1Id3jelIunw=
-kmodules.xyz/resource-metadata v0.18.2-0.20240205132124-d5898b9bd3c1 h1:JShlx4SSVx6jwz4DHqgrkJhlFvIJk7KV5bLbMLolMZc=
-kmodules.xyz/resource-metadata v0.18.2-0.20240205132124-d5898b9bd3c1/go.mod h1:I9HeSgkshwzwUy0IDhp4yIfRFbFQJ21syeSf4NsB04o=
+kmodules.xyz/resource-metadata v0.18.2-0.20240207094312-483c108adb08 h1:AMiIDmXYnhj/hRb8GH80mltaRPYBgIYJTeiXvhuwYhU=
+kmodules.xyz/resource-metadata v0.18.2-0.20240207094312-483c108adb08/go.mod h1:I9HeSgkshwzwUy0IDhp4yIfRFbFQJ21syeSf4NsB04o=
 kmodules.xyz/resource-metrics v0.29.0 h1:YBSVCbGdAugUqZK4igHu3fPhxvpYar4xejE6njryNM4=
 kmodules.xyz/resource-metrics v0.29.0/go.mod h1:OuG/QobZ7o8GFHl/u3lqaUR0fDZDegxtV8Vdh+MNBD4=
 kmodules.xyz/schema-checker v0.4.1 h1:V5UEjR6UMAXf307lTgw+9rDRfHLTNA8g/q9DngqYI9M=
