@@ -1696,7 +1696,7 @@ kmodules.xyz/apiversion
 # kmodules.xyz/apply v0.29.0
 ## explicit; go 1.21.5
 kmodules.xyz/apply
-# kmodules.xyz/client-go v0.29.6
+# kmodules.xyz/client-go v0.29.7
 ## explicit; go 1.21.5
 kmodules.xyz/client-go
 kmodules.xyz/client-go/api/v1
@@ -1749,7 +1749,7 @@ kubepack.dev/chart-doc-gen/api
 # kubepack.dev/kubepack v0.29.1
 ## explicit; go 1.21.5
 kubepack.dev/kubepack/pkg/lib
-# kubepack.dev/lib-helm v0.29.2
+# kubepack.dev/lib-helm v0.29.4
 ## explicit; go 1.21.5
 kubepack.dev/lib-helm/pkg/action
 kubepack.dev/lib-helm/pkg/chart
