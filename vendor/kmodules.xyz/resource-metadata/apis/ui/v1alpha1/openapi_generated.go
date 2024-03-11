@@ -7131,7 +7131,7 @@ func schema_k8sio_api_core_v1_PersistentVolumeStatus(ref common.ReferenceCallbac
 					},
 					"lastPhaseTransitionTime": {
 						SchemaProps: spec.SchemaProps{
-							Description: "lastPhaseTransitionTime is the time the phase transitioned from one to another and automatically resets to current time everytime a volume phase transitions. This is an alpha field and requires enabling PersistentVolumeLastPhaseTransitionTime feature.",
+							Description: "lastPhaseTransitionTime is the time the phase transitioned from one to another and automatically resets to current time everytime a volume phase transitions. This is a beta field and requires the PersistentVolumeLastPhaseTransitionTime feature to be enabled (enabled by default).",
 							Ref:         ref("k8s.io/apimachinery/pkg/apis/meta/v1.Time"),
 						},
 					},
@@ -16690,6 +16690,13 @@ func schema_resource_metadata_apis_ui_v1alpha1_FeatureSetSpec(ref common.Referen
 							Format:      "",
 						},
 					},
+					"hidden": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Hidden allows a featureset to be hidden from users in a UI",
+							Type:        []string{"boolean"},
+							Format:      "",
+						},
+					},
 					"icons": {
 						SchemaProps: spec.SchemaProps{
 							Description: "Icons is an optional list of icons for an application. Icon information includes the source, size, and mime type. These icons will be used in UI.",
@@ -16817,6 +16824,13 @@ func schema_resource_metadata_apis_ui_v1alpha1_FeatureSpec(ref common.ReferenceC
 							Description: "Description specifies a short description of the service this feature provides.",
 							Default:     "",
 							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"hidden": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Hidden allows a feature to be hidden from users in a UI",
+							Type:        []string{"boolean"},
 							Format:      "",
 						},
 					},
