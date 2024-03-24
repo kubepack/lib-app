@@ -22,13 +22,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/fluxcd/helm-controller/api/v2beta2"
 	"github.com/pkg/errors"
 	"helm.sh/helm/v3/pkg/chart"
-	k8serrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/types"
 	uiapi "kmodules.xyz/resource-metadata/apis/ui/v1alpha1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -71,7 +68,7 @@ func UpdateFeatureValues(kc client.Client, chrt *chart.Chart, vals map[string]an
 			var feature uiapi.Feature
 			err = kc.Get(context.TODO(), client.ObjectKey{Name: featureName}, &feature)
 			if err == nil {
-				err = SetChartInfo(kc, &feature, k, vals)
+				err = setChartInfo(&feature, k, vals)
 				if err != nil {
 					return nil, err
 				}
@@ -81,13 +78,7 @@ func UpdateFeatureValues(kc client.Client, chrt *chart.Chart, vals map[string]an
 	return vals, nil
 }
 
-func SetChartInfo(kc client.Client, feature *uiapi.Feature, featureKey string, values map[string]interface{}) error {
-	if feature.Spec.ValuesFrom != nil {
-		valuesFrom := convertValues(feature)
-		if err := unstructured.SetNestedField(values, valuesFrom, "resources", featureKey, "spec", "valuesFrom"); err != nil {
-			return err
-		}
-	}
+func setChartInfo(feature *uiapi.Feature, featureKey string, values map[string]interface{}) error {
 	err := unstructured.SetNestedField(values, feature.Spec.Chart.Name, "resources", featureKey, "spec", "chart", "spec", "chart")
 	if err != nil {
 		return err
@@ -122,36 +113,14 @@ func SetChartInfo(kc client.Client, feature *uiapi.Feature, featureKey string, v
 		return err
 	}
 
-	var hr v2beta2.HelmRelease
-	err = kc.Get(context.Background(), types.NamespacedName{Name: feature.Name, Namespace: "kubeops"}, &hr)
-	if k8serrors.IsNotFound(err) {
-		if feature.Spec.Values != nil {
-			err = setValuesFromHRValues(values, feature.Spec.Values.Raw, featureKey)
-			if err != nil {
-				return err
-			}
-		}
-	} else if err == nil {
-		if hr.Spec.Values != nil {
-			err = setValuesFromHRValues(values, hr.Spec.Values.Raw, featureKey)
-			if err != nil {
-				return err
-			}
+	if feature.Spec.ValuesFrom != nil {
+		valuesFrom := convertValues(feature)
+		if err := unstructured.SetNestedField(values, valuesFrom, "resources", featureKey, "spec", "valuesFrom"); err != nil {
+			return err
 		}
 	}
 
 	return err
-}
-
-func setValuesFromHRValues(values map[string]interface{}, specValues []byte, featureKey string) error {
-	fvalues := map[string]interface{}{}
-	if err := json.Unmarshal(specValues, &fvalues); err != nil {
-		return err
-	}
-	if err := unstructured.SetNestedField(values, fvalues, "resources", featureKey, "spec", "values"); err != nil {
-		return err
-	}
-	return nil
 }
 
 func convertValues(feature *uiapi.Feature) []interface{} {
