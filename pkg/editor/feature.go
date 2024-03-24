@@ -23,6 +23,7 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
+	kj "gomodules.xyz/encoding/json"
 	"helm.sh/helm/v3/pkg/chart"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -114,23 +115,14 @@ func setChartInfo(feature *uiapi.Feature, featureKey string, values map[string]i
 	}
 
 	if feature.Spec.ValuesFrom != nil {
-		valuesFrom := convertValues(feature)
+		valuesFrom, err := kj.ToJsonArray(feature.Spec.ValuesFrom)
+		if err != nil {
+			return err
+		}
 		if err := unstructured.SetNestedField(values, valuesFrom, "resources", featureKey, "spec", "valuesFrom"); err != nil {
 			return err
 		}
 	}
 
-	return err
-}
-
-func convertValues(feature *uiapi.Feature) []interface{} {
-	valuesFrom := make([]interface{}, len(feature.Spec.ValuesFrom))
-	for i, val := range feature.Spec.ValuesFrom {
-		valuesFrom[i] = map[string]interface{}{
-			"kind":      val.Kind,
-			"name":      val.Name,
-			"valuesKey": val.ValuesKey,
-		}
-	}
-	return valuesFrom
+	return nil
 }
