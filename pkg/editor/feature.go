@@ -69,7 +69,7 @@ func UpdateFeatureValues(kc client.Client, chrt *chart.Chart, vals map[string]an
 			var feature uiapi.Feature
 			err = kc.Get(context.TODO(), client.ObjectKey{Name: featureName}, &feature)
 			if err == nil {
-				err = setChartInfo(&feature, k, vals)
+				err = SetChartInfo(&feature, k, vals)
 				if err != nil {
 					return nil, err
 				}
@@ -79,7 +79,7 @@ func UpdateFeatureValues(kc client.Client, chrt *chart.Chart, vals map[string]an
 	return vals, nil
 }
 
-func setChartInfo(feature *uiapi.Feature, featureKey string, values map[string]interface{}) error {
+func SetChartInfo(feature *uiapi.Feature, featureKey string, values map[string]interface{}) error {
 	err := unstructured.SetNestedField(values, feature.Spec.Chart.Name, "resources", featureKey, "spec", "chart", "spec", "chart")
 	if err != nil {
 		return err
