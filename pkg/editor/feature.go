@@ -23,6 +23,7 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
+	kj "gomodules.xyz/encoding/json"
 	"helm.sh/helm/v3/pkg/chart"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -68,7 +69,7 @@ func UpdateFeatureValues(kc client.Client, chrt *chart.Chart, vals map[string]an
 			var feature uiapi.Feature
 			err = kc.Get(context.TODO(), client.ObjectKey{Name: featureName}, &feature)
 			if err == nil {
-				vals, err = setChartInfo(&feature, k, vals)
+				err = setChartInfo(&feature, k, vals)
 				if err != nil {
 					return nil, err
 				}
@@ -78,51 +79,50 @@ func UpdateFeatureValues(kc client.Client, chrt *chart.Chart, vals map[string]an
 	return vals, nil
 }
 
-func setChartInfo(feature *uiapi.Feature, featureKey string, values map[string]interface{}) (map[string]any, error) {
+func setChartInfo(feature *uiapi.Feature, featureKey string, values map[string]interface{}) error {
 	err := unstructured.SetNestedField(values, feature.Spec.Chart.Name, "resources", featureKey, "spec", "chart", "spec", "chart")
 	if err != nil {
-		return nil, err
+		return err
 	}
 	if feature.Spec.Chart.Version != "" {
 		err = unstructured.SetNestedField(values, feature.Spec.Chart.Version, "resources", featureKey, "spec", "chart", "spec", "version")
 		if err != nil {
-			return nil, err
+			return err
 		}
 	} else {
 		unstructured.RemoveNestedField(values, "resources", featureKey, "spec", "chart", "spec", "version")
 	}
 	err = unstructured.SetNestedField(values, feature.Spec.Chart.SourceRef.Kind, "resources", featureKey, "spec", "chart", "spec", "sourceRef", "kind")
 	if err != nil {
-		return nil, err
+		return err
 	}
 	err = unstructured.SetNestedField(values, feature.Spec.Chart.SourceRef.Name, "resources", featureKey, "spec", "chart", "spec", "sourceRef", "name")
 	if err != nil {
-		return nil, err
+		return err
 	}
 	err = unstructured.SetNestedField(values, feature.Spec.Chart.SourceRef.Namespace, "resources", featureKey, "spec", "chart", "spec", "sourceRef", "namespace")
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	err = unstructured.SetNestedField(values, feature.Spec.Chart.Namespace, "resources", featureKey, "spec", "targetNamespace")
 	if err != nil {
-		return nil, err
+		return err
 	}
 	err = unstructured.SetNestedField(values, feature.Spec.Chart.Namespace, "resources", featureKey, "spec", "storageNamespace")
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	if feature.Spec.Values != nil {
-		fvalues := map[string]interface{}{}
-		if err = json.Unmarshal(feature.Spec.Values.Raw, &fvalues); err != nil {
-			return nil, err
-		}
-		err = unstructured.SetNestedField(values, fvalues, "resources", featureKey, "spec", "values")
+	if feature.Spec.ValuesFrom != nil {
+		valuesFrom, err := kj.ToJsonArray(feature.Spec.ValuesFrom)
 		if err != nil {
-			return nil, err
+			return err
+		}
+		if err := unstructured.SetNestedField(values, valuesFrom, "resources", featureKey, "spec", "valuesFrom"); err != nil {
+			return err
 		}
 	}
 
-	return values, nil
+	return nil
 }

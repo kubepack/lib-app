@@ -1,8 +1,6 @@
 module kubepack.dev/lib-app
 
-go 1.22.0
-
-toolchain go1.22.1
+go 1.22.1
 
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
@@ -22,11 +20,12 @@ require (
 	go.wandrs.dev/binding v0.0.2
 	go.wandrs.dev/http v0.0.2
 	gocloud.dev v0.26.0
+	gomodules.xyz/encoding v0.0.8
 	gomodules.xyz/jsonpatch/v3 v3.0.1
 	gomodules.xyz/logs v0.0.7
 	gomodules.xyz/x v0.0.17
 	gopkg.in/yaml.v3 v3.0.1
-	helm.sh/helm/v3 v3.14.0
+	helm.sh/helm/v3 v3.14.3
 	k8s.io/api v0.29.2
 	k8s.io/apiextensions-apiserver v0.29.2
 	k8s.io/apimachinery v0.29.2
@@ -40,7 +39,7 @@ require (
 	kmodules.xyz/sets v0.29.0
 	kubepack.dev/chart-doc-gen v0.4.7
 	kubepack.dev/kubepack v0.29.1
-	kubepack.dev/lib-helm v0.29.4
+	kubepack.dev/lib-helm v0.29.7
 	sigs.k8s.io/controller-runtime v0.17.2
 	sigs.k8s.io/yaml v1.4.0
 	x-helm.dev/apimachinery v0.0.16
@@ -98,15 +97,15 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/chai2010/gettext-go v1.0.2 // indirect
-	github.com/containerd/containerd v1.7.11 // indirect
+	github.com/containerd/containerd v1.7.12 // indirect
 	github.com/containerd/log v0.1.0 // indirect
 	github.com/containerd/stargz-snapshotter/estargz v0.14.3 // indirect
 	github.com/cubewise-code/go-mime v0.0.0-20200519001935-8c5762b177d8 // indirect
 	github.com/cyphar/filepath-securejoin v0.2.4 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
-	github.com/docker/cli v24.0.7+incompatible // indirect
+	github.com/docker/cli v24.0.9+incompatible // indirect
 	github.com/docker/distribution v2.8.2+incompatible // indirect
-	github.com/docker/docker v24.0.7+incompatible // indirect
+	github.com/docker/docker v24.0.9+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.7.0 // indirect
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-metrics v0.0.1 // indirect
@@ -142,7 +141,7 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/golang-jwt/jwt/v5 v5.0.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
-	github.com/golang/protobuf v1.5.3 // indirect
+	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/btree v1.1.2 // indirect
 	github.com/google/gnostic-models v0.6.8 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
@@ -240,7 +239,6 @@ require (
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	gomodules.xyz/blobfs v0.1.14 // indirect
 	gomodules.xyz/clock v0.0.0-20200817085942-06523dba733f // indirect
-	gomodules.xyz/encoding v0.0.7 // indirect
 	gomodules.xyz/flags v0.1.3 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.4.0 // indirect
 	gomodules.xyz/mergo v0.3.13 // indirect
@@ -255,7 +253,7 @@ require (
 	google.golang.org/genproto/googleapis/api v0.0.0-20230822172742-b8732ec3820d // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230822172742-b8732ec3820d // indirect
 	google.golang.org/grpc v1.59.0 // indirect
-	google.golang.org/protobuf v1.31.0 // indirect
+	google.golang.org/protobuf v1.33.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	k8s.io/apiserver v0.29.2 // indirect
@@ -278,4 +276,4 @@ require (
 	stash.appscode.dev/apimachinery v0.32.0 // indirect
 )
 
-replace helm.sh/helm/v3 => github.com/x-helm/helm/v3 v3.14.1-0.20240206205405-69d3cacf7454
+replace helm.sh/helm/v3 => github.com/x-helm/helm/v3 v3.14.4-0.20240324190704-bf69fbd1157c
