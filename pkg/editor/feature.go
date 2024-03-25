@@ -114,6 +114,16 @@ func SetChartInfo(feature *uiapi.Feature, featureKey string, values map[string]i
 		return err
 	}
 
+	if feature.Spec.Values != nil {
+		fvalues := map[string]interface{}{}
+		if err = json.Unmarshal(feature.Spec.Values.Raw, &fvalues); err != nil {
+			return err
+		}
+		if err = unstructured.SetNestedField(values, fvalues, "resources", featureKey, "spec", "values"); err != nil {
+			return err
+		}
+	}
+
 	if feature.Spec.ValuesFrom != nil {
 		valuesFrom, err := kj.ToJsonArray(feature.Spec.ValuesFrom)
 		if err != nil {
