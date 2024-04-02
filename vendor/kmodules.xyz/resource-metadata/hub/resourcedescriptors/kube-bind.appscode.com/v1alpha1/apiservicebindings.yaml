@@ -60,31 +60,41 @@ spec:
           description: spec specifies how an API service from a service provider should
             be bound in the local consumer cluster.
           properties:
-            kubeconfigSecretRefs:
-              description: kubeconfigSecretName is the secret ref that contains the
-                kubeconfig of the service cluster.
+            providers:
+              description: Providers contains the provider ClusterIdentity and KubeconfigSecretRef
+                of the provider cluster
               items:
                 properties:
-                  key:
-                    description: The key of the secret to select from.  Must be "kubeconfig".
-                    enum:
-                    - kubeconfig
+                  clusterName:
                     type: string
-                  name:
-                    description: Name of the referent.
-                    minLength: 1
+                  clusterUID:
                     type: string
-                  namespace:
-                    description: Namespace of the referent.
-                    minLength: 1
+                  kubeconfig:
+                    properties:
+                      key:
+                        description: The key of the secret to select from.  Must be
+                          "kubeconfig".
+                        enum:
+                        - kubeconfig
+                        type: string
+                      name:
+                        description: Name of the referent.
+                        minLength: 1
+                        type: string
+                      namespace:
+                        description: Namespace of the referent.
+                        minLength: 1
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
+                  remoteNamespace:
                     type: string
-                required:
-                - key
-                - name
-                - namespace
                 type: object
               type: array
           required:
-          - kubeconfigSecretRefs
+          - providers
           type: object
       type: object
