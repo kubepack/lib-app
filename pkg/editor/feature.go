@@ -105,6 +105,16 @@ func SetChartInfo(feature *uiapi.Feature, featureKey string, values map[string]i
 		return err
 	}
 
+	if len(feature.Spec.Chart.ValuesFiles) > 0 {
+		valuesFiles, err := kj.ToJsonArray(feature.Spec.Chart.ValuesFiles)
+		if err != nil {
+			return err
+		}
+		if err := unstructured.SetNestedField(values, valuesFiles, "resources", featureKey, "spec", "chart", "spec", "valuesFiles"); err != nil {
+			return err
+		}
+	}
+
 	err = unstructured.SetNestedField(values, feature.Spec.Chart.Namespace, "resources", featureKey, "spec", "targetNamespace")
 	if err != nil {
 		return err
@@ -124,7 +134,7 @@ func SetChartInfo(feature *uiapi.Feature, featureKey string, values map[string]i
 		}
 	}
 
-	if feature.Spec.ValuesFrom != nil {
+	if len(feature.Spec.ValuesFrom) > 0 {
 		valuesFrom, err := kj.ToJsonArray(feature.Spec.ValuesFrom)
 		if err != nil {
 			return err
