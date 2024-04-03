@@ -124,6 +124,11 @@ func SetChartInfo(feature *uiapi.Feature, featureKey string, values map[string]i
 		return err
 	}
 
+	err = unstructured.SetNestedField(values, feature.Spec.Chart.CreateNamespace, "resources", featureKey, "spec", "install", "createNamespace")
+	if err != nil {
+		return err
+	}
+
 	if feature.Spec.Values != nil {
 		fvalues := map[string]interface{}{}
 		if err = json.Unmarshal(feature.Spec.Values.Raw, &fvalues); err != nil {
