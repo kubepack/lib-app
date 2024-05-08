@@ -149,3 +149,86 @@ go run cmd/fuse-chart/*.go \
     --resource.group=kubevault.com \
     --resource.version=v1alpha1 \
     --resource.name=vaultservers
+
+# new dbs
+#################################################################################
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/druid/druid.yaml \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --form-templates=monitoring/alert.yaml \
+    --sample-name=druid \
+    --resource.group=kubedb.com \
+    --resource.version=v1alpha2 \
+    --resource.name=druids
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/ferretdb/ferretdb.yaml \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --form-templates=monitoring/alert.yaml \
+    --sample-name=ferret \
+    --resource.group=kubedb.com \
+    --resource.version=v1alpha2 \
+    --resource.name=ferretdbs
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/mssqlserver/sqlserver-ag.yaml \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --form-templates=monitoring/alert.yaml \
+    --sample-name=sqlserver-ag \
+    --resource.group=kubedb.com \
+    --resource.version=v1alpha2 \
+    --resource.name=mssqlservers
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/pgpool/pgpool.yaml \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --form-templates=monitoring/alert.yaml \
+    --sample-name=pgpool \
+    --resource.group=kubedb.com \
+    --resource.version=v1alpha2 \
+    --resource.name=pgpools
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/rabbitmq/rabbitmq.yaml \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --form-templates=monitoring/alert.yaml \
+    --sample-name=rabbitmq \
+    --resource.group=kubedb.com \
+    --resource.version=v1alpha2 \
+    --resource.name=rabbitmqs
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/singlestore/cluster-mode/cluster.yaml \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --form-templates=monitoring/alert.yaml \
+    --sample-name=singlestore \
+    --resource.group=kubedb.com \
+    --resource.version=v1alpha2 \
+    --resource.name=singlestores
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/solr/topology.yaml \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --form-templates=monitoring/alert.yaml \
+    --sample-name=solr \
+    --resource.group=kubedb.com \
+    --resource.version=v1alpha2 \
+    --resource.name=solrs
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/zookeeper/sample.yaml \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --form-templates=monitoring/alert.yaml \
+    --sample-name=zookeeper \
+    --resource.group=kubedb.com \
+    --resource.version=v1alpha2 \
+    --resource.name=zookeepers
