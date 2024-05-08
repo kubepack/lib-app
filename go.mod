@@ -35,11 +35,11 @@ require (
 	k8s.io/kube-aggregator v0.29.2
 	k8s.io/kubectl v0.29.0
 	kmodules.xyz/client-go v0.29.13
-	kmodules.xyz/resource-metadata v0.18.3
+	kmodules.xyz/resource-metadata v0.18.4
 	kmodules.xyz/sets v0.29.0
 	kubepack.dev/chart-doc-gen v0.4.7
 	kubepack.dev/kubepack v0.29.1
-	kubepack.dev/lib-helm v0.29.9
+	kubepack.dev/lib-helm v0.29.10
 	sigs.k8s.io/controller-runtime v0.17.2
 	sigs.k8s.io/yaml v1.4.0
 	x-helm.dev/apimachinery v0.0.16

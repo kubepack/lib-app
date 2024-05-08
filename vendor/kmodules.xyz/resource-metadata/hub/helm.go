@@ -25,6 +25,7 @@ import (
 	"kmodules.xyz/resource-metadata/apis/shared"
 
 	fluxsrc "github.com/fluxcd/source-controller/api/v1beta2"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	chartsapi "x-helm.dev/apimachinery/apis/charts/v1alpha1"
 	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
@@ -137,4 +138,20 @@ func FeatureVersion(kc client.Client, featureName string) string {
 		}
 	}
 	return ""
+}
+
+func HelmCreateNamespace(kc client.Client) bool {
+	preset, found := GetBootstrapPresets(kc)
+	if found {
+		return preset.Helm.CreateNamespace
+	}
+	return true
+}
+
+func IsFeaturesetGR(gr schema.GroupResource) bool {
+	return gr.Group == "ui.k8s.appscode.com" && gr.Resource == "featuresets"
+}
+
+func IsFeaturesetGK(gk schema.GroupKind) bool {
+	return gk.Group == "ui.k8s.appscode.com" && gk.Kind == "FeatureSet"
 }

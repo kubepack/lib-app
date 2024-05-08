@@ -40,6 +40,7 @@ import (
 	"k8s.io/apimachinery/pkg/util/sets"
 	meta_util "kmodules.xyz/client-go/meta"
 	"kmodules.xyz/client-go/tools/parser"
+	"kmodules.xyz/resource-metadata/hub"
 	"kmodules.xyz/resource-metadata/hub/resourceeditors"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/yaml"
@@ -87,8 +88,14 @@ func RenderOrderTemplate(bs *lib.BlobStore, reg repo.IRegistry, order releasesap
 			Namespace:   pkg.Chart.Namespace,
 		}
 		crds, manifestFile := f1.Result()
+
+		chartName := pkg.Chart.ReleaseName
+		if f1.IsFeaturesetEditor {
+			chartName = "" // not-used
+		}
+
 		for _, crd := range crds {
-			resources, err := ListResources(pkg.Chart.ReleaseName, crd.Data)
+			resources, err := ListResources(chartName, crd.Data)
 			if err != nil {
 				return "", nil, err
 			}
@@ -109,7 +116,7 @@ func RenderOrderTemplate(bs *lib.BlobStore, reg repo.IRegistry, order releasesap
 				URL: manifestFile.URL,
 				Key: manifestFile.Key,
 			}
-			tpl.Resources, err = ListResources(pkg.Chart.ReleaseName, manifestFile.Data)
+			tpl.Resources, err = ListResources(chartName, manifestFile.Data)
 			if err != nil {
 				return "", nil, err
 			}
@@ -169,10 +176,16 @@ func loadEditorModel(kc client.Client, reg repo.IRegistry, chartRef releasesapi.
 		return nil, err
 	}
 
-	return EditorChartValueManifest(kc, &app, opts.Metadata.Release, chrt.Chart)
+	return EditorChartValueManifest(kc, &app, opts.Metadata, chrt.Chart)
 }
 
-func EditorChartValueManifest(kc client.Client, app *driversapi.AppRelease, mt releasesapi.ObjectMeta, chrt *chart.Chart) (*releasesapi.EditorTemplate, error) {
+func EditorChartValueManifest(kc client.Client, app *driversapi.AppRelease, mt releasesapi.Metadata, chrt *chart.Chart) (*releasesapi.EditorTemplate, error) {
+	isFeaturesetEditor := hub.IsFeaturesetGR(mt.Resource.GroupResource())
+	chartName := mt.Release.Name
+	if isFeaturesetEditor {
+		chartName = "" // not-used
+	}
+
 	selector, err := metav1.LabelSelectorAsSelector(app.Spec.Selector)
 	if err != nil {
 		return nil, err
@@ -195,7 +208,7 @@ func EditorChartValueManifest(kc client.Client, app *driversapi.AppRelease, mt r
 			Version: gvk.Version,
 			Kind:    gvk.Kind,
 		})
-		err = kc.List(context.TODO(), &list, client.MatchingLabelsSelector{Selector: selector}, client.InNamespace(mt.Namespace))
+		err = kc.List(context.TODO(), &list, client.MatchingLabelsSelector{Selector: selector}, client.InNamespace(mt.Release.Namespace))
 		if meta.IsNoMatchError(err) {
 			continue // CRD type not installed, so skip it
 		} else if err != nil {
@@ -206,7 +219,7 @@ func EditorChartValueManifest(kc client.Client, app *driversapi.AppRelease, mt r
 			// remove status
 			delete(obj.Object, "status")
 
-			rsKey, err := ResourceKey(obj.GetAPIVersion(), obj.GetKind(), mt.Name, obj.GetName())
+			rsKey, err := ResourceKey(obj.GetAPIVersion(), obj.GetKind(), chartName, obj.GetName())
 			if err != nil {
 				return nil, err
 			}
@@ -237,7 +250,7 @@ func EditorChartValueManifest(kc client.Client, app *driversapi.AppRelease, mt r
 	s2map := map[string]int{}
 	s3map := map[string]int{}
 	for _, obj := range resources {
-		s1, s2, s3 := ResourceFilename(obj.GetAPIVersion(), obj.GetKind(), mt.Name, obj.GetName())
+		s1, s2, s3 := ResourceFilename(obj.GetAPIVersion(), obj.GetKind(), chartName, obj.GetName())
 		if v, ok := s1map[s1]; !ok {
 			s1map[s1] = 1
 		} else {
@@ -257,7 +270,7 @@ func EditorChartValueManifest(kc client.Client, app *driversapi.AppRelease, mt r
 
 	rsfiles := make([]releasesapi.ResourceObject, 0, len(resources))
 	for _, obj := range resources {
-		s1, s2, s3 := ResourceFilename(obj.GetAPIVersion(), obj.GetKind(), mt.Name, obj.GetName())
+		s1, s2, s3 := ResourceFilename(obj.GetAPIVersion(), obj.GetKind(), chartName, obj.GetName())
 		name := s1
 		if s1map[s1] > 1 {
 			if s2map[s2] > 1 {
@@ -268,7 +281,7 @@ func EditorChartValueManifest(kc client.Client, app *driversapi.AppRelease, mt r
 		}
 		rsfiles = append(rsfiles, releasesapi.ResourceObject{
 			Filename: name,
-			Key:      MustResourceKey(obj.GetAPIVersion(), obj.GetKind(), mt.Name, obj.GetName()),
+			Key:      MustResourceKey(obj.GetAPIVersion(), obj.GetKind(), chartName, obj.GetName()),
 			Data:     obj,
 		})
 	}
@@ -339,6 +352,12 @@ func generateEditorModel(
 	spec releasesapi.ModelMetadata,
 	opts map[string]interface{},
 ) (*unstructured.Unstructured, error) {
+	isFeaturesetEditor := hub.IsFeaturesetGR(spec.Resource.GroupResource())
+	chartName := spec.Metadata.Release.Name
+	if isFeaturesetEditor {
+		chartName = "" // not-used
+	}
+
 	if optionsChartRef.SourceRef.Namespace == "" {
 		ns, err := DefaultSourceRefNamespace(kc, optionsChartRef.SourceRef.Name)
 		if err != nil {
@@ -381,7 +400,7 @@ func generateEditorModel(
 	resourceMap := map[string]interface{}{}
 	_, manifest := f1.Result()
 	err = parser.ProcessResources(manifest, func(ri parser.ResourceInfo) error {
-		rsKey, err := ResourceKey(ri.Object.GetAPIVersion(), ri.Object.GetKind(), spec.Metadata.Release.Name, ri.Object.GetName())
+		rsKey, err := ResourceKey(ri.Object.GetAPIVersion(), ri.Object.GetKind(), chartName, ri.Object.GetName())
 		if err != nil {
 			return err
 		}
@@ -488,7 +507,12 @@ func renderChart(
 		})
 	}
 	if manifest != nil {
-		tpl.Resources, err = ListResources(spec.Release.Name, manifest)
+		isFeaturesetEditor := hub.IsFeaturesetGR(spec.Resource.GroupResource())
+		chartName := spec.Release.Name
+		if isFeaturesetEditor {
+			chartName = "" // not-used
+		}
+		tpl.Resources, err = ListResources(chartName, manifest)
 		if err != nil {
 			return "", nil, err
 		}

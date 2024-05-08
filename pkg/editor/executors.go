@@ -41,8 +41,10 @@ import (
 	"helm.sh/helm/v3/pkg/release"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/klog/v2"
+	"kmodules.xyz/resource-metadata/hub"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	yamllib "sigs.k8s.io/yaml"
 	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
@@ -63,8 +65,9 @@ type TemplateRenderer struct {
 	PublicURL string
 	// W         io.Writer
 
-	CRDs     []releasesapi.BucketFile
-	Manifest *releasesapi.BucketFile
+	CRDs               []releasesapi.BucketFile
+	Manifest           *releasesapi.BucketFile
+	IsFeaturesetEditor bool
 }
 
 func (x *TemplateRenderer) Do() error {
@@ -82,6 +85,14 @@ func (x *TemplateRenderer) Do() error {
 	chrt, err := x.Registry.GetChart(x.ChartSourceRef)
 	if err != nil {
 		return err
+	}
+
+	if data, ok := chrt.Chart.Metadata.Annotations["meta.x-helm.dev/editor"]; ok && data != "" {
+		var gvr metav1.GroupVersionResource
+		if err := json.Unmarshal([]byte(data), &gvr); err != nil {
+			return fmt.Errorf("failed to parse %s annotation %s", "meta.x-helm.dev/editor", data)
+		}
+		x.IsFeaturesetEditor = hub.IsFeaturesetGR(schema.GroupResource{Group: gvr.Group, Resource: gvr.Resource})
 	}
 
 	cfg := new(action.Configuration)
