@@ -1738,7 +1738,7 @@ kmodules.xyz/objectstore-api/api/v1
 ## explicit; go 1.21.5
 kmodules.xyz/offshoot-api/api/v1
 kmodules.xyz/offshoot-api/api/v2
-# kmodules.xyz/resource-metadata v0.18.3
+# kmodules.xyz/resource-metadata v0.18.4
 ## explicit; go 1.22.0
 kmodules.xyz/resource-metadata/apis/meta
 kmodules.xyz/resource-metadata/apis/meta/v1alpha1
@@ -1765,7 +1765,7 @@ kubepack.dev/chart-doc-gen/api
 # kubepack.dev/kubepack v0.29.1
 ## explicit; go 1.21.5
 kubepack.dev/kubepack/pkg/lib
-# kubepack.dev/lib-helm v0.29.9
+# kubepack.dev/lib-helm v0.29.10
 ## explicit; go 1.22.1
 kubepack.dev/lib-helm/pkg/action
 kubepack.dev/lib-helm/pkg/chart

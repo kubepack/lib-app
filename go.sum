@@ -1798,8 +1798,8 @@ kmodules.xyz/objectstore-api v0.29.0 h1:dK53fQXdoboyW/EyBBAMjykT8u7jstKrM1DS4RJv
 kmodules.xyz/objectstore-api v0.29.0/go.mod h1:Kxmv6F7Kd/7EoKX3X2xIzhHT++zlj2qdXLcp/8avUYI=
 kmodules.xyz/offshoot-api v0.29.0 h1:GHLhxxT9jU1N8+FvOCCeJNyU5g0duYS46UGrs6AHNLY=
 kmodules.xyz/offshoot-api v0.29.0/go.mod h1:5NxhBblXoDHWStx9HCDJR2KFTwYjEZ7i1Id3jelIunw=
-kmodules.xyz/resource-metadata v0.18.3 h1:h6UXehrElqq9CqJTIkD7E+33ga5IEj9H+CtpwS+K90M=
-kmodules.xyz/resource-metadata v0.18.3/go.mod h1:HY6FmDDzQOEHfIEHRiqwNXVyof3uRIDtLSu0Yi1mIBw=
+kmodules.xyz/resource-metadata v0.18.4 h1:V6X64GtNRRuxZ0syTfRC6O8uXotVgT9WTh4yTJM1Jfw=
+kmodules.xyz/resource-metadata v0.18.4/go.mod h1:HY6FmDDzQOEHfIEHRiqwNXVyof3uRIDtLSu0Yi1mIBw=
 kmodules.xyz/resource-metrics v0.29.5 h1:ciuvRXuXsloLNW/JwkubqbYySsvHvHr6/nhkTL5Sf1o=
 kmodules.xyz/resource-metrics v0.29.5/go.mod h1:OuG/QobZ7o8GFHl/u3lqaUR0fDZDegxtV8Vdh+MNBD4=
 kmodules.xyz/schema-checker v0.4.1 h1:V5UEjR6UMAXf307lTgw+9rDRfHLTNA8g/q9DngqYI9M=
@@ -1812,8 +1812,8 @@ kubepack.dev/chart-doc-gen v0.4.7 h1:SN+p8dXKoOCrpJBfYXNlTJWmU+PtKPnvkZdDjlatMao
 kubepack.dev/chart-doc-gen v0.4.7/go.mod h1:cUKd7EHAQrxKj156uk+TVG31aEGn/oxYLzZolgxcv6U=
 kubepack.dev/kubepack v0.29.1 h1:BRdXCRBabm4Uqywj1GtB1rnqwRRP6LWBMaiGZr7fzsM=
 kubepack.dev/kubepack v0.29.1/go.mod h1:direcjhYacfv8fdBW66/Bab/nZmvWf2M1sSpx0Fk/fI=
-kubepack.dev/lib-helm v0.29.9 h1:cGfB+rZ5kZui3z1KNHFUphp4H3nR6DszEdFjmKzneZ8=
-kubepack.dev/lib-helm v0.29.9/go.mod h1:IDL182dq2lk51DBbl+MKHdz/pUa69Vy12y425UZXz18=
+kubepack.dev/lib-helm v0.29.10 h1:DxqVpid7Ez+lp/jRHO6b1kqBEdAb+AdkYCGcsZVJd6A=
+kubepack.dev/lib-helm v0.29.10/go.mod h1:vrVvhzbL/SNRuS5FTn53bnpLAWoNta31ETCeaOczAcM=
 nhooyr.io/websocket v1.8.7/go.mod h1:B70DZP8IakI65RVQ51MsWP/8jndNma26DVA/nFSCgW0=
 oras.land/oras-go v1.2.4 h1:djpBY2/2Cs1PV87GSJlxv4voajVOMZxqqtq9AB8YNvY=
 oras.land/oras-go v1.2.4/go.mod h1:DYcGfb3YF1nKjcezfX2SNlDAeQFKSXmf+qrFmrh4324=
