@@ -34,8 +34,8 @@ import (
 	"kubepack.dev/lib-helm/pkg/repo"
 
 	"github.com/Masterminds/sprig/v3"
-	"github.com/fluxcd/helm-controller/api/v2beta1"
-	fluxsrc "github.com/fluxcd/source-controller/api/v1beta2"
+	fluxhelm "github.com/fluxcd/helm-controller/api/v2"
+	fluxsrc "github.com/fluxcd/source-controller/api/v1"
 	"github.com/spf13/cobra"
 	installer "go.bytebuilders.dev/installer/apis/installer/v1alpha1"
 	ioutilz "gomodules.xyz/x/ioutil"
@@ -292,9 +292,9 @@ func NewCmdFuse() *cobra.Command {
 					delete(descriptor.Spec.Validation.OpenAPIV3Schema.Properties, "status")
 					props := *descriptor.Spec.Validation.OpenAPIV3Schema.DeepCopy()
 
-					if cp.GetAPIVersion() == v2beta1.GroupVersion.String() &&
-						cp.GetKind() == v2beta1.HelmReleaseKind {
-						var hr v2beta1.HelmRelease
+					if cp.GetAPIVersion() == fluxhelm.GroupVersion.String() &&
+						cp.GetKind() == fluxhelm.HelmReleaseKind {
+						var hr fluxhelm.HelmRelease
 						err := runtime.DefaultUnstructuredConverter.FromUnstructured(cp.UnstructuredContent(), &hr)
 						if err != nil {
 							return err
