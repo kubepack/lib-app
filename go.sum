@@ -1802,10 +1802,10 @@ kubeops.dev/external-dns-operator v0.0.6 h1:ZvSn6hdcnTpB5AxNFjH5u6VUqnyaBHXT+6x/
 kubeops.dev/external-dns-operator v0.0.6/go.mod h1:y2ZO2L/5OoVvRDDIOQOtMCnbPCvP+vy8035UllrUFrc=
 kubepack.dev/chart-doc-gen v0.4.7 h1:SN+p8dXKoOCrpJBfYXNlTJWmU+PtKPnvkZdDjlatMao=
 kubepack.dev/chart-doc-gen v0.4.7/go.mod h1:cUKd7EHAQrxKj156uk+TVG31aEGn/oxYLzZolgxcv6U=
-kubepack.dev/kubepack v0.29.1 h1:BRdXCRBabm4Uqywj1GtB1rnqwRRP6LWBMaiGZr7fzsM=
-kubepack.dev/kubepack v0.29.1/go.mod h1:direcjhYacfv8fdBW66/Bab/nZmvWf2M1sSpx0Fk/fI=
-kubepack.dev/lib-helm v0.29.11-0.20240519132626-8c489396a47d h1:P+GnXgISp1g5IdvjiOkoqTSKTxmshdjFQbkwcG9HHbI=
-kubepack.dev/lib-helm v0.29.11-0.20240519132626-8c489396a47d/go.mod h1:5MKBsbCflr12KxTaO2yF8XB9yawCXO+29q3ZpDzzpPw=
+kubepack.dev/kubepack v0.29.2-0.20240519151029-6ba83ceff9d4 h1:tISTMjZfbZcZr+Xc8lSV32TELm1PZnybVoFGkPZSBSY=
+kubepack.dev/kubepack v0.29.2-0.20240519151029-6ba83ceff9d4/go.mod h1:YNeSp6oGZ9ufV0v7kt6tj1NPmJhSlBi73TXH8T7OLjI=
+kubepack.dev/lib-helm v0.29.11-0.20240519144222-b89302e9879c h1:wtv/aaMzeal6evakK85W/4jJMT1VZNjdVXALhhHtB9I=
+kubepack.dev/lib-helm v0.29.11-0.20240519144222-b89302e9879c/go.mod h1:5MKBsbCflr12KxTaO2yF8XB9yawCXO+29q3ZpDzzpPw=
 nhooyr.io/websocket v1.8.7/go.mod h1:B70DZP8IakI65RVQ51MsWP/8jndNma26DVA/nFSCgW0=
 oras.land/oras-go v1.2.4 h1:djpBY2/2Cs1PV87GSJlxv4voajVOMZxqqtq9AB8YNvY=
 oras.land/oras-go v1.2.4/go.mod h1:DYcGfb3YF1nKjcezfX2SNlDAeQFKSXmf+qrFmrh4324=

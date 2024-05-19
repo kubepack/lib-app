@@ -14,9 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-./kubedb.sh
-./kubestash.sh
-./capi.sh
-./ocm.sh
-./opscenter.sh
-./stash.sh
+CHART_VERSION=${CHART_VERSION:-v0.4.18}
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/capi-core \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=not-used \
+    --instance-name=capi-core \
+    --resource.group=ui.k8s.appscode.com \
+    --resource.version=v1alpha1 \
+    --resource.name=featuresets \
+    --gen-crd=false
