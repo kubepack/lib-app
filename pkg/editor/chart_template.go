@@ -292,7 +292,7 @@ func EditorChartValueManifest(kc client.Client, app *driversapi.AppRelease, mt r
 			Object: map[string]interface{}{
 				"metadata": map[string]interface{}{
 					"resource": chrt.Values["metadata"].(map[string]interface{})["resource"],
-					"release":  mt,
+					"release":  mt.Release,
 				},
 				"resources": resourceMap,
 			},
