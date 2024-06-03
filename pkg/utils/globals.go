@@ -17,6 +17,6 @@ limitations under the License.
 package utils
 
 const (
-	ChartVersion   = "v0.4.19"
+	ChartVersion   = "v0.4.20"
 	ChartUseDigest = false
 )

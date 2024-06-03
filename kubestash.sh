@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-CHART_VERSION=${CHART_VERSION:-v0.4.19}
+CHART_VERSION=${CHART_VERSION:-v0.4.20}
 
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/kubestash/backupstorage/s3 \
