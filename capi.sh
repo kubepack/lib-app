@@ -26,3 +26,36 @@ go run cmd/fuse-chart/*.go \
     --resource.version=v1alpha1 \
     --resource.name=featuresets \
     --gen-crd=false
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/capi-capa \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=not-used \
+    --instance-name=capi-capa \
+    --resource.group=ui.k8s.appscode.com \
+    --resource.version=v1alpha1 \
+    --resource.name=featuresets \
+    --gen-crd=false
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/capi-capg \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=not-used \
+    --instance-name=capi-capg \
+    --resource.group=ui.k8s.appscode.com \
+    --resource.version=v1alpha1 \
+    --resource.name=featuresets \
+    --gen-crd=false
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/featuresets/capi-capz \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=not-used \
+    --instance-name=capi-capz \
+    --resource.group=ui.k8s.appscode.com \
+    --resource.version=v1alpha1 \
+    --resource.name=featuresets \
+    --gen-crd=false
