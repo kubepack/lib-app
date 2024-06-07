@@ -24,9 +24,6 @@ go run cmd/fuse-chart/*.go \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
     --form-templates=monitoring/alert.yaml \
-    --form-templates=capi/capa.yaml \
-    --form-templates=capi/capg.yaml \
-    --form-templates=capi/capz.yaml \
     --sample-name=elasticsearch \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
@@ -46,9 +43,6 @@ go run cmd/fuse-chart/*.go \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
     --form-templates=monitoring/alert.yaml \
-    --form-templates=capi/capa.yaml \
-    --form-templates=capi/capg.yaml \
-    --form-templates=capi/capz.yaml \
     --sample-name=mariadb \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
@@ -59,9 +53,6 @@ go run cmd/fuse-chart/*.go \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
     --form-templates=monitoring/alert.yaml \
-    --form-templates=capi/capa.yaml \
-    --form-templates=capi/capg.yaml \
-    --form-templates=capi/capz.yaml \
     --sample-name=mongodb \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
@@ -72,9 +63,6 @@ go run cmd/fuse-chart/*.go \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
     --form-templates=monitoring/alert.yaml \
-    --form-templates=capi/capa.yaml \
-    --form-templates=capi/capg.yaml \
-    --form-templates=capi/capz.yaml \
     --sample-name=mysql \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
@@ -94,9 +82,6 @@ go run cmd/fuse-chart/*.go \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
     --form-templates=monitoring/alert.yaml \
-    --form-templates=capi/capa.yaml \
-    --form-templates=capi/capg.yaml \
-    --form-templates=capi/capz.yaml \
     --sample-name=postgres \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
@@ -107,9 +92,6 @@ go run cmd/fuse-chart/*.go \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
     --form-templates=monitoring/alert.yaml \
-    --form-templates=capi/capa.yaml \
-    --form-templates=capi/capg.yaml \
-    --form-templates=capi/capz.yaml \
     --sample-name=proxysql \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
@@ -120,9 +102,6 @@ go run cmd/fuse-chart/*.go \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
     --form-templates=monitoring/alert.yaml \
-    --form-templates=capi/capa.yaml \
-    --form-templates=capi/capg.yaml \
-    --form-templates=capi/capz.yaml \
     --sample-name=redis \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
@@ -142,9 +121,6 @@ go run cmd/fuse-chart/*.go \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
     --form-templates=monitoring/alert.yaml \
-    --form-templates=capi/capa.yaml \
-    --form-templates=capi/capg.yaml \
-    --form-templates=capi/capz.yaml \
     --sample-name=vault \
     --resource.group=kubevault.com \
     --resource.version=v1alpha1 \
