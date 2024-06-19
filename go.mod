@@ -34,13 +34,13 @@ require (
 	k8s.io/klog/v2 v2.120.1
 	k8s.io/kube-aggregator v0.30.1
 	k8s.io/kubectl v0.30.1
-	kmodules.xyz/client-go v0.30.2
-	kmodules.xyz/resource-metadata v0.18.7-0.20240610234115-0aaf847ebfc0
+	kmodules.xyz/client-go v0.30.6
+	kmodules.xyz/resource-metadata v0.18.8
 	kmodules.xyz/sets v0.29.0
 	kubepack.dev/chart-doc-gen v0.4.7
 	kubepack.dev/kubepack v0.29.2-0.20240519151029-6ba83ceff9d4
 	kubepack.dev/lib-helm v0.29.11-0.20240519144222-b89302e9879c
-	sigs.k8s.io/controller-runtime v0.18.2
+	sigs.k8s.io/controller-runtime v0.18.4
 	sigs.k8s.io/yaml v1.4.0
 	x-helm.dev/apimachinery v0.0.16
 )
@@ -264,8 +264,8 @@ require (
 	kmodules.xyz/apply v0.29.0 // indirect
 	kmodules.xyz/go-containerregistry v0.0.12 // indirect
 	kmodules.xyz/objectstore-api v0.29.0 // indirect
-	kmodules.xyz/offshoot-api v0.29.0 // indirect
-	kmodules.xyz/resource-metrics v0.29.5 // indirect
+	kmodules.xyz/offshoot-api v0.29.4 // indirect
+	kmodules.xyz/resource-metrics v0.30.1 // indirect
 	kubeops.dev/external-dns-operator v0.0.6 // indirect
 	oras.land/oras-go v1.2.4 // indirect
 	sigs.k8s.io/cli-utils v0.36.0 // indirect
