@@ -26,7 +26,7 @@ go run cmd/fuse-chart/*.go \
     --form-templates=monitoring/alert.yaml \
     --sample-name=elasticsearch \
     --resource.group=kubedb.com \
-    --resource.version=v1alpha2 \
+    --resource.version=v1 \
     --resource.name=elasticsearches
 
 go run cmd/fuse-chart/*.go \
@@ -35,7 +35,7 @@ go run cmd/fuse-chart/*.go \
     --chart-version=$CHART_VERSION \
     --sample-name=kafka \
     --resource.group=kubedb.com \
-    --resource.version=v1alpha2 \
+    --resource.version=v1 \
     --resource.name=kafkas
 
 go run cmd/fuse-chart/*.go \
@@ -45,7 +45,7 @@ go run cmd/fuse-chart/*.go \
     --form-templates=monitoring/alert.yaml \
     --sample-name=mariadb \
     --resource.group=kubedb.com \
-    --resource.version=v1alpha2 \
+    --resource.version=v1 \
     --resource.name=mariadbs
 
 go run cmd/fuse-chart/*.go \
@@ -55,7 +55,7 @@ go run cmd/fuse-chart/*.go \
     --form-templates=monitoring/alert.yaml \
     --sample-name=mongodb \
     --resource.group=kubedb.com \
-    --resource.version=v1alpha2 \
+    --resource.version=v1 \
     --resource.name=mongodbs
 
 go run cmd/fuse-chart/*.go \
@@ -65,7 +65,7 @@ go run cmd/fuse-chart/*.go \
     --form-templates=monitoring/alert.yaml \
     --sample-name=mysql \
     --resource.group=kubedb.com \
-    --resource.version=v1alpha2 \
+    --resource.version=v1 \
     --resource.name=mysqls
 
 go run cmd/fuse-chart/*.go \
@@ -74,7 +74,7 @@ go run cmd/fuse-chart/*.go \
     --chart-version=$CHART_VERSION \
     --sample-name=pgbouncer \
     --resource.group=kubedb.com \
-    --resource.version=v1alpha2 \
+    --resource.version=v1 \
     --resource.name=pgbouncers
 
 go run cmd/fuse-chart/*.go \
@@ -84,7 +84,7 @@ go run cmd/fuse-chart/*.go \
     --form-templates=monitoring/alert.yaml \
     --sample-name=postgres \
     --resource.group=kubedb.com \
-    --resource.version=v1alpha2 \
+    --resource.version=v1 \
     --resource.name=postgreses
 
 go run cmd/fuse-chart/*.go \
@@ -94,7 +94,7 @@ go run cmd/fuse-chart/*.go \
     --form-templates=monitoring/alert.yaml \
     --sample-name=proxysql \
     --resource.group=kubedb.com \
-    --resource.version=v1alpha2 \
+    --resource.version=v1 \
     --resource.name=proxysqls
 
 go run cmd/fuse-chart/*.go \
@@ -104,7 +104,7 @@ go run cmd/fuse-chart/*.go \
     --form-templates=monitoring/alert.yaml \
     --sample-name=redis \
     --resource.group=kubedb.com \
-    --resource.version=v1alpha2 \
+    --resource.version=v1 \
     --resource.name=redises
 
 go run cmd/fuse-chart/*.go \
@@ -113,7 +113,7 @@ go run cmd/fuse-chart/*.go \
     --chart-version=$CHART_VERSION \
     --sample-name=redissentinel \
     --resource.group=kubedb.com \
-    --resource.version=v1alpha2 \
+    --resource.version=v1 \
     --resource.name=redissentinels
 
 go run cmd/fuse-chart/*.go \
