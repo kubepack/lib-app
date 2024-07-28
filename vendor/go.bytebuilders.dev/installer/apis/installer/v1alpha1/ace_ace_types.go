@@ -20,7 +20,6 @@ import (
 	openviz_installer "go.openviz.dev/installer/apis/installer/v1alpha1"
 	core "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	store "kmodules.xyz/objectstore-api/api/v1"
 	dnsapi "kubeops.dev/external-dns-operator/apis/external/v1alpha1"
 )
 
@@ -49,7 +48,6 @@ type Ace struct {
 type AceSpec struct {
 	Billing       AceBilling       `json:"billing"`
 	PlatformUi    AcePlatformUi    `json:"platform-ui"`
-	AccountsUi    AceAccountsUi    `json:"accounts-ui"`
 	ClusterUi     AceClusterUi     `json:"cluster-ui"`
 	DeployUi      AceDeployUi      `json:"deploy-ui"`
 	Grafana       AceGrafana       `json:"grafana"`
@@ -63,8 +61,9 @@ type AceSpec struct {
 	NatsDns       AceNatsDns       `json:"nats-dns"`
 	Trickster     AceTrickster     `json:"trickster"`
 	DNSProxy      AceDnsProxy      `json:"dns-proxy"`
+	Openfga       AceOpenfga       `json:"openfga"`
 	SMTPRelay     AceSmtprelay     `json:"smtprelay"`
-	Minio         AceMinio         `json:"minio"`
+	S3proxy       AceS3proxy       `json:"s3proxy"`
 	// KubeBindServer AceKubeBindServer `json:"kube-bind-server"`
 	Global   AceGlobalValues `json:"global"`
 	Settings Settings        `json:"settings"`
@@ -80,6 +79,7 @@ type AceSpec struct {
 	Tolerations  []core.Toleration `json:"tolerations"`
 	Affinity     *core.Affinity    `json:"affinity"`
 	Branding     AceBrandingSpec   `json:"branding"`
+	SetupJob     AceSetupJob       `json:"setupJob"`
 }
 
 type AceBilling struct {
@@ -167,22 +167,21 @@ type AceDnsProxy struct {
 	*DnsProxySpec `json:",inline,omitempty"`
 }
 
+type AceOpenfga struct {
+	Enabled      bool   `json:"enabled"`
+	DatastoreURI string `json:"datastoreURI"`
+	*OpenfgaSpec `json:",inline,omitempty"`
+}
+
 type AceSmtprelay struct {
 	Enabled        bool `json:"enabled"`
 	*SmtprelaySpec `json:",inline,omitempty"`
 }
 
-type AceMinio struct {
-	Enabled    bool `json:"enabled"`
-	*MinioSpec `json:",inline,omitempty"`
+type AceS3proxy struct {
+	Enabled      bool `json:"enabled"`
+	*S3proxySpec `json:",inline,omitempty"`
 }
-
-/*
-type AceKubeBindServer struct {
-	Enabled             bool `json:"enabled"`
-	*KubeBindServerSpec `json:",inline,omitempty"`
-}
-*/
 
 type AceGlobalValues struct {
 	NameOverride     string                 `json:"nameOverride"`
@@ -198,15 +197,25 @@ type AceGlobalValues struct {
 }
 
 type AcePlatformSettings struct {
-	Domain         string         `json:"domain"`
-	DeploymentType DeploymentType `json:"deploymentType"`
-	// +optional
-	Admin              AcePlatformAdmin `json:"admin"`
-	ProxyServiceDomain string           `json:"proxyServiceDomain,omitempty"`
-	Token              string           `json:"token,omitempty"`
-	// +optional
-	PublicIPs []string `json:"publicIPs"`
+	HostInfo           `json:",inline"`
+	DeploymentType     DeploymentType `json:"deploymentType"`
+	ProxyServiceDomain string         `json:"proxyServiceDomain,omitempty"`
+	Token              string         `json:"token,omitempty"`
 }
+
+type HostInfo struct {
+	Host     string   `json:"host"`
+	HostType HostType `json:"hostType"`
+}
+
+// +kubebuilder:validation:Enum=domain;ip
+// +kubebuilder:default=ip
+type HostType string
+
+const (
+	HostTypeDomain HostType = "domain"
+	HostTypeIP     HostType = "ip"
+)
 
 type GlobalMonitoring struct {
 	Agent          string                   `json:"agent"`
@@ -227,11 +236,22 @@ type PlatformInfra struct {
 	TLS          InfraTLS             `json:"tls"`
 	DNS          InfraDns             `json:"dns"`
 	Objstore     InfraObjstore        `json:"objstore"`
-	Stash        InfraStash           `json:"stash"`
+	Kubestash    KubeStashSpec        `json:"kubestash,omitempty"`
 	Kms          InfraKms             `json:"kms"`
 	Kubepack     InfraKubepack        `json:"kubepack"`
 	Badger       InfraBadger          `json:"badger"`
 	Invoice      InfraInvoice         `json:"invoice"`
+	Fileserver   InfraFileserver      `json:"fileserver"`
+}
+
+type KubeStashSpec struct {
+	// Schedule specifies the schedule for invoking backup sessions
+	// +optional
+	Schedule         string           `json:"schedule,omitempty"`
+	StorageRef       ObjectReference  `json:"storageRef"`
+	RetentionPolicy  ObjectReference  `json:"retentionPolicy"`
+	EncryptionSecret ObjectReference  `json:"encryptionSecret"`
+	StorageSecret    OptionalResource `json:"storageSecret"`
 }
 
 // +kubebuilder:validation:Enum=ca;letsencrypt;letsencrypt-staging;external
@@ -249,21 +269,33 @@ type InfraTLS struct {
 	CA          TLSData       `json:"ca"`
 	Acme        TLSIssuerAcme `json:"acme"`
 	Certificate TLSData       `json:"certificate"`
+	JKS         Keystore      `json:"jks"`
 }
 
 type TLSData struct {
+	// +optional
 	Cert string `json:"cert"`
-	Key  string `json:"key"`
+	// +optional
+	Key string `json:"key"`
+}
+
+type Keystore struct {
+	// +optional
+	Truststore []byte `json:"truststore"`
+	// +optional
+	Keystore []byte `json:"keystore"`
+	Password string `json:"password"`
 }
 
 type TLSIssuerAcme struct {
 	Email string `json:"email"`
 }
 
-// +kubebuilder:validation:Enum=external;cloudflare;route53;cloudDNS;azureDNS
+// +kubebuilder:validation:Enum=none;external;cloudflare;route53;cloudDNS;azureDNS
 type DNSProvider string
 
 const (
+	DNSProviderNone       DNSProvider = "none"
 	DNSProviderExternal   DNSProvider = "external"
 	DNSProviderCloudflare DNSProvider = "cloudflare"
 	DNSProviderRoute53    DNSProvider = "route53"
@@ -272,6 +304,12 @@ const (
 )
 
 type InfraDns struct {
+	GatewayDns `json:",inline,omitempty"`
+	// +optional
+	TargetIPs []string `json:"targetIPs"`
+}
+
+type GatewayDns struct {
 	Provider DNSProvider     `json:"provider"`
 	Auth     DNSProviderAuth `json:"auth"`
 }
@@ -338,20 +376,6 @@ type InfraObjstore struct {
 	S3        *S3Auth          `json:"s3,omitempty"`
 	Azure     *AzureAuth       `json:"azure,omitempty"`
 	GCS       *GCSAuth         `json:"gcs,omitempty"`
-	Swift     *SwiftAuth       `json:"swift,omitempty"`
-}
-
-type InfraStash struct {
-	Backup BackupSpec       `json:"backup"`
-	S3     *store.S3Spec    `json:"s3,omitempty"`
-	Azure  *store.AzureSpec `json:"azure,omitempty"`
-	GCS    *store.GCSSpec   `json:"gcs,omitempty"`
-	Swift  *store.SwiftSpec `json:"swift,omitempty"`
-}
-
-type BackupSpec struct {
-	Password string `json:"password"`
-	Schedule string `json:"schedule"`
 }
 
 type InfraKms struct {
@@ -375,19 +399,22 @@ type InfraInvoice struct {
 	TrackerEmail string `json:"trackerEmail"`
 }
 
+type InfraFileserver struct {
+	BaseURL string `json:"baseURL"`
+	Bucket  string `json:"bucket"`
+	Prefix  string `json:"prefix"`
+}
+
 type Settings struct {
-	DB               DBSettings           `json:"db"`
-	Cache            CacheSettings        `json:"cache"`
-	Smtp             SmtpSettings         `json:"smtp"`
-	Nats             NatsSettings         `json:"nats"`
-	Platform         PlatformSettings     `json:"platform"`
-	Stripe           StripeSettings       `json:"stripe"`
-	Security         SecuritySettings     `json:"security"`
-	Searchlight      SearchlightSettings  `json:"searchlight"`
-	Grafana          GrafanaSettings      `json:"grafana"`
-	ClusterConnector ClusterConnectorSpec `json:"clusterConnector"`
-	Contract         ContractStorage      `json:"contract"`
-	Firebase         FirebaseSettings     `json:"firebase"`
+	DB       DBSettings       `json:"db"`
+	Cache    CacheSettings    `json:"cache"`
+	Smtp     SmtpSettings     `json:"smtp"`
+	Nats     NatsSettings     `json:"nats"`
+	Platform PlatformSettings `json:"platform"`
+	Security SecuritySettings `json:"security"`
+	Grafana  GrafanaSettings  `json:"grafana"`
+	Contract ContractStorage  `json:"contract"`
+	Firebase FirebaseSettings `json:"firebase"`
 }
 
 type DBSettings struct {
@@ -397,6 +424,7 @@ type DBSettings struct {
 	Persistence       PersistenceSpec           `json:"persistence"`
 	Resources         core.ResourceRequirements `json:"resources"`
 	Auth              BasicAuth                 `json:"auth"`
+	LogSQL            bool                      `json:"logSQL"`
 }
 
 type CacheSettings struct {
@@ -438,10 +466,19 @@ type NatsSettings struct {
 	AdminUserCreds  string `json:"adminUserCreds"`
 }
 
+// +kubebuilder:validation:Enum=DEV;ALPHA;BETA;GA
+type RunMode string
+
+const (
+	RunModeDev   RunMode = "DEV"
+	RunModeAlpha RunMode = "ALPHA"
+	RunModeBeta  RunMode = "BETA"
+	RunModeGA    RunMode = "GA"
+)
+
 type PlatformSettings struct {
 	AppName                         string   `json:"appName"`
-	RunMode                         string   `json:"runMode"`
-	ExperimentalFeatures            bool     `json:"experimentalFeatures"`
+	RunMode                         RunMode  `json:"runMode"`
 	ForcePrivate                    bool     `json:"forcePrivate"`
 	DisableHttpGit                  bool     `json:"disableHttpGit"`
 	InstallLock                     bool     `json:"installLock"`
@@ -456,6 +493,8 @@ type PlatformSettings struct {
 	ServiceEnableNotifyMail         bool     `json:"serviceEnableNotifyMail"`
 	ServiceDomainWhiteList          []string `json:"serviceDomainWhiteList"`
 	CookieName                      string   `json:"cookieName"`
+	CookieRememberName              string   `json:"cookieRememberName"`
+	CookieUsername                  string   `json:"cookieUsername"`
 	ServerLandingPage               string   `json:"serverLandingPage"`
 	LogMode                         string   `json:"logMode"`
 	LogLevel                        string   `json:"logLevel"`
@@ -465,19 +504,6 @@ type PlatformSettings struct {
 	EnableCSRFCookieHttpOnly        bool     `json:"enableCSRFCookieHttpOnly"`
 }
 
-type StripeSettings struct {
-	StripeKey      string `json:"stripeKey"`
-	EndpointSecret string `json:"endpointSecret"`
-}
-
-type SearchlightSettings struct {
-	Enabled           bool   `json:"enabled"`
-	AlertmanagerAddr  string `json:"alertmanagerAddr"`
-	QueryAddr         string `json:"queryAddr"`
-	RulerAddr         string `json:"rulerAddr"`
-	M3CoordinatorAddr string `json:"m3coordinatorAddr"`
-}
-
 type SecuritySettings struct {
 	Oauth2JWTSecret string `json:"oauth2JWTSecret"`
 	CsrfSecretKey   string `json:"csrfSecretKey"`
@@ -485,13 +511,8 @@ type SecuritySettings struct {
 
 type GrafanaSettings struct {
 	AppMode string `json:"appMode"`
-}
-
-type ClusterConnectorSpec struct {
-	ImageReference `json:",inline,omitempty"`
-
-	Bucket string `json:"bucket"`
-	Prefix string `json:"prefix"`
+	// +optional
+	SecretKey string `json:"secretKey"`
 }
 
 type ContractStorage struct {

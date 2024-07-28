@@ -48,6 +48,11 @@ type AceOcmAddonsSpec struct {
 	FullnameOverride string `json:"fullnameOverride"`
 
 	shared.BootstrapPresets `json:",inline,omitempty"`
+
+	KubeconfigSecretName  string        `json:"kubeconfigSecretName"`
+	AddonManagerNamespace string        `json:"addonManagerNamespace"`
+	Placement             PlacementSpec `json:"placement"`
+	Kubectl               DockerImage   `json:"kubectl"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

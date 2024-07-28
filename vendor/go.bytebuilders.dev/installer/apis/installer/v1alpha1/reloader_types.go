@@ -20,6 +20,7 @@ import (
 	core "k8s.io/api/core/v1"
 	networking "k8s.io/api/networking/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	vpa "k8s.io/autoscaler/vertical-pod-autoscaler/pkg/apis/autoscaling.k8s.io/v1"
 )
 
 const (
@@ -89,7 +90,13 @@ type ReloaderDetails struct {
 	PodMonitor             ReloaderPodMonitorSpec      `json:"podMonitor"`
 	PodDisruptionBudget    ReloaderPodDisruptionBudget `json:"podDisruptionBudget"`
 	Netpol                 ReloaderNetpol              `json:"netpol"`
-	WebhookUrl             string                      `json:"webhookUrl"`
+	// +optional
+	VerticalPodAutoscaler ReloaderVerticalPodAutoscaler `json:"verticalPodAutoscaler"`
+	// +optional
+	VolumeMounts []core.VolumeMount `json:"volumeMounts"`
+	// +optional
+	Volumes    []core.Volume `json:"volumes"`
+	WebhookUrl string        `json:"webhookUrl"`
 }
 
 type ReloaderLegacy struct {
@@ -101,6 +108,7 @@ type ReloaderDeploymentSpec struct {
 	//+optional
 	NodeSelector             map[string]string         `json:"nodeSelector"`
 	Affinity                 *core.Affinity            `json:"affinity"`
+	RevisionHistoryLimit     int                       `json:"revisionHistoryLimit"`
 	SecurityContext          *core.PodSecurityContext  `json:"securityContext"`
 	ContainerSecurityContext *core.SecurityContext     `json:"containerSecurityContext"`
 	Tolerations              []core.Toleration         `json:"tolerations"`
@@ -123,6 +131,30 @@ type ReloaderDeploymentSpec struct {
 	// +listMapKey=topologyKey
 	// +listMapKey=whenUnsatisfiable
 	TopologySpreadConstraints []core.TopologySpreadConstraint `json:"topologySpreadConstraints" patchStrategy:"merge" patchMergeKey:"topologyKey"`
+}
+
+type ReloaderVerticalPodAutoscaler struct {
+	Enabled bool `json:"enabled"`
+	// Recommender responsible for generating recommendation for this object.
+	// List should be empty (then the default recommender will generate the
+	// recommendation) or contain exactly one recommender.
+	// +optional
+	Recommenders []*vpa.VerticalPodAutoscalerRecommenderSelector `json:"recommenders,omitempty"`
+	// Specifies the type of recommendations that will be computed
+	// (and possibly applied) by VPA.
+	// If not specified, the default of [ResourceCPU, ResourceMemory] will be used.
+	ControlledResources *[]core.ResourceName `json:"controlledResources,omitempty" patchStrategy:"merge"`
+	// Specifies which resource values should be controlled.
+	// The default is "RequestsAndLimits".
+	// +optional
+	ControlledValues *vpa.ContainerControlledValues `json:"controlledValues,omitempty"`
+	MaxAllowed       core.ResourceList              `json:"maxAllowed"`
+	MinAllowed       core.ResourceList              `json:"minAllowed"`
+	// Describes the rules on how changes are applied to the pods.
+	// If not specified, all fields in the `PodUpdatePolicy` are set to their
+	// default values.
+	// +optional
+	UpdatePolicy *vpa.PodUpdatePolicy `json:"updatePolicy,omitempty"`
 }
 
 type ReloaderLabels struct {

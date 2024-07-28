@@ -63,30 +63,56 @@ type LicenseProxyserverSpec struct {
 	//+optional
 	PodAnnotations map[string]string `json:"podAnnotations"`
 	//+optional
-	NodeSelector map[string]string `json:"nodeSelector" protobuf:"bytes,12,rep,name=nodeSelector"`
+	NodeSelector map[string]string `json:"nodeSelector"`
 	// If specified, the pod's tolerations.
 	// +optional
-	Tolerations []core.Toleration `json:"tolerations" protobuf:"bytes,13,rep,name=tolerations"`
+	Tolerations []core.Toleration `json:"tolerations"`
 	// If specified, the pod's scheduling constraints
 	// +optional
-	Affinity *core.Affinity `json:"affinity" protobuf:"bytes,14,opt,name=affinity"`
+	Affinity *core.Affinity `json:"affinity"`
 	// PodSecurityContext holds pod-level security attributes and common container settings.
 	// Optional: Defaults to empty.  See type description for default values of each field.
 	// +optional
 	PodSecurityContext *core.PodSecurityContext `json:"podSecurityContext"`
-	ServiceAccount     ServiceAccountSpec       `json:"serviceAccount"`
-	Apiserver          WebHookSpec              `json:"apiserver"`
-	Monitoring         Monitoring               `json:"monitoring"`
-	Platform           PlatformSpec             `json:"platform"`
+
+	// List of sources to populate environment variables in the container.
+	// The keys defined within a source must be a C_IDENTIFIER. All invalid keys
+	// will be reported as an event when the container is starting. When a key exists in multiple
+	// sources, the value associated with the last source will take precedence.
+	// Values defined by an Env with a duplicate key will take precedence.
+	// Cannot be updated.
+	// +optional
+	// +listType=atomic
+	EnvFrom []core.EnvFromSource `json:"envFrom"`
+	// List of environment variables to set in the container.
+	// Cannot be updated.
+	// +optional
+	// +patchMergeKey=name
+	// +patchStrategy=merge
+	// +listType=map
+	// +listMapKey=name
+	Env []core.EnvVar `json:"env"`
+
+	ServiceAccount ServiceAccountSpec `json:"serviceAccount"`
+	Apiserver      WebHookSpec        `json:"apiserver"`
+	Monitoring     Monitoring         `json:"monitoring"`
+	Platform       PlatformSpec       `json:"platform"`
 	// +optional
 	Licenses map[string]string `json:"licenses"`
 	// +optional
 	EncodedLicenses map[string]string `json:"encodedLicenses"`
+	// +optional
+	HubKubeconfigSecretName string `json:"hubKubeconfigSecretName"`
+	// +optional
+	ClusterName string `json:"clusterName"`
 }
 
 type PlatformSpec struct {
 	BaseURL string `json:"baseURL"`
-	Token   string `json:"token"`
+	// +optional
+	Token string `json:"token"`
+	// +optional
+	TokenSecretName string `json:"tokenSecretName"`
 }
 
 type ImageRef struct {

@@ -78,7 +78,7 @@ type PlatformUiSpec struct {
 }
 
 type AcePlatformUISettings struct {
-	Domain         string         `json:"domain"`
+	HostInfo       `json:",inline"`
 	DeploymentType DeploymentType `json:"deploymentType"`
 }
 

@@ -49,6 +49,15 @@ go run cmd/fuse-chart/*.go \
     --resource.name=mariadbs
 
 go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/memcached/memcached.yaml \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=memcached \
+    --resource.group=kubedb.com \
+    --resource.version=v1 \
+    --resource.name=memcacheds
+
+go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/mongodb/managed \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
@@ -67,6 +76,16 @@ go run cmd/fuse-chart/*.go \
     --resource.group=kubedb.com \
     --resource.version=v1 \
     --resource.name=mysqls
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/perconaxtradb/perconaxtradb.yaml \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --form-templates=monitoring/alert.yaml \
+    --sample-name=perconaxtradb \
+    --resource.group=kubedb.com \
+    --resource.version=v1 \
+    --resource.name=perconaxtradbs
 
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/pgbouncer/custom \
@@ -128,6 +147,16 @@ go run cmd/fuse-chart/*.go \
 
 # new dbs
 #################################################################################
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/clickhouse/cluster-mode/clickhouse.yaml \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --form-templates=monitoring/alert.yaml \
+    --sample-name=clickhouse \
+    --resource.group=kubedb.com \
+    --resource.version=v1alpha2 \
+    --resource.name=clickhouses
 
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/druid/druid.yaml \

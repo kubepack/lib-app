@@ -52,7 +52,7 @@ type NatsSpec struct {
 	NameOverride              string                          `json:"nameOverride"`
 	NamespaceOverride         string                          `json:"namespaceOverride"`
 	ImagePullSecrets          []string                        `json:"imagePullSecrets"`
-	SecurityContext           *core.SecurityContext           `json:"securityContext"`
+	SecurityContext           *core.PodSecurityContext        `json:"securityContext"`
 	Affinity                  *core.Affinity                  `json:"affinity"`
 	PriorityClassName         *string                         `json:"priorityClassName"`
 	TopologyKeys              []string                        `json:"topologyKeys"`
@@ -338,10 +338,10 @@ type NatsAuthSpec struct {
 }
 
 type NatsOperatorJWTSpec struct {
-	ConfigMap ConfigMapKeySelector `json:"configMap"`
+	ConfigMap ConfigKeySelector `json:"configMap"`
 }
 
-type ConfigMapKeySelector struct {
+type ConfigKeySelector struct {
 	Name string `json:"name"`
 	Key  string `json:"key"`
 }

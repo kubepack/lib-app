@@ -44,7 +44,62 @@ type StashPresets struct {
 }
 
 type StashPresetsSpec struct {
-	Stash StashInfo `json:"stash"`
+	// +kubebuilder:default=KubeStash
+	Tool            BackupTool           `json:"tool"`
+	ClusterMetadata StashClusterMetadata `json:"clusterMetadata"`
+	UsePrefix       string               `json:"usePrefix"`
+	KubeStash       KubeStashInfo        `json:"kubestash"`
+	Stash           StashInfo            `json:"stash"`
+}
+
+// +kubebuilder:validation:Enum=KubeStash;Stash
+type BackupTool string
+
+const (
+	BackupToolKubeStash BackupTool = "KubeStash"
+	BackupToolStash     BackupTool = "Stash"
+)
+
+type StashClusterMetadata struct {
+	Uid  string `json:"uid"`
+	Name string `json:"name"`
+}
+
+type KubeStashInfo struct {
+	// Schedule specifies the schedule for invoking backup sessions
+	// +optional
+	Schedule string `json:"schedule,omitempty"`
+	// RetentionPolicy indicates the policy to follow to clean old backup snapshots
+	// +kubebuilder:default=keep-1mo
+	RetentionPolicy  KubeStashRetentionPolicy `json:"retentionPolicy"`
+	EncryptionSecret string                   `json:"encryptionSecret"`
+	StorageSecret    OptionalResource         `json:"storageSecret"`
+	Backend          KubeStashBackend         `json:"backend"`
+}
+
+// +kubebuilder:validation:Enum=keep-1wk;keep-1mo;keep-3mo;keep-1yr
+type KubeStashRetentionPolicy string
+
+const (
+	KubeStashKeep1W KubeStashRetentionPolicy = "keep-1wk"
+	KubeStashKeep1M KubeStashRetentionPolicy = "keep-1mo"
+	KubeStashKeep3M KubeStashRetentionPolicy = "keep-3mo"
+	KubeStashKeep1Y KubeStashRetentionPolicy = "keep-1yr"
+)
+
+type KubeStashBackend struct {
+	Provider string `json:"provider"`
+	// +optional
+	S3 S3 `json:"s3"`
+	// +optional
+	Azure Azure `json:"azure"`
+	// +optional
+	GCS GCS `json:"gcs"`
+}
+
+type OptionalResource struct {
+	// +optional
+	Create bool `json:"create"`
 }
 
 type StashInfo struct {
@@ -54,7 +109,7 @@ type StashInfo struct {
 	// RetentionPolicy indicates the policy to follow to clean old backup snapshots
 	RetentionPolicy stashv1alpha1.RetentionPolicy `json:"retentionPolicy"`
 	AuthSecret      AuthSecret                    `json:"authSecret"`
-	Backend         RepositoryBackend             `json:"backend"`
+	Backend         StashBackend                  `json:"backend"`
 }
 
 type AuthSecret struct {
@@ -65,7 +120,7 @@ type AuthSecret struct {
 	Password string `json:"password"`
 }
 
-type RepositoryBackend struct {
+type StashBackend struct {
 	Provider string `json:"provider"`
 	// +optional
 	S3 S3 `json:"s3"`
