@@ -17,6 +17,8 @@ limitations under the License.
 package v1alpha1
 
 import (
+	configapi "go.bytebuilders.dev/resource-model/apis/config/v1alpha1"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"kmodules.xyz/resource-metadata/apis/shared"
 )
@@ -47,7 +49,10 @@ type AceInstallerSpec struct {
 	NameOverride     string `json:"nameOverride"`
 	FullnameOverride string `json:"fullnameOverride"`
 
+	// +optional
+	DeploymentType          DeploymentType `json:"deploymentType"`
 	shared.BootstrapPresets `json:",inline,omitempty"`
+	SelfManagement          configapi.SelfManagement `json:"selfManagement"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

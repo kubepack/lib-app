@@ -21,8 +21,8 @@ spec:
         app.kubernetes.io/managed-by: kubedb.com
         app.kubernetes.io/name: etcds.kubedb.com
     target:
-      apiVersion: apps/v1
-      kind: StatefulSet
+      apiVersion: apps.k8s.appscode.com/v1
+      kind: PetSet
     type: MatchSelector
   - labels:
     - connect_via
@@ -117,6 +117,13 @@ spec:
                   type: string
               type: object
               x-kubernetes-map-type: atomic
+            deletionPolicy:
+              enum:
+              - Halt
+              - Delete
+              - WipeOut
+              - DoNotTerminate
+              type: string
             halted:
               type: boolean
             init:
@@ -4123,13 +4130,6 @@ spec:
               enum:
               - Durable
               - Ephemeral
-              type: string
-            terminationPolicy:
-              enum:
-              - Halt
-              - Delete
-              - WipeOut
-              - DoNotTerminate
               type: string
             tls:
               properties:
