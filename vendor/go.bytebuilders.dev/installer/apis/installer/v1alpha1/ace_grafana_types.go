@@ -72,10 +72,12 @@ type GrafanaSpec struct {
 	Tolerations []core.Toleration `json:"tolerations"`
 	// If specified, the pod's scheduling constraints
 	// +optional
-	Affinity   *core.Affinity `json:"affinity"`
-	Monitoring Monitoring     `json:"monitoring"`
-	Infra      AceInfra       `json:"infra"`
-	Settings   AceSettings    `json:"settings"`
+	Affinity     *core.Affinity     `json:"affinity"`
+	Monitoring   Monitoring         `json:"monitoring"`
+	Infra        AceInfra           `json:"infra"`
+	Volumes      []core.Volume      `json:"volumes"`
+	VolumeMounts []core.VolumeMount `json:"volumeMounts"`
+	Settings     AceSettings        `json:"settings"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

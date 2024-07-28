@@ -52,13 +52,37 @@ type OpscenterFeaturesSpec struct {
 	Image            shared.ImageRegistrySpec `json:"image"`
 	Helm             OpscenterHelmSpec        `json:"helm"`
 	Registry         shared.RegistryInfo      `json:"registry"`
-	ClusterManagers  []string                 `json:"clusterManagers"`
-	CAPI             CapiPresetsSpec          `json:"capi"`
+	ClusterMetadata  ClusterMetadata          `json:"clusterMetadata"`
 }
 
+type ClusterMetadata struct {
+	Uid             string   `json:"uid"`
+	Name            string   `json:"name"`
+	ClusterManagers []string `json:"clusterManagers"`
+	// +optional
+	CAPI CapiMetadata `json:"capi"`
+}
+
+type CapiMetadata struct {
+	// +optional
+	Provider  CAPIProvider `json:"provider"`
+	Namespace string       `json:"namespace"`
+}
+
+// +kubebuilder:validation:Enum=capa;capg;capz
+type CAPIProvider string
+
+const (
+	CAPIProviderDisabled CAPIProvider = ""
+	CAPIProviderCAPA     CAPIProvider = "capa"
+	CAPIProviderCAPG     CAPIProvider = "capg"
+	CAPIProviderCAPZ     CAPIProvider = "capz"
+)
+
 type OpscenterHelmSpec struct {
-	Repositories map[string]*shared.HelmRepository `json:"repositories"`
-	Releases     map[string]*HelmRelease           `json:"releases"`
+	CreateNamespace bool                              `json:"createNamespace"`
+	Repositories    map[string]*shared.HelmRepository `json:"repositories"`
+	Releases        map[string]*HelmRelease           `json:"releases"`
 }
 
 type HelmRelease struct {

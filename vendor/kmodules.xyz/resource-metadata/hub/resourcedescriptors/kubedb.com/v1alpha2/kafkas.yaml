@@ -21,8 +21,8 @@ spec:
         app.kubernetes.io/managed-by: kubedb.com
         app.kubernetes.io/name: kafkas.kubedb.com
     target:
-      apiVersion: apps/v1
-      kind: StatefulSet
+      apiVersion: apps.k8s.appscode.com/v1
+      kind: PetSet
     type: MatchSelector
   - labels:
     - connect_via
@@ -3298,6 +3298,8 @@ spec:
             disableSecurity:
               type: boolean
             enableSSL:
+              type: boolean
+            halted:
               type: boolean
             healthChecker:
               default:

@@ -45,8 +45,6 @@ type PlatformLinks struct {
 // PlatformLinksSpec is the schema for PlatformLinks Operator values file
 type PlatformLinksSpec struct {
 	ReplicaCount int `json:"replicaCount"`
-	// +optional
-	License string `json:"license"`
 	//+optional
 	RegistryFQDN string         `json:"registryFQDN"`
 	Image        ImageReference `json:"image"`

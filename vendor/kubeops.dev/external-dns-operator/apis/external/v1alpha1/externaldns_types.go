@@ -91,10 +91,6 @@ type CloudflareProvider struct {
 	// +optional
 	Proxied *bool `json:"proxied,omitempty"`
 
-	// When using the Cloudflare provider, specify how many zones per page listed, max. possible 50 (default: 50)
-	// +optional
-	ZonesPerPage *int `json:"zonesPerPage,omitempty"`
-
 	// +optional
 	BaseURL string `json:"baseURL,omitempty"`
 
@@ -180,7 +176,7 @@ type ServiceConfig struct {
 
 	// Always publish also not ready addresses for headless services
 	// +optional
-	AlwaysPublishNotReadyAddresses *bool `json:"alwaysPublishNotReadyAddresses"`
+	AlwaysPublishNotReadyAddresses *bool `json:"alwaysPublishNotReadyAddresses,omitempty"`
 
 	// The service types to take care about (default all, expected: ClusterIP, NodePort, LoadBalancer or ExternalName)
 	// +optional
@@ -249,15 +245,15 @@ type SourceConfig struct {
 
 	// For source type Node
 	// +optional
-	Node *NodeConfig `json:"node"`
+	Node *NodeConfig `json:"node,omitempty"`
 
 	// For source type Service
 	// +optional
-	Service *ServiceConfig `json:"service"`
+	Service *ServiceConfig `json:"service,omitempty"`
 
 	// For source type Ingress
 	// +optional
-	Ingress *IngressConfig `json:"ingress"`
+	Ingress *IngressConfig `json:"ingress,omitempty"`
 }
 
 // GenericSecretReference contains the information of the provider secret. Name is for secret name and CredentialKey is for specifying the key of the secret.
@@ -360,7 +356,7 @@ type ExternalDNSSpec struct {
 
 	// Google provider
 	// +optional
-	Google *GoogleProvider `json:"google"`
+	Google *GoogleProvider `json:"google,omitempty"`
 
 	//
 	//POLICY INFORMATION
