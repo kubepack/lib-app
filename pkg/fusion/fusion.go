@@ -91,7 +91,7 @@ func LoadHelmRepositories() error {
 	reg := repo.NewRegistry(nil, diskCache)
 	chrt, err := reg.GetChart(releasesapi.ChartSourceRef{
 		Name:    "opscenter-features",
-		Version: "v2024.5.17",
+		Version: "v2024.8.21",
 		SourceRef: kmapi.TypedObjectReference{
 			APIGroup:  releasesapi.SourceGroupLegacy,
 			Kind:      releasesapi.SourceKindLegacy,
