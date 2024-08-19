@@ -1787,8 +1787,8 @@ kmodules.xyz/objectstore-api v0.29.1 h1:uUsjf8KU0w4LYowSEOnl0AbHT3hsHIu1wNLHqGe1
 kmodules.xyz/objectstore-api v0.29.1/go.mod h1:xG+5awH1SXYKxwN/+k1FEQvzixd5tgNqEN/1LEiB2FE=
 kmodules.xyz/offshoot-api v0.29.4 h1:WQV2BIUIoVKKiqZNmZ4gAy367jEdwBhEl3dFCLZM1qA=
 kmodules.xyz/offshoot-api v0.29.4/go.mod h1:e+NQ0s4gW/YTPWBWEfdISZcmk+tlTq8IjvP5SLdqvko=
-kmodules.xyz/resource-metadata v0.18.11 h1:5hLUfB2P7irq5erawXxH9Vrir+2OGRmWZjXrhBJr614=
-kmodules.xyz/resource-metadata v0.18.11/go.mod h1:/Q0zumHsVTXgS+zKyoN6+CND8M3kNUMYIAhoVrUoCAw=
+kmodules.xyz/resource-metadata v0.18.12-0.20240819151048-5df2d63eb0b8 h1:c2fYFGKFxTSkcDrH+JcX3+4RKlBnDcjJ9qECXBZfBWY=
+kmodules.xyz/resource-metadata v0.18.12-0.20240819151048-5df2d63eb0b8/go.mod h1:/Q0zumHsVTXgS+zKyoN6+CND8M3kNUMYIAhoVrUoCAw=
 kmodules.xyz/resource-metrics v0.30.2 h1:EGJapJa7Sh2ePc/WyHziLVh9xtuh4vWPBoSGxVZ8uC8=
 kmodules.xyz/resource-metrics v0.30.2/go.mod h1:UYcQQLN+3o8rNPQJwJa2D9bt5ihJCeo5bCDuQ4O3MPY=
 kmodules.xyz/schema-checker v0.4.2-0.20230316051604-9a40277165e8 h1:KizE/qfvllyNuK8dHquT7XoiSD2+a11gY1BCIZmUbvw=
