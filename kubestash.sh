@@ -26,10 +26,10 @@ go run cmd/fuse-chart/*.go \
     --resource.name=backupstorages
 
 go run cmd/fuse-chart/*.go \
-   --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/kubestash/restoresession/custom \
-   --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
-   --chart-version=$CHART_VERSION \
-   --sample-name=restore-app \
-   --resource.group=core.kubestash.com \
-   --resource.version=v1alpha1 \
-   --resource.name=restoresessions
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/kubestash/restoresession/custom \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=restore-app \
+    --resource.group=core.kubestash.com \
+    --resource.version=v1alpha1 \
+    --resource.name=restoresessions
