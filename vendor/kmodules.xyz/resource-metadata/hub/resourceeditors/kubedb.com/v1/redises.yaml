@@ -98,7 +98,7 @@ spec:
       name: Operations
     - items:
       - disabledTemplate: |
-          {{ if ne .spec.replicas 1 }}
+          {{ not (gt .spec.replicas 1) }}
         editor:
           name: opskubedbcom-redisopsrequest-editor
           sourceRef:
@@ -220,5 +220,9 @@ spec:
   variants:
   - name: default
     selector:
-      matchLabels:
-        charts.x-helm.dev/is-default-preset: "true"
+      matchExpressions:
+      - key: charts.x-helm.dev/is-default-preset
+        operator: In
+        values:
+        - "true"
+        - kubedb
