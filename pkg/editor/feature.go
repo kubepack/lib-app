@@ -26,6 +26,7 @@ import (
 	"github.com/pkg/errors"
 	kj "gomodules.xyz/encoding/json"
 	"helm.sh/helm/v3/pkg/chart"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/types"
@@ -134,18 +135,20 @@ func SetChartInfo(kc client.Client, feature *uiapi.Feature, featureKey string, v
 
 	var hr v2.HelmRelease
 	err = kc.Get(context.Background(), types.NamespacedName{Name: feature.Name, Namespace: hub.BootstrapHelmRepositoryNamespace()}, &hr)
-	if err != nil {
+	if err == nil {
+		if hr.Spec.Values != nil {
+			if err = setFeatureValues(values, hr.Spec.Values.Raw, featureKey); err != nil {
+				return err
+			}
+		}
+	} else if apierrors.IsNotFound(err) {
 		if feature.Spec.Values != nil {
 			if err = setFeatureValues(values, feature.Spec.Values.Raw, featureKey); err != nil {
 				return err
 			}
 		}
 	} else {
-		if hr.Spec.Values != nil {
-			if err = setFeatureValues(values, hr.Spec.Values.Raw, featureKey); err != nil {
-				return err
-			}
-		}
+		return err
 	}
 
 	if len(feature.Spec.ValuesFrom) > 0 {
