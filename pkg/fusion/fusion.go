@@ -608,7 +608,7 @@ func NewCmdFuse() *cobra.Command {
 					Project: docapi.ProjectInfo{
 						Name:        fmt.Sprintf("%s by AppsCode", desc),
 						ShortName:   desc,
-						URL:         "https://byte.builders",
+						URL:         "https://appscode.com",
 						Description: desc,
 						App:         fmt.Sprintf("a %s", desc),
 					},
@@ -729,7 +729,7 @@ func newChartMeta(kind string, edditorGVR, resources []byte, resourceKeys, formK
 
 	md := chart.Metadata{
 		Name:        editorChartName,
-		Home:        "https://byte.builders",
+		Home:        "https://appscode.com",
 		Sources:     nil,
 		Version:     chartVersion,
 		AppVersion:  chartVersion,

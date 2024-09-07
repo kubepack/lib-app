@@ -103,6 +103,40 @@ spec:
                 items:
                   type: string
                 type: array
+              clusterMetadata:
+                properties:
+                  apiEndpoint:
+                    type: string
+                  caBundle:
+                    type: string
+                  displayName:
+                    type: string
+                  name:
+                    type: string
+                  ownerID:
+                    type: string
+                  ownerType:
+                    type: string
+                  provider:
+                    enum:
+                    - Aws
+                    - Azure
+                    - DigitalOcean
+                    - GoogleCloud
+                    - Linode
+                    - Packet
+                    - Scaleway
+                    - Vultr
+                    - BareMetal
+                    - KIND
+                    - Generic
+                    - Private
+                    type: string
+                  uid:
+                    type: string
+                required:
+                - uid
+                type: object
               message:
                 description: Message specifies additional information regarding the
                   possible actions for the user
@@ -116,6 +150,7 @@ spec:
                 - NotConnected
                 - Registered
                 - NotImported
+                - Lost
                 type: string
               reason:
                 description: Reason explains the reason behind the cluster current

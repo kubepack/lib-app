@@ -290,7 +290,7 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 			Project: docapi.ProjectInfo{
 				Name:        fmt.Sprintf("%s by AppsCode", desc),
 				ShortName:   desc,
-				URL:         "https://byte.builders",
+				URL:         "https://appscode.com",
 				Description: desc,
 				App:         fmt.Sprintf("a %s", desc),
 			},
@@ -361,7 +361,7 @@ func GenerateChartMetadata(chartDir, chartName string, rd *rsapi.ResourceDescrip
 
 	chartMeta := chart.Metadata{
 		Name:        chartName,
-		Home:        "https://byte.builders",
+		Home:        "https://appscode.com",
 		Sources:     nil,
 		Version:     chartVersion,
 		AppVersion:  chartVersion,

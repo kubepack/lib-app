@@ -41,7 +41,7 @@ spec:
     - appscode
     links:
     - description: website
-      url: https://byte.builders
+      url: https://appscode.com
     maintainers:
     - email: support@appscode.com
       name: appscode

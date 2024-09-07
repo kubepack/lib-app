@@ -42,6 +42,7 @@ const (
 	CredentialTypeScaleway     CredentialType = "Scaleway"
 	CredentialTypeVultr        CredentialType = "Vultr"
 	CredentialTypeSwift        CredentialType = "Swift"
+	CredentialTypeHetzner      CredentialType = "Hetzner"
 )
 
 // +genclient
@@ -88,6 +89,8 @@ type CredentialSpec struct {
 	Swift *SwiftCredential `json:"swift,omitempty"`
 	//+optional
 	Vultr *VultrCredential `json:"vultr,omitempty"`
+	//+optional
+	Hetzner *HetznerCredential `json:"hetzner,omitempty"`
 }
 
 type GoogleOAuthCredential struct {
@@ -159,6 +162,10 @@ type SwiftCredential struct {
 	Region        string `json:"region,omitempty"`
 	TenantId      string `json:"tenantID,omitempty"`
 	TenantDomain  string `json:"tenantDomain,omitempty"`
+}
+type HetznerCredential struct {
+	SSHKeyName string `json:"sshKeyName"`
+	Token      string `json:"token"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

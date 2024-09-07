@@ -113,7 +113,7 @@ type SelfManagementOptions struct {
 	// +optional
 	EnableFeatures map[string][]string `json:"enableFeatures"`
 	// +optional
-	DisableFeatures map[string][]string `json:"disableFeatures"`
+	DisableFeatures []string `json:"disableFeatures"`
 }
 
 func (opt SelfManagementOptions) ToConfig() SelfManagement {
@@ -121,16 +121,10 @@ func (opt SelfManagementOptions) ToConfig() SelfManagement {
 	for _, features := range opt.EnableFeatures {
 		enableFeatures.Insert(features...)
 	}
-
-	disableFeatures := sets.Set[string]{}
-	for _, features := range opt.DisableFeatures {
-		disableFeatures.Insert(features...)
-	}
-
 	return SelfManagement{
 		Import:          opt.Import,
 		EnableFeatures:  sets.List(enableFeatures),
-		DisableFeatures: sets.List(disableFeatures),
+		DisableFeatures: sets.List(sets.New[string](opt.DisableFeatures...)),
 	}
 }
 
@@ -154,18 +148,17 @@ type MarketplaceSubscriptionInfo struct {
 	GCP   *GCPSubscriptionInfo    `json:"gcp,omitempty"`
 }
 
+// https://docs.aws.amazon.com/marketplacemetering/latest/APIReference/API_MeterUsage.html
 type AWSMarSubscriptionInfo struct {
-	CustomerIdentifier string `json:"customer-identifier"`
-	ProductCode        string `json:"product-code"`
-	OfferIdentifier    string `json:"offer-identifier"`
+	MeteringServiceProxyToken string `json:"meteringServiceProxyToken"`
 }
 
 // https://learn.microsoft.com/en-us/azure/azure-resource-manager/managed-applications/publish-notifications
 type AzureSubscriptionInfo struct {
 	ApplicationID string `json:"applicationId"`
-	// SubscriptionID    string `json:"subscriptionId"`
-	// ResourceGroupName string `json:"resourceGroupName"`
-	// ApplicationName   string `json:"applicationName"`
 }
 
-type GCPSubscriptionInfo struct{}
+// https://cloud.google.com/service-infrastructure/docs/service-control/reference/rest/v2/services/report
+type GCPSubscriptionInfo struct {
+	ServiceControlProxyToken string `json:"serviceControlProxyToken"`
+}

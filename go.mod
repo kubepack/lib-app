@@ -34,8 +34,8 @@ require (
 	k8s.io/klog/v2 v2.130.1
 	k8s.io/kube-aggregator v0.30.1
 	k8s.io/kubectl v0.30.1
-	kmodules.xyz/client-go v0.30.13-0.20240820121523-30dbfd82b4c6
-	kmodules.xyz/resource-metadata v0.18.13-0.20240829030638-8262c265f4ca
+	kmodules.xyz/client-go v0.30.13
+	kmodules.xyz/resource-metadata v0.18.13-0.20240906124638-46438a4d2a94
 	kmodules.xyz/sets v0.29.0
 	kubepack.dev/chart-doc-gen v0.4.7
 	kubepack.dev/kubepack v0.29.2-0.20240519151029-6ba83ceff9d4
@@ -217,7 +217,7 @@ require (
 	github.com/yudai/gojsondiff v1.0.0 // indirect
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
-	go.bytebuilders.dev/resource-model v0.0.13-0.20240726223904-6d484cb4e33b // indirect
+	go.bytebuilders.dev/resource-model v0.0.14-0.20240902053703-fd219490c470 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.49.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.49.0 // indirect
@@ -259,14 +259,14 @@ require (
 	k8s.io/apiserver v0.30.2 // indirect
 	k8s.io/autoscaler/vertical-pod-autoscaler v1.0.0 // indirect
 	k8s.io/component-base v0.30.2 // indirect
-	k8s.io/kube-openapi v0.0.0-20240430033511-f0e62f92d13f // indirect
+	k8s.io/kube-openapi v0.0.0-20240703190633-0aa61b46e8c2 // indirect
 	k8s.io/utils v0.0.0-20240502163921-fe8a2dddb1d0 // indirect
 	kmodules.xyz/apiversion v0.2.0 // indirect
 	kmodules.xyz/apply v0.29.0 // indirect
 	kmodules.xyz/go-containerregistry v0.0.12 // indirect
 	kmodules.xyz/objectstore-api v0.29.1 // indirect
-	kmodules.xyz/offshoot-api v0.29.4 // indirect
-	kmodules.xyz/resource-metrics v0.30.2 // indirect
+	kmodules.xyz/offshoot-api v0.30.0 // indirect
+	kmodules.xyz/resource-metrics v0.30.4 // indirect
 	kubeops.dev/external-dns-operator v0.0.9 // indirect
 	oras.land/oras-go v1.2.5 // indirect
 	sigs.k8s.io/cli-utils v0.36.0 // indirect

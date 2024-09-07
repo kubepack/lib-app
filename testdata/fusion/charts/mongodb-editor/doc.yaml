@@ -10,7 +10,7 @@ project:
   description: Mongodb Editor
   name: Mongodb Editor by AppsCode
   shortName: Mongodb Editor
-  url: https://byte.builders
+  url: https://appscode.com
 release:
   name: mongodb-editor
   namespace: default
