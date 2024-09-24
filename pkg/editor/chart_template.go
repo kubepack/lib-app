@@ -158,11 +158,7 @@ func LoadEditorModel(kc client.Client, reg repo.IRegistry, chartRef releasesapi.
 
 func loadEditorModel(kc client.Client, reg repo.IRegistry, chartRef releasesapi.ChartSourceRef, opts releasesapi.ModelMetadata) (*releasesapi.EditorTemplate, error) {
 	if chartRef.SourceRef.Namespace == "" {
-		ns, err := DefaultSourceRefNamespace(kc, chartRef.SourceRef.Name)
-		if err != nil {
-			return nil, err
-		}
-		chartRef.SourceRef.Namespace = ns
+		chartRef.SourceRef.Namespace = hub.BootstrapHelmRepositoryNamespace()
 	}
 
 	chrt, err := reg.GetChart(chartRef)
@@ -359,11 +355,7 @@ func generateEditorModel(
 	}
 
 	if optionsChartRef.SourceRef.Namespace == "" {
-		ns, err := DefaultSourceRefNamespace(kc, optionsChartRef.SourceRef.Name)
-		if err != nil {
-			return nil, err
-		}
-		optionsChartRef.SourceRef.Namespace = ns
+		optionsChartRef.SourceRef.Namespace = hub.BootstrapHelmRepositoryNamespace()
 	}
 	if editorChartRef.SourceRef.Namespace == "" {
 		editorChartRef.SourceRef.Namespace = optionsChartRef.SourceRef.Namespace
@@ -462,11 +454,7 @@ func renderChart(
 	opts map[string]interface{},
 ) (string, *releasesapi.ChartTemplate, error) {
 	if chartRef.SourceRef.Namespace == "" {
-		ns, err := DefaultSourceRefNamespace(kc, chartRef.SourceRef.Name)
-		if err != nil {
-			return "", nil, err
-		}
-		chartRef.SourceRef.Namespace = ns
+		chartRef.SourceRef.Namespace = hub.BootstrapHelmRepositoryNamespace()
 	}
 
 	f1 := &EditorModelGenerator{

@@ -17,38 +17,15 @@ limitations under the License.
 package editor
 
 import (
-	"context"
 	"sort"
 	"strings"
 
 	"github.com/gobuffalo/flect"
-	"github.com/pkg/errors"
 	core "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"k8s.io/apimachinery/pkg/types"
-	apiregistrationapi "k8s.io/kube-aggregator/pkg/apis/apiregistration/v1"
-	meta_util "kmodules.xyz/client-go/meta"
 	"kmodules.xyz/client-go/tools/parser"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 )
-
-func DefaultSourceRefNamespace(kc client.Client, sourceName string) (string, error) {
-	if !meta_util.PossiblyInCluster() {
-		return "kubeops", nil
-	}
-
-	var apisvc apiregistrationapi.APIService
-	name := "v1alpha1.meta.k8s.appscode.com"
-	err := kc.Get(context.TODO(), types.NamespacedName{Name: name}, &apisvc)
-	if err != nil {
-		return "", errors.Wrapf(err, "failed to detect namespace for HelmRepository %s", sourceName)
-	}
-	if apisvc.Spec.Service == nil {
-		return "", errors.Wrapf(err, "failed to detect namespace for HelmRepository %s from Local APIService %s", sourceName, name)
-	}
-	return apisvc.Spec.Service.Namespace, nil
-}
 
 func ResourceKey(apiVersion, kind, chartName, name string) (string, error) {
 	gv, err := schema.ParseGroupVersion(apiVersion)
