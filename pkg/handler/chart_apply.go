@@ -32,6 +32,7 @@ import (
 	"helm.sh/helm/v3/pkg/release"
 	cmdutil "k8s.io/kubectl/pkg/cmd/util"
 	meta_util "kmodules.xyz/client-go/meta"
+	"kmodules.xyz/resource-metadata/hub"
 	"kmodules.xyz/resource-metadata/hub/resourceeditors"
 	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 )
@@ -86,11 +87,7 @@ func applyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef releasesapi.C
 	var opts actionx.DeployOptions
 
 	if chartRef.SourceRef.Namespace == "" {
-		ns, err := editor.DefaultSourceRefNamespace(kc, chartRef.SourceRef.Name)
-		if err != nil {
-			return nil, err
-		}
-		chartRef.SourceRef.Namespace = ns
+		chartRef.SourceRef.Namespace = hub.BootstrapHelmRepositoryNamespace()
 	}
 	opts.ChartSourceFlatRef.FromAPIObject(chartRef)
 

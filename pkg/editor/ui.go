@@ -25,6 +25,7 @@ import (
 	"kubepack.dev/lib-helm/pkg/storage/driver"
 
 	"k8s.io/client-go/rest"
+	"kmodules.xyz/resource-metadata/hub"
 	"kmodules.xyz/resource-metadata/hub/resourceeditors"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	driversapi "x-helm.dev/apimachinery/apis/drivers/v1alpha1"
@@ -60,11 +61,7 @@ func CreateAppReleaseIfMissing(restcfg *rest.Config, kc client.Client, reg repo.
 	chartRef.Name = strings.ReplaceAll(chartRef.Name, "{.metadata.release.namespace}", model.Release.Namespace)
 
 	if chartRef.SourceRef.Namespace == "" {
-		ns, err := DefaultSourceRefNamespace(kc, chartRef.SourceRef.Name)
-		if err != nil {
-			return nil, err
-		}
-		chartRef.SourceRef.Namespace = ns
+		chartRef.SourceRef.Namespace = hub.BootstrapHelmRepositoryNamespace()
 	}
 
 	chrt, err := reg.GetChart(chartRef)
