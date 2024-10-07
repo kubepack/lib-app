@@ -34,6 +34,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/util/homedir"
+	"k8s.io/klog/v2"
 	kmapi "kmodules.xyz/client-go/api/v1"
 	rsapi "kmodules.xyz/resource-metadata/apis/meta/v1alpha1"
 	uiapi "kmodules.xyz/resource-metadata/apis/ui/v1alpha1"
@@ -330,7 +331,9 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 func UpdateEditor(rd *rsapi.ResourceDescriptor, chartName string, descriptorDir string) error {
 	ed, err := resourceeditors.LoadInternalByGVR(rd.Spec.Resource.GroupVersionResource())
 	if err != nil {
-		return err
+		// ignore missing resource editor
+		klog.Errorln(err)
+		return nil
 	}
 	if ed.Spec.UI == nil {
 		ed.Spec.UI = &uiapi.UIParameters{}
