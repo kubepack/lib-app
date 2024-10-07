@@ -328,24 +328,24 @@ func GenerateSimpleEditorChart(chartDir, descriptorDir string, gvr schema.GroupV
 }
 
 func UpdateEditor(rd *rsapi.ResourceDescriptor, chartName string, descriptorDir string) error {
-	ed, ok := resourceeditors.LoadDefaultByGVR(rd.Spec.Resource.GroupVersionResource())
-	if ok {
-		if ed.Spec.UI == nil {
-			ed.Spec.UI = &uiapi.UIParameters{}
-		}
-		ed.Spec.UI.Editor = &releasesapi.ChartSourceRef{
-			Name: chartName,
-			SourceRef: kmapi.TypedObjectReference{
-				APIGroup:  releasesapi.SourceGroupHelmRepository,
-				Kind:      releasesapi.SourceKindHelmRepository,
-				Namespace: "",
-				Name:      repoName,
-			},
-		}
-		ed.Spec.UI.Editor.Version = getDigestOrVersion(repoName, ed.Spec.UI.Editor.Name, chartVersion)
-		return WriteResourceEditor(ed, filepath.Join(filepath.Dir(descriptorDir), uiapi.ResourceResourceEditors))
+	ed, err := resourceeditors.LoadInternalByGVR(rd.Spec.Resource.GroupVersionResource())
+	if err != nil {
+		return err
 	}
-	return nil
+	if ed.Spec.UI == nil {
+		ed.Spec.UI = &uiapi.UIParameters{}
+	}
+	ed.Spec.UI.Editor = &releasesapi.ChartSourceRef{
+		Name: chartName,
+		SourceRef: kmapi.TypedObjectReference{
+			APIGroup:  releasesapi.SourceGroupHelmRepository,
+			Kind:      releasesapi.SourceKindHelmRepository,
+			Namespace: "",
+			Name:      repoName,
+		},
+	}
+	ed.Spec.UI.Editor.Version = getDigestOrVersion(repoName, ed.Spec.UI.Editor.Name, chartVersion)
+	return WriteResourceEditor(ed, filepath.Join(filepath.Dir(descriptorDir), uiapi.ResourceResourceEditors))
 }
 
 func GenerateChartMetadata(chartDir, chartName string, rd *rsapi.ResourceDescriptor) error {

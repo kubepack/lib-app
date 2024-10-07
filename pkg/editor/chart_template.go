@@ -141,9 +141,9 @@ func RenderOrderTemplate(bs *lib.BlobStore, reg repo.IRegistry, order releasesap
 }
 
 func LoadResourceEditorModel(kc client.Client, reg repo.IRegistry, opts releasesapi.ModelMetadata) (*releasesapi.EditorTemplate, error) {
-	ed, ok := resourceeditors.LoadByResourceID(kc, &opts.Resource)
-	if !ok {
-		return nil, fmt.Errorf("failed to load resource editor for %+v", opts.Resource)
+	ed, err := resourceeditors.LoadByResourceID(kc, &opts.Resource)
+	if err != nil {
+		return nil, err
 	}
 
 	if ed.Spec.UI == nil || ed.Spec.UI.Editor == nil {
@@ -314,9 +314,9 @@ func GenerateResourceEditorModel(kc client.Client, reg repo.IRegistry, opts map[
 		return nil, err
 	}
 
-	ed, ok := resourceeditors.LoadByResourceID(kc, &spec.Resource)
-	if !ok {
-		return nil, fmt.Errorf("failed to load resource editor for %+v", spec.Resource)
+	ed, err := resourceeditors.LoadByResourceID(kc, &spec.Resource)
+	if err != nil {
+		return nil, err
 	}
 
 	if ed.Spec.UI == nil {
@@ -425,9 +425,9 @@ func RenderResourceEditorChart(kc client.Client, reg repo.IRegistry, opts map[st
 		return "", nil, err
 	}
 
-	ed, ok := resourceeditors.LoadByResourceID(kc, &spec.Resource)
-	if !ok {
-		return "", nil, fmt.Errorf("failed to load resource editor for %+v", spec.Resource)
+	ed, err := resourceeditors.LoadByResourceID(kc, &spec.Resource)
+	if err != nil {
+		return "", nil, err
 	}
 
 	if ed.Spec.UI == nil || ed.Spec.UI.Editor == nil {
