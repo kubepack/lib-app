@@ -46,11 +46,10 @@ func CreateAppReleaseIfMissing(restcfg *rest.Config, kc client.Client, reg repo.
 
 	// apprelease not found, so create it.
 
-	ed, ok := resourceeditors.LoadByResourceID(kc, &model.Resource)
-	if !ok {
-		return nil, fmt.Errorf("failed to load resource editor for %+v", model.Resource)
+	ed, err := resourceeditors.LoadByResourceID(kc, &model.Resource)
+	if err != nil {
+		return nil, err
 	}
-
 	if ed.Spec.UI.Editor == nil {
 		return nil, fmt.Errorf("missing editor chart for %+v", ed.Spec.Resource.GroupVersionKind())
 	}

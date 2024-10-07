@@ -49,11 +49,10 @@ func ApplyResourceEditor(f cmdutil.Factory, reg repo.IRegistry, model map[string
 		return nil, err
 	}
 
-	ed, ok := resourceeditors.LoadByResourceID(kc, &tm.Resource)
-	if !ok {
-		return nil, fmt.Errorf("failed to load resource editor for %+v", tm.Resource)
+	ed, err := resourceeditors.LoadByResourceID(kc, &tm.Resource)
+	if err != nil {
+		return nil, err
 	}
-
 	if ed.Spec.UI.Editor == nil {
 		return nil, fmt.Errorf("missing editor chart for %+v", ed.Spec.Resource.GroupVersionKind())
 	}

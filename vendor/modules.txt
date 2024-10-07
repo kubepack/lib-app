@@ -1731,7 +1731,7 @@ kmodules.xyz/apiversion
 # kmodules.xyz/apply v0.29.0
 ## explicit; go 1.21.5
 kmodules.xyz/apply
-# kmodules.xyz/client-go v0.30.17
+# kmodules.xyz/client-go v0.30.19
 ## explicit; go 1.22.0
 kmodules.xyz/client-go
 kmodules.xyz/client-go/api/v1
@@ -1757,7 +1757,7 @@ kmodules.xyz/objectstore-api/api/v1
 ## explicit; go 1.22.0
 kmodules.xyz/offshoot-api/api/v1
 kmodules.xyz/offshoot-api/api/v2
-# kmodules.xyz/resource-metadata v0.18.16-0.20240927080048-75ff4280e0bb
+# kmodules.xyz/resource-metadata v0.18.16
 ## explicit; go 1.22.1
 kmodules.xyz/resource-metadata/apis/meta
 kmodules.xyz/resource-metadata/apis/meta/v1alpha1
@@ -1784,7 +1784,7 @@ kubepack.dev/chart-doc-gen/api
 # kubepack.dev/kubepack v0.29.2-0.20240519151029-6ba83ceff9d4
 ## explicit; go 1.22.1
 kubepack.dev/kubepack/pkg/lib
-# kubepack.dev/lib-helm v0.29.11-0.20240820202058-74d1f90b3535
+# kubepack.dev/lib-helm v0.29.11
 ## explicit; go 1.22.1
 kubepack.dev/lib-helm/pkg/action
 kubepack.dev/lib-helm/pkg/chart
