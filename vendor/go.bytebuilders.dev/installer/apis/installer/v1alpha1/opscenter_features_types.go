@@ -18,6 +18,8 @@ package v1alpha1
 
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+	kmapi "kmodules.xyz/client-go/api/v1"
 	"kmodules.xyz/resource-metadata/apis/shared"
 )
 
@@ -52,32 +54,9 @@ type OpscenterFeaturesSpec struct {
 	Image            shared.ImageRegistrySpec `json:"image"`
 	Helm             OpscenterHelmSpec        `json:"helm"`
 	Registry         shared.RegistryInfo      `json:"registry"`
-	ClusterMetadata  ClusterMetadata          `json:"clusterMetadata"`
+	ClusterMetadata  kmapi.ClusterInfo        `json:"clusterMetadata"`
+	LicenseServer    LicenseServerSpec        `json:"licenseServer"`
 }
-
-type ClusterMetadata struct {
-	Uid             string   `json:"uid"`
-	Name            string   `json:"name"`
-	ClusterManagers []string `json:"clusterManagers"`
-	// +optional
-	CAPI CapiMetadata `json:"capi"`
-}
-
-type CapiMetadata struct {
-	// +optional
-	Provider  CAPIProvider `json:"provider"`
-	Namespace string       `json:"namespace"`
-}
-
-// +kubebuilder:validation:Enum=capa;capg;capz
-type CAPIProvider string
-
-const (
-	CAPIProviderDisabled CAPIProvider = ""
-	CAPIProviderCAPA     CAPIProvider = "capa"
-	CAPIProviderCAPG     CAPIProvider = "capg"
-	CAPIProviderCAPZ     CAPIProvider = "capz"
-)
 
 type OpscenterHelmSpec struct {
 	CreateNamespace bool                              `json:"createNamespace"`
@@ -86,7 +65,14 @@ type OpscenterHelmSpec struct {
 }
 
 type HelmRelease struct {
-	Version string `json:"version"`
+	Version string                `json:"version"`
+	Values  *runtime.RawExtension `json:"values,omitempty"`
+}
+
+type LicenseServerSpec struct {
+	BaseURL string `json:"baseURL"`
+	// +optional
+	Token string `json:"token"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

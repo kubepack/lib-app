@@ -50,6 +50,7 @@ type PlatformApiSpec struct {
 	//+optional
 	RegistryFQDN string         `json:"registryFQDN"`
 	Image        ImageReference `json:"image"`
+	GeoIPDB      ImageReference `json:"geoipdb"`
 	//+optional
 	ImagePullSecrets []string `json:"imagePullSecrets"`
 	//+optional
@@ -80,7 +81,17 @@ type PlatformApiSpec struct {
 	Persistence  PersistenceSpec    `json:"persistence"`
 	Monitoring   Monitoring         `json:"monitoring"`
 	Infra        AceInfra           `json:"infra"`
-	Settings     AceSettings        `json:"settings"`
+	Settings     AceAPISettings     `json:"settings"`
+}
+
+type AceAPISettings struct {
+	CAProviderClass          string `json:"caProviderClass"`
+	AceAPISettingsSecretName `json:"secretName"`
+}
+
+type AceAPISettingsSecretName struct {
+	AceSettingsSecretName         `json:",inline,omitempty"`
+	GcpMarketplaceReportingSecret string `json:"gcpMarketplaceReportingSecret"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

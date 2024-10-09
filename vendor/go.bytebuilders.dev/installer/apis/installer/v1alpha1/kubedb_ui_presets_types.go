@@ -17,6 +17,8 @@ limitations under the License.
 package v1alpha1
 
 import (
+	wizardsapi "go.bytebuilders.dev/ui-wizards/apis/wizards/v1alpha1"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -42,14 +44,7 @@ type KubedbUiPresets struct {
 }
 
 type KubedbUiPresetsSpec struct {
-	CAPI CapiPresetsSpec `json:"capi"`
-}
-
-type CapiPresetsSpec struct {
-	// +optional
-	Provider    string `json:"provider"`
-	Namespace   string `json:"namespace"`
-	ClusterName string `json:"clusterName"`
+	wizardsapi.AdminOptions `json:",inline"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
