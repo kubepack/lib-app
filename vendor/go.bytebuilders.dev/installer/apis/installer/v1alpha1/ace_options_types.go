@@ -21,6 +21,7 @@ import (
 	"net/url"
 
 	configapi "go.bytebuilders.dev/resource-model/apis/config/v1alpha1"
+	wizardsapi "go.bytebuilders.dev/ui-wizards/apis/wizards/v1alpha1"
 
 	core "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -77,8 +78,26 @@ type AceOptionsSpec struct {
 	InitialSetup  configapi.AceSetupInlineOptions `json:"initialSetup"`
 }
 
+func (a *AceOptionsSpec) IsOptionsComplete() bool {
+	switch a.Context.DeploymentType {
+	case AWSMarketplaceDeployment:
+		return a.InitialSetup.Subscription != nil &&
+			a.InitialSetup.Subscription.AWS != nil &&
+			a.InitialSetup.Subscription.AWS.MeteringServiceProxyToken != ""
+	case AzureMarketplaceDeployment:
+		return a.InitialSetup.Subscription != nil &&
+			a.InitialSetup.Subscription.Azure != nil &&
+			a.InitialSetup.Subscription.Azure.ApplicationID != ""
+	case GCPMarketplaceDeployment:
+		return a.InitialSetup.Subscription != nil &&
+			a.InitialSetup.Subscription.GCP != nil &&
+			a.InitialSetup.Subscription.GCP.ServiceControlProxyToken != ""
+	}
+	return true
+}
+
 func (a *AceOptionsSpec) Host() string {
-	if a.Infra.DNS.Provider == DNSProviderNone {
+	if a.Infra.DNS.Provider == DNSProviderNone && a.IsOptionsComplete() {
 		if len(a.Infra.DNS.TargetIPs) == 0 {
 			panic("target IPs required when no dns provider is used")
 		}
@@ -206,9 +225,9 @@ type KubeStashOptions struct {
 	Schedule string `json:"schedule,omitempty"`
 	// RetentionPolicy indicates the policy to follow to clean old backup snapshots
 	// +kubebuilder:default=keep-1mo
-	RetentionPolicy KubeStashRetentionPolicy `json:"retentionPolicy"`
-	StorageSecret   OptionalResource         `json:"storageSecret"`
-	Backend         KubeStashBackendInfra    `json:"backend"`
+	RetentionPolicy KubeStashRetentionPolicy    `json:"retentionPolicy"`
+	StorageSecret   wizardsapi.OptionalResource `json:"storageSecret"`
+	Backend         KubeStashBackendInfra       `json:"backend"`
 }
 
 type KubeStashBackendInfra struct {
@@ -269,9 +288,9 @@ type AceOptionsInfraObjstore struct {
 }
 
 type ObjstoreAuth struct {
-	S3    *S3Auth    `json:"s3,omitempty"`
-	Azure *AzureAuth `json:"azure,omitempty"`
-	GCS   *GCSAuth   `json:"gcs,omitempty"`
+	S3    *wizardsapi.S3Auth    `json:"s3,omitempty"`
+	Azure *wizardsapi.AzureAuth `json:"azure,omitempty"`
+	GCS   *wizardsapi.GCSAuth   `json:"gcs,omitempty"`
 }
 
 type AceOptionsInfraKms struct {
@@ -286,6 +305,7 @@ type AceOptionsSettings struct {
 	// DomainWhiteList is an array of domain names that are allowed.
 	// Each domain should be in the format of a fully qualified domain name,
 	// such as 'example.com' or 'appscode.com' etc.
+	// +optional
 	DomainWhiteList []string `json:"domainWhiteList"`
 }
 
@@ -361,6 +381,11 @@ type AceDeploymentContext struct {
 	RequesterUsername    string `json:"requesterUsername,omitempty"`
 	ProxyServiceDomain   string `json:"proxyServiceDomain,omitempty"`
 	Token                string `json:"token,omitempty"`
+	LicenseServiceDomain string `json:"licenseServiceDomain,omitempty"`
+	LicenseServiceToken  string `json:"licenseServiceToken,omitempty"`
+	LicenseOwnerID       int64  `json:"licenseOwnerID"`
+	LicenseOwnerName     string `json:"licenseOwnerName"`
+
 	// +optional
 	OfflineInstaller bool `json:"offlineInstaller"`
 	// WARNING!!! Update docs in schema/ace-options/patch.yaml
@@ -401,7 +426,12 @@ type GeneratedValues struct {
 	// +optional
 	JKSPassword string `json:"jksPassword"`
 	// +optional
-	GrafanaSecretKey string `json:"grafanaSecretKey"`
+	GrafanaSecretKey string            `json:"grafanaSecretKey"`
+	InboxServer      InboxServerValues `json:"inboxServer"`
+}
+
+type InboxServerValues struct {
+	AdminJWTPrivateKey string `json:"adminJWTPrivateKey"`
 }
 
 type PromotionValues struct {

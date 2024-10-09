@@ -17,9 +17,12 @@ limitations under the License.
 package v1alpha1
 
 import (
+	wizardsapi "go.bytebuilders.dev/ui-wizards/apis/wizards/v1alpha1"
+
 	openviz_installer "go.openviz.dev/installer/apis/installer/v1alpha1"
 	core "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
 	dnsapi "kubeops.dev/external-dns-operator/apis/external/v1alpha1"
 )
 
@@ -75,11 +78,12 @@ type AceSpec struct {
 	SecurityContext    *core.SecurityContext     `json:"securityContext"`
 	Resources          core.ResourceRequirements `json:"resources"`
 	//+optional
-	NodeSelector map[string]string `json:"nodeSelector"`
-	Tolerations  []core.Toleration `json:"tolerations"`
-	Affinity     *core.Affinity    `json:"affinity"`
-	Branding     AceBrandingSpec   `json:"branding"`
-	SetupJob     AceSetupJob       `json:"setupJob"`
+	NodeSelector map[string]string                `json:"nodeSelector"`
+	Tolerations  []core.Toleration                `json:"tolerations"`
+	Affinity     *core.Affinity                   `json:"affinity"`
+	Branding     AceBrandingSpec                  `json:"branding"`
+	SetupJob     AceSetupJob                      `json:"setupJob"`
+	ExtraObjects map[string]*runtime.RawExtension `json:"extraObjects"`
 }
 
 type AceBilling struct {
@@ -201,6 +205,8 @@ type AcePlatformSettings struct {
 	DeploymentType     DeploymentType `json:"deploymentType"`
 	ProxyServiceDomain string         `json:"proxyServiceDomain,omitempty"`
 	Token              string         `json:"token,omitempty"`
+	OwnerID            int64          `json:"ownerID"`
+	OwnerName          string         `json:"ownerName"`
 }
 
 type HostInfo struct {
@@ -247,11 +253,11 @@ type PlatformInfra struct {
 type KubeStashSpec struct {
 	// Schedule specifies the schedule for invoking backup sessions
 	// +optional
-	Schedule         string           `json:"schedule,omitempty"`
-	StorageRef       ObjectReference  `json:"storageRef"`
-	RetentionPolicy  ObjectReference  `json:"retentionPolicy"`
-	EncryptionSecret ObjectReference  `json:"encryptionSecret"`
-	StorageSecret    OptionalResource `json:"storageSecret"`
+	Schedule         string                      `json:"schedule,omitempty"`
+	StorageRef       ObjectReference             `json:"storageRef"`
+	RetentionPolicy  ObjectReference             `json:"retentionPolicy"`
+	EncryptionSecret ObjectReference             `json:"encryptionSecret"`
+	StorageSecret    wizardsapi.OptionalResource `json:"storageSecret"`
 }
 
 // +kubebuilder:validation:Enum=ca;letsencrypt;letsencrypt-staging;external
@@ -288,8 +294,17 @@ type Keystore struct {
 }
 
 type TLSIssuerAcme struct {
-	Email string `json:"email"`
+	Email  string     `json:"email"`
+	Solver AcmeSolver `json:"solver"`
 }
+
+// +kubebuilder:validation:Enum=Gateway;Ingress
+type AcmeSolver string
+
+const (
+	AcmeSolverGateway = "Gateway"
+	AcmeSolverIngress = "Ingress"
+)
 
 // +kubebuilder:validation:Enum=none;external;cloudflare;route53;cloudDNS;azureDNS
 type DNSProvider string
@@ -367,15 +382,15 @@ const (
 )
 
 type InfraObjstore struct {
-	Provider  ObjstoreProvider `json:"provider"`
-	Bucket    string           `json:"bucket"`
-	Prefix    string           `json:"prefix,omitempty"`
-	Endpoint  string           `json:"endpoint,omitempty"`
-	Region    string           `json:"region,omitempty"`
-	MountPath string           `json:"mountPath"`
-	S3        *S3Auth          `json:"s3,omitempty"`
-	Azure     *AzureAuth       `json:"azure,omitempty"`
-	GCS       *GCSAuth         `json:"gcs,omitempty"`
+	Provider  ObjstoreProvider      `json:"provider"`
+	Bucket    string                `json:"bucket"`
+	Prefix    string                `json:"prefix,omitempty"`
+	Endpoint  string                `json:"endpoint,omitempty"`
+	Region    string                `json:"region,omitempty"`
+	MountPath string                `json:"mountPath"`
+	S3        *wizardsapi.S3Auth    `json:"s3,omitempty"`
+	Azure     *wizardsapi.AzureAuth `json:"azure,omitempty"`
+	GCS       *wizardsapi.GCSAuth   `json:"gcs,omitempty"`
 }
 
 type InfraKms struct {
@@ -406,34 +421,35 @@ type InfraFileserver struct {
 }
 
 type Settings struct {
-	DB       DBSettings       `json:"db"`
-	Cache    CacheSettings    `json:"cache"`
-	Smtp     SmtpSettings     `json:"smtp"`
-	Nats     NatsSettings     `json:"nats"`
-	Platform PlatformSettings `json:"platform"`
-	Security SecuritySettings `json:"security"`
-	Grafana  GrafanaSettings  `json:"grafana"`
-	Contract ContractStorage  `json:"contract"`
-	Firebase FirebaseSettings `json:"firebase"`
+	DB          DBSettings          `json:"db"`
+	Cache       CacheSettings       `json:"cache"`
+	Smtp        SmtpSettings        `json:"smtp"`
+	Nats        NatsSettings        `json:"nats"`
+	Platform    PlatformSettings    `json:"platform"`
+	Security    SecuritySettings    `json:"security"`
+	Grafana     GrafanaSettings     `json:"grafana"`
+	InboxServer InboxServerSettings `json:"inboxServer"`
+	Contract    ContractStorage     `json:"contract"`
+	Firebase    FirebaseSettings    `json:"firebase"`
 }
 
 type DBSettings struct {
-	Version           string                    `json:"version"`
-	DatabaseName      string                    `json:"databaseName"`
-	TerminationPolicy string                    `json:"terminationPolicy"`
-	Persistence       PersistenceSpec           `json:"persistence"`
-	Resources         core.ResourceRequirements `json:"resources"`
-	Auth              BasicAuth                 `json:"auth"`
-	LogSQL            bool                      `json:"logSQL"`
+	Version        string                    `json:"version"`
+	DatabaseName   string                    `json:"databaseName"`
+	DeletionPolicy string                    `json:"deletionPolicy"`
+	Persistence    PersistenceSpec           `json:"persistence"`
+	Resources      core.ResourceRequirements `json:"resources"`
+	Auth           BasicAuth                 `json:"auth"`
+	LogSQL         bool                      `json:"logSQL"`
 }
 
 type CacheSettings struct {
-	CacheInterval     int                       `json:"cacheInterval"`
-	Version           string                    `json:"version"`
-	TerminationPolicy string                    `json:"terminationPolicy"`
-	Persistence       PersistenceSpec           `json:"persistence"`
-	Resources         core.ResourceRequirements `json:"resources"`
-	Auth              BasicAuth                 `json:"auth"`
+	CacheInterval  int                       `json:"cacheInterval"`
+	Version        string                    `json:"version"`
+	DeletionPolicy string                    `json:"deletionPolicy"`
+	Persistence    PersistenceSpec           `json:"persistence"`
+	Resources      core.ResourceRequirements `json:"resources"`
+	Auth           BasicAuth                 `json:"auth"`
 }
 
 type BasicAuth struct {
@@ -477,20 +493,21 @@ const (
 )
 
 type PlatformSettings struct {
-	AppName                         string   `json:"appName"`
-	RunMode                         RunMode  `json:"runMode"`
-	ForcePrivate                    bool     `json:"forcePrivate"`
-	DisableHttpGit                  bool     `json:"disableHttpGit"`
-	InstallLock                     bool     `json:"installLock"`
-	RepositoryUploadEnabled         bool     `json:"repositoryUploadEnabled"`
-	RepositoryUploadAllowedTypes    *string  `json:"repositoryUploadAllowedTypes"`
-	RepositoryUploadMaxFileSize     int      `json:"repositoryUploadMaxFileSize"`
-	RepositoryUploadMaxFiles        int      `json:"repositoryUploadMaxFiles"`
-	ServiceEnableCaptcha            bool     `json:"serviceEnableCaptcha"`
-	ServiceRegisterEmailConfirm     bool     `json:"serviceRegisterEmailConfirm"`
-	ServiceDisableRegistration      bool     `json:"serviceDisableRegistration"`
-	ServiceRequireSignInView        bool     `json:"serviceRequireSignInView"`
-	ServiceEnableNotifyMail         bool     `json:"serviceEnableNotifyMail"`
+	AppName                      string  `json:"appName"`
+	RunMode                      RunMode `json:"runMode"`
+	ForcePrivate                 bool    `json:"forcePrivate"`
+	DisableHttpGit               bool    `json:"disableHttpGit"`
+	InstallLock                  bool    `json:"installLock"`
+	RepositoryUploadEnabled      bool    `json:"repositoryUploadEnabled"`
+	RepositoryUploadAllowedTypes *string `json:"repositoryUploadAllowedTypes"`
+	RepositoryUploadMaxFileSize  int     `json:"repositoryUploadMaxFileSize"`
+	RepositoryUploadMaxFiles     int     `json:"repositoryUploadMaxFiles"`
+	ServiceEnableCaptcha         bool    `json:"serviceEnableCaptcha"`
+	ServiceRegisterEmailConfirm  bool    `json:"serviceRegisterEmailConfirm"`
+	ServiceDisableRegistration   bool    `json:"serviceDisableRegistration"`
+	ServiceRequireSignInView     bool    `json:"serviceRequireSignInView"`
+	ServiceEnableNotifyMail      bool    `json:"serviceEnableNotifyMail"`
+	// +optional
 	ServiceDomainWhiteList          []string `json:"serviceDomainWhiteList"`
 	CookieName                      string   `json:"cookieName"`
 	CookieRememberName              string   `json:"cookieRememberName"`
@@ -513,6 +530,12 @@ type GrafanaSettings struct {
 	AppMode string `json:"appMode"`
 	// +optional
 	SecretKey string `json:"secretKey"`
+}
+
+type InboxServerSettings struct {
+	JmapURL            string `json:"jmapURL"`
+	WebAdminURL        string `json:"webAdminURL"`
+	AdminJWTPrivateKey string `json:"adminJWTPrivateKey"`
 }
 
 type ContractStorage struct {

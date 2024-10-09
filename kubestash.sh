@@ -26,6 +26,33 @@ go run cmd/fuse-chart/*.go \
     --resource.name=backupstorages
 
 go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/kubestash/repository/custom \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=ace-repo \
+    --resource.group=storage.kubestash.com \
+    --resource.version=v1alpha1 \
+    --resource.name=repositories
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/kubestash/backupconfiguration/custom \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=backup-app \
+    --resource.group=core.kubestash.com \
+    --resource.version=v1alpha1 \
+    --resource.name=backupconfigurations
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/kubestash/backupsession/custom \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=backup-app \
+    --resource.group=core.kubestash.com \
+    --resource.version=v1alpha1 \
+    --resource.name=backupsessions
+
+go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/kubestash/restoresession/custom \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \

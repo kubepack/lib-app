@@ -60,8 +60,6 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&AceList{},
 		&AceInstaller{},
 		&AceInstallerList{},
-		&AceOcmAddons{},
-		&AceOcmAddonsList{},
 		&Billing{},
 		&BillingList{},
 		&BillingUi{},

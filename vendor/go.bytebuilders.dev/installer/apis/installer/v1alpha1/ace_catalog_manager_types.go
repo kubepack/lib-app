@@ -100,7 +100,8 @@ type CatalogManagerKedaSpec struct {
 }
 
 type CatalogManagerPlatformSpec struct {
-	BaseURL  string `json:"baseURL"`
+	BaseURL string `json:"baseURL"`
+	// +optional
 	CaBundle string `json:"caBundle"`
 }
 

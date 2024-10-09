@@ -123,8 +123,8 @@ type OpenfgaSpec struct {
 	Affinity                                  core.Affinity               `json:"affinity"`
 	Sidecars                                  []core.Container            `json:"sidecars"`
 	Migrate                                   OpenfgaMigrate              `json:"migrate"`
+	ExtraObjects                              []runtime.RawExtension      `json:"extraObjects"`
 }
-
 type OpenfgaProbe struct {
 	Enabled    bool `json:"enabled"`
 	core.Probe `json:",inline,omitempty"`
@@ -257,6 +257,8 @@ type OpenfgaCheckQueryCache struct {
 }
 
 type OpenfgaMigrate struct {
+	ExtraVolumes            []core.Volume      `json:"extraVolumes"`
+	ExtraVolumeMounts       []core.VolumeMount `json:"extraVolumeMounts"`
 	Sidecars                []core.Container   `json:"sidecars"`
 	Annotations             map[string]*string `json:"annotations"`
 	Labels                  map[string]*string `json:"labels"`

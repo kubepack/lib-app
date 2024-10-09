@@ -26,7 +26,7 @@ const (
 	ResourceCredentials    = "credentials"
 )
 
-// +kubebuilder:validation:Enum=Aws;Azure;AzureStorage;DigitalOcean;GoogleCloud;GoogleOAuth;Linode;Packet;Rancher;Scaleway;Vultr;Swift
+// +kubebuilder:validation:Enum=Aws;Azure;AzureStorage;DigitalOcean;GoogleCloud;GoogleOAuth;Linode;Packet;Rancher;Scaleway;Vultr;Swift;Hetzner
 type CredentialType string
 
 const (

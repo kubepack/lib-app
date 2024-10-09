@@ -24,23 +24,21 @@ import (
 	"strings"
 )
 
-// +kubebuilder:validation:Enum=Aws;Azure;DigitalOcean;GoogleCloud;Linode;Packet;Scaleway;Vultr;BareMetal;KIND;Generic;Private
+// +kubebuilder:validation:Enum=AKS;DigitalOcean;EKS;Exoscale;Generic;GKE;Linode;Packet;Rancher;Scaleway;Vultr
 type HostingProvider string
 
 const (
-	HostingProviderAWS          HostingProvider = "Aws"
-	HostingProviderAzure        HostingProvider = "Azure"
+	HostingProviderAKS          HostingProvider = "AKS"
 	HostingProviderDigitalOcean HostingProvider = "DigitalOcean"
-	HostingProviderGoogleCloud  HostingProvider = "GoogleCloud"
+	HostingProviderEKS          HostingProvider = "EKS"
 	HostingProviderExoscale     HostingProvider = "Exoscale"
+	HostingProviderGeneric      HostingProvider = "Generic"
+	HostingProviderGKE          HostingProvider = "GKE"
 	HostingProviderLinode       HostingProvider = "Linode"
 	HostingProviderPacket       HostingProvider = "Packet"
+	HostingProviderRancher      HostingProvider = "Rancher"
 	HostingProviderScaleway     HostingProvider = "Scaleway"
 	HostingProviderVultr        HostingProvider = "Vultr"
-	HostingProviderBareMetal    HostingProvider = "BareMetal"
-	HostingProviderKIND         HostingProvider = "KIND"
-	HostingProviderGeneric      HostingProvider = "Generic"
-	HostingProviderPrivate      HostingProvider = "Private"
 )
 
 const (
@@ -164,16 +162,15 @@ type ClusterInfo struct {
 	Name            string   `json:"name"`
 	ClusterManagers []string `json:"clusterManagers"`
 	// +optional
-	CAPI CAPIClusterInfo `json:"capi"`
+	CAPI *CAPIClusterInfo `json:"capi"`
 }
 
 // +kubebuilder:validation:Enum=capa;capg;capz
 type CAPIProvider string
 
 const (
-	CAPIProviderUnknown CAPIProvider = ""
-	CAPIProviderCAPA    CAPIProvider = "capa"
-	CAPIProviderCAPG    CAPIProvider = "capg"
-	CAPIProviderCAPZ    CAPIProvider = "capz"
-	CAPIProviderCAPH    CAPIProvider = "caph"
+	CAPIProviderCAPA CAPIProvider = "capa"
+	CAPIProviderCAPG CAPIProvider = "capg"
+	CAPIProviderCAPZ CAPIProvider = "capz"
+	CAPIProviderCAPH CAPIProvider = "caph"
 )

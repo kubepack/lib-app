@@ -113,6 +113,10 @@ type PlatformSpec struct {
 	Token string `json:"token"`
 	// +optional
 	TokenSecretName string `json:"tokenSecretName"`
+	// +optional
+	CaBundle string `json:"caBundle"`
+	// +optional
+	InsecureSkipTLSVerify bool `json:"insecureSkipTLSVerify"`
 }
 
 type ImageRef struct {
