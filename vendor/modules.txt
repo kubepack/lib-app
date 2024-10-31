@@ -928,17 +928,20 @@ github.com/zeebo/xxh3
 ## explicit; go 1.22.0
 go.appscode.dev/alerts/apis/alerts
 go.appscode.dev/alerts/apis/alerts/v1alpha1
-# go.bytebuilders.dev/installer v0.1.1-0.20241009152655-d1a180a36992
+# go.bytebuilders.dev/catalog v0.0.9-0.20241031222826-93edd792353a
+## explicit; go 1.22.1
+go.bytebuilders.dev/catalog/api/gateway/v1alpha1
+# go.bytebuilders.dev/installer v0.1.1-0.20241031223529-004a88c30749
 ## explicit; go 1.22.1
 go.bytebuilders.dev/installer/apis/installer
 go.bytebuilders.dev/installer/apis/installer/v1alpha1
-# go.bytebuilders.dev/resource-model v0.0.14-0.20241009072854-21714e465242
+# go.bytebuilders.dev/resource-model v0.1.0
 ## explicit; go 1.22.1
 go.bytebuilders.dev/resource-model/apis/cloud
 go.bytebuilders.dev/resource-model/apis/cloud/v1alpha1
 go.bytebuilders.dev/resource-model/apis/config/v1alpha1
 go.bytebuilders.dev/resource-model/crds
-# go.bytebuilders.dev/ui-wizards v0.7.1-0.20241009151043-fa0d343105f7
+# go.bytebuilders.dev/ui-wizards v0.8.0
 ## explicit; go 1.22.0
 go.bytebuilders.dev/ui-wizards/apis/wizards
 go.bytebuilders.dev/ui-wizards/apis/wizards/v1alpha1
@@ -1755,7 +1758,7 @@ kmodules.xyz/apiversion
 # kmodules.xyz/apply v0.29.0
 ## explicit; go 1.21.5
 kmodules.xyz/apply
-# kmodules.xyz/client-go v0.30.28
+# kmodules.xyz/client-go v0.30.31
 ## explicit; go 1.22.0
 kmodules.xyz/client-go
 kmodules.xyz/client-go/api/v1
@@ -1776,8 +1779,8 @@ kmodules.xyz/client-go/tools/wait
 # kmodules.xyz/go-containerregistry v0.0.12
 ## explicit; go 1.21.5
 kmodules.xyz/go-containerregistry/name
-# kmodules.xyz/monitoring-agent-api v0.29.0
-## explicit; go 1.21.5
+# kmodules.xyz/monitoring-agent-api v0.30.2
+## explicit; go 1.22.0
 kmodules.xyz/monitoring-agent-api/api/v1
 # kmodules.xyz/objectstore-api v0.29.1
 ## explicit; go 1.21
@@ -1789,7 +1792,7 @@ kmodules.xyz/offshoot-api/api/v2
 # kmodules.xyz/prober v0.29.0
 ## explicit; go 1.21.5
 kmodules.xyz/prober/api/v1
-# kmodules.xyz/resource-metadata v0.20.0
+# kmodules.xyz/resource-metadata v0.21.0
 ## explicit; go 1.22.1
 kmodules.xyz/resource-metadata/apis/meta
 kmodules.xyz/resource-metadata/apis/meta/v1alpha1
@@ -2012,6 +2015,10 @@ stash.appscode.dev/apimachinery/apis/stash
 stash.appscode.dev/apimachinery/apis/stash/v1alpha1
 stash.appscode.dev/apimachinery/apis/stash/v1beta1
 stash.appscode.dev/apimachinery/crds
+# voyagermesh.dev/installer v0.0.0-20241031222143-9bbc52d51300
+## explicit; go 1.22.0
+voyagermesh.dev/installer/apis/installer
+voyagermesh.dev/installer/apis/installer/v1alpha1
 # x-helm.dev/apimachinery v0.0.16
 ## explicit; go 1.21.5
 x-helm.dev/apimachinery/apis

@@ -17,9 +17,9 @@ limitations under the License.
 package v1alpha1
 
 import (
-	core "k8s.io/api/core/v1"
+	catgwapi "go.bytebuilders.dev/catalog/api/gateway/v1alpha1"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	dnsapi "kubeops.dev/external-dns-operator/apis/external/v1alpha1"
 )
 
 const (
@@ -44,45 +44,12 @@ type ServiceGatewayPresets struct {
 }
 
 type ServiceGatewayPresetsSpec struct {
-	NameOverride     string                 `json:"nameOverride"`
-	FullnameOverride string                 `json:"fullnameOverride"`
-	Infra            ServiceProviderInfra   `json:"infra"`
-	GatewayDns       ServiceGatewayDns      `json:"gateway-dns"`
-	Cluster          ServiceProviderCluster `json:"cluster"`
-	Envoy            SimpleImageRef         `json:"envoy"`
-	Echoserver       SimpleImageRef         `json:"echoserver"`
+	NameOverride               string               `json:"nameOverride"`
+	FullnameOverride           string               `json:"fullnameOverride"`
+	ClusterMetadata            StashClusterMetadata `json:"clusterMetadata"`
+	SkipGatewayPreset          bool                 `json:"skipGatewayPreset"`
+	catgwapi.GatewayConfigSpec `json:",inline,omitempty"`
 }
-
-type ServiceProviderInfra struct {
-	ClusterName string `json:"clusterName"`
-	HostInfo    `json:",inline"`
-	TLS         InfraTLS   `json:"tls"`
-	DNS         GatewayDns `json:"dns"`
-}
-
-type ServiceGatewayDns struct {
-	Enabled bool                    `json:"enabled"`
-	Spec    *dnsapi.ExternalDNSSpec `json:"spec,omitempty"`
-}
-
-type ServiceProviderCluster struct {
-	TLS ClusterTLS `json:"tls"`
-}
-
-type ClusterTLS struct {
-	Issuer ClusterTLSIssuerType `json:"issuer"`
-	CA     TLSData              `json:"ca"`
-}
-
-type SimpleImageRef struct {
-	Image string `json:"image"`
-	Tag   string `json:"tag"`
-	//+optional
-	SecurityContext *core.SecurityContext `json:"securityContext"`
-}
-
-// +kubebuilder:validation:Enum=ca
-type ClusterTLSIssuerType string
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 

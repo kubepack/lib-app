@@ -17,6 +17,7 @@ limitations under the License.
 package v1alpha1
 
 import (
+	catgwapi "go.bytebuilders.dev/catalog/api/gateway/v1alpha1"
 	wizardsapi "go.bytebuilders.dev/ui-wizards/apis/wizards/v1alpha1"
 
 	openviz_installer "go.openviz.dev/installer/apis/installer/v1alpha1"
@@ -73,6 +74,7 @@ type AceSpec struct {
 	//+optional
 	RegistryFQDN       string                    `json:"registryFQDN"`
 	Image              ImageReference            `json:"image"`
+	Kubectl            ImageReference            `json:"kubectl"`
 	PodAnnotations     map[string]string         `json:"podAnnotations"`
 	PodSecurityContext *core.PodSecurityContext  `json:"podSecurityContext"`
 	SecurityContext    *core.SecurityContext     `json:"securityContext"`
@@ -210,18 +212,9 @@ type AcePlatformSettings struct {
 }
 
 type HostInfo struct {
-	Host     string   `json:"host"`
-	HostType HostType `json:"hostType"`
+	Host     string            `json:"host"`
+	HostType catgwapi.HostType `json:"hostType"`
 }
-
-// +kubebuilder:validation:Enum=domain;ip
-// +kubebuilder:default=ip
-type HostType string
-
-const (
-	HostTypeDomain HostType = "domain"
-	HostTypeIP     HostType = "ip"
-)
 
 type GlobalMonitoring struct {
 	Agent          string                   `json:"agent"`
@@ -239,7 +232,7 @@ type GlobalPrometheusExporter struct {
 
 type PlatformInfra struct {
 	StorageClass LocalObjectReference `json:"storageClass"`
-	TLS          InfraTLS             `json:"tls"`
+	TLS          catgwapi.InfraTLS    `json:"tls"`
 	DNS          InfraDns             `json:"dns"`
 	Objstore     InfraObjstore        `json:"objstore"`
 	Kubestash    KubeStashSpec        `json:"kubestash,omitempty"`
@@ -260,115 +253,10 @@ type KubeStashSpec struct {
 	StorageSecret    wizardsapi.OptionalResource `json:"storageSecret"`
 }
 
-// +kubebuilder:validation:Enum=ca;letsencrypt;letsencrypt-staging;external
-type TLSIssuerType string
-
-const (
-	TLSIssuerTypeCA        TLSIssuerType = "ca"
-	TLSIssuerTypeLE        TLSIssuerType = "letsencrypt"
-	TLSIssuerTypeLEStaging TLSIssuerType = "letsencrypt-staging"
-	TLSIssuerTypeExternal  TLSIssuerType = "external"
-)
-
-type InfraTLS struct {
-	Issuer      TLSIssuerType `json:"issuer"`
-	CA          TLSData       `json:"ca"`
-	Acme        TLSIssuerAcme `json:"acme"`
-	Certificate TLSData       `json:"certificate"`
-	JKS         Keystore      `json:"jks"`
-}
-
-type TLSData struct {
-	// +optional
-	Cert string `json:"cert"`
-	// +optional
-	Key string `json:"key"`
-}
-
-type Keystore struct {
-	// +optional
-	Truststore []byte `json:"truststore"`
-	// +optional
-	Keystore []byte `json:"keystore"`
-	Password string `json:"password"`
-}
-
-type TLSIssuerAcme struct {
-	Email  string     `json:"email"`
-	Solver AcmeSolver `json:"solver"`
-}
-
-// +kubebuilder:validation:Enum=Gateway;Ingress
-type AcmeSolver string
-
-const (
-	AcmeSolverGateway = "Gateway"
-	AcmeSolverIngress = "Ingress"
-)
-
-// +kubebuilder:validation:Enum=none;external;cloudflare;route53;cloudDNS;azureDNS
-type DNSProvider string
-
-const (
-	DNSProviderNone       DNSProvider = "none"
-	DNSProviderExternal   DNSProvider = "external"
-	DNSProviderCloudflare DNSProvider = "cloudflare"
-	DNSProviderRoute53    DNSProvider = "route53"
-	DNSProviderCloudDNS   DNSProvider = "cloudDNS"
-	DNSProviderAzureDNS   DNSProvider = "azureDNS"
-)
-
 type InfraDns struct {
-	GatewayDns `json:",inline,omitempty"`
+	catgwapi.GatewayDns `json:",inline,omitempty"`
 	// +optional
 	TargetIPs []string `json:"targetIPs"`
-}
-
-type GatewayDns struct {
-	Provider DNSProvider     `json:"provider"`
-	Auth     DNSProviderAuth `json:"auth"`
-}
-
-type DNSProviderAuth struct {
-	// WARNING!!! Update docs in schema/ace-options/patch.yaml
-	Cloudflare *CloudflareAuth `json:"cloudflare,omitempty"`
-
-	// WARNING!!! Update docs in schema/ace-options/patch.yaml
-	Route53 *Route53Auth `json:"route53,omitempty"`
-
-	// WARNING!!! Update docs in schema/ace-options/patch.yaml
-	CloudDNS *CloudDNSAuth `json:"cloudDNS,omitempty"`
-
-	// WARNING!!! Update docs in schema/ace-options/patch.yaml
-	AzureDNS *AzureDNSAuth `json:"azureDNS,omitempty"`
-}
-
-type CloudflareAuth struct {
-	// +optional
-	BaseURL string `json:"baseURL,omitempty"`
-	Token   string `json:"token"`
-}
-
-type Route53Auth struct {
-	AwsAccessKeyID     string `json:"AWS_ACCESS_KEY_ID"`
-	AwsSecretAccessKey string `json:"AWS_SECRET_ACCESS_KEY"`
-	AwsRegion          string `json:"AWS_REGION"`
-}
-
-type CloudDNSAuth struct {
-	GoogleProjectID             string `json:"GOOGLE_PROJECT_ID"`
-	GoogleServiceAccountJSONKey string `json:"GOOGLE_SERVICE_ACCOUNT_JSON_KEY"`
-}
-
-type AzureDNSAuth struct {
-	SubscriptionID              string `json:"subscriptionID"`
-	TenantID                    string `json:"tenantID"`
-	ResourceGroupName           string `json:"resourceGroupName"`
-	HostedZoneName              string `json:"hostedZoneName"`
-	ServicePrincipalAppID       string `json:"servicePrincipalAppID"`
-	ServicePrincipalAppPassword string `json:"servicePrincipalAppPassword"`
-	// +optional
-	Environment string `json:"environment,omitempty"`
 }
 
 // +kubebuilder:validation:Enum=gcs;s3;azure;swift
