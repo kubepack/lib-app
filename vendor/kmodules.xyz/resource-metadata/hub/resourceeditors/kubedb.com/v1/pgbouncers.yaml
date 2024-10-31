@@ -33,10 +33,10 @@ spec:
         enforceQuota: false
         flow: standalone-create
         icons:
-        - src: https://cdn.appscode.com/k8s/icons/action-icons/restart.svg
+        - src: https://cdn.appscode.com/k8s/icons/action-icons/version.svg
           type: image/svg+xml
-        name: Restart
-        operationId: create-opsrequest-restart
+        name: Update Version
+        operationId: create-opsrequest-upgrade
       - editor:
           name: opskubedbcom-pgbounceropsrequest-editor
           sourceRef:
@@ -100,6 +100,22 @@ spec:
         name: Compute
         operationId: create-opsrequest-compute
       name: Autoscaling
+    - items:
+      - editor:
+          name: kubedbcom-pgbouncer-editor
+          sourceRef:
+            apiGroup: source.toolkit.fluxcd.io
+            kind: HelmRepository
+            name: appscode-charts-oci
+          version: v0.8.0
+        enforceQuota: false
+        flow: standalone-edit
+        icons:
+        - src: https://cdn.appscode.com/k8s/icons/action-icons/monitor.svg
+          type: image/svg+xml
+        name: Monitoring
+        operationId: edit-self-monitoring
+      name: Security & Monitoring
     editor:
       name: kubedbcom-pgbouncer-editor
       sourceRef:

@@ -16,7 +16,7 @@ require (
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5
 	github.com/unrolled/render v1.6.0
-	go.bytebuilders.dev/installer v0.1.1-0.20241009152655-d1a180a36992
+	go.bytebuilders.dev/installer v0.1.1-0.20241031120246-c46cfabd4f63
 	go.wandrs.dev/binding v0.0.2
 	go.wandrs.dev/http v0.0.2
 	gocloud.dev v0.37.0
@@ -33,8 +33,8 @@ require (
 	k8s.io/client-go v0.30.2
 	k8s.io/klog/v2 v2.130.1
 	k8s.io/kubectl v0.30.1
-	kmodules.xyz/client-go v0.30.28
-	kmodules.xyz/resource-metadata v0.20.0
+	kmodules.xyz/client-go v0.30.31
+	kmodules.xyz/resource-metadata v0.20.1-0.20241031141918-02749995340a
 	kmodules.xyz/sets v0.29.0
 	kubepack.dev/chart-doc-gen v0.4.7
 	kubepack.dev/kubepack v0.29.2-0.20240519151029-6ba83ceff9d4
@@ -216,8 +216,9 @@ require (
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	go.appscode.dev/alerts v0.2.1-0.20240604101218-3069fbd7c6b8 // indirect
-	go.bytebuilders.dev/resource-model v0.0.14-0.20241009072854-21714e465242 // indirect
-	go.bytebuilders.dev/ui-wizards v0.7.1-0.20241009151043-fa0d343105f7 // indirect
+	go.bytebuilders.dev/catalog v0.0.9-0.20241031115050-25e90c27544b // indirect
+	go.bytebuilders.dev/resource-model v0.1.0 // indirect
+	go.bytebuilders.dev/ui-wizards v0.8.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.49.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.49.0 // indirect
@@ -265,7 +266,7 @@ require (
 	kmodules.xyz/apiversion v0.2.0 // indirect
 	kmodules.xyz/apply v0.29.0 // indirect
 	kmodules.xyz/go-containerregistry v0.0.12 // indirect
-	kmodules.xyz/monitoring-agent-api v0.29.0 // indirect
+	kmodules.xyz/monitoring-agent-api v0.30.2 // indirect
 	kmodules.xyz/objectstore-api v0.29.1 // indirect
 	kmodules.xyz/offshoot-api v0.30.1 // indirect
 	kmodules.xyz/prober v0.29.0 // indirect
@@ -279,6 +280,7 @@ require (
 	sigs.k8s.io/kustomize/kyaml v0.16.0 // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.4.1 // indirect
 	stash.appscode.dev/apimachinery v0.34.0 // indirect
+	voyagermesh.dev/installer v0.0.0-20241031091547-34d598c54025 // indirect
 )
 
 replace helm.sh/helm/v3 => github.com/x-helm/helm/v3 v3.15.1-0.20240519042544-f489f30bb34d

@@ -19,6 +19,7 @@ package v1alpha1
 import (
 	configapi "go.bytebuilders.dev/resource-model/apis/config/v1alpha1"
 
+	core "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"kmodules.xyz/resource-metadata/apis/shared"
 )
@@ -53,6 +54,20 @@ type AceInstallerSpec struct {
 	DeploymentType          DeploymentType `json:"deploymentType"`
 	shared.BootstrapPresets `json:",inline,omitempty"`
 	SelfManagement          configapi.SelfManagement `json:"selfManagement"`
+	Precheck                AceInstallerPrecheckSpec `json:"precheck"`
+}
+
+type AceInstallerPrecheckSpec struct {
+	Enabled            bool                      `json:"enabled"`
+	Image              ImageReference            `json:"image"`
+	PodAnnotations     map[string]string         `json:"podAnnotations"`
+	PodSecurityContext *core.PodSecurityContext  `json:"podSecurityContext"`
+	SecurityContext    *core.SecurityContext     `json:"securityContext"`
+	Resources          core.ResourceRequirements `json:"resources"`
+	//+optional
+	NodeSelector map[string]string `json:"nodeSelector"`
+	Tolerations  []core.Toleration `json:"tolerations"`
+	Affinity     *core.Affinity    `json:"affinity"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

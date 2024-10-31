@@ -17,6 +17,8 @@ limitations under the License.
 package v1alpha1
 
 import (
+	catgwapi "go.bytebuilders.dev/catalog/api/gateway/v1alpha1"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -42,10 +44,10 @@ type ServiceVault struct {
 }
 
 type ServiceVaultSpec struct {
-	NameOverride     string               `json:"nameOverride"`
-	FullnameOverride string               `json:"fullnameOverride"`
-	Infra            ServiceProviderInfra `json:"infra"`
-	GatewayDns       ServiceGatewayDns    `json:"gateway-dns"`
+	NameOverride     string                        `json:"nameOverride"`
+	FullnameOverride string                        `json:"fullnameOverride"`
+	Infra            catgwapi.ServiceProviderInfra `json:"infra"`
+	GatewayDns       catgwapi.ServiceGatewayDns    `json:"gateway-dns"`
 	// +optional
 	VaultServer LocalObjectReference `json:"vaultServer"`
 }

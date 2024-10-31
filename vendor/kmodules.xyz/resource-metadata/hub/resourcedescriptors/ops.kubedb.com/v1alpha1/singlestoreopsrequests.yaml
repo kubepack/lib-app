@@ -9,6 +9,15 @@ metadata:
     k8s.io/version: v1alpha1
   name: ops.kubedb.com-v1alpha1-singlestoreopsrequests
 spec:
+  connections:
+  - labels:
+    - ops
+    references:
+    - '{.spec.databaseRef.name}'
+    target:
+      apiVersion: kubedb.com/v1alpha2
+      kind: Singlestore
+    type: MatchRef
   resource:
     group: ops.kubedb.com
     kind: SinglestoreOpsRequest
@@ -63,6 +72,16 @@ spec:
               - IfReady
               - Always
               type: string
+            authentication:
+              properties:
+                secretRef:
+                  properties:
+                    name:
+                      default: ""
+                      type: string
+                  type: object
+                  x-kubernetes-map-type: atomic
+              type: object
             configuration:
               properties:
                 aggregator:
@@ -246,8 +265,9 @@ spec:
               - VerticalScaling
               - VolumeExpansion
               - Restart
-              - Configuration
+              - Reconfigure
               - ReconfigureTLS
+              - RotateAuth
               type: string
             updateVersion:
               properties:

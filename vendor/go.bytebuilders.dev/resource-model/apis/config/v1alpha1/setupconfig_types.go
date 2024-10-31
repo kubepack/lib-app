@@ -17,6 +17,8 @@ limitations under the License.
 package v1alpha1
 
 import (
+	"encoding/json"
+
 	cloudv1alpha1 "go.bytebuilders.dev/resource-model/apis/cloud/v1alpha1"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -90,7 +92,6 @@ type AcePlatformAdmin struct {
 	Email string `json:"email"`
 	// +optional
 	DisplayName string `json:"displayName"`
-
 	// +optional
 	// Organization name should contain only alphanumeric, dash ('-'), underscore ('_') and dot ('.') characters.
 	Orgname string `json:"orgname"`
@@ -117,15 +118,42 @@ type SelfManagementOptions struct {
 	// +optional
 	CreateCAPICluster bool `json:"createCAPICluster"`
 	// +optional
-	EnableFeatures map[string][]string `json:"enableFeatures"`
+	EnableFeatures EnableFeaturesOptions `json:"enableFeatures"`
 	// +optional
 	DisableFeatures []string `json:"disableFeatures"`
+}
+
+type EnableFeaturesOptions map[string]FeatureSetOptions
+
+func (opts *EnableFeaturesOptions) UnmarshalJSON(data []byte) error {
+	var nu map[string]FeatureSetOptions
+	if err := json.Unmarshal(data, &nu); err != nil {
+		var old map[string][]string
+		if err := json.Unmarshal(data, &old); err != nil {
+			return err
+		}
+		for fs, features := range old {
+			nu[fs] = FeatureSetOptions{
+				Enabled:  true,
+				Features: features,
+			}
+		}
+	}
+	*opts = nu
+	return nil
+}
+
+type FeatureSetOptions struct {
+	Enabled  bool     `json:"enabled"`
+	Features []string `json:"features"`
 }
 
 func (opt SelfManagementOptions) ToConfig() SelfManagement {
 	enableFeatures := sets.Set[string]{}
 	for _, features := range opt.EnableFeatures {
-		enableFeatures.Insert(features...)
+		if features.Enabled {
+			enableFeatures.Insert(features.Features...)
+		}
 	}
 	return SelfManagement{
 		Import:            opt.Import,

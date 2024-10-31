@@ -13,7 +13,7 @@ spec:
   - labels:
     - ops
     references:
-    - '{.spec.databaseRef.name}'
+    - '{.spec.serverRef.name}'
     target:
       apiVersion: kubedb.com/v1
       kind: PgBouncer
@@ -72,6 +72,16 @@ spec:
               - IfReady
               - Always
               type: string
+            authentication:
+              properties:
+                secretRef:
+                  properties:
+                    name:
+                      default: ""
+                      type: string
+                  type: object
+                  x-kubernetes-map-type: atomic
+              type: object
             configuration:
               properties:
                 pgbouncer:
@@ -221,6 +231,7 @@ spec:
               - VerticalScaling
               - UpdateVersion
               - Reconfigure
+              - RotateAuth
               type: string
             updateVersion:
               properties:

@@ -9,6 +9,15 @@ metadata:
     k8s.io/version: v1alpha1
   name: ops.kubedb.com-v1alpha1-ferretdbopsrequests
 spec:
+  connections:
+  - labels:
+    - ops
+    references:
+    - '{.spec.databaseRef.name}'
+    target:
+      apiVersion: kubedb.com/v1alpha2
+      kind: FerretDB
+    type: MatchRef
   resource:
     group: ops.kubedb.com
     kind: FerretDBOpsRequest
@@ -63,6 +72,16 @@ spec:
               - IfReady
               - Always
               type: string
+            authentication:
+              properties:
+                secretRef:
+                  properties:
+                    name:
+                      default: ""
+                      type: string
+                  type: object
+                  x-kubernetes-map-type: atomic
+              type: object
             databaseRef:
               properties:
                 name:
@@ -206,6 +225,7 @@ spec:
               - Restart
               - HorizontalScaling
               - ReconfigureTLS
+              - RotateAuth
               type: string
             updateVersion:
               properties:

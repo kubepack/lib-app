@@ -24,7 +24,22 @@ spec:
     actions:
     - items:
       - editor:
-          name: opskubedbcom-mysqlopsrequest-editor
+          name: opskubedbcom-rabbitmqopsrequest-editor
+          sourceRef:
+            apiGroup: source.toolkit.fluxcd.io
+            kind: HelmRepository
+            name: appscode-charts-oci
+          version: v0.8.0
+        enforceQuota: false
+        flow: standalone-create
+        icons:
+        - src: https://cdn.appscode.com/k8s/icons/action-icons/version.svg
+          type: image/svg+xml
+        name: Update Version
+        operationId: create-opsrequest-upgrade
+    - items:
+      - editor:
+          name: opskubedbcom-rabbitmqopsrequest-editor
           sourceRef:
             apiGroup: source.toolkit.fluxcd.io
             kind: HelmRepository
@@ -38,7 +53,7 @@ spec:
         name: Restart
         operationId: create-opsrequest-restart
       - editor:
-          name: opskubedbcom-mysqlopsrequest-editor
+          name: opskubedbcom-rabbitmqopsrequest-editor
           sourceRef:
             apiGroup: source.toolkit.fluxcd.io
             kind: HelmRepository
@@ -56,7 +71,7 @@ spec:
       - disabledTemplate: |
           {{ not (gt .spec.replicas 1) }}
         editor:
-          name: opskubedbcom-mysqlopsrequest-editor
+          name: opskubedbcom-rabbitmqopsrequest-editor
           sourceRef:
             apiGroup: source.toolkit.fluxcd.io
             kind: HelmRepository
@@ -70,7 +85,7 @@ spec:
         name: Horizontal Scale
         operationId: create-opsrequest-horizontalscaling
       - editor:
-          name: opskubedbcom-mysqlopsrequest-editor
+          name: opskubedbcom-rabbitmqopsrequest-editor
           sourceRef:
             apiGroup: source.toolkit.fluxcd.io
             kind: HelmRepository
@@ -84,7 +99,7 @@ spec:
         name: Vertical Scale
         operationId: create-opsrequest-verticalscaling
       - editor:
-          name: opskubedbcom-mysqlopsrequest-editor
+          name: opskubedbcom-rabbitmqopsrequest-editor
           sourceRef:
             apiGroup: source.toolkit.fluxcd.io
             kind: HelmRepository
@@ -100,7 +115,7 @@ spec:
       name: Scaling
     - items:
       - editor:
-          name: autoscalingkubedbcom-mysqlautoscaler-editor
+          name: autoscalingkubedbcom-rabbitmqautoscaler-editor
           sourceRef:
             apiGroup: source.toolkit.fluxcd.io
             kind: HelmRepository
@@ -114,7 +129,7 @@ spec:
         name: Compute
         operationId: create-opsrequest-compute
       - editor:
-          name: autoscalingkubedbcom-mysqlautoscaler-editor
+          name: autoscalingkubedbcom-rabbitmqautoscaler-editor
           sourceRef:
             apiGroup: source.toolkit.fluxcd.io
             kind: HelmRepository
@@ -130,7 +145,7 @@ spec:
       name: Autoscaling
     - items:
       - editor:
-          name: opskubedbcom-mysqlopsrequest-editor
+          name: opskubedbcom-rabbitmqopsrequest-editor
           sourceRef:
             apiGroup: source.toolkit.fluxcd.io
             kind: HelmRepository
@@ -144,7 +159,7 @@ spec:
         name: TLS Configure
         operationId: create-opsrequest-reconfiguretls
       - editor:
-          name: kubedbcom-mysql-editor
+          name: kubedbcom-rabbitmq-editor
           sourceRef:
             apiGroup: source.toolkit.fluxcd.io
             kind: HelmRepository
