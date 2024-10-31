@@ -17,6 +17,7 @@ limitations under the License.
 package v1alpha1
 
 import (
+	core "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -59,6 +60,8 @@ type LicenseProxyserverManagerSpec struct {
 	Placement             PlacementSpec `json:"placement"`
 	Kubectl               DockerImage   `json:"kubectl"`
 	Platform              PlatformSpec  `json:"platform"`
+	//+optional
+	SecurityContext *core.SecurityContext `json:"securityContext"`
 }
 
 type PlacementSpec struct {

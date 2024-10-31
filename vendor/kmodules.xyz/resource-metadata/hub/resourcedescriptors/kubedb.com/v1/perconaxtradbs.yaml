@@ -60,6 +60,24 @@ spec:
       apiVersion: cert-manager.io/v1
       kind: ClusterIssuer
     type: MatchRef
+  - labels:
+    - view
+    nameTemplate: '{.metadata.name}~PerconaXtraDB.kubedb.com'
+    namespace:
+      path: metadata.namespace
+    target:
+      apiVersion: core.k8s.appscode.com/v1alpha1
+      kind: GenericResource
+    type: MatchName
+  - labels:
+    - view
+    nameTemplate: '{.metadata.name}~PerconaXtraDB.kubedb.com'
+    namespace:
+      path: metadata.namespace
+    target:
+      apiVersion: core.k8s.appscode.com/v1alpha1
+      kind: GenericResourceService
+    type: MatchName
   exec:
   - alias: Primary
     command:
@@ -190,10 +208,15 @@ spec:
               type: object
             authSecret:
               properties:
+                activeFrom:
+                  format: date-time
+                  type: string
                 externallyManaged:
                   type: boolean
                 name:
                   default: ""
+                  type: string
+                rotateAfter:
                   type: string
               type: object
               x-kubernetes-map-type: atomic
@@ -4682,19 +4705,29 @@ spec:
               properties:
                 monitorUserSecret:
                   properties:
+                    activeFrom:
+                      format: date-time
+                      type: string
                     externallyManaged:
                       type: boolean
                     name:
                       default: ""
                       type: string
+                    rotateAfter:
+                      type: string
                   type: object
                   x-kubernetes-map-type: atomic
                 replicationUserSecret:
                   properties:
+                    activeFrom:
+                      format: date-time
+                      type: string
                     externallyManaged:
                       type: boolean
                     name:
                       default: ""
+                      type: string
+                    rotateAfter:
                       type: string
                   type: object
                   x-kubernetes-map-type: atomic
