@@ -33,9 +33,11 @@ import (
 	"kubepack.dev/lib-helm/pkg/action"
 	"kubepack.dev/lib-helm/pkg/repo"
 
+	"github.com/Masterminds/semver/v3"
 	"github.com/Masterminds/sprig/v3"
 	fluxhelm "github.com/fluxcd/helm-controller/api/v2"
 	fluxsrc "github.com/fluxcd/source-controller/api/v1"
+	"github.com/google/go-containerregistry/pkg/crane"
 	"github.com/spf13/cobra"
 	installer "go.bytebuilders.dev/installer/apis/installer/v1alpha1"
 	ioutilz "gomodules.xyz/x/ioutil"
@@ -87,11 +89,19 @@ var (
 func LoadHelmRepositories() error {
 	var src []client.Object
 
+	tags, err := crane.ListTags("ghcr.io/appscode-charts/opscenter-features")
+	if err != nil {
+		return err
+	}
+	sort.Slice(tags, func(i, j int) bool {
+		return semver.MustParse(tags[i]).Compare(semver.MustParse(tags[j])) < 0
+	})
+
 	diskCache := repo.DefaultDiskCache()
 	reg := repo.NewRegistry(nil, diskCache)
 	chrt, err := reg.GetChart(releasesapi.ChartSourceRef{
 		Name:    "opscenter-features",
-		Version: "v2024.8.21",
+		Version: tags[len(tags)-1],
 		SourceRef: kmapi.TypedObjectReference{
 			APIGroup:  releasesapi.SourceGroupLegacy,
 			Kind:      releasesapi.SourceKindLegacy,
