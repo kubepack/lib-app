@@ -73,23 +73,24 @@ type PodDisruptionBudgetSpec struct {
 }
 
 type DeploymentSpec struct {
-	EnvoyGateway EnvoyGatewayDeployment `json:"envoyGateway"`
-	Ports        []Port                 `json:"ports"`
-	Replicas     int                    `json:"replicas"`
-	Pod          PodTemplateSpec        `json:"pod"`
+	EnvoyGateway *EnvoyGatewayDeployment `json:"envoyGateway,omitempty"`
+	Ports        []Port                  `json:"ports,omitempty"`
+	Replicas     *int                    `json:"replicas,omitempty"`
+	Pod          *PodTemplateSpec        `json:"pod,omitempty"`
 }
 
 type EnvoyGatewayDeployment struct {
-	Image            ImageSpec                   `json:"image"`
-	ImagePullPolicy  string                      `json:"imagePullPolicy"`
+	Image           *ImageSpec `json:"image,omitempty"`
+	ImagePullPolicy *string    `json:"imagePullPolicy,omitempty"`
+	// +optional
 	ImagePullSecrets []core.LocalObjectReference `json:"imagePullSecrets"`
-	Resources        core.ResourceRequirements   `json:"resources"`
+	Resources        *core.ResourceRequirements  `json:"resources,omitempty"`
 	SecurityContext  *core.SecurityContext       `json:"securityContext,omitempty"`
 }
 
 type ImageSpec struct {
-	Repository string `json:"repository"`
-	Tag        string `json:"tag"`
+	Repository *string `json:"repository,omitempty"`
+	Tag        *string `json:"tag,omitempty"`
 }
 
 type Port struct {
@@ -99,11 +100,16 @@ type Port struct {
 }
 
 type PodTemplateSpec struct {
-	Affinity                  *core.Affinity                  `json:"affinity"`
-	Annotations               map[string]string               `json:"annotations"`
-	Labels                    map[string]string               `json:"labels"`
+	// +optional
+	Affinity *core.Affinity `json:"affinity"`
+	// +optional
+	Annotations map[string]string `json:"annotations"`
+	// +optional
+	Labels map[string]string `json:"labels"`
+	// +optional
 	TopologySpreadConstraints []core.TopologySpreadConstraint `json:"topologySpreadConstraints"`
-	Tolerations               []core.Toleration               `json:"tolerations"`
+	// +optional
+	Tolerations []core.Toleration `json:"tolerations"`
 }
 
 type EnvoyGatewayConfig struct {

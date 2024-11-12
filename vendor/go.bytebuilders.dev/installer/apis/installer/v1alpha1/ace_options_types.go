@@ -331,15 +331,18 @@ type AceOptionsSMTPSettings struct {
 	SendAsPlainText bool `json:"sendAsPlainText"`
 }
 
-// +kubebuilder:validation:Enum=Hosted;SelfHostedProduction;CloudDemo;OnpremDemo;KubeAppDemo;AWSMarketplace;AzureMarketplace;GoogleCloudMarketplace
+// +kubebuilder:validation:Enum=Hosted;SelfHostedProduction;OpenShiftProduction;CloudDemo;OnpremDemo;KubeAppDemo;OpenShiftDemo;AWSMarketplace;AzureMarketplace;GoogleCloudMarketplace
 type DeploymentType string
 
 const (
 	HostedDeployment               DeploymentType = "Hosted"
 	SelfHostedProductionDeployment DeploymentType = "SelfHostedProduction"
-	CloudDemoDeployment            DeploymentType = "CloudDemo"
-	OnpremDemoDeployment           DeploymentType = "OnpremDemo"
-	KubeAppDemoDeployment          DeploymentType = "KubeAppDemo"
+	OpenShiftProductionDeployment  DeploymentType = "OpenShiftProduction"
+
+	CloudDemoDeployment     DeploymentType = "CloudDemo"
+	OnpremDemoDeployment    DeploymentType = "OnpremDemo"
+	KubeAppDemoDeployment   DeploymentType = "KubeAppDemo"
+	OpenShiftDemoDeployment DeploymentType = "OpenShiftDemo"
 
 	AWSMarketplaceDeployment   DeploymentType = "AWSMarketplace"
 	AzureMarketplaceDeployment DeploymentType = "AzureMarketplace"
@@ -353,11 +356,17 @@ func (dt DeploymentType) Hosted() bool {
 func (dt DeploymentType) Demo() bool {
 	return dt == CloudDemoDeployment ||
 		dt == OnpremDemoDeployment ||
-		dt == KubeAppDemoDeployment
+		dt == KubeAppDemoDeployment ||
+		dt == OpenShiftDemoDeployment
 }
 
 func (dt DeploymentType) Onprem() bool {
 	return dt == OnpremDemoDeployment
+}
+
+func (dt DeploymentType) OpenShift() bool {
+	return dt == OpenShiftProductionDeployment ||
+		dt == OpenShiftDemoDeployment
 }
 
 func (dt DeploymentType) MarketplaceDeployment() bool {

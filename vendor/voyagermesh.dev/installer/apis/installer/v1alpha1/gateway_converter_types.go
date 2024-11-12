@@ -44,19 +44,19 @@ type GatewayConverter struct {
 // GatewayConverterSpec is the schema for Operator Operator values file
 type GatewayConverterSpec struct {
 	//+optional
-	NameOverride string `json:"nameOverride"`
+	NameOverride *string `json:"nameOverride,omitempty"`
 	//+optional
-	FullnameOverride string    `json:"fullnameOverride"`
-	RegistryFQDN     string    `json:"registryFQDN"`
-	ReplicaCount     int32     `json:"replicaCount"`
-	Server           Container `json:"server"`
-	ImagePullPolicy  string    `json:"imagePullPolicy"`
+	FullnameOverride *string    `json:"fullnameOverride,omitempty"`
+	RegistryFQDN     *string    `json:"registryFQDN,omitempty"`
+	ReplicaCount     *int32     `json:"replicaCount,omitempty"`
+	Server           *Container `json:"server,omitempty"`
+	ImagePullPolicy  *string    `json:"imagePullPolicy,omitempty"`
 	//+optional
 	ImagePullSecrets []string `json:"imagePullSecrets"`
 	//+optional
 	CriticalAddon bool `json:"criticalAddon"`
 	//+optional
-	LogLevel int32 `json:"logLevel"`
+	LogLevel int32 `json:"logLevel,omitempty"`
 	//+optional
 	Annotations map[string]string `json:"annotations"`
 	//+optional
@@ -64,22 +64,21 @@ type GatewayConverterSpec struct {
 	//+optional
 	PodLabels map[string]string `json:"podLabels"`
 	//+optional
-	NodeSelector map[string]string `json:"nodeSelector"`
+	NodeSelector map[string]string `json:"nodeSelector,omitempty"`
 	// If specified, the pod's tolerations.
 	// +optional
 	Tolerations []core.Toleration `json:"tolerations"`
 	// If specified, the pod's scheduling constraints
 	// +optional
-	Affinity *core.Affinity `json:"affinity"`
+	Affinity *core.Affinity `json:"affinity,omitempty"`
 	// PodSecurityContext holds pod-level security attributes and common container settings.
 	// Optional: Defaults to empty.  See type description for default values of each field.
 	// +optional
-	PodSecurityContext *core.PodSecurityContext `json:"podSecurityContext"`
-	ServiceAccount     ServiceAccountSpec       `json:"serviceAccount"`
-	HostNetwork        bool                     `json:"hostNetwork"`
-	// +optional
-	Apiserver  GatewayConverterApiserver `json:"apiserver"`
-	Monitoring Monitoring                `json:"monitoring"`
+	PodSecurityContext *core.PodSecurityContext   `json:"podSecurityContext,omitempty"`
+	ServiceAccount     *ServiceAccountSpec        `json:"serviceAccount,omitempty"`
+	HostNetwork        *bool                      `json:"hostNetwork,omitempty"`
+	Apiserver          *GatewayConverterApiserver `json:"apiserver,omitempty"`
+	Monitoring         *Monitoring                `json:"monitoring,omitempty"`
 }
 
 type Container struct {

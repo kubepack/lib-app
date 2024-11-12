@@ -17,8 +17,10 @@ limitations under the License.
 package v1alpha1
 
 import (
+	egv1a1 "github.com/envoyproxy/gateway/api/v1alpha1"
 	core "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	kmapi "kmodules.xyz/client-go/api/v1"
 	uiapi "kmodules.xyz/resource-metadata/apis/ui/v1alpha1"
 	dnsapi "kubeops.dev/external-dns-operator/apis/external/v1alpha1"
 	voyagerinstaller "voyagermesh.dev/installer/apis/installer/v1alpha1"
@@ -27,18 +29,33 @@ import (
 // GatewayConfigSpec defines the desired state of GatewayConfig.
 type GatewayConfigSpec struct {
 	GatewaySpec `json:",inline"`
+	Envoy       EnvoySpec `json:"envoy"`
 	// Chart specifies the chart information that will be used by the FluxCD to install the respective feature
 	// +optional
 	Chart uiapi.ChartInfo `json:"chart,omitempty"`
 }
 
 type GatewaySpec struct {
-	Infra      ServiceProviderInfra   `json:"infra"`
-	Gateway    ServiceGateway         `json:"gateway"`
-	GatewayDns ServiceGatewayDns      `json:"gateway-dns"`
-	Cluster    ServiceProviderCluster `json:"cluster"`
-	Envoy      SimpleImageRef         `json:"envoy"`
-	Echoserver SimpleImageRef         `json:"echoserver"`
+	Infra      ServiceProviderInfra                `json:"infra"`
+	Gateway    voyagerinstaller.VoyagerGatewaySpec `json:"gateway"`
+	GatewayDns ServiceGatewayDns                   `json:"gateway-dns"`
+	Cluster    ServiceProviderCluster              `json:"cluster"`
+	Echoserver EchoserverSpec                      `json:"echoserver"`
+	// +optional
+	VaultServer kmapi.ObjectReference `json:"vaultServer"`
+}
+
+type GatewayValues struct {
+	GatewaySpec `json:",inline"`
+	Envoy       EnvoyValues `json:"envoy"`
+}
+
+type GatewayParameter struct {
+	GatewayClassName     string                `json:"-"`
+	ServiceType          egv1a1.ServiceType    `json:"-"`
+	Service              EnvoyServiceSpec      `json:"service"`
+	VaultServer          kmapi.ObjectReference `json:"vaultServer"`
+	FrontendTLSSecretRef kmapi.ObjectReference `json:"frontendTLSSecretRef"`
 }
 
 type ServiceProviderInfra struct {
@@ -58,11 +75,11 @@ const (
 )
 
 type InfraTLS struct {
-	Issuer      TLSIssuerType `json:"issuer"`
-	CA          TLSData       `json:"ca"`
-	Acme        TLSIssuerAcme `json:"acme"`
-	Certificate TLSData       `json:"certificate"`
-	JKS         Keystore      `json:"jks"`
+	Issuer      TLSIssuerType  `json:"issuer"`
+	CA          *TLSData       `json:"ca,omitempty"`
+	Acme        *TLSIssuerAcme `json:"acme,omitempty"`
+	Certificate *TLSData       `json:"certificate,omitempty"`
+	JKS         *Keystore      `json:"jks,omitempty"`
 }
 
 type TLSData struct {
@@ -171,11 +188,6 @@ type ServiceGatewayDns struct {
 	Spec    *dnsapi.ExternalDNSSpec `json:"spec,omitempty"`
 }
 
-type ServiceGateway struct {
-	Enabled                              bool `json:"enabled"`
-	*voyagerinstaller.VoyagerGatewaySpec `json:",inline,omitempty"`
-}
-
 type ServiceProviderCluster struct {
 	TLS ClusterTLS `json:"tls"`
 }
@@ -185,7 +197,36 @@ type ClusterTLS struct {
 	CA     TLSData              `json:"ca"`
 }
 
-type SimpleImageRef struct {
+type EnvoySpec struct {
+	Image string `json:"image"`
+	Tag   string `json:"tag"`
+	//+optional
+	SecurityContext *core.SecurityContext `json:"securityContext"`
+	Service         EnvoyServiceSpec      `json:"service"`
+}
+
+type EnvoyValues struct {
+	Image string `json:"image"`
+	Tag   string `json:"tag"`
+	//+optional
+	SecurityContext *core.SecurityContext `json:"securityContext"`
+	Service         EnvoyServiceValues    `json:"service"`
+}
+
+type EnvoyServiceSpec struct {
+	// +kubebuilder:default="10000-12767"
+	PortRange string `json:"portRange"`
+	// +kubebuilder:default="30000-32767"
+	NodeportRange string `json:"nodeportRange"`
+}
+
+type EnvoyServiceValues struct {
+	EnvoyServiceSpec `json:",inline"`
+	// +kubebuilder:default=8080
+	SeedBackendPort int32 `json:"seedBackendPort"`
+}
+
+type EchoserverSpec struct {
 	Image string `json:"image"`
 	Tag   string `json:"tag"`
 	//+optional

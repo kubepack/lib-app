@@ -75,11 +75,7 @@ type CatalogManagerSpec struct {
 	Monitoring Monitoring     `json:"monitoring"`
 
 	// +optional
-	VaultServer ObjectReference `json:"vaultServer"`
-	// +optional
 	ServiceProviderServiceAccount ObjectReference `json:"serviceProviderServiceAccount"`
-	// +optional
-	Gateway CatalogManagerGatewaySpec `json:"gateway"`
 	// +optional
 	Keda CatalogManagerKedaSpec `json:"keda"`
 	// +optional
