@@ -50,29 +50,21 @@ type Ace struct {
 
 // AceSpec is the schema for Ace Operator values file
 type AceSpec struct {
-	Billing       AceBilling       `json:"billing"`
-	PlatformUi    AcePlatformUi    `json:"platform-ui"`
-	ClusterUi     AceClusterUi     `json:"cluster-ui"`
-	DeployUi      AceDeployUi      `json:"deploy-ui"`
-	Grafana       AceGrafana       `json:"grafana"`
-	KubedbUi      AceKubedbUi      `json:"kubedb-ui"`
-	MarketplaceUi AceMarketplaceUi `json:"marketplace-ui"`
-	PlatformApi   AcePlatformApi   `json:"platform-api"`
-	PlatformLinks AcePlatformLinks `json:"platform-links"`
-	IngressNginx  AceIngressNginx  `json:"ingress-nginx"`
-	IngressDns    AceIngressDns    `json:"ingress-dns"`
-	Nats          AceNats          `json:"nats"`
-	NatsDns       AceNatsDns       `json:"nats-dns"`
-	Trickster     AceTrickster     `json:"trickster"`
-	DNSProxy      AceDnsProxy      `json:"dns-proxy"`
-	Openfga       AceOpenfga       `json:"openfga"`
-	SMTPRelay     AceSmtprelay     `json:"smtprelay"`
-	S3proxy       AceS3proxy       `json:"s3proxy"`
+	PlatformUi   AcePlatformUi   `json:"platform-ui"`
+	ClusterUi    AceClusterUi    `json:"cluster-ui"`
+	Grafana      AceGrafana      `json:"grafana"`
+	KubedbUi     AceKubedbUi     `json:"kubedb-ui"`
+	PlatformApi  AcePlatformApi  `json:"platform-api"`
+	IngressNginx AceIngressNginx `json:"ingress-nginx"`
+	IngressDns   AceIngressDns   `json:"ingress-dns"`
+	Nats         AceNats         `json:"nats"`
+	NatsDns      AceNatsDns      `json:"nats-dns"`
+	Trickster    AceTrickster    `json:"trickster"`
+	Openfga      AceOpenfga      `json:"openfga"`
+	S3proxy      AceS3proxy      `json:"s3proxy"`
 	// KubeBindServer AceKubeBindServer `json:"kube-bind-server"`
-	Global   AceGlobalValues `json:"global"`
-	Settings Settings        `json:"settings"`
-	//+optional
-	RegistryFQDN       string                    `json:"registryFQDN"`
+	Global             AceGlobalValues           `json:"global"`
+	Settings           Settings                  `json:"settings"`
 	Image              ImageReference            `json:"image"`
 	Kubectl            ImageReference            `json:"kubectl"`
 	PodAnnotations     map[string]string         `json:"podAnnotations"`
@@ -86,11 +78,6 @@ type AceSpec struct {
 	Branding     AceBrandingSpec                  `json:"branding"`
 	SetupJob     AceSetupJob                      `json:"setupJob"`
 	ExtraObjects map[string]*runtime.RawExtension `json:"extraObjects"`
-}
-
-type AceBilling struct {
-	Enabled      bool `json:"enabled"`
-	*BillingSpec `json:",inline,omitempty"`
 }
 
 type AcePlatformUi struct {
@@ -108,11 +95,6 @@ type AceClusterUi struct {
 	*ClusterUiSpec `json:",inline,omitempty"`
 }
 
-type AceDeployUi struct {
-	Enabled       bool `json:"enabled"`
-	*DeployUiSpec `json:",inline,omitempty"`
-}
-
 type AceGrafana struct {
 	Enabled      bool `json:"enabled"`
 	*GrafanaSpec `json:",inline,omitempty"`
@@ -123,19 +105,9 @@ type AceKubedbUi struct {
 	*KubedbUiSpec `json:",inline,omitempty"`
 }
 
-type AceMarketplaceUi struct {
-	Enabled            bool `json:"enabled"`
-	*MarketplaceUiSpec `json:",inline,omitempty"`
-}
-
 type AcePlatformApi struct {
 	Enabled          bool `json:"enabled"`
 	*PlatformApiSpec `json:",inline,omitempty"`
-}
-
-type AcePlatformLinks struct {
-	Enabled            bool `json:"enabled"`
-	*PlatformLinksSpec `json:",inline,omitempty"`
 }
 
 type AceIngressNginx struct {
@@ -168,20 +140,10 @@ type AceTrickster struct {
 	*openviz_installer.TricksterSpec `json:",inline,omitempty"`
 }
 
-type AceDnsProxy struct {
-	Enabled       bool `json:"enabled"`
-	*DnsProxySpec `json:",inline,omitempty"`
-}
-
 type AceOpenfga struct {
 	Enabled      bool   `json:"enabled"`
 	DatastoreURI string `json:"datastoreURI"`
 	*OpenfgaSpec `json:",inline,omitempty"`
-}
-
-type AceSmtprelay struct {
-	Enabled        bool `json:"enabled"`
-	*SmtprelaySpec `json:",inline,omitempty"`
 }
 
 type AceS3proxy struct {
@@ -407,6 +369,8 @@ type PlatformSettings struct {
 	OtherShowFooterVersion          bool     `json:"otherShowFooterVersion"`
 	OtherShowFooterTemplateLoadTime bool     `json:"otherShowFooterTemplateLoadTime"`
 	EnableCSRFCookieHttpOnly        bool     `json:"enableCSRFCookieHttpOnly"`
+	// +optional
+	LogoutURL string `json:"logoutURL"`
 }
 
 type SecuritySettings struct {

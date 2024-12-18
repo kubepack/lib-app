@@ -218,6 +218,12 @@ type EnvoyServiceSpec struct {
 	PortRange string `json:"portRange"`
 	// +kubebuilder:default="30000-32767"
 	NodeportRange string `json:"nodeportRange"`
+
+	// +kubebuilder:default=LoadBalancer
+	Type egv1a1.ServiceType `json:"type"`
+	// +kubebuilder:default=Cluster
+	ExternalTrafficPolicy egv1a1.ServiceExternalTrafficPolicy `json:"externalTrafficPolicy"`
+	ExternalIPs           []string                            `json:"externalIPs,omitempty"`
 }
 
 type EnvoyServiceValues struct {

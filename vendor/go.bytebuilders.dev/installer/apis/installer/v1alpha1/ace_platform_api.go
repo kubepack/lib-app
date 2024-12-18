@@ -85,8 +85,9 @@ type PlatformApiSpec struct {
 }
 
 type AceAPISettings struct {
-	CAProviderClass          string `json:"caProviderClass"`
-	AceAPISettingsSecretName `json:"secretName"`
+	CAProviderClass                   string `json:"caProviderClass"`
+	SkipGCPMarketplaceMeteringService bool   `json:"skipGCPMarketplaceMeteringService"`
+	AceAPISettingsSecretName          `json:"secretName"`
 }
 
 type AceAPISettingsSecretName struct {
