@@ -56,6 +56,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 	scheme.AddKnownTypes(SchemeGroupVersion,
 		&AccountsUi{},
 		&AccountsUiList{},
+		&Acaas{},
+		&AcaasList{},
 		&Ace{},
 		&AceList{},
 		&AceInstaller{},
@@ -94,6 +96,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&LicenseProxyserverList{},
 		&LicenseProxyserverManager{},
 		&LicenseProxyserverManagerList{},
+		&MarketplaceApi{},
+		&MarketplaceApiList{},
 		&MarketplaceUi{},
 		&MarketplaceUiList{},
 		&Minio{},
@@ -128,6 +132,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&ServiceVaultList{},
 		&ServiceBackend{},
 		&ServiceBackendList{},
+		&Website{},
+		&WebsiteList{},
 	)
 
 	scheme.AddKnownTypes(SchemeGroupVersion,

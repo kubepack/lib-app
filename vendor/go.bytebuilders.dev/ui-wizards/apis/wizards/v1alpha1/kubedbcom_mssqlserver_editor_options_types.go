@@ -48,6 +48,8 @@ type KubedbcomMssqlserverEditorOptionsSpecSpec struct {
 	Labels         map[string]string   `json:"labels"`
 	Mode           MssqlserverMode     `json:"mode"`
 	Replicas       int                 `json:"replicas"`
+	AcceptEULA     bool                `json:"acceptEULA"`
+	PID            MSSQLServerPID      `json:"pid"`
 	Topology       MSSQLServerTopology `json:"topology"`
 	Persistence    Persistence         `json:"persistence"`
 	PodResources   PodResources        `json:"podResources"`
@@ -58,6 +60,8 @@ type KubedbcomMssqlserverEditorOptionsSpecSpec struct {
 	Admin          AdminOptions        `json:"admin"`
 	Backup         BackupToolSpec      `json:"backup"`
 	Monitoring     MonitoringOperator  `json:"monitoring"`
+	// +optional
+	Openshift Openshift `json:"openshift"`
 }
 
 // +kubebuilder:validation:Enum=Standalone;Topology
@@ -67,7 +71,11 @@ type MSSQLServerTopology struct {
 	AvailabilityGroup *MSSQLServerAGSpec `json:"availabilityGroup"`
 }
 
+// +kubebuilder:validation:Enum=Developer;Express;Standard;Enterprise;EnterpriseCore;Custom
+type MSSQLServerPID string
+
 type MSSQLServerAGSpec struct {
+	// +optional
 	Databases []string `json:"databases"`
 }
 

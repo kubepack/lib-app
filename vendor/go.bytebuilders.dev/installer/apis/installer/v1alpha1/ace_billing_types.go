@@ -71,15 +71,15 @@ type BillingSpec struct {
 	Tolerations []core.Toleration `json:"tolerations"`
 	// If specified, the pod's scheduling constraints
 	// +optional
-	Affinity    *core.Affinity  `json:"affinity"`
-	Persistence PersistenceSpec `json:"persistence"`
-	Monitoring  Monitoring      `json:"monitoring"`
-	Infra       AceInfra        `json:"infra"`
-	Settings    AceSettings     `json:"settings"`
-	Summary     BillingSummary  `json:"summary"`
+	Affinity    *core.Affinity    `json:"affinity"`
+	Persistence PersistenceSpec   `json:"persistence"`
+	Monitoring  Monitoring        `json:"monitoring"`
+	Infra       AceInfra          `json:"infra"`
+	Settings    AcaasSettings     `json:"settings"`
+	Aggregator  BillingAggregator `json:"aggregator"`
 }
 
-type BillingSummary struct {
+type BillingAggregator struct {
 	Schedule string `json:"schedule"`
 }
 

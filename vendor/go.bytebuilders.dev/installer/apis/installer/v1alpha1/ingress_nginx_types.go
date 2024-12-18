@@ -63,6 +63,8 @@ type IngressNginxDefaultBackend struct {
 
 type IngressNginxDefaultBackendImage struct {
 	Registry string `json:"registry"`
+	Image    string `json:"image"`
+	Tag      string `json:"tag"`
 }
 
 type IngressNginxController struct {

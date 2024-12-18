@@ -56,10 +56,16 @@ type KubedbcomMongodbEditorOptionsSpecSpec struct {
 	AuthSecret     AuthSecret           `json:"authSecret"`
 	DeletionPolicy DeletionPolicy       `json:"deletionPolicy"`
 	Configuration  string               `json:"configuration"`
-	Init           InitDatabase         `json:"init"`
-	Admin          AdminOptions         `json:"admin"`
-	Backup         BackupToolSpec       `json:"backup"`
-	Monitoring     MonitoringOperator   `json:"monitoring"`
+	// +optional
+	HostName string `json:"hostName"`
+	// +optional
+	IP         string             `json:"ip"`
+	Init       InitDatabase       `json:"init"`
+	Admin      AdminOptions       `json:"admin"`
+	Backup     BackupToolSpec     `json:"backup"`
+	Monitoring MonitoringOperator `json:"monitoring"`
+	// +optional
+	Openshift Openshift `json:"openshift"`
 }
 
 // +kubebuilder:validation:Enum=Standalone;Replicaset;Sharded
