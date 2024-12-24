@@ -18,7 +18,7 @@ require (
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5
 	github.com/unrolled/render v1.6.0
-	go.bytebuilders.dev/installer v0.1.1-0.20241218135558-1f929b2934bc
+	go.bytebuilders.dev/installer v0.1.1-0.20241223222609-6c4feb449b82
 	go.wandrs.dev/binding v0.0.2
 	go.wandrs.dev/http v0.0.2
 	gocloud.dev v0.37.0
@@ -36,7 +36,7 @@ require (
 	k8s.io/klog/v2 v2.130.1
 	k8s.io/kubectl v0.30.2
 	kmodules.xyz/client-go v0.30.42
-	kmodules.xyz/resource-metadata v0.23.2-0.20241218133649-44f2be7cd065
+	kmodules.xyz/resource-metadata v0.24.0
 	kmodules.xyz/sets v0.29.0
 	kubepack.dev/chart-doc-gen v0.4.7
 	kubepack.dev/kubepack v0.29.2-0.20240519151029-6ba83ceff9d4
@@ -234,7 +234,7 @@ require (
 	go.wandrs.dev/inject v0.0.1 // indirect
 	golang.org/x/crypto v0.31.0 // indirect
 	golang.org/x/exp v0.0.0-20240613232115-7f521ea00fb8 // indirect
-	golang.org/x/net v0.29.0 // indirect
+	golang.org/x/net v0.33.0 // indirect
 	golang.org/x/oauth2 v0.22.0 // indirect
 	golang.org/x/sync v0.10.0 // indirect
 	golang.org/x/sys v0.28.0 // indirect
