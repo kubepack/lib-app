@@ -18,7 +18,7 @@ echo
 basename "$0"
 echo "---------------"
 
-CHART_VERSION=${CHART_VERSION:-v0.12.0}
+CHART_VERSION=${CHART_VERSION:-v0.13.0}
 
 go run cmd/gen-simple-editor/main.go --all --skipExisting=false \
     --chart-version=$CHART_VERSION
