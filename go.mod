@@ -35,15 +35,15 @@ require (
 	k8s.io/client-go v0.30.3
 	k8s.io/klog/v2 v2.130.1
 	k8s.io/kubectl v0.30.2
-	kmodules.xyz/client-go v0.30.45
-	kmodules.xyz/resource-metadata v0.24.5-0.20250209214559-6e7646d4b869
+	kmodules.xyz/client-go v0.30.46
+	kmodules.xyz/resource-metadata v0.26.0
 	kmodules.xyz/sets v0.29.0
 	kubepack.dev/chart-doc-gen v0.4.7
 	kubepack.dev/kubepack v0.29.2-0.20240519151029-6ba83ceff9d4
 	kubepack.dev/lib-helm v0.29.13
 	sigs.k8s.io/controller-runtime v0.18.4
 	sigs.k8s.io/yaml v1.4.0
-	x-helm.dev/apimachinery v0.0.16
+	x-helm.dev/apimachinery v0.0.17
 )
 
 require (
@@ -219,10 +219,10 @@ require (
 	github.com/yudai/gojsondiff v1.0.0 // indirect
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
-	go.appscode.dev/alerts v0.2.1-0.20240918094400-626962340a86 // indirect
+	go.appscode.dev/alerts v0.2.1-0.20250217100836-596fabefb762 // indirect
 	go.bytebuilders.dev/catalog v0.0.10 // indirect
 	go.bytebuilders.dev/resource-model v0.1.1-0.20241023004602-2c43ef3bb37b // indirect
-	go.bytebuilders.dev/ui-wizards v0.13.0 // indirect
+	go.bytebuilders.dev/ui-wizards v0.14.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.53.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.53.0 // indirect
@@ -276,7 +276,7 @@ require (
 	kmodules.xyz/prober v0.29.0 // indirect
 	kmodules.xyz/resource-metrics v0.30.5 // indirect
 	kubeops.dev/external-dns-operator v0.0.9 // indirect
-	kubestash.dev/apimachinery v0.16.0-rc.0 // indirect
+	kubestash.dev/apimachinery v0.16.0 // indirect
 	oras.land/oras-go v1.2.5 // indirect
 	sigs.k8s.io/cli-utils v0.36.0 // indirect
 	sigs.k8s.io/gateway-api v1.1.0 // indirect

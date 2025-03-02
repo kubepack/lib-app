@@ -930,7 +930,7 @@ github.com/yudai/golcs
 # github.com/zeebo/xxh3 v1.0.2
 ## explicit; go 1.17
 github.com/zeebo/xxh3
-# go.appscode.dev/alerts v0.2.1-0.20240918094400-626962340a86
+# go.appscode.dev/alerts v0.2.1-0.20250217100836-596fabefb762
 ## explicit; go 1.22.0
 go.appscode.dev/alerts/apis/alerts
 go.appscode.dev/alerts/apis/alerts/v1alpha1
@@ -947,7 +947,7 @@ go.bytebuilders.dev/resource-model/apis/cloud
 go.bytebuilders.dev/resource-model/apis/cloud/v1alpha1
 go.bytebuilders.dev/resource-model/apis/config/v1alpha1
 go.bytebuilders.dev/resource-model/crds
-# go.bytebuilders.dev/ui-wizards v0.13.0
+# go.bytebuilders.dev/ui-wizards v0.14.0
 ## explicit; go 1.22.1
 go.bytebuilders.dev/ui-wizards/apis/wizards
 go.bytebuilders.dev/ui-wizards/apis/wizards/v1alpha1
@@ -1768,7 +1768,7 @@ kmodules.xyz/apiversion
 # kmodules.xyz/apply v0.29.0
 ## explicit; go 1.21.5
 kmodules.xyz/apply
-# kmodules.xyz/client-go v0.30.45
+# kmodules.xyz/client-go v0.30.46
 ## explicit; go 1.22.0
 kmodules.xyz/client-go
 kmodules.xyz/client-go/api/v1
@@ -1802,7 +1802,7 @@ kmodules.xyz/offshoot-api/api/v2
 # kmodules.xyz/prober v0.29.0
 ## explicit; go 1.21.5
 kmodules.xyz/prober/api/v1
-# kmodules.xyz/resource-metadata v0.24.5-0.20250209214559-6e7646d4b869
+# kmodules.xyz/resource-metadata v0.26.0
 ## explicit; go 1.22.1
 kmodules.xyz/resource-metadata/apis/meta
 kmodules.xyz/resource-metadata/apis/meta/v1alpha1
@@ -1850,7 +1850,7 @@ kubepack.dev/lib-helm/pkg/kube
 kubepack.dev/lib-helm/pkg/repo
 kubepack.dev/lib-helm/pkg/storage/driver
 kubepack.dev/lib-helm/pkg/values
-# kubestash.dev/apimachinery v0.16.0-rc.0
+# kubestash.dev/apimachinery v0.16.0
 ## explicit; go 1.22.1
 kubestash.dev/apimachinery/apis
 kubestash.dev/apimachinery/apis/storage/v1alpha1
@@ -2034,7 +2034,7 @@ stash.appscode.dev/apimachinery/crds
 ## explicit; go 1.22.0
 voyagermesh.dev/installer/apis/installer
 voyagermesh.dev/installer/apis/installer/v1alpha1
-# x-helm.dev/apimachinery v0.0.16
+# x-helm.dev/apimachinery v0.0.17
 ## explicit; go 1.21.5
 x-helm.dev/apimachinery/apis
 x-helm.dev/apimachinery/apis/charts/v1alpha1
