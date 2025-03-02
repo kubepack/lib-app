@@ -19,6 +19,7 @@ package v1alpha1
 import (
 	core "k8s.io/api/core/v1"
 	mona "kmodules.xyz/monitoring-agent-api/api/v1"
+	kubestashapi "kubestash.dev/apimachinery/apis"
 )
 
 // +kubebuilder:validation:Enum=Shared;Dedicated
@@ -58,7 +59,7 @@ type AdminOptions struct {
 	// +optional
 	Tolerations []core.Toleration `json:"tolerations"`
 
-	Databases      DatabasesProfile             `json:"databases"`
+	Databases      DatabaseProfiles             `json:"databases"`
 	StorageClasses RequiredClusterScopedProfile `json:"storageClasses"`
 
 	TLS            ToggleProfileOnBoolean `json:"tls"`
@@ -72,6 +73,8 @@ type AdminOptions struct {
 	Backup              BackupProfile          `json:"backup"`
 	Archiver            ArchiverProfile        `json:"archiver"`
 	PointInTimeRecovery ToggleProfileOnBoolean `json:"pointInTimeRecovery"`
+
+	MachineProfiles MachineProfiles `json:"machineProfiles"`
 }
 
 // *** Machine-related starts *** //
@@ -90,27 +93,27 @@ type ClusterTierProfile struct {
 
 // *** Machine-related ends *** //
 
-type DatabasesProfile struct {
-	ClickHouse    DatabaseProfile `json:"ClickHouse"`
-	Druid         DatabaseProfile `json:"Druid"`
-	Elasticsearch DatabaseProfile `json:"Elasticsearch"`
-	FerretDB      DatabaseProfile `json:"FerretDB"`
-	Kafka         DatabaseProfile `json:"Kafka"`
-	MariaDB       DatabaseProfile `json:"MariaDB"`
-	Memcached     DatabaseProfile `json:"Memcached"`
-	MongoDB       DatabaseProfile `json:"MongoDB"`
-	MSSQLServer   DatabaseProfile `json:"MSSQLServer"`
-	MySQL         DatabaseProfile `json:"MySQL"`
-	PerconaXtraDB DatabaseProfile `json:"PerconaXtraDB"`
-	PgBouncer     DatabaseProfile `json:"PgBouncer"`
-	Pgpool        DatabaseProfile `json:"Pgpool"`
-	Postgres      DatabaseProfile `json:"Postgres"`
-	ProxySQL      DatabaseProfile `json:"ProxySQL"`
-	RabbitMQ      DatabaseProfile `json:"RabbitMQ"`
-	Redis         DatabaseProfile `json:"Redis"`
-	Singlestore   DatabaseProfile `json:"Singlestore"`
-	Solr          DatabaseProfile `json:"Solr"`
-	ZooKeeper     DatabaseProfile `json:"ZooKeeper"`
+type DatabaseProfiles struct {
+	ClickHouse    *DatabaseProfile `json:"ClickHouse,omitempty"`
+	Druid         *DatabaseProfile `json:"Druid,omitempty"`
+	Elasticsearch *DatabaseProfile `json:"Elasticsearch,omitempty"`
+	FerretDB      *DatabaseProfile `json:"FerretDB,omitempty"`
+	Kafka         *DatabaseProfile `json:"Kafka,omitempty"`
+	MariaDB       *DatabaseProfile `json:"MariaDB,omitempty"`
+	Memcached     *DatabaseProfile `json:"Memcached,omitempty"`
+	MongoDB       *DatabaseProfile `json:"MongoDB,omitempty"`
+	MSSQLServer   *DatabaseProfile `json:"MSSQLServer,omitempty"`
+	MySQL         *DatabaseProfile `json:"MySQL,omitempty"`
+	PerconaXtraDB *DatabaseProfile `json:"PerconaXtraDB,omitempty"`
+	PgBouncer     *DatabaseProfile `json:"PgBouncer,omitempty"`
+	Pgpool        *DatabaseProfile `json:"Pgpool,omitempty"`
+	Postgres      *DatabaseProfile `json:"Postgres,omitempty"`
+	ProxySQL      *DatabaseProfile `json:"ProxySQL,omitempty"`
+	RabbitMQ      *DatabaseProfile `json:"RabbitMQ,omitempty"`
+	Redis         *DatabaseProfile `json:"Redis,omitempty"`
+	Singlestore   *DatabaseProfile `json:"Singlestore,omitempty"`
+	Solr          *DatabaseProfile `json:"Solr,omitempty"`
+	ZooKeeper     *DatabaseProfile `json:"ZooKeeper,omitempty"`
 }
 
 type DatabaseProfile struct {
@@ -124,6 +127,8 @@ type BackupProfile struct {
 	Enable ToggleProfileOnBoolean `json:"enable"`
 	// +kubebuilder:default=BackupConfiguration
 	By BackupBy `json:"by"`
+	// +kubebuilder:default=Restic
+	Via kubestashapi.Driver `json:"via"`
 }
 
 // +kubebuilder:validation:Enum=BackupConfiguration;BackupBlueprint
@@ -131,9 +136,23 @@ type BackupBy string
 
 type ArchiverProfile struct {
 	Enable ToggleProfileOnBoolean `json:"enable"`
+	// +kubebuilder:default=Restic
+	Via kubestashapi.Driver `json:"via"`
 }
 
 // *** Backup-related ends *** //
+
+type MachineProfiles struct {
+	Machines  []Machine `json:"machines"`
+	Available []string  `json:"available"`
+	Default   string    `json:"default"`
+}
+
+type Machine struct {
+	Id     string            `json:"id"`
+	Name   string            `json:"name,omitempty"`
+	Limits core.ResourceList `json:"limits"`
+}
 
 type LeftPanel struct {
 	ShowInsights     bool `json:"showInsights"`
