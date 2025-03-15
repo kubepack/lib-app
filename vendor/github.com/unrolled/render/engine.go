@@ -11,7 +11,7 @@ import (
 
 // Engine is the generic interface for all responses.
 type Engine interface {
-	Render(io.Writer, interface{}) error
+	Render(w io.Writer, v interface{}) error
 }
 
 // Head defines the basic ContentType and Status fields.
@@ -34,6 +34,13 @@ type HTML struct {
 	bp GenericBufferPool
 }
 
+// JSONEncoder is the interface for encoding/json.Encoder.
+type JSONEncoder interface {
+	Encode(v interface{}) error
+	SetEscapeHTML(on bool)
+	SetIndent(prefix, indent string)
+}
+
 // JSON built-in renderer.
 type JSON struct {
 	Head
@@ -41,6 +48,7 @@ type JSON struct {
 	UnEscapeHTML  bool
 	Prefix        []byte
 	StreamingJSON bool
+	Encoder       func(w io.Writer) JSONEncoder
 }
 
 // JSONP built-in renderer.
@@ -114,7 +122,7 @@ func (j JSON) Render(w io.Writer, v interface{}) error {
 	}
 
 	var buf bytes.Buffer
-	encoder := json.NewEncoder(&buf)
+	encoder := j.Encoder(&buf)
 	encoder.SetEscapeHTML(!j.UnEscapeHTML)
 
 	if j.Indent {
@@ -155,7 +163,7 @@ func (j JSON) renderStreamingJSON(w io.Writer, v interface{}) error {
 		_, _ = w.Write(j.Prefix)
 	}
 
-	encoder := json.NewEncoder(w)
+	encoder := j.Encoder(w)
 	encoder.SetEscapeHTML(!j.UnEscapeHTML)
 
 	if j.Indent {

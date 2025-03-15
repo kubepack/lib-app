@@ -70,9 +70,11 @@ type OpenfgaSpec struct {
 	ImagePullSecrets                          []core.LocalObjectReference `json:"imagePullSecrets"`
 	NameOverride                              string                      `json:"nameOverride"`
 	FullnameOverride                          string                      `json:"fullnameOverride"`
+	CommonLabels                              map[string]string           `json:"commonLabels"`
 	ServiceAccount                            OpenfgaServiceAccountSpec   `json:"serviceAccount"`
 	Annotations                               map[string]string           `json:"annotations"`
 	PodAnnotations                            map[string]string           `json:"podAnnotations"`
+	PodExtraLabels                            map[string]string           `json:"podExtraLabels"`
 	ExtraEnvVars                              []core.EnvVar               `json:"extraEnvVars"`
 	ExtraVolumes                              []core.Volume               `json:"extraVolumes"`
 	ExtraVolumeMounts                         []core.VolumeMount          `json:"extraVolumeMounts"`
@@ -183,6 +185,7 @@ type OpenfgaDatastore struct {
 	ConnMaxLifetime   *string           `json:"connMaxLifetime"`
 	ApplyMigrations   bool              `json:"applyMigrations"`
 	WaitForMigrations bool              `json:"waitForMigrations"`
+	MigrationType     string            `json:"migrationType"`
 	Migrations        OpenfgaMigrations `json:"migrations"`
 }
 

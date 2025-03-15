@@ -40,11 +40,12 @@ type AceSetupConfig struct {
 
 // NatsConfig holds the NATS-related fields.
 type NatsConfig struct {
-	Exports              bool `json:"exports"`
-	ReloadNatsAccounts   bool `json:"reloadNatsAccounts"`
-	CreateNatsStream     bool `json:"createNatsStream,omitempty"`
-	RefactorNatsAccounts bool `json:"refactorNatsAccounts,omitempty"`
-	Migrate              bool `json:"migrate,omitempty"`
+	Exports                bool `json:"exports"`
+	ReloadNatsAccounts     bool `json:"reloadNatsAccounts"`
+	CreateNatsStream       bool `json:"createNatsStream,omitempty"`
+	RefactorNatsAccounts   bool `json:"refactorNatsAccounts,omitempty"`
+	Migrate                bool `json:"migrate,omitempty"`
+	ReloadPlatformAccounts bool `json:"reloadPlatformAccounts"`
 }
 
 type AceSetupInlineConfig struct {
@@ -186,6 +187,7 @@ type MarketplaceSubscriptionInfo struct {
 // https://docs.aws.amazon.com/marketplacemetering/latest/APIReference/API_MeterUsage.html
 type AWSMarSubscriptionInfo struct {
 	MeteringServiceProxyToken string `json:"meteringServiceProxyToken"`
+	OrganizationClaimID       string `json:"organizationClaimID"`
 }
 
 // https://learn.microsoft.com/en-us/azure/azure-resource-manager/managed-applications/publish-notifications

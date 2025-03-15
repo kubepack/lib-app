@@ -50,12 +50,14 @@ type AceshifterSpec struct {
 	FullnameOverride string `json:"fullnameOverride"`
 	//+optional
 	RegistryFQDN string         `json:"registryFQDN"`
+	ReplicaCount int32          `json:"replicaCount"`
 	Image        ImageReference `json:"image"`
 	//+optional
 	ImagePullSecrets []string `json:"imagePullSecrets"`
-	Args             []string `json:"args"`
 	//+optional
 	PodAnnotations map[string]string `json:"podAnnotations"`
+	//+optional
+	PodLabels map[string]string `json:"podLabels"`
 	// PodSecurityContext holds pod-level security attributes and common container settings.
 	// Optional: Defaults to empty.  See type description for default values of each field.
 	// +optional
@@ -72,6 +74,14 @@ type AceshifterSpec struct {
 	// If specified, the pod's scheduling constraints
 	// +optional
 	Affinity *core.Affinity `json:"affinity"`
+	// +optional
+	LivenessProbe *core.Probe `json:"livenessProbe"`
+	// +optional
+	ReadinessProbe *core.Probe        `json:"readinessProbe"`
+	Service        AceServiceSpec     `json:"service"`
+	ServiceAccount ServiceAccountSpec `json:"serviceAccount"`
+	Volumes        []core.Volume      `json:"volumes"`
+	VolumeMounts   []core.VolumeMount `json:"volumeMounts"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

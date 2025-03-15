@@ -56,9 +56,6 @@ type GatewayClassSpec struct {
 	Description string            `json:"description"`
 }
 
-// +kubebuilder:validation:Enum=ca
-type ClusterTLSIssuerType string
-
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // ServiceGatewayList is a list of ServiceGateways

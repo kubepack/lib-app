@@ -51,10 +51,14 @@ type AceInstallerSpec struct {
 	FullnameOverride string `json:"fullnameOverride"`
 
 	// +optional
-	DeploymentType          DeploymentType `json:"deploymentType"`
+	DeploymentType DeploymentType `json:"deploymentType"`
+	// +optional
+	InstallerVersion        string `json:"installerVersion"`
 	shared.BootstrapPresets `json:",inline,omitempty"`
 	SelfManagement          configapi.SelfManagement `json:"selfManagement"`
 	Precheck                AceInstallerPrecheckSpec `json:"precheck"`
+	// +optional
+	Options *AceOptionsSpec `json:"options"`
 }
 
 type AceInstallerPrecheckSpec struct {

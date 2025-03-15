@@ -17,8 +17,6 @@ limitations under the License.
 package v1alpha1
 
 import (
-	catgwapi "go.bytebuilders.dev/catalog/api/gateway/v1alpha1"
-
 	core "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -74,11 +72,19 @@ type DnsProxySpec struct {
 	Tolerations []core.Toleration `json:"tolerations"`
 	// If specified, the pod's scheduling constraints
 	// +optional
-	Affinity   *core.Affinity          `json:"affinity"`
-	Monitoring CustomMonitoring        `json:"monitoring"`
-	Ingress    AppIngress              `json:"ingress"`
-	Cloudflare catgwapi.CloudflareAuth `json:"cloudflare"`
-	Auth       DNSProxyAuth            `json:"auth"`
+	Affinity     *core.Affinity           `json:"affinity"`
+	Monitoring   CustomMonitoring         `json:"monitoring"`
+	Ingress      AppIngress               `json:"ingress"`
+	Cloudflare   CloudflareTokenReference `json:"cloudflare"`
+	Auth         DNSProxyAuth             `json:"auth"`
+	TLSSecretRef LocalObjectReference     `json:"tlsSecretRef"`
+	//+optional
+	HostPort *IngressNginxControllerHostPort `json:"hostPort"`
+}
+
+type CloudflareTokenReference struct {
+	SecretRef SecretKeySelector `json:"secretRef"`
+	Token     string            `json:"token"`
 }
 
 type DNSProxyAuth struct {

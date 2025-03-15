@@ -46,16 +46,13 @@ type AcaasSpec struct {
 	Billing        AceBilling        `json:"billing"`
 	BillingUi      AceBillingUi      `json:"billing-ui"`
 	DeployUi       AceDeployUi       `json:"deploy-ui"`
-	DNSProxy       AceDnsProxy       `json:"dns-proxy"`
 	MarketplaceApi AceMarketplaceApi `json:"marketplace-api"`
 	MarketplaceUi  AceMarketplaceUi  `json:"marketplace-ui"`
 	PlatformLinks  AcePlatformLinks  `json:"platform-links"`
-	SMTPRelay      AceSmtprelay      `json:"smtprelay"`
 	Website        AceWebsite        `json:"website"`
 
-	Global   AcaasGlobalValues `json:"global"`
-	Settings AcaasSettings     `json:"settings"`
-	Ingress  AcaasIngress      `json:"ingress"`
+	Global  AcaasGlobalValues `json:"global"`
+	Ingress AcaasIngress      `json:"ingress"`
 }
 
 type AceBilling struct {
@@ -109,6 +106,7 @@ type AcaasGlobalValues struct {
 	Platform         AcaasPlatformSettings `json:"platform"`
 	Registry         string                `json:"registry"`
 	RegistryFQDN     string                `json:"registryFQDN"`
+	Settings         AcaasSettings         `json:"settings"`
 }
 
 type AcaasPlatformSettings struct {
@@ -116,13 +114,15 @@ type AcaasPlatformSettings struct {
 }
 
 type AcaasSettings struct {
-	CAProviderClass         string `json:"caProviderClass"`
-	AcaasSettingsSecretName `json:"secretName"`
+	CAProviderClass                string `json:"caProviderClass"`
+	AcaasSettingsSecretName        `json:"secretName"`
+	SpreadsheetCredentialMountPath string `json:"spreadsheetCredentialMountPath"`
 }
 
 type AcaasSettingsSecretName struct {
 	PlatformConfig string `json:"platformConfig"`
 	Objstore       string `json:"objstore"`
+	Spreadsheet    string `json:"spreadsheet"`
 }
 
 type AcaasIngress struct {

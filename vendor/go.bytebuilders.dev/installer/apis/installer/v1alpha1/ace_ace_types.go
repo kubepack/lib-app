@@ -78,6 +78,23 @@ type AceSpec struct {
 	Branding     AceBrandingSpec                  `json:"branding"`
 	SetupJob     AceSetupJob                      `json:"setupJob"`
 	ExtraObjects map[string]*runtime.RawExtension `json:"extraObjects"`
+	// List of sources to populate environment variables in the container.
+	// The keys defined within a source must be a C_IDENTIFIER. All invalid keys
+	// will be reported as an event when the container is starting. When a key exists in multiple
+	// sources, the value associated with the last source will take precedence.
+	// Values defined by an Env with a duplicate key will take precedence.
+	// Cannot be updated.
+	// +optional
+	// +listType=atomic
+	EnvFrom []core.EnvFromSource `json:"envFrom"`
+	// List of environment variables to set in the container.
+	// Cannot be updated.
+	// +optional
+	// +patchMergeKey=name
+	// +patchStrategy=merge
+	// +listType=map
+	// +listMapKey=name
+	Env []core.EnvVar `json:"env"`
 }
 
 type AcePlatformUi struct {
@@ -281,6 +298,8 @@ type Settings struct {
 	InboxServer InboxServerSettings `json:"inboxServer"`
 	Contract    ContractStorage     `json:"contract"`
 	Firebase    FirebaseSettings    `json:"firebase"`
+	// +optional
+	Marketplace *MarketplaceSettings `json:"marketplace,omitempty"`
 }
 
 type DBSettings struct {
@@ -370,6 +389,8 @@ type PlatformSettings struct {
 	OtherShowFooterTemplateLoadTime bool     `json:"otherShowFooterTemplateLoadTime"`
 	EnableCSRFCookieHttpOnly        bool     `json:"enableCSRFCookieHttpOnly"`
 	// +optional
+	LoginURL string `json:"loginURL"`
+	// +optional
 	LogoutURL string `json:"logoutURL"`
 }
 
@@ -399,6 +420,18 @@ type ContractStorage struct {
 type FirebaseSettings struct {
 	Project  string `json:"project"`
 	Database string `json:"database"`
+}
+
+type MarketplaceSettings struct {
+	AlertEmails           []string `json:"alertEmails"`
+	SpreadsheetID         string   `json:"spreadsheetID"`
+	SpreadsheetCredential string   `json:"spreadsheetCredential"`
+	// /data/marketplace-credentials
+	SpreadsheetCredentialMountPath string `json:"spreadsheetCredentialMountPath"`
+
+	Aws   *AceOptionsAwsMarketplace   `json:"aws,omitempty"`
+	Azure *AceOptionsAzureMarketplace `json:"azure,omitempty"`
+	Gcp   *AceOptionsGcpMarketplace   `json:"gcp,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

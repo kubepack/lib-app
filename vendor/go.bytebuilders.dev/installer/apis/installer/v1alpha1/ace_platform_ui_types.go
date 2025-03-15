@@ -75,6 +75,8 @@ type PlatformUiSpec struct {
 	// +optional
 	Affinity *core.Affinity `json:"affinity"`
 	Settings AceSettings    `json:"settings"`
+	// +optional
+	LoginURL string `json:"loginURL"`
 }
 
 type AcePlatformUISettings struct {

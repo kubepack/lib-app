@@ -120,6 +120,10 @@ type AceBrandingSpec struct {
 	Logo string `json:"logo"`
 	//+optional
 	Favicon string `json:"favicon"`
+	//+optional
+	AppName string `json:"appName"`
+	//+optional
+	ShowAppTag bool `json:"showAppTag"`
 }
 
 type AceSetupJob struct {

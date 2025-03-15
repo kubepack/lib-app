@@ -19,6 +19,7 @@ package v1alpha1
 import (
 	"fmt"
 	"net/url"
+	"strings"
 
 	catgwapi "go.bytebuilders.dev/catalog/api/gateway/v1alpha1"
 	configapi "go.bytebuilders.dev/resource-model/apis/config/v1alpha1"
@@ -201,9 +202,8 @@ type AceOptionsNatsSettings struct {
 	ExposeVia ExposeNatsVia `json:"exposeVia"`
 	Replics   int           `json:"replicas"`
 	//+optional
-	Resources core.ResourceRequirements `json:"resources"`
-	//+optional
-	NodeSelector map[string]string `json:"nodeSelector"`
+	Resources    core.ResourceRequirements `json:"resources"`
+	NodeSelector map[string]string         `json:"nodeSelector"`
 }
 
 type AceOptionsPlatformInfra struct {
@@ -296,6 +296,9 @@ type AceOptionsSettings struct {
 	DB    AceOptionsDBSettings    `json:"db"`
 	Cache AceOptionsCacheSettings `json:"cache"`
 	SMTP  AceOptionsSMTPSettings  `json:"smtp"`
+	Proxy *AceOptionsProxy        `json:"proxy,omitempty"`
+	// +optional
+	Marketplace *AceOptionsMarketplace `json:"marketplace,omitempty"`
 
 	// DomainWhiteList is an array of domain names that are allowed.
 	// Each domain should be in the format of a fully qualified domain name,
@@ -303,7 +306,45 @@ type AceOptionsSettings struct {
 	// +optional
 	DomainWhiteList []string `json:"domainWhiteList"`
 	// +optional
+	LoginURL string `json:"loginURL"`
+	// +optional
 	LogoutURL string `json:"logoutURL"`
+}
+
+type AceOptionsProxy struct {
+	HttpProxy  string `json:"httpProxy"`
+	HttpsProxy string `json:"httpsProxy"`
+	NoProxy    string `json:"noProxy"`
+}
+
+type AceOptionsMarketplace struct {
+	AlertEmails           []string `json:"alertEmails"`
+	SpreadsheetID         string   `json:"spreadsheetID"`
+	SpreadsheetCredential string   `json:"spreadsheetCredential"`
+
+	Aws   *AceOptionsAwsMarketplace   `json:"aws,omitempty"`
+	Azure *AceOptionsAzureMarketplace `json:"azure,omitempty"`
+	Gcp   *AceOptionsGcpMarketplace   `json:"gcp,omitempty"`
+}
+
+type AceOptionsAzureMarketplace struct {
+	Secret       string `json:"secret"`
+	TenantID     string `json:"tenantID"`
+	ClientID     string `json:"clientID"`
+	ClientSecret string `json:"clientSecret"`
+	// +optional
+	// +kubebuilder:validation:Format=date-time
+	ClientSecretExpiresAt string `json:"clientSecretExpiresAt"`
+}
+
+type AceOptionsAwsMarketplace struct {
+	Secret      string `json:"secret"`
+	ProductCode string `json:"productCode"`
+}
+
+type AceOptionsGcpMarketplace struct {
+	Secret       string `json:"secret"`
+	TestUploadID string `json:"testUploadID"`
 }
 
 type AceOptionsDBSettings struct {
@@ -376,6 +417,12 @@ func (dt DeploymentType) UsesVirtualCluster() bool {
 		dt == GCPMarketplaceDeployment
 }
 
+func (a AceOptionsSpec) DevDeployment() bool {
+	return (a.Context.DeploymentType == CloudDemoDeployment ||
+		a.Context.DeploymentType == OnpremDemoDeployment) &&
+		strings.HasSuffix(a.InitialSetup.Admin.Email, "@appscode.com")
+}
+
 type AceDeploymentContext struct {
 	DeploymentType DeploymentType `json:"deploymentType"`
 	InstallerName  string         `json:"installerName"`
@@ -403,7 +450,8 @@ type AceDeploymentContext struct {
 	PromotedToProduction bool             `json:"promotedToProduction,omitempty"`
 	PromotionValues      *PromotionValues `json:"promotionValues,omitempty"`
 
-	GeneratedValues `json:",inline,omitempty"`
+	NatsOperatorSeed string `json:"natsOperatorSeed,omitempty"`
+	GeneratedValues  `json:",inline,omitempty"`
 }
 
 type GeneratedValues struct {
