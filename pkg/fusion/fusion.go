@@ -94,23 +94,24 @@ func LoadHelmRepositories() error {
 		return err
 	}
 
-	filteredTags := tags[0:]
+	filteredTags := tags[:0]
 	for _, tag := range tags {
 		_, err = semver.NewVersion(tag)
 		if err == nil {
 			filteredTags = append(filteredTags, tag)
 		}
 	}
+	tags = filteredTags
 
-	sort.Slice(filteredTags, func(i, j int) bool {
-		return semver.MustParse(filteredTags[i]).Compare(semver.MustParse(filteredTags[j])) < 0
+	sort.Slice(tags, func(i, j int) bool {
+		return semver.MustParse(tags[i]).Compare(semver.MustParse(tags[j])) < 0
 	})
 
 	diskCache := repo.DefaultDiskCache()
 	reg := repo.NewRegistry(nil, diskCache)
 	chrt, err := reg.GetChart(releasesapi.ChartSourceRef{
 		Name:    "opscenter-features",
-		Version: filteredTags[len(filteredTags)-1],
+		Version: tags[len(tags)-1],
 		SourceRef: kmapi.TypedObjectReference{
 			APIGroup:  releasesapi.SourceGroupLegacy,
 			Kind:      releasesapi.SourceKindLegacy,
