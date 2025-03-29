@@ -36,7 +36,7 @@ require (
 	k8s.io/klog/v2 v2.130.1
 	k8s.io/kubectl v0.32.2
 	kmodules.xyz/client-go v0.32.1
-	kmodules.xyz/resource-metadata v0.26.2-0.20250321060107-dff3c28ce055
+	kmodules.xyz/resource-metadata v0.27.0
 	kmodules.xyz/sets v0.29.0
 	kubepack.dev/chart-doc-gen v0.5.0
 	kubepack.dev/kubepack v0.29.1
@@ -234,7 +234,7 @@ require (
 	go.appscode.dev/alerts v0.2.1-0.20250217100836-596fabefb762 // indirect
 	go.bytebuilders.dev/catalog v0.0.13 // indirect
 	go.bytebuilders.dev/resource-model v0.2.0 // indirect
-	go.bytebuilders.dev/ui-wizards v0.13.3 // indirect
+	go.bytebuilders.dev/ui-wizards v0.15.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.opentelemetry.io/contrib/detectors/gcp v1.31.0 // indirect
@@ -288,7 +288,7 @@ require (
 	kmodules.xyz/objectstore-api v0.29.1 // indirect
 	kmodules.xyz/offshoot-api v0.32.0 // indirect
 	kmodules.xyz/prober v0.29.0 // indirect
-	kmodules.xyz/resource-metrics v0.30.6-0.20250302111458-dee2855523db // indirect
+	kmodules.xyz/resource-metrics v0.30.6 // indirect
 	kubeops.dev/external-dns-operator v0.0.9 // indirect
 	kubestash.dev/apimachinery v0.16.1-0.20250313093654-aa10be69cb57 // indirect
 	oras.land/oras-go v1.2.5 // indirect
