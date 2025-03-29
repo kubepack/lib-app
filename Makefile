@@ -304,3 +304,7 @@ release:
 .PHONY: clean
 clean:
 	rm -rf .go bin
+
+.PHONY: set-version
+set-version:
+	@sed -i 's/CHART_VERSION=\$${CHART_VERSION:-v[0-9]*\.[0-9]*\.[0-9]*}/CHART_VERSION=\$${CHART_VERSION:-$(VERSION)}/g' *.sh
