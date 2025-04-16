@@ -15,10 +15,10 @@ require (
 	github.com/google/go-containerregistry v0.20.3
 	github.com/google/uuid v1.6.0
 	github.com/pkg/errors v0.9.1
-	github.com/spf13/cobra v1.8.1
+	github.com/spf13/cobra v1.9.1
 	github.com/spf13/pflag v1.0.6
 	github.com/unrolled/render v1.7.0
-	go.bytebuilders.dev/installer v0.1.1-0.20250321095236-0efddb6628ad
+	go.bytebuilders.dev/installer v0.1.1-0.20250416221501-f3c0a2077db8
 	go.wandrs.dev/binding v0.0.2
 	go.wandrs.dev/http v0.0.2
 	gocloud.dev v0.40.0
@@ -75,7 +75,7 @@ require (
 	github.com/PuerkitoBio/purell v1.2.1 // indirect
 	github.com/alessio/shellescape v1.4.2 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2 // indirect
-	github.com/aws/aws-sdk-go v1.55.5 // indirect
+	github.com/aws/aws-sdk-go v1.55.6 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.36.2 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.6.10 // indirect
 	github.com/aws/aws-sdk-go-v2/config v1.29.7 // indirect
@@ -149,7 +149,7 @@ require (
 	github.com/go-playground/validator/v10 v10.18.0 // indirect
 	github.com/gobwas/glob v0.2.3 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
-	github.com/golang-jwt/jwt/v5 v5.2.1 // indirect
+	github.com/golang-jwt/jwt/v5 v5.2.2 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/btree v1.1.3 // indirect
@@ -278,19 +278,19 @@ require (
 	k8s.io/apiserver v0.32.3 // indirect
 	k8s.io/autoscaler/vertical-pod-autoscaler v1.0.0 // indirect
 	k8s.io/component-base v0.32.3 // indirect
-	k8s.io/kube-aggregator v0.32.2 // indirect
+	k8s.io/kube-aggregator v0.32.3 // indirect
 	k8s.io/kube-openapi v0.0.0-20250318172550-b98be4ee1595 // indirect
 	k8s.io/utils v0.0.0-20241210054802-24370beab758 // indirect
 	kmodules.xyz/apiversion v0.2.0 // indirect
 	kmodules.xyz/apply v0.29.0 // indirect
 	kmodules.xyz/go-containerregistry v0.0.14 // indirect
-	kmodules.xyz/monitoring-agent-api v0.30.4 // indirect
-	kmodules.xyz/objectstore-api v0.29.1 // indirect
+	kmodules.xyz/monitoring-agent-api v0.32.0 // indirect
+	kmodules.xyz/objectstore-api v0.32.0 // indirect
 	kmodules.xyz/offshoot-api v0.32.0 // indirect
-	kmodules.xyz/prober v0.29.0 // indirect
+	kmodules.xyz/prober v0.32.0 // indirect
 	kmodules.xyz/resource-metrics v0.30.6 // indirect
 	kubeops.dev/external-dns-operator v0.0.9 // indirect
-	kubestash.dev/apimachinery v0.16.1-0.20250313093654-aa10be69cb57 // indirect
+	kubestash.dev/apimachinery v0.17.0 // indirect
 	oras.land/oras-go v1.2.5 // indirect
 	sigs.k8s.io/cli-utils v0.37.2 // indirect
 	sigs.k8s.io/gateway-api v1.1.0 // indirect
