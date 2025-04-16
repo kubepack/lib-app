@@ -18,7 +18,7 @@ echo
 basename "$0"
 echo "---------------"
 
-CHART_VERSION=${CHART_VERSION:-v0.15.0}
+CHART_VERSION=${CHART_VERSION:-v0.16.0}
 
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/repository/custom \
