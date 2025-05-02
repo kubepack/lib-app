@@ -35,13 +35,13 @@ require (
 	k8s.io/client-go v0.32.3
 	k8s.io/klog/v2 v2.130.1
 	k8s.io/kubectl v0.32.2
-	kmodules.xyz/client-go v0.32.1
-	kmodules.xyz/resource-metadata v0.28.0
+	kmodules.xyz/client-go v0.32.3
+	kmodules.xyz/resource-metadata v0.29.0
 	kmodules.xyz/sets v0.29.0
 	kubepack.dev/chart-doc-gen v0.5.0
 	kubepack.dev/kubepack v0.29.1
 	kubepack.dev/lib-helm v0.29.16-0.20250315011604-b842237ac5b2
-	sigs.k8s.io/controller-runtime v0.20.3
+	sigs.k8s.io/controller-runtime v0.20.4
 	sigs.k8s.io/yaml v1.4.0
 	x-helm.dev/apimachinery v0.0.17
 )
@@ -234,7 +234,7 @@ require (
 	go.appscode.dev/alerts v0.2.1-0.20250217100836-596fabefb762 // indirect
 	go.bytebuilders.dev/catalog v0.0.13 // indirect
 	go.bytebuilders.dev/resource-model v0.2.0 // indirect
-	go.bytebuilders.dev/ui-wizards v0.16.0 // indirect
+	go.bytebuilders.dev/ui-wizards v0.17.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.opentelemetry.io/contrib/detectors/gcp v1.31.0 // indirect
@@ -248,7 +248,7 @@ require (
 	go.openviz.dev/installer v0.0.0-20250227034407-1c3f29aa1bd1 // indirect
 	go.wandrs.dev/inject v0.0.1 // indirect
 	golang.org/x/crypto v0.36.0 // indirect
-	golang.org/x/net v0.37.0 // indirect
+	golang.org/x/net v0.38.0 // indirect
 	golang.org/x/oauth2 v0.27.0 // indirect
 	golang.org/x/sync v0.12.0 // indirect
 	golang.org/x/sys v0.31.0 // indirect
