@@ -38,6 +38,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/sets"
+	kmapi "kmodules.xyz/client-go/api/v1"
 	meta_util "kmodules.xyz/client-go/meta"
 	"kmodules.xyz/client-go/tools/parser"
 	"kmodules.xyz/resource-metadata/hub"
@@ -181,6 +182,10 @@ func EditorChartValueManifest(kc client.Client, app *driversapi.AppRelease, mt r
 	if isFeaturesetEditor {
 		chartName = "" // not-used
 	}
+	rid, err := kmapi.ExtractResourceID(kc.RESTMapper(), mt.Resource)
+	if err != nil {
+		return nil, err
+	}
 
 	selector, err := metav1.LabelSelectorAsSelector(app.Spec.Selector)
 	if err != nil {
@@ -209,6 +214,20 @@ func EditorChartValueManifest(kc client.Client, app *driversapi.AppRelease, mt r
 			continue // CRD type not installed, so skip it
 		} else if err != nil {
 			return nil, err
+		} else if len(list.Items) == 0 && gvk == rid.MetaGVK() {
+			// special case: if object to be edited is manually created, it might miss labels.
+			// So, we get the object directly using release name and namespace.
+			var u unstructured.Unstructured
+			u.SetGroupVersionKind(schema.GroupVersionKind{
+				Group:   gvk.Group,
+				Version: gvk.Version,
+				Kind:    gvk.Kind,
+			})
+			err = kc.Get(context.TODO(), client.ObjectKey{Name: mt.Release.Name, Namespace: mt.Release.Namespace}, &u)
+			if err != nil {
+				return nil, err
+			}
+			list.Items = append(list.Items, u)
 		}
 		for idx := range list.Items {
 			obj := list.Items[idx]
