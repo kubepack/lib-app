@@ -25,6 +25,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	dnsapi "kubeops.dev/external-dns-operator/apis/external/v1alpha1"
+	kubeops_installer "kubeops.dev/installer/apis/installer/v1alpha1"
 )
 
 const (
@@ -62,6 +63,8 @@ type AceSpec struct {
 	Trickster    AceTrickster    `json:"trickster"`
 	Openfga      AceOpenfga      `json:"openfga"`
 	S3proxy      AceS3proxy      `json:"s3proxy"`
+	PgOutbox     AcePgOutbox     `json:"pgoutbox"`
+	OutboxSyncer AceOutboxSyncer `json:"outbox-syncer"`
 	// KubeBindServer AceKubeBindServer `json:"kube-bind-server"`
 	Global             AceGlobalValues           `json:"global"`
 	Settings           Settings                  `json:"settings"`
@@ -292,6 +295,7 @@ type Settings struct {
 	Cache       CacheSettings       `json:"cache"`
 	Smtp        SmtpSettings        `json:"smtp"`
 	Nats        NatsSettings        `json:"nats"`
+	OpenFGA     OpenFGASettings     `json:"openfga"`
 	Platform    PlatformSettings    `json:"platform"`
 	Security    SecuritySettings    `json:"security"`
 	Grafana     GrafanaSettings     `json:"grafana"`
@@ -411,6 +415,11 @@ type InboxServerSettings struct {
 	AdminJWTPrivateKey string `json:"adminJWTPrivateKey"`
 }
 
+type OpenFGASettings struct {
+	ApiURL       string `json:"apiURL"`
+	PreSharedKey string `json:"preSharedKey"`
+}
+
 type ContractStorage struct {
 	Bucket        string `json:"bucket"`
 	Prefix        string `json:"prefix"`
@@ -432,6 +441,16 @@ type MarketplaceSettings struct {
 	Aws   *AceOptionsAwsMarketplace   `json:"aws,omitempty"`
 	Azure *AceOptionsAzureMarketplace `json:"azure,omitempty"`
 	Gcp   *AceOptionsGcpMarketplace   `json:"gcp,omitempty"`
+}
+
+type AcePgOutbox struct {
+	Enabled                         bool `json:"enabled"`
+	*kubeops_installer.PgoutboxSpec `json:",inline,omitempty"`
+}
+
+type AceOutboxSyncer struct {
+	Enabled           bool `json:"enabled"`
+	*OutboxSyncerSpec `json:",inline,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

@@ -1,8 +1,8 @@
 module kubepack.dev/lib-app
 
-go 1.23.0
+go 1.23.3
 
-toolchain go1.24.1
+toolchain go1.24.3
 
 require (
 	github.com/Masterminds/semver/v3 v3.3.1
@@ -18,7 +18,7 @@ require (
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/pflag v1.0.6
 	github.com/unrolled/render v1.7.0
-	go.bytebuilders.dev/installer v0.1.1-0.20250416221501-f3c0a2077db8
+	go.bytebuilders.dev/installer v0.1.1-0.20250528220105-6ae4b33da7d0
 	go.wandrs.dev/binding v0.0.2
 	go.wandrs.dev/http v0.0.2
 	gocloud.dev v0.40.0
@@ -176,7 +176,7 @@ require (
 	github.com/jonboulle/clockwork v0.4.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/klauspost/compress v1.17.11 // indirect
+	github.com/klauspost/compress v1.18.0 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.7 // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/lann/builder v0.0.0-20180802200727-47ae307949d0 // indirect
@@ -233,7 +233,7 @@ require (
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	go.appscode.dev/alerts v0.2.1-0.20250217100836-596fabefb762 // indirect
 	go.bytebuilders.dev/catalog v0.0.13 // indirect
-	go.bytebuilders.dev/resource-model v0.2.0 // indirect
+	go.bytebuilders.dev/resource-model v0.3.0 // indirect
 	go.bytebuilders.dev/ui-wizards v0.18.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
@@ -250,10 +250,10 @@ require (
 	golang.org/x/crypto v0.36.0 // indirect
 	golang.org/x/net v0.38.0 // indirect
 	golang.org/x/oauth2 v0.27.0 // indirect
-	golang.org/x/sync v0.12.0 // indirect
-	golang.org/x/sys v0.31.0 // indirect
+	golang.org/x/sync v0.13.0 // indirect
+	golang.org/x/sys v0.32.0 // indirect
 	golang.org/x/term v0.30.0 // indirect
-	golang.org/x/text v0.23.0 // indirect
+	golang.org/x/text v0.24.0 // indirect
 	golang.org/x/time v0.10.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240716161551-93cc26a95ae9 // indirect
 	gomodules.xyz/blobfs v0.2.2 // indirect
@@ -290,6 +290,7 @@ require (
 	kmodules.xyz/prober v0.32.0 // indirect
 	kmodules.xyz/resource-metrics v0.30.6 // indirect
 	kubeops.dev/external-dns-operator v0.0.9 // indirect
+	kubeops.dev/installer v0.0.0-20250528213918-9ba446308dad // indirect
 	kubestash.dev/apimachinery v0.17.0 // indirect
 	oras.land/oras-go v1.2.5 // indirect
 	sigs.k8s.io/cli-utils v0.37.2 // indirect

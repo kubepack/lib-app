@@ -170,12 +170,15 @@ type CAPIClusterConfig struct {
 	NetworkCIDR       string        `json:"networkCIDR,omitempty"`
 	KubernetesVersion string        `json:"kubernetesVersion,omitempty"`
 	GoogleProjectID   string        `json:"googleProjectID,omitempty"`
+	ControlPlane      *MachinePool  `json:"controlPlane,omitempty"`
 	WorkerPools       []MachinePool `json:"workerPools,omitempty"`
 }
 
 type MachinePool struct {
 	MachineType  string `json:"machineType"`
 	MachineCount int    `json:"machineCount"`
+	CPU          int    `json:"cpu"`
+	Memory       int    `json:"memory"`
 }
 
 type MarketplaceSubscriptionInfo struct {
