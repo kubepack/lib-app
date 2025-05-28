@@ -26,7 +26,7 @@ const (
 	ResourceCredentials    = "credentials"
 )
 
-// +kubebuilder:validation:Enum=Aws;Azure;AzureStorage;CloudflareStorage;DigitalOcean;GoogleCloud;GoogleOAuth;Hetzner;HetznerStorage;Linode;Packet;Rancher;Scaleway;Vultr;Swift;Hetzner
+// +kubebuilder:validation:Enum=Aws;Azure;AzureStorage;CloudflareStorage;DigitalOcean;GoogleCloud;GoogleOAuth;Hetzner;HetznerStorage;KubeVirt;Linode;Packet;Rancher;Scaleway;Vultr;Swift
 type CredentialType string
 
 const (
@@ -39,6 +39,7 @@ const (
 	CredentialTypeGoogleOAuth       CredentialType = "GoogleOAuth"
 	CredentialTypeHetzner           CredentialType = "Hetzner"
 	CredentialTypeHetznerStorage    CredentialType = "HetznerStorage"
+	CredentialTypeKubeVirt          CredentialType = "KubeVirt"
 	CredentialTypeLinode            CredentialType = "Linode"
 	CredentialTypePacket            CredentialType = "Packet"
 	CredentialTypeRancher           CredentialType = "Rancher"
@@ -85,6 +86,8 @@ type CredentialSpec struct {
 	Hetzner *HetznerCredential `json:"hetzner,omitempty"`
 	//+optional
 	HetznerStorage *HetznerStorageCredential `json:"hetznerStorage,omitempty"`
+	//+optional
+	KubeVirt *KubeVirtCredential `json:"kubevirt,omitempty"`
 	//+optional
 	Linode *LinodeCredential `json:"linode,omitempty"`
 	//+optional
@@ -133,6 +136,7 @@ type AzureStorageCredential struct {
 type AWSCredential struct {
 	AccessKeyID     string `json:"accessKeyID"`
 	SecretAccessKey string `json:"secretAccessKey"`
+	SessionToken    string `json:"sessionToken"`
 }
 
 type PacketCredential struct {
@@ -184,6 +188,10 @@ type CloudflareStorageCredential struct {
 	AccountID       string `json:"accountID"`
 	AccessKeyID     string `json:"accessKeyID"`
 	SecretAccessKey string `json:"secretAccessKey"`
+}
+
+type KubeVirtCredential struct {
+	KubeConfig string `json:"kubeConfig"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
