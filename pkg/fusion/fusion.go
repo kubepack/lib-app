@@ -633,8 +633,8 @@ func NewCmdFuse() *cobra.Command {
 						App:         fmt.Sprintf("a %s", desc),
 					},
 					Repository: docapi.RepositoryInfo{
-						URL:  "https://bundles.byte.builders/ui/",
-						Name: "appscode-charts-oci",
+						URL:  "https://charts.appscode.com/stable/",
+						Name: "appscode",
 					},
 					Chart: docapi.ChartInfo{
 						Name:          editorChartName,
