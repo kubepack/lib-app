@@ -20,9 +20,6 @@ echo "---------------"
 
 CHART_VERSION=${CHART_VERSION:-v0.18.0}
 
-go run cmd/gen-simple-editor/main.go --all --skipExisting=false \
-    --chart-version=$CHART_VERSION
-
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/elasticsearch/custom \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
