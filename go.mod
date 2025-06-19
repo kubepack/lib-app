@@ -18,7 +18,7 @@ require (
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/pflag v1.0.6
 	github.com/unrolled/render v1.7.0
-	go.bytebuilders.dev/installer v0.1.1-0.20250527174150-37f8ff45605c
+	go.bytebuilders.dev/installer v0.1.1-0.20250619051937-12d89adc33e6
 	go.wandrs.dev/binding v0.0.2
 	go.wandrs.dev/http v0.0.2
 	gocloud.dev v0.40.0
@@ -117,7 +117,7 @@ require (
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-metrics v0.0.1 // indirect
 	github.com/emicklei/go-restful/v3 v3.12.1 // indirect
-	github.com/envoyproxy/gateway v1.3.1 // indirect
+	github.com/envoyproxy/gateway v1.3.2 // indirect
 	github.com/envoyproxy/go-control-plane/envoy v1.32.3 // indirect
 	github.com/envoyproxy/protoc-gen-validate v1.1.0 // indirect
 	github.com/evanphx/json-patch v5.9.11+incompatible // indirect
@@ -231,7 +231,7 @@ require (
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	go.appscode.dev/alerts v0.2.1-0.20250217100836-596fabefb762 // indirect
-	go.bytebuilders.dev/catalog v0.0.13 // indirect
+	go.bytebuilders.dev/catalog v0.0.15 // indirect
 	go.bytebuilders.dev/resource-model v0.3.0 // indirect
 	go.bytebuilders.dev/ui-wizards v0.19.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
@@ -244,7 +244,7 @@ require (
 	go.opentelemetry.io/otel/sdk v1.34.0 // indirect
 	go.opentelemetry.io/otel/sdk/metric v1.34.0 // indirect
 	go.opentelemetry.io/otel/trace v1.34.0 // indirect
-	go.openviz.dev/installer v0.0.0-20250227034407-1c3f29aa1bd1 // indirect
+	go.openviz.dev/installer v0.0.0-20250617172415-ca61a7cbb8d5 // indirect
 	go.wandrs.dev/inject v0.0.1 // indirect
 	golang.org/x/crypto v0.36.0 // indirect
 	golang.org/x/net v0.38.0 // indirect
@@ -289,7 +289,7 @@ require (
 	kmodules.xyz/prober v0.32.0 // indirect
 	kmodules.xyz/resource-metrics v0.30.6 // indirect
 	kubeops.dev/external-dns-operator v0.0.9 // indirect
-	kubeops.dev/installer v0.0.0-20250529223915-fdb0edd13c4b // indirect
+	kubeops.dev/installer v0.0.0-20250619045901-054c86dcd83c // indirect
 	kubestash.dev/apimachinery v0.17.0 // indirect
 	oras.land/oras-go v1.2.6 // indirect
 	sigs.k8s.io/cli-utils v0.37.2 // indirect
@@ -300,7 +300,7 @@ require (
 	sigs.k8s.io/randfill v1.0.0 // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.6.0 // indirect
 	stash.appscode.dev/apimachinery v0.39.0 // indirect
-	voyagermesh.dev/installer v0.0.0-20241219103226-de800d167d8d // indirect
+	voyagermesh.dev/installer v0.0.0-20250324192020-20a3d86540ee // indirect
 )
 
 replace github.com/imdario/mergo => github.com/imdario/mergo v0.3.6
