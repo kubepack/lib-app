@@ -474,7 +474,7 @@ github.com/docker/go-metrics
 ## explicit; go 1.13
 github.com/emicklei/go-restful/v3
 github.com/emicklei/go-restful/v3/log
-# github.com/envoyproxy/gateway v1.3.1
+# github.com/envoyproxy/gateway v1.3.2
 ## explicit; go 1.23.6
 github.com/envoyproxy/gateway/api/v1alpha1
 # github.com/envoyproxy/go-control-plane/envoy v1.32.3
@@ -1025,11 +1025,11 @@ github.com/zeebo/xxh3
 ## explicit; go 1.22.0
 go.appscode.dev/alerts/apis/alerts
 go.appscode.dev/alerts/apis/alerts/v1alpha1
-# go.bytebuilders.dev/catalog v0.0.13
-## explicit; go 1.22.7
+# go.bytebuilders.dev/catalog v0.0.15
+## explicit; go 1.23.6
 go.bytebuilders.dev/catalog/api/gateway/v1alpha1
-# go.bytebuilders.dev/installer v0.1.1-0.20250527174150-37f8ff45605c
-## explicit; go 1.23.3
+# go.bytebuilders.dev/installer v0.1.1-0.20250619051937-12d89adc33e6
+## explicit; go 1.23.6
 go.bytebuilders.dev/installer/apis/installer
 go.bytebuilders.dev/installer/apis/installer/v1alpha1
 # go.bytebuilders.dev/resource-model v0.3.0
@@ -1118,8 +1118,8 @@ go.opentelemetry.io/otel/sdk/metric/metricdata
 go.opentelemetry.io/otel/trace
 go.opentelemetry.io/otel/trace/embedded
 go.opentelemetry.io/otel/trace/noop
-# go.openviz.dev/installer v0.0.0-20250227034407-1c3f29aa1bd1
-## explicit; go 1.22.7
+# go.openviz.dev/installer v0.0.0-20250617172415-ca61a7cbb8d5
+## explicit; go 1.23.0
 go.openviz.dev/installer/apis/installer
 go.openviz.dev/installer/apis/installer/v1alpha1
 # go.wandrs.dev/binding v0.0.2
@@ -2147,7 +2147,7 @@ kmodules.xyz/sets
 ## explicit; go 1.22.0
 kubeops.dev/external-dns-operator/apis/external
 kubeops.dev/external-dns-operator/apis/external/v1alpha1
-# kubeops.dev/installer v0.0.0-20250529223915-fdb0edd13c4b
+# kubeops.dev/installer v0.0.0-20250619045901-054c86dcd83c
 ## explicit; go 1.23.3
 kubeops.dev/installer/apis/installer
 kubeops.dev/installer/apis/installer/v1alpha1
@@ -2360,7 +2360,7 @@ stash.appscode.dev/apimachinery/apis/stash
 stash.appscode.dev/apimachinery/apis/stash/v1alpha1
 stash.appscode.dev/apimachinery/apis/stash/v1beta1
 stash.appscode.dev/apimachinery/crds
-# voyagermesh.dev/installer v0.0.0-20241219103226-de800d167d8d
+# voyagermesh.dev/installer v0.0.0-20250324192020-20a3d86540ee
 ## explicit; go 1.22.7
 voyagermesh.dev/installer/apis/installer
 voyagermesh.dev/installer/apis/installer/v1alpha1
