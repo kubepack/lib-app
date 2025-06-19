@@ -1227,8 +1227,8 @@ kubepack.dev/chart-doc-gen v0.5.0 h1:5js52izXAHvkfM3w1j0lYgXhAKN0l9SXmi7AswN9W1o
 kubepack.dev/chart-doc-gen v0.5.0/go.mod h1:T7+BcH1UTYsA/0gpxsDhltbDVwatBZDq5fLrBIZCxos=
 kubepack.dev/kubepack v0.29.1 h1:BRdXCRBabm4Uqywj1GtB1rnqwRRP6LWBMaiGZr7fzsM=
 kubepack.dev/kubepack v0.29.1/go.mod h1:direcjhYacfv8fdBW66/Bab/nZmvWf2M1sSpx0Fk/fI=
-kubepack.dev/lib-helm v0.29.16-0.20250315011604-b842237ac5b2 h1:3Cr97OL3NopSKe8hRxu39fLLPhzTi4aSScBijbRHHVs=
-kubepack.dev/lib-helm v0.29.16-0.20250315011604-b842237ac5b2/go.mod h1:7i+oNjsp+usbGWHLrz/M63JrpeKSoWiS1SLaT7dGROc=
+kubepack.dev/lib-helm v0.32.1 h1:ef39vl8ZeKKmbOtdO16Z1CnCGFQBgol8kGwJVibZe3w=
+kubepack.dev/lib-helm v0.32.1/go.mod h1:T3gH/0+bREVLLOsZD5TM5uDsRh6C8+3DSV7Fx9sxeP4=
 kubestash.dev/apimachinery v0.17.0 h1:ON7yCYUYVpM6o4M4GcYENJ1GVCWzi9BWblPx2VVw7bw=
 kubestash.dev/apimachinery v0.17.0/go.mod h1:DJA9+lXsdUaXNryb6P+XIaEtUHR18gMA5wqly0Y4/fE=
 oras.land/oras-go v1.2.6 h1:z8cmxQXBU8yZ4mkytWqXfo6tZcamPwjsuxYU81xJ8Lk=

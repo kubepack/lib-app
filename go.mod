@@ -27,7 +27,7 @@ require (
 	gomodules.xyz/logs v0.0.7
 	gomodules.xyz/x v0.0.17
 	gopkg.in/yaml.v3 v3.0.1
-	helm.sh/helm/v3 v3.17.2
+	helm.sh/helm/v3 v3.17.3
 	k8s.io/api v0.32.3
 	k8s.io/apiextensions-apiserver v0.32.3
 	k8s.io/apimachinery v0.32.3
@@ -40,7 +40,7 @@ require (
 	kmodules.xyz/sets v0.29.0
 	kubepack.dev/chart-doc-gen v0.5.0
 	kubepack.dev/kubepack v0.29.1
-	kubepack.dev/lib-helm v0.29.16-0.20250315011604-b842237ac5b2
+	kubepack.dev/lib-helm v0.32.1
 	sigs.k8s.io/controller-runtime v0.20.4
 	sigs.k8s.io/yaml v1.4.0
 	x-helm.dev/apimachinery v0.0.17
