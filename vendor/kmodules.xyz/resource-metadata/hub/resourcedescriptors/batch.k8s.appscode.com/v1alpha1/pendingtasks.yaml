@@ -3,16 +3,16 @@ kind: ResourceDescriptor
 metadata:
   creationTimestamp: null
   labels:
-    k8s.io/group: catalog.kubedb.com
-    k8s.io/kind: ClickHouseVersion
-    k8s.io/resource: clickhouseversions
+    k8s.io/group: batch.k8s.appscode.com
+    k8s.io/kind: PendingTask
+    k8s.io/resource: pendingtasks
     k8s.io/version: v1alpha1
-  name: catalog.kubedb.com-v1alpha1-clickhouseversions
+  name: batch.k8s.appscode.com-v1alpha1-pendingtasks
 spec:
   resource:
-    group: catalog.kubedb.com
-    kind: ClickHouseVersion
-    name: clickhouseversions
+    group: batch.k8s.appscode.com
+    kind: PendingTask
+    name: pendingtasks
     scope: Cluster
     version: v1alpha1
   validation:
@@ -49,65 +49,18 @@ spec:
           type: object
         spec:
           properties:
-            clickHouseKeeper:
+            resource:
+              type: object
+              x-kubernetes-preserve-unknown-fields: true
+            taskType:
               properties:
-                image:
+                group:
+                  type: string
+                kind:
                   type: string
               required:
-              - image
+              - group
+              - kind
               type: object
-            db:
-              properties:
-                image:
-                  type: string
-              required:
-              - image
-              type: object
-            initContainer:
-              properties:
-                image:
-                  type: string
-              required:
-              - image
-              type: object
-            securityContext:
-              properties:
-                runAsUser:
-                  format: int64
-                  type: integer
-              type: object
-            ui:
-              items:
-                properties:
-                  disable:
-                    type: boolean
-                  name:
-                    type: string
-                  values:
-                    x-kubernetes-preserve-unknown-fields: true
-                  version:
-                    type: string
-                required:
-                - name
-                type: object
-              type: array
-            updateConstraints:
-              properties:
-                allowlist:
-                  items:
-                    type: string
-                  type: array
-                denylist:
-                  items:
-                    type: string
-                  type: array
-              type: object
-            version:
-              type: string
-          required:
-          - clickHouseKeeper
-          - db
-          - initContainer
-          - version
           type: object
       type: object

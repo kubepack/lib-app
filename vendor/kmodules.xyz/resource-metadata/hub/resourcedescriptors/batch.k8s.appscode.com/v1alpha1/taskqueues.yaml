@@ -3,16 +3,16 @@ kind: ResourceDescriptor
 metadata:
   creationTimestamp: null
   labels:
-    k8s.io/group: catalog.kubedb.com
-    k8s.io/kind: ClickHouseVersion
-    k8s.io/resource: clickhouseversions
+    k8s.io/group: batch.k8s.appscode.com
+    k8s.io/kind: TaskQueue
+    k8s.io/resource: taskqueues
     k8s.io/version: v1alpha1
-  name: catalog.kubedb.com-v1alpha1-clickhouseversions
+  name: batch.k8s.appscode.com-v1alpha1-taskqueues
 spec:
   resource:
-    group: catalog.kubedb.com
-    kind: ClickHouseVersion
-    name: clickhouseversions
+    group: batch.k8s.appscode.com
+    kind: TaskQueue
+    name: taskqueues
     scope: Cluster
     version: v1alpha1
   validation:
@@ -49,65 +49,38 @@ spec:
           type: object
         spec:
           properties:
-            clickHouseKeeper:
-              properties:
-                image:
-                  type: string
-              required:
-              - image
-              type: object
-            db:
-              properties:
-                image:
-                  type: string
-              required:
-              - image
-              type: object
-            initContainer:
-              properties:
-                image:
-                  type: string
-              required:
-              - image
-              type: object
-            securityContext:
-              properties:
-                runAsUser:
-                  format: int64
-                  type: integer
-              type: object
-            ui:
+            maxConcurrentTasks:
+              default: 10
+              type: integer
+            tasks:
               items:
                 properties:
-                  disable:
-                    type: boolean
-                  name:
-                    type: string
-                  values:
-                    x-kubernetes-preserve-unknown-fields: true
-                  version:
-                    type: string
+                  rules:
+                    properties:
+                      failed:
+                        type: string
+                      inProgress:
+                        type: string
+                      success:
+                        type: string
+                    required:
+                    - failed
+                    - inProgress
+                    - success
+                    type: object
+                  type:
+                    properties:
+                      group:
+                        type: string
+                      kind:
+                        type: string
+                    required:
+                    - group
+                    - kind
+                    type: object
                 required:
-                - name
+                - rules
                 type: object
               type: array
-            updateConstraints:
-              properties:
-                allowlist:
-                  items:
-                    type: string
-                  type: array
-                denylist:
-                  items:
-                    type: string
-                  type: array
-              type: object
-            version:
-              type: string
-          required:
-          - clickHouseKeeper
-          - db
-          - initContainer
-          - version
           type: object
       type: object
