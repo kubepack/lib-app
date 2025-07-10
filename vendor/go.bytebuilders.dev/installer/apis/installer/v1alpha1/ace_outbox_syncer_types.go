@@ -72,11 +72,11 @@ type OutboxSyncerSpec struct {
 	Tolerations []core.Toleration `json:"tolerations"`
 	// If specified, the pod's scheduling constraints
 	// +optional
-	Affinity     *core.Affinity     `json:"affinity"`
-	Volumes      []core.Volume      `json:"volumes"`
-	VolumeMounts []core.VolumeMount `json:"volumeMounts"`
-	Infra        AceInfra           `json:"infra"`
-	Settings     AceAPISettings     `json:"settings"`
+	Affinity     *core.Affinity          `json:"affinity"`
+	Volumes      []core.Volume           `json:"volumes"`
+	VolumeMounts []core.VolumeMount      `json:"volumeMounts"`
+	Infra        AceInfra                `json:"infra"`
+	Settings     AceOutboxSyncerSettings `json:"settings"`
 	// List of sources to populate environment variables in the container.
 	// The keys defined within a source must be a C_IDENTIFIER. All invalid keys
 	// will be reported as an event when the container is starting. When a key exists in multiple
@@ -94,6 +94,18 @@ type OutboxSyncerSpec struct {
 	// +listType=map
 	// +listMapKey=name
 	Env []core.EnvVar `json:"env"`
+}
+
+type AceOutboxSyncerSettings struct {
+	CAProviderClass                   string `json:"caProviderClass"`
+	NatsMountPath                     string `json:"natsMountPath"`
+	AceOutboxSyncerSettingsSecretName `json:"secretName"`
+}
+
+type AceOutboxSyncerSettingsSecretName struct {
+	PlatformConfig       string `json:"platformConfig"`
+	PlatformSystemConfig string `json:"platformSystemConfig"`
+	NatsCred             string `json:"natsCred"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
