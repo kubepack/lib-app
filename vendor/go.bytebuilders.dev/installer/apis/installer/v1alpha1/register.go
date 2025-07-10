@@ -62,6 +62,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&AceList{},
 		&AceInstaller{},
 		&AceInstallerList{},
+		&Acerproxy{},
+		&AcerproxyList{},
 		&Aceshifter{},
 		&AceshifterList{},
 		&Billing{},
