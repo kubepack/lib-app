@@ -18,7 +18,7 @@ require (
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/pflag v1.0.6
 	github.com/unrolled/render v1.7.0
-	go.bytebuilders.dev/installer v0.1.1-0.20250619051937-12d89adc33e6
+	go.bytebuilders.dev/installer v0.1.1-0.20250710001310-f36c1676f6b5
 	go.wandrs.dev/binding v0.0.2
 	go.wandrs.dev/http v0.0.2
 	gocloud.dev v0.40.0
@@ -36,7 +36,7 @@ require (
 	k8s.io/klog/v2 v2.130.1
 	k8s.io/kubectl v0.32.2
 	kmodules.xyz/client-go v0.32.6
-	kmodules.xyz/resource-metadata v0.31.1-0.20250703070516-31f29e110d1d
+	kmodules.xyz/resource-metadata v0.32.0
 	kmodules.xyz/sets v0.29.0
 	kubepack.dev/chart-doc-gen v0.5.0
 	kubepack.dev/kubepack v0.29.1
@@ -233,7 +233,7 @@ require (
 	go.appscode.dev/alerts v0.2.1-0.20250217100836-596fabefb762 // indirect
 	go.bytebuilders.dev/catalog v0.0.15 // indirect
 	go.bytebuilders.dev/resource-model v0.3.0 // indirect
-	go.bytebuilders.dev/ui-wizards v0.19.0 // indirect
+	go.bytebuilders.dev/ui-wizards v0.20.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.opentelemetry.io/contrib/detectors/gcp v1.31.0 // indirect
@@ -287,9 +287,9 @@ require (
 	kmodules.xyz/objectstore-api v0.32.0 // indirect
 	kmodules.xyz/offshoot-api v0.32.0 // indirect
 	kmodules.xyz/prober v0.32.0 // indirect
-	kmodules.xyz/resource-metrics v0.30.6 // indirect
+	kmodules.xyz/resource-metrics v0.30.9 // indirect
 	kubeops.dev/external-dns-operator v0.0.9 // indirect
-	kubeops.dev/installer v0.0.0-20250619045901-054c86dcd83c // indirect
+	kubeops.dev/installer v0.0.0-20250709205805-b8bdf921a01f // indirect
 	kubestash.dev/apimachinery v0.17.0 // indirect
 	oras.land/oras-go v1.2.6 // indirect
 	sigs.k8s.io/cli-utils v0.37.2 // indirect

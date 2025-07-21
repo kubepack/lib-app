@@ -103,10 +103,12 @@ type AceSettings struct {
 }
 
 type AceSettingsSecretName struct {
-	PlatformConfig string `json:"platformConfig"`
-	GrafanaConfig  string `json:"grafanaConfig"`
-	Objstore       string `json:"objstore"`
-	Nats           string `json:"nats"`
+	PlatformConfig       string `json:"platformConfig"`
+	PlatformSystemConfig string `json:"platformSystemConfig"`
+	PlatformUserConfig   string `json:"platformUserConfig"`
+	GrafanaConfig        string `json:"grafanaConfig"`
+	Objstore             string `json:"objstore"`
+	Nats                 string `json:"nats"`
 }
 
 type PersistenceSpec struct {

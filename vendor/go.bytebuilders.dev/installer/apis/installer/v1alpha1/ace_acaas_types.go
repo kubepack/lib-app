@@ -120,9 +120,9 @@ type AcaasSettings struct {
 }
 
 type AcaasSettingsSecretName struct {
-	PlatformConfig string `json:"platformConfig"`
-	Objstore       string `json:"objstore"`
-	Spreadsheet    string `json:"spreadsheet"`
+	AceSettingsSecretName `json:",inline,omitempty"`
+	Objstore              string `json:"objstore"`
+	Spreadsheet           string `json:"spreadsheet"`
 }
 
 type AcaasIngress struct {

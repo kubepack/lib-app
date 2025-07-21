@@ -412,6 +412,7 @@ type GrafanaSettings struct {
 type InboxServerSettings struct {
 	JmapURL            string `json:"jmapURL"`
 	WebAdminURL        string `json:"webAdminURL"`
+	EmailDomain        string `json:"emailDomain"`
 	AdminJWTPrivateKey string `json:"adminJWTPrivateKey"`
 }
 
