@@ -189,6 +189,15 @@ go run cmd/fuse-chart/*.go \
     --resource.name=ferretdbs
 
 go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/hazelcast/sample.yaml \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=hazelcast \
+    --resource.group=kubedb.com \
+    --resource.version=v1alpha2 \
+    --resource.name=hazelcasts
+
+go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/ignite/sample.yaml \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
@@ -206,6 +215,15 @@ go run cmd/fuse-chart/*.go \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
     --resource.name=mssqlservers
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/oracle/sample.yaml \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=oracle \
+    --resource.group=kubedb.com \
+    --resource.version=v1alpha2 \
+    --resource.name=oracles
 
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/pgpool/pgpool.yaml \
