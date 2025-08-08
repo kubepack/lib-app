@@ -35,8 +35,8 @@ require (
 	k8s.io/client-go v0.32.3
 	k8s.io/klog/v2 v2.130.1
 	k8s.io/kubectl v0.32.2
-	kmodules.xyz/client-go v0.32.6
-	kmodules.xyz/resource-metadata v0.33.0
+	kmodules.xyz/client-go v0.32.7
+	kmodules.xyz/resource-metadata v0.33.2-0.20250808204232-45e0f3cfdf0c
 	kmodules.xyz/sets v0.29.0
 	kubepack.dev/chart-doc-gen v0.5.0
 	kubepack.dev/kubepack v0.29.1
@@ -287,7 +287,7 @@ require (
 	kmodules.xyz/objectstore-api v0.32.0 // indirect
 	kmodules.xyz/offshoot-api v0.32.0 // indirect
 	kmodules.xyz/prober v0.32.0 // indirect
-	kmodules.xyz/resource-metrics v0.30.9 // indirect
+	kmodules.xyz/resource-metrics v0.30.11-0.20250808121819-d4255c017e68 // indirect
 	kubeops.dev/external-dns-operator v0.0.9 // indirect
 	kubeops.dev/installer v0.0.0-20250709205805-b8bdf921a01f // indirect
 	kubestash.dev/apimachinery v0.17.0 // indirect

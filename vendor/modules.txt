@@ -2092,7 +2092,7 @@ kmodules.xyz/apiversion
 # kmodules.xyz/apply v0.29.0
 ## explicit; go 1.21.5
 kmodules.xyz/apply
-# kmodules.xyz/client-go v0.32.6
+# kmodules.xyz/client-go v0.32.7
 ## explicit; go 1.23.0
 kmodules.xyz/client-go
 kmodules.xyz/client-go/api/v1
@@ -2126,7 +2126,7 @@ kmodules.xyz/offshoot-api/api/v2
 # kmodules.xyz/prober v0.32.0
 ## explicit; go 1.23.0
 kmodules.xyz/prober/api/v1
-# kmodules.xyz/resource-metadata v0.33.0
+# kmodules.xyz/resource-metadata v0.33.2-0.20250808204232-45e0f3cfdf0c
 ## explicit; go 1.23.0
 kmodules.xyz/resource-metadata/apis/meta
 kmodules.xyz/resource-metadata/apis/meta/v1alpha1
@@ -2137,7 +2137,7 @@ kmodules.xyz/resource-metadata/crds
 kmodules.xyz/resource-metadata/hub
 kmodules.xyz/resource-metadata/hub/resourcedescriptors
 kmodules.xyz/resource-metadata/hub/resourceeditors
-# kmodules.xyz/resource-metrics v0.30.9
+# kmodules.xyz/resource-metrics v0.30.11-0.20250808121819-d4255c017e68
 ## explicit; go 1.23.0
 kmodules.xyz/resource-metrics/api
 # kmodules.xyz/sets v0.29.0
