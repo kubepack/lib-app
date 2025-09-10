@@ -795,8 +795,8 @@ go.bytebuilders.dev/installer v0.1.1-0.20250710001310-f36c1676f6b5 h1:v23iLvx3eU
 go.bytebuilders.dev/installer v0.1.1-0.20250710001310-f36c1676f6b5/go.mod h1:7HS5vmW/mUFycalcAudXwkSuZZweJGlEBxf5GBKx8zU=
 go.bytebuilders.dev/resource-model v0.3.0 h1:gKknTnDyPkMj1C01ywpH0bdNy6uJ0GgZe1hu5/AiyKE=
 go.bytebuilders.dev/resource-model v0.3.0/go.mod h1:r2csg4XhQCA4BiiGbmDDrWblezKLq/8WJVVb96HqRMM=
-go.bytebuilders.dev/ui-wizards v0.23.0 h1:Y3DwvuSy4/wzyuQh8Lwfo622NAuGmd2Ze14Y8YpsDpM=
-go.bytebuilders.dev/ui-wizards v0.23.0/go.mod h1:q9oMBvLVmUg3VwXgo8vZsRNokPi8Rj0Og0wZH6JHXJU=
+go.bytebuilders.dev/ui-wizards v0.24.0 h1:HIl7duHH6Bv9SP5g6Qz5LWa64XHrLE5rQ1pHAJJWzmo=
+go.bytebuilders.dev/ui-wizards v0.24.0/go.mod h1:q9oMBvLVmUg3VwXgo8vZsRNokPi8Rj0Og0wZH6JHXJU=
 go.etcd.io/bbolt v1.3.2/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.opencensus.io v0.21.0/go.mod h1:mSImk1erAIZhrmZN+AvHh14ztQfjbGwt4TtuofqLduU=
 go.opencensus.io v0.22.0/go.mod h1:+kGneAE2xo2IficOXnaByMWTGM9T73dGwxeWcUqIpI8=
@@ -1211,8 +1211,8 @@ kmodules.xyz/offshoot-api v0.32.0 h1:gogc5scSZe2JoXtZof72UGRl3Tit0kFaFRMkLLT1D8o
 kmodules.xyz/offshoot-api v0.32.0/go.mod h1:tled7OxYZ3SkUJcrVFVVYyd+zXjsRSEm1R6Q3k4gcx0=
 kmodules.xyz/prober v0.32.0 h1:8Z6pFRAu8kP0wwX2BooPCRy2SE6ZkUMHQmZDH5VUEGY=
 kmodules.xyz/prober v0.32.0/go.mod h1:h0fH4m9DaIwuNZq85zOlWUvBycyy4LvCPMUUhpS3iSE=
-kmodules.xyz/resource-metadata v0.35.0 h1:hnwFBADQflxsbgT08ctJLZifUeO6QCJ9CG3Oazca7Mg=
-kmodules.xyz/resource-metadata v0.35.0/go.mod h1:rwXNC2Byb0m0XJv9PxSxPJwMM6OdU+6uOidUCHu74zU=
+kmodules.xyz/resource-metadata v0.36.0 h1:KDVSrq4XcOoyAB8NTdHCqYduGfCUwP3AivRxkFdATJA=
+kmodules.xyz/resource-metadata v0.36.0/go.mod h1:rwXNC2Byb0m0XJv9PxSxPJwMM6OdU+6uOidUCHu74zU=
 kmodules.xyz/resource-metrics v0.30.11-0.20250808121819-d4255c017e68 h1:Wzj3OzURb0qx/CeoFnA7U8xjBuPjW606txW83Rd1SZo=
 kmodules.xyz/resource-metrics v0.30.11-0.20250808121819-d4255c017e68/go.mod h1:5K+0A0iU+4JBFPZEuj716/oSgI9xUTnVTANS+cwhHIs=
 kmodules.xyz/schema-checker v0.4.2 h1:tAbxEtM759GxDM/3sQi/+OKKwUsEF+Ih4KReV3Eb/Xw=
