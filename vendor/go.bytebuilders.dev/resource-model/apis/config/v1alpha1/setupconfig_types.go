@@ -122,6 +122,8 @@ type SelfManagementOptions struct {
 	EnableFeatures EnableFeaturesOptions `json:"enableFeatures"`
 	// +optional
 	DisableFeatures []string `json:"disableFeatures"`
+	// +optional
+	KubeAPIServer string `json:"kubeAPIServer,omitempty"`
 }
 
 type EnableFeaturesOptions map[string]FeatureSetOptions
@@ -161,6 +163,7 @@ func (opt SelfManagementOptions) ToConfig() SelfManagement {
 		CreateCAPICluster: opt.CreateCAPICluster,
 		EnableFeatures:    sets.List(enableFeatures),
 		DisableFeatures:   sets.List(sets.New[string](opt.DisableFeatures...)),
+		KubeAPIServer:     opt.KubeAPIServer,
 	}
 }
 

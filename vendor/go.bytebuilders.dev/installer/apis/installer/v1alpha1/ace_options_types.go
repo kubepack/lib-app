@@ -54,26 +54,27 @@ type AceOptions struct {
 
 // AceOptionsSpec is the schema for AceOptions Operator values file
 type AceOptionsSpec struct {
-	Context      AceDeploymentContext            `json:"context"`
-	Release      ObjectReference                 `json:"release"`
-	Registry     RegistrySpec                    `json:"registry"`
-	Monitoring   GlobalMonitoring                `json:"monitoring"`
-	Infra        AceOptionsPlatformInfra         `json:"infra"`
-	Settings     AceOptionsSettings              `json:"settings"`
-	PlatformUi   AceOptionsComponentSpec         `json:"platform-ui"`
-	ClusterUi    AceOptionsComponentSpec         `json:"cluster-ui"`
-	Grafana      AceOptionsComponentSpec         `json:"grafana"`
-	KubedbUi     AceOptionsComponentSpec         `json:"kubedb-ui"`
-	PlatformApi  AceOptionsComponentSpec         `json:"platform-api"`
-	Ingress      AceOptionsIngressNginx          `json:"ingress"`
-	Nats         AceOptionsNatsSettings          `json:"nats"`
-	Trickster    AceOptionsComponentSpec         `json:"trickster"`
-	Openfga      AceOptionsComponentSpec         `json:"openfga"`
-	PgOutbox     AceOptionsComponentSpec         `json:"pgoutbox"`
-	OutboxSyncer AceOptionsComponentSpec         `json:"outbox-syncer"`
-	S3proxy      AceOptionsComponentSpec         `json:"s3proxy"`
-	Branding     AceBrandingSpec                 `json:"branding"`
-	InitialSetup configapi.AceSetupInlineOptions `json:"initialSetup"`
+	Context              AceDeploymentContext            `json:"context"`
+	Release              ObjectReference                 `json:"release"`
+	Registry             RegistrySpec                    `json:"registry"`
+	Monitoring           GlobalMonitoring                `json:"monitoring"`
+	Infra                AceOptionsPlatformInfra         `json:"infra"`
+	Settings             AceOptionsSettings              `json:"settings"`
+	PlatformUi           AceOptionsComponentSpec         `json:"platform-ui"`
+	ClusterUi            AceOptionsComponentSpec         `json:"cluster-ui"`
+	Grafana              AceOptionsComponentSpec         `json:"grafana"`
+	KubedbUi             AceOptionsComponentSpec         `json:"kubedb-ui"`
+	PlatformApi          AceOptionsComponentSpec         `json:"platform-api"`
+	Ingress              AceOptionsIngressNginx          `json:"ingress"`
+	Nats                 AceOptionsNatsSettings          `json:"nats"`
+	Trickster            AceOptionsComponentSpec         `json:"trickster"`
+	Openfga              AceOptionsComponentSpec         `json:"openfga"`
+	PgOutbox             AceOptionsComponentSpec         `json:"pgoutbox"`
+	OutboxSyncer         AceOptionsComponentSpec         `json:"outbox-syncer"`
+	S3proxy              AceOptionsComponentSpec         `json:"s3proxy"`
+	Branding             AceBrandingSpec                 `json:"branding"`
+	CloudProviderOptions CloudProviderOptions            `json:"cloudProviderOptions"`
+	InitialSetup         configapi.AceSetupInlineOptions `json:"initialSetup"`
 }
 
 func (a *AceOptionsSpec) IsOptionsComplete() bool {
@@ -182,7 +183,8 @@ const (
 )
 
 type AceOptionsIngressNginx struct {
-	ExposeVia ServiceType `json:"exposeVia"`
+	Annotations map[string]string `json:"annotations,omitempty"`
+	ExposeVia   ServiceType       `json:"exposeVia"`
 	// DNS record types that will be considered for management
 	ManagedRecordTypes []DNSRecordType `json:"managedRecordTypes,omitempty"`
 	//+optional
@@ -503,6 +505,15 @@ type OpenFGAServerValues struct {
 
 type PromotionValues struct {
 	S3proxy AceOptionsInfraObjstore `json:"s3proxy,omitempty"`
+}
+
+type CloudProviderOptions struct {
+	AWS *ProviderAWSOptions `json:"aws,omitempty"`
+}
+
+type ProviderAWSOptions struct {
+	EipAllocationIDs []string `json:"eipAllocationIDs,omitempty"`
+	SubnetIDs        []string `json:"subnetIDs,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

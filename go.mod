@@ -1,8 +1,6 @@
 module kubepack.dev/lib-app
 
-go 1.23.6
-
-toolchain go1.24.3
+go 1.24.3
 
 require (
 	github.com/Masterminds/semver/v3 v3.3.1
@@ -18,7 +16,7 @@ require (
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/pflag v1.0.6
 	github.com/unrolled/render v1.7.0
-	go.bytebuilders.dev/installer v0.1.1-0.20250710001310-f36c1676f6b5
+	go.bytebuilders.dev/installer v0.1.1-0.20250911012713-8bcac7667544
 	go.wandrs.dev/binding v0.0.2
 	go.wandrs.dev/http v0.0.2
 	gocloud.dev v0.40.0
@@ -117,7 +115,7 @@ require (
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-metrics v0.0.1 // indirect
 	github.com/emicklei/go-restful/v3 v3.12.1 // indirect
-	github.com/envoyproxy/gateway v1.3.2 // indirect
+	github.com/envoyproxy/gateway v1.3.3 // indirect
 	github.com/envoyproxy/go-control-plane/envoy v1.32.3 // indirect
 	github.com/envoyproxy/protoc-gen-validate v1.1.0 // indirect
 	github.com/evanphx/json-patch v5.9.11+incompatible // indirect
@@ -231,8 +229,8 @@ require (
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	go.appscode.dev/alerts v0.2.1-0.20250217100836-596fabefb762 // indirect
-	go.bytebuilders.dev/catalog v0.0.15 // indirect
-	go.bytebuilders.dev/resource-model v0.3.0 // indirect
+	go.bytebuilders.dev/catalog v0.0.16-0.20250901123846-4b9ca50c3572 // indirect
+	go.bytebuilders.dev/resource-model v0.3.1 // indirect
 	go.bytebuilders.dev/ui-wizards v0.24.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
@@ -246,12 +244,12 @@ require (
 	go.opentelemetry.io/otel/trace v1.34.0 // indirect
 	go.openviz.dev/installer v0.0.0-20250617172415-ca61a7cbb8d5 // indirect
 	go.wandrs.dev/inject v0.0.1 // indirect
-	golang.org/x/crypto v0.36.0 // indirect
-	golang.org/x/net v0.38.0 // indirect
+	golang.org/x/crypto v0.37.0 // indirect
+	golang.org/x/net v0.39.0 // indirect
 	golang.org/x/oauth2 v0.27.0 // indirect
 	golang.org/x/sync v0.13.0 // indirect
 	golang.org/x/sys v0.32.0 // indirect
-	golang.org/x/term v0.30.0 // indirect
+	golang.org/x/term v0.31.0 // indirect
 	golang.org/x/text v0.24.0 // indirect
 	golang.org/x/time v0.10.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240716161551-93cc26a95ae9 // indirect
@@ -270,7 +268,7 @@ require (
 	google.golang.org/genproto/googleapis/api v0.0.0-20250115164207-1a7da9e5054f // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250115164207-1a7da9e5054f // indirect
 	google.golang.org/grpc v1.69.4 // indirect
-	google.golang.org/protobuf v1.36.3 // indirect
+	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/evanphx/json-patch.v4 v4.12.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
@@ -289,7 +287,7 @@ require (
 	kmodules.xyz/prober v0.32.0 // indirect
 	kmodules.xyz/resource-metrics v0.30.11-0.20250808121819-d4255c017e68 // indirect
 	kubeops.dev/external-dns-operator v0.0.9 // indirect
-	kubeops.dev/installer v0.0.0-20250709205805-b8bdf921a01f // indirect
+	kubeops.dev/installer v0.0.0-20250911004916-836564b4c5d1 // indirect
 	kubestash.dev/apimachinery v0.17.0 // indirect
 	oras.land/oras-go v1.2.6 // indirect
 	sigs.k8s.io/cli-utils v0.37.2 // indirect
@@ -298,9 +296,9 @@ require (
 	sigs.k8s.io/kustomize/api v0.18.0 // indirect
 	sigs.k8s.io/kustomize/kyaml v0.18.1 // indirect
 	sigs.k8s.io/randfill v1.0.0 // indirect
-	sigs.k8s.io/structured-merge-diff/v4 v4.6.0 // indirect
+	sigs.k8s.io/structured-merge-diff/v4 v4.7.0 // indirect
 	stash.appscode.dev/apimachinery v0.39.0 // indirect
-	voyagermesh.dev/installer v0.0.0-20250324192020-20a3d86540ee // indirect
+	voyagermesh.dev/installer v0.0.0-20250831101200-3368908a554f // indirect
 )
 
 replace github.com/imdario/mergo => github.com/imdario/mergo v0.3.6
