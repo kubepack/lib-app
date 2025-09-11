@@ -75,12 +75,13 @@ type AceSpec struct {
 	SecurityContext    *core.SecurityContext     `json:"securityContext"`
 	Resources          core.ResourceRequirements `json:"resources"`
 	//+optional
-	NodeSelector map[string]string                `json:"nodeSelector"`
-	Tolerations  []core.Toleration                `json:"tolerations"`
-	Affinity     *core.Affinity                   `json:"affinity"`
-	Branding     AceBrandingSpec                  `json:"branding"`
-	SetupJob     AceSetupJob                      `json:"setupJob"`
-	ExtraObjects map[string]*runtime.RawExtension `json:"extraObjects"`
+	NodeSelector         map[string]string                `json:"nodeSelector"`
+	Tolerations          []core.Toleration                `json:"tolerations"`
+	Affinity             *core.Affinity                   `json:"affinity"`
+	Branding             AceBrandingSpec                  `json:"branding"`
+	CloudProviderOptions CloudProviderOptions             `json:"cloudProviderOptions"`
+	SetupJob             AceSetupJob                      `json:"setupJob"`
+	ExtraObjects         map[string]*runtime.RawExtension `json:"extraObjects"`
 	// List of sources to populate environment variables in the container.
 	// The keys defined within a source must be a C_IDENTIFIER. All invalid keys
 	// will be reported as an event when the container is starting. When a key exists in multiple

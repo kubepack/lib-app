@@ -77,6 +77,7 @@ type AcerproxySpec struct {
 	ServiceAccount     ServiceAccountSpec       `json:"serviceAccount"`
 	Apiserver          WebHookSpec              `json:"apiserver"`
 	Monitoring         Monitoring               `json:"monitoring"`
+	Platform           PlatformSpec             `json:"platform"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
