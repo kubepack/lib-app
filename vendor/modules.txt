@@ -1028,7 +1028,7 @@ go.appscode.dev/alerts/apis/alerts/v1alpha1
 # go.bytebuilders.dev/catalog v0.0.16-0.20250901123846-4b9ca50c3572
 ## explicit; go 1.24.3
 go.bytebuilders.dev/catalog/api/gateway/v1alpha1
-# go.bytebuilders.dev/installer v0.1.1-0.20250911012713-8bcac7667544
+# go.bytebuilders.dev/installer v0.1.1-0.20251021042443-8bf2d1a71208
 ## explicit; go 1.24.3
 go.bytebuilders.dev/installer/apis/installer
 go.bytebuilders.dev/installer/apis/installer/v1alpha1
@@ -2147,7 +2147,7 @@ kmodules.xyz/sets
 ## explicit; go 1.22.0
 kubeops.dev/external-dns-operator/apis/external
 kubeops.dev/external-dns-operator/apis/external/v1alpha1
-# kubeops.dev/installer v0.0.0-20250911004916-836564b4c5d1
+# kubeops.dev/installer v0.0.0-20251021040959-0f62f77e8c01
 ## explicit; go 1.23.3
 kubeops.dev/installer/apis/installer
 kubeops.dev/installer/apis/installer/v1alpha1

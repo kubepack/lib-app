@@ -16,7 +16,7 @@ require (
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/pflag v1.0.6
 	github.com/unrolled/render v1.7.0
-	go.bytebuilders.dev/installer v0.1.1-0.20250911012713-8bcac7667544
+	go.bytebuilders.dev/installer v0.1.1-0.20251021042443-8bf2d1a71208
 	go.wandrs.dev/binding v0.0.2
 	go.wandrs.dev/http v0.0.2
 	gocloud.dev v0.40.0
@@ -287,7 +287,7 @@ require (
 	kmodules.xyz/prober v0.32.0 // indirect
 	kmodules.xyz/resource-metrics v0.30.11-0.20250808121819-d4255c017e68 // indirect
 	kubeops.dev/external-dns-operator v0.0.9 // indirect
-	kubeops.dev/installer v0.0.0-20250911004916-836564b4c5d1 // indirect
+	kubeops.dev/installer v0.0.0-20251021040959-0f62f77e8c01 // indirect
 	kubestash.dev/apimachinery v0.17.0 // indirect
 	oras.land/oras-go v1.2.6 // indirect
 	sigs.k8s.io/cli-utils v0.37.2 // indirect
