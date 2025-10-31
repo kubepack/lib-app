@@ -43,10 +43,14 @@ spec:
                         - Restic
                         - WalG
                         - VolumeSnapshotter
+                        - Solr
+                        - Medusa
                       - enum:
                         - Restic
                         - WalG
+                        - Medusa
                         - VolumeSnapshotter
+                        - Solr
                       type: string
                     executor:
                       enum:
@@ -1044,10 +1048,14 @@ spec:
                         - Restic
                         - WalG
                         - VolumeSnapshotter
+                        - Solr
+                        - Medusa
                       - enum:
                         - Restic
                         - WalG
+                        - Medusa
                         - VolumeSnapshotter
+                        - Solr
                       type: string
                     executor:
                       enum:
