@@ -1,6 +1,6 @@
 module kubepack.dev/lib-app
 
-go 1.24.3
+go 1.25
 
 require (
 	github.com/Masterminds/semver/v3 v3.3.1
@@ -26,15 +26,15 @@ require (
 	gomodules.xyz/x v0.0.17
 	gopkg.in/yaml.v3 v3.0.1
 	helm.sh/helm/v3 v3.17.3
-	k8s.io/api v0.32.3
-	k8s.io/apiextensions-apiserver v0.32.3
-	k8s.io/apimachinery v0.32.3
+	k8s.io/api v0.32.8
+	k8s.io/apiextensions-apiserver v0.32.8
+	k8s.io/apimachinery v0.32.8
 	k8s.io/cli-runtime v0.32.2
-	k8s.io/client-go v0.32.3
+	k8s.io/client-go v0.32.8
 	k8s.io/klog/v2 v2.130.1
 	k8s.io/kubectl v0.32.2
-	kmodules.xyz/client-go v0.32.9
-	kmodules.xyz/resource-metadata v0.39.0
+	kmodules.xyz/client-go v0.32.11
+	kmodules.xyz/resource-metadata v0.40.0
 	kmodules.xyz/sets v0.29.0
 	kubepack.dev/chart-doc-gen v0.5.0
 	kubepack.dev/kubepack v0.29.1
@@ -233,7 +233,7 @@ require (
 	go.appscode.dev/alerts v0.2.1-0.20250217100836-596fabefb762 // indirect
 	go.bytebuilders.dev/catalog v0.0.16-0.20250901123846-4b9ca50c3572 // indirect
 	go.bytebuilders.dev/resource-model v0.3.1 // indirect
-	go.bytebuilders.dev/ui-wizards v0.27.0 // indirect
+	go.bytebuilders.dev/ui-wizards v0.28.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.opentelemetry.io/contrib/detectors/gcp v1.35.0 // indirect
@@ -246,13 +246,13 @@ require (
 	go.opentelemetry.io/otel/trace v1.35.0 // indirect
 	go.openviz.dev/installer v0.0.0-20250617172415-ca61a7cbb8d5 // indirect
 	go.wandrs.dev/inject v0.0.1 // indirect
-	golang.org/x/crypto v0.37.0 // indirect
-	golang.org/x/net v0.39.0 // indirect
+	golang.org/x/crypto v0.45.0 // indirect
+	golang.org/x/net v0.47.0 // indirect
 	golang.org/x/oauth2 v0.28.0 // indirect
-	golang.org/x/sync v0.13.0 // indirect
-	golang.org/x/sys v0.32.0 // indirect
-	golang.org/x/term v0.31.0 // indirect
-	golang.org/x/text v0.24.0 // indirect
+	golang.org/x/sync v0.18.0 // indirect
+	golang.org/x/sys v0.38.0 // indirect
+	golang.org/x/term v0.37.0 // indirect
+	golang.org/x/text v0.31.0 // indirect
 	golang.org/x/time v0.11.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
 	gomodules.xyz/blobfs v0.2.2 // indirect
@@ -274,9 +274,9 @@ require (
 	gopkg.in/evanphx/json-patch.v4 v4.12.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	k8s.io/apiserver v0.32.3 // indirect
+	k8s.io/apiserver v0.32.8 // indirect
 	k8s.io/autoscaler/vertical-pod-autoscaler v1.0.0 // indirect
-	k8s.io/component-base v0.32.3 // indirect
+	k8s.io/component-base v0.32.8 // indirect
 	k8s.io/kube-aggregator v0.32.3 // indirect
 	k8s.io/kube-openapi v0.0.0-20250318190949-c8a335a9a2ff // indirect
 	k8s.io/utils v0.0.0-20241210054802-24370beab758 // indirect
@@ -291,7 +291,7 @@ require (
 	kmodules.xyz/resource-metrics v0.30.11-0.20250808121819-d4255c017e68 // indirect
 	kubeops.dev/external-dns-operator v0.0.9 // indirect
 	kubeops.dev/installer v0.0.0-20251021040959-0f62f77e8c01 // indirect
-	kubestash.dev/apimachinery v0.21.0 // indirect
+	kubestash.dev/apimachinery v0.22.0 // indirect
 	oras.land/oras-go v1.2.6 // indirect
 	sigs.k8s.io/cli-utils v0.37.2 // indirect
 	sigs.k8s.io/gateway-api v1.2.1 // indirect

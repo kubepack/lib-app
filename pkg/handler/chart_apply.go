@@ -37,7 +37,7 @@ import (
 	releasesapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 )
 
-func ApplyResourceEditor(f cmdutil.Factory, reg repo.IRegistry, model map[string]interface{}, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
+func ApplyResourceEditor(f cmdutil.Factory, reg repo.IRegistry, model map[string]any, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
 	var tm releasesapi.ModelMetadata
 	err := meta_util.DecodeObject(model, &tm)
 	if err != nil {
@@ -60,11 +60,11 @@ func ApplyResourceEditor(f cmdutil.Factory, reg repo.IRegistry, model map[string
 	return applyResource(f, reg, *ed.Spec.UI.Editor, model, skipCRds, log...)
 }
 
-func ApplyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef releasesapi.ChartSourceRef, model map[string]interface{}, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
+func ApplyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef releasesapi.ChartSourceRef, model map[string]any, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
 	return applyResource(f, reg, chartRef, model, skipCRds, log...)
 }
 
-func applyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef releasesapi.ChartSourceRef, model map[string]interface{}, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
+func applyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef releasesapi.ChartSourceRef, model map[string]any, skipCRds bool, log ...ha.DebugLog) (*release.Release, error) {
 	var tm releasesapi.ModelMetadata
 	err := meta_util.DecodeObject(model, &tm)
 	if err != nil {
@@ -88,9 +88,9 @@ func applyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef releasesapi.C
 	if chartRef.SourceRef.Namespace == "" {
 		chartRef.SourceRef.Namespace = hub.BootstrapHelmRepositoryNamespace()
 	}
-	opts.ChartSourceFlatRef.FromAPIObject(chartRef)
+	opts.FromAPIObject(chartRef)
 
-	var vals map[string]interface{}
+	var vals map[string]any
 	if _, ok := model["patch"]; ok {
 		// NOTE: Makes an assumption that this is a "edit" apply
 		tpl, err := editor.LoadResourceEditorModel(kc, reg, releasesapi.ModelMetadata{
@@ -129,7 +129,7 @@ func applyResource(f cmdutil.Factory, reg repo.IRegistry, chartRef releasesapi.C
 			return nil, err
 		}
 
-		var mod map[string]interface{}
+		var mod map[string]any
 		err = json.Unmarshal(modified, &mod)
 		if err != nil {
 			return nil, err

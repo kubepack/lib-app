@@ -72,14 +72,15 @@ func NewCmdSimple() *cobra.Command {
 
 			registry.Visit(func(key string, rd *rsapi.ResourceDescriptor) {
 				if rd.Spec.Resource.Group == "ui.k8s.appscode.com" {
-					if rd.Spec.Resource.Kind == "FeatureSet" {
+					switch rd.Spec.Resource.Kind {
+					case "FeatureSet":
 						chartName := fmt.Sprintf("%s-%s-{.metadata.release.name}-editor", safeGroupName(rd.Spec.Resource.Group), strings.ToLower(rd.Spec.Resource.Kind))
 						err := UpdateEditor(rd, chartName, descriptorDir)
 						if err != nil {
 							panic(err)
 						}
 						return
-					} else if rd.Spec.Resource.Kind == "Feature" {
+					case "Feature":
 						return
 					}
 				}
