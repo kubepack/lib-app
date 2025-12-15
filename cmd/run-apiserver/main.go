@@ -99,7 +99,7 @@ func main() {
 	})
 
 	m.Route("/editor", func(m chi.Router) {
-		m.Use(binding.JSON(map[string]interface{}{}))
+		m.Use(binding.JSON(map[string]any{}))
 
 		// PUBLIC
 		// INITIAL Model (Values)
@@ -409,7 +409,7 @@ func main() {
 	m.Route("/clusters/{cluster}", func(m chi.Router) {
 		m.Route("/editor", func(m chi.Router) {
 			// PUT create / update / apply / install
-			m.With(binding.JSON(map[string]interface{}{})).Put("/", binding.HandlerFunc(ApplyResource(f)))
+			m.With(binding.JSON(map[string]any{})).Put("/", binding.HandlerFunc(ApplyResource(f)))
 
 			m.Delete("/namespaces/{namespace}/releases/{releaseName}", binding.HandlerFunc(DeleteResource(f)))
 
@@ -607,8 +607,8 @@ func DeleteResource(f cmdutil.Factory) func(ctx httpw.ResponseWriter) {
 	}
 }
 
-func ApplyResource(f cmdutil.Factory) func(ctx httpw.ResponseWriter, model map[string]interface{}) {
-	return func(ctx httpw.ResponseWriter, model map[string]interface{}) {
+func ApplyResource(f cmdutil.Factory) func(ctx httpw.ResponseWriter, model map[string]any) {
+	return func(ctx httpw.ResponseWriter, model map[string]any) {
 		kc, err := actionx.NewUncachedClient(f)
 		if err != nil {
 			ctx.Error(http.StatusInternalServerError, "ApplyResourceEditor", err.Error())
@@ -731,7 +731,7 @@ func CreateOrder(ctx httpw.ResponseWriter, order releasesapi.Order) {
 	ctx.JSON(http.StatusOK, order)
 }
 
-func PreviewEditorResources(ctx httpw.ResponseWriter, opts map[string]interface{}) {
+func PreviewEditorResources(ctx httpw.ResponseWriter, opts map[string]any) {
 	cfg, err := config.GetConfig()
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, err.Error())
@@ -781,7 +781,7 @@ func PreviewEditorResources(ctx httpw.ResponseWriter, opts map[string]interface{
 	ctx.JSON(http.StatusOK, &out)
 }
 
-func PreviewEditorManifest(ctx httpw.ResponseWriter, opts map[string]interface{}) {
+func PreviewEditorManifest(ctx httpw.ResponseWriter, opts map[string]any) {
 	cfg, err := config.GetConfig()
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, err.Error())
@@ -801,7 +801,7 @@ func PreviewEditorManifest(ctx httpw.ResponseWriter, opts map[string]interface{}
 	_, _ = ctx.Write([]byte(manifest))
 }
 
-func GenerateEditorModelFromOptions(ctx httpw.ResponseWriter, opts map[string]interface{}) {
+func GenerateEditorModelFromOptions(ctx httpw.ResponseWriter, opts map[string]any) {
 	cfg, err := config.GetConfig()
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, err.Error())
@@ -891,10 +891,11 @@ func GetValuesFile(ctx httpw.ResponseWriter, params chartsapi.ChartPresetFlatRef
 	var data []byte
 	var ct string
 	format := meta_util.NewDataFormat(ctx.R().QueryTrim("format"), meta_util.KeepFormat)
-	if format == meta_util.JsonFormat {
+	switch format {
+	case meta_util.JsonFormat:
 		ct = "application/json"
 		data, err = json.Marshal(vals)
-	} else if format == meta_util.YAMLFormat {
+	case meta_util.YAMLFormat:
 		ct = "text/yaml"
 		data, err = yaml.Marshal(vals)
 	}

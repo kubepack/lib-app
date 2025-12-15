@@ -21,7 +21,6 @@ import (
 	"path/filepath"
 
 	"kubepack.dev/lib-helm/pkg/action"
-	actionx "kubepack.dev/lib-helm/pkg/action"
 	"kubepack.dev/lib-helm/pkg/repo"
 	"kubepack.dev/lib-helm/pkg/values"
 
@@ -90,12 +89,12 @@ func main() {
 }
 
 func DD(getter genericclioptions.RESTClientGetter, ref chartsapi.ChartPresetFlatRef) error {
-	kc, err := actionx.NewUncachedClient(getter)
+	kc, err := action.NewUncachedClient(getter)
 	if err != nil {
 		return err
 	}
 
-	chrt, err := HelmRegistry.GetChart(ref.ChartSourceFlatRef.ToAPIObject())
+	chrt, err := HelmRegistry.GetChart(ref.ToAPIObject())
 	if err != nil {
 		return err
 	}

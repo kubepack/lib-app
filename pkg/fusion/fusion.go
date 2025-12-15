@@ -431,7 +431,7 @@ func NewCmdFuse() *cobra.Command {
 				if err != nil {
 					return err
 				}
-				defer f.Close()
+				defer f.Close() // nolint:errcheck
 
 				objModel := releasesapi.ObjectModel{
 					Key:    rsKey,
@@ -442,7 +442,7 @@ func NewCmdFuse() *cobra.Command {
 					return err
 				}
 
-				var data map[string]interface{}
+				var data map[string]any
 				err = json.Unmarshal(modelJSON, &data)
 				if err != nil {
 					panic(err)
@@ -579,7 +579,7 @@ func NewCmdFuse() *cobra.Command {
 					return err
 				}
 
-				values := map[string]interface{}{
+				values := map[string]any{
 					"metadata": releasesapi.Metadata{
 						Resource: rd.Spec.Resource,
 						Release: releasesapi.ObjectMeta{
@@ -592,7 +592,7 @@ func NewCmdFuse() *cobra.Command {
 
 				optsValuesFile := filepath.Join(chartDir, optsChartName, "values.yaml")
 				if ioutilz.PathExists(optsValuesFile) {
-					var optValues map[string]interface{}
+					var optValues map[string]any
 					data, err := os.ReadFile(optsValuesFile)
 					if err != nil {
 						return err
@@ -609,7 +609,7 @@ func NewCmdFuse() *cobra.Command {
 				var buf bytes.Buffer
 				enc := y3.NewEncoder(&buf)
 				enc.SetIndent(2)
-				defer enc.Close()
+				defer enc.Close() // nolint:errcheck
 				err = enc.Encode(&values)
 				if err != nil {
 					return err
@@ -785,7 +785,7 @@ func newChartMeta(kind string, edditorGVR, resources []byte, resourceKeys, formK
 // always return a string, even on marshal error (empty string).
 //
 // This is designed to be called from a template.
-func toYAML(v interface{}) string {
+func toYAML(v any) string {
 	data, err := yaml.Marshal(v)
 	if err != nil {
 		// Swallow errors inside of a template.
@@ -798,7 +798,7 @@ func toYAML(v interface{}) string {
 // always return a string, even on marshal error (empty string).
 //
 // This is designed to be called from a template.
-func toJSON(v interface{}) string {
+func toJSON(v any) string {
 	data, err := json.Marshal(v)
 	if err != nil {
 		// Swallow errors inside of a template.
