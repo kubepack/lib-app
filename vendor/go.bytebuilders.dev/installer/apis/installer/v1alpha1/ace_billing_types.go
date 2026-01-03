@@ -19,6 +19,7 @@ package v1alpha1
 import (
 	core "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"kmodules.xyz/resource-metadata/apis/shared"
 )
 
 const (
@@ -77,6 +78,8 @@ type BillingSpec struct {
 	Infra       AceInfra          `json:"infra"`
 	Settings    AcaasSettings     `json:"settings"`
 	Aggregator  BillingAggregator `json:"aggregator"`
+	// +optional
+	Distro shared.DistroSpec `json:"distro"`
 }
 
 type BillingAggregator struct {

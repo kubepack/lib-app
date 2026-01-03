@@ -19,6 +19,7 @@ package v1alpha1
 import (
 	core "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"kmodules.xyz/resource-metadata/apis/shared"
 )
 
 const (
@@ -74,6 +75,8 @@ type ClusterImporterSpec struct {
 	Affinity               *core.Affinity    `json:"affinity"`
 	Platform               PlatformSpec      `json:"platform"`
 	KubeconfigSecretKeyRef SecretKeySelector `json:"kubeconfigSecretKeyRef"`
+	// +optional
+	Distro shared.DistroSpec `json:"distro"`
 }
 
 // SecretKeySelector selects a key of a Secret.

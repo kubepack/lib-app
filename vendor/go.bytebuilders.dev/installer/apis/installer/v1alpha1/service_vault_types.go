@@ -20,6 +20,7 @@ import (
 	catgwapi "go.bytebuilders.dev/catalog/api/gateway/v1alpha1"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"kmodules.xyz/resource-metadata/apis/shared"
 )
 
 const (
@@ -50,6 +51,8 @@ type ServiceVaultSpec struct {
 	GatewayDns       catgwapi.ServiceGatewayDns    `json:"gateway-dns"`
 	// +optional
 	VaultServer LocalObjectReference `json:"vaultServer"`
+	// +optional
+	Distro shared.DistroSpec `json:"distro"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

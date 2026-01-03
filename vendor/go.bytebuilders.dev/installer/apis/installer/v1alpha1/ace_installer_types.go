@@ -58,7 +58,7 @@ type AceInstallerSpec struct {
 	SelfManagement          configapi.SelfManagement `json:"selfManagement"`
 	Precheck                AceInstallerPrecheckSpec `json:"precheck"`
 	// +optional
-	Options *AceOptionsSpec `json:"options"`
+	Options string `json:"options"`
 }
 
 type AceInstallerPrecheckSpec struct {

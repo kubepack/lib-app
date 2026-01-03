@@ -56,6 +56,8 @@ type OpscenterFeaturesSpec struct {
 	Registry         shared.RegistryInfo      `json:"registry"`
 	ClusterMetadata  kmapi.ClusterInfo        `json:"clusterMetadata"`
 	LicenseServer    LicenseServerSpec        `json:"licenseServer"`
+	// +optional
+	Distro shared.DistroSpec `json:"distro"`
 }
 
 type OpscenterHelmSpec struct {

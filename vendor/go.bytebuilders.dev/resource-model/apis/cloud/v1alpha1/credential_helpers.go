@@ -26,7 +26,7 @@ import (
 	"kmodules.xyz/client-go/apiextensions"
 )
 
-func (_ Credential) CustomResourceDefinition() *apiextensions.CustomResourceDefinition {
+func (Credential) CustomResourceDefinition() *apiextensions.CustomResourceDefinition {
 	return crds.MustCustomResourceDefinition(SchemeGroupVersion.WithResource(ResourceCredentials))
 }
 
@@ -36,10 +36,10 @@ func (cred *Credential) ApplyLabels(resourceName, credType string, ownerID int64
 		cloud.LabelCredentialType:    credType,
 		cloud.LabelCredentialOwnerID: strconv.FormatInt(ownerID, 10),
 	}
-	cred.ObjectMeta.SetLabels(labelMap)
+	cred.SetLabels(labelMap)
 }
 
-func (_ Credential) FormatLabels(resourceName, credType string, ownerID int64) labels.Selector {
+func (Credential) FormatLabels(resourceName, credType string, ownerID int64) labels.Selector {
 	labelMap := make(map[string]string)
 	if resourceName != "" {
 		labelMap[cloud.LabelResourceName] = resourceName

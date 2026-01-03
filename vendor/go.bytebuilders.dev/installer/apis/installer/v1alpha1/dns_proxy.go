@@ -19,6 +19,7 @@ package v1alpha1
 import (
 	core "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"kmodules.xyz/resource-metadata/apis/shared"
 )
 
 const (
@@ -80,6 +81,8 @@ type DnsProxySpec struct {
 	TLSSecretRef LocalObjectReference     `json:"tlsSecretRef"`
 	//+optional
 	HostPort *IngressNginxControllerHostPort `json:"hostPort"`
+	// +optional
+	Distro shared.DistroSpec `json:"distro"`
 }
 
 type CloudflareTokenReference struct {

@@ -22,6 +22,6 @@ import (
 	"kmodules.xyz/client-go/apiextensions"
 )
 
-func (_ CloudProvider) CustomResourceDefinition() *apiextensions.CustomResourceDefinition {
+func (CloudProvider) CustomResourceDefinition() *apiextensions.CustomResourceDefinition {
 	return crds.MustCustomResourceDefinition(SchemeGroupVersion.WithResource("cloudproviders"))
 }

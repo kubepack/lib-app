@@ -19,6 +19,7 @@ package v1alpha1
 import (
 	core "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"kmodules.xyz/resource-metadata/apis/shared"
 )
 
 const (
@@ -74,6 +75,8 @@ type CertManagerWebhookAceSpec struct {
 	// If specified, the pod's scheduling constraints
 	// +optional
 	Affinity *core.Affinity `json:"affinity"`
+	// +optional
+	Distro shared.DistroSpec `json:"distro"`
 }
 
 type CertManager struct {

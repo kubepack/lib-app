@@ -24,6 +24,7 @@ import (
 	core "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"kmodules.xyz/resource-metadata/apis/shared"
 	dnsapi "kubeops.dev/external-dns-operator/apis/external/v1alpha1"
 	kubeops_installer "kubeops.dev/installer/apis/installer/v1alpha1"
 )
@@ -183,6 +184,8 @@ type AceGlobalValues struct {
 	ServiceAccount   NatsServiceAccountSpec `json:"serviceAccount"`
 	Monitoring       GlobalMonitoring       `json:"monitoring"`
 	Infra            PlatformInfra          `json:"infra"`
+	// +optional
+	Distro shared.DistroSpec `json:"distro"`
 }
 
 type AcePlatformSettings struct {
@@ -253,15 +256,16 @@ const (
 )
 
 type InfraObjstore struct {
-	Provider  ObjstoreProvider      `json:"provider"`
-	Bucket    string                `json:"bucket"`
-	Prefix    string                `json:"prefix,omitempty"`
-	Endpoint  string                `json:"endpoint,omitempty"`
-	Region    string                `json:"region,omitempty"`
-	MountPath string                `json:"mountPath"`
-	S3        *wizardsapi.S3Auth    `json:"s3,omitempty"`
-	Azure     *wizardsapi.AzureAuth `json:"azure,omitempty"`
-	GCS       *wizardsapi.GCSAuth   `json:"gcs,omitempty"`
+	EnableCredLess bool                  `json:"enableCredLess,omitempty"`
+	Provider       ObjstoreProvider      `json:"provider"`
+	Bucket         string                `json:"bucket"`
+	Prefix         string                `json:"prefix,omitempty"`
+	Endpoint       string                `json:"endpoint,omitempty"`
+	Region         string                `json:"region,omitempty"`
+	MountPath      string                `json:"mountPath"`
+	S3             *wizardsapi.S3Auth    `json:"s3,omitempty"`
+	Azure          *wizardsapi.AzureAuth `json:"azure,omitempty"`
+	GCS            *wizardsapi.GCSAuth   `json:"gcs,omitempty"`
 }
 
 type InfraKms struct {
