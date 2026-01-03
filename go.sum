@@ -789,8 +789,8 @@ go.bytebuilders.dev/installer v0.1.1-0.20251021042443-8bf2d1a71208 h1:r7Q2wTpVP+
 go.bytebuilders.dev/installer v0.1.1-0.20251021042443-8bf2d1a71208/go.mod h1:znq1LYu+L3XoqipAtWus6YF3F1Bhra25bIqN4Px+tMU=
 go.bytebuilders.dev/resource-model v0.3.1 h1:fWJGXRJEWlRKF/7FqCCsMFk5GBv4QU+wXzHkZh9tDnQ=
 go.bytebuilders.dev/resource-model v0.3.1/go.mod h1:r2csg4XhQCA4BiiGbmDDrWblezKLq/8WJVVb96HqRMM=
-go.bytebuilders.dev/ui-wizards v0.28.0 h1:f6o5zScWt5aepVr5JoZzfBTYVAtqG8Xf+3LzIetIrks=
-go.bytebuilders.dev/ui-wizards v0.28.0/go.mod h1:2N8wyZbktqWtzOEGvNzNyBhrHliYJamTPPlhJxVKWy4=
+go.bytebuilders.dev/ui-wizards v0.29.0 h1:E5mwW2nkwKlM+4h34T3pwwPcEnIk7XfMc7NjXUrJiGM=
+go.bytebuilders.dev/ui-wizards v0.29.0/go.mod h1:4OKrNrdN4mCxgO2oKNt+O70b4YfYoWB1MRbLvMdGo1U=
 go.etcd.io/bbolt v1.3.2/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.opencensus.io v0.21.0/go.mod h1:mSImk1erAIZhrmZN+AvHh14ztQfjbGwt4TtuofqLduU=
 go.opencensus.io v0.22.0/go.mod h1:+kGneAE2xo2IficOXnaByMWTGM9T73dGwxeWcUqIpI8=
@@ -1216,8 +1216,8 @@ kmodules.xyz/offshoot-api v0.34.0 h1:HnOOp8FrCjTWjtNApRDo6Ahe79tOlLrJmyye4xxO4Kk
 kmodules.xyz/offshoot-api v0.34.0/go.mod h1:F+B59yYw4CZJ4uD4xu6C+mMLzIXUtuH7E+SbDICl9jE=
 kmodules.xyz/prober v0.34.0 h1:ElZkZYCjLaytAA0M8EH42To7i9gh1IIX+d0qfaIohys=
 kmodules.xyz/prober v0.34.0/go.mod h1:rsu/fxxfNxY70GDbH6Ju8G66459hi7AhWSSBoiIp8ic=
-kmodules.xyz/resource-metadata v0.40.2 h1:2J+UvAaHXfqDStO2SKqeVkER4z/kSOqpj8Iyrc9+V4Y=
-kmodules.xyz/resource-metadata v0.40.2/go.mod h1:38+41aUSrWqrQDeaSITKoxAiGT0ysQk5yjRODqBadpw=
+kmodules.xyz/resource-metadata v0.41.0 h1:9wUOg2EvAOW3n8I+tbZnE1PJDdolX+94/Mn7FBZZy9w=
+kmodules.xyz/resource-metadata v0.41.0/go.mod h1:xntcQko2QLbLEHwGE4TQ7I/80fcBQzcexbep97Akstk=
 kmodules.xyz/resource-metrics v0.34.0 h1:cqscgTx3PONxHj6PIySK3sTlKKv8iKTGzRd+S6YSwXg=
 kmodules.xyz/resource-metrics v0.34.0/go.mod h1:R34IKtp5+NqcQz7AQJheBJK6Iem0LqrCbm/55Mn+ECQ=
 kmodules.xyz/schema-checker v0.4.2 h1:tAbxEtM759GxDM/3sQi/+OKKwUsEF+Ih4KReV3Eb/Xw=
