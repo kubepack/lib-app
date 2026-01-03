@@ -18,6 +18,7 @@ package v1alpha1
 
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"kmodules.xyz/resource-metadata/apis/shared"
 )
 
 const (
@@ -107,6 +108,8 @@ type AcaasGlobalValues struct {
 	Registry         string                `json:"registry"`
 	RegistryFQDN     string                `json:"registryFQDN"`
 	Settings         AcaasSettings         `json:"settings"`
+	// +optional
+	Distro shared.DistroSpec `json:"distro"`
 }
 
 type AcaasPlatformSettings struct {

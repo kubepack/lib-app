@@ -22,6 +22,6 @@ import (
 	"kmodules.xyz/client-go/apiextensions"
 )
 
-func (_ MachineType) CustomResourceDefinition() *apiextensions.CustomResourceDefinition {
+func (MachineType) CustomResourceDefinition() *apiextensions.CustomResourceDefinition {
 	return crds.MustCustomResourceDefinition(SchemeGroupVersion.WithResource("machinetypes"))
 }

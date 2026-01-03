@@ -19,6 +19,7 @@ package v1alpha1
 import (
 	core "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"kmodules.xyz/resource-metadata/apis/shared"
 )
 
 const (
@@ -78,6 +79,8 @@ type ServiceBackendSpec struct {
 	Ingress      PlatformIngress    `json:"ingress"`
 	Monitoring   Monitoring         `json:"monitoring"`
 	Server       ServerConfig       `json:"server"`
+	// +optional
+	Distro shared.DistroSpec `json:"distro"`
 }
 
 type PlatformIngress struct {

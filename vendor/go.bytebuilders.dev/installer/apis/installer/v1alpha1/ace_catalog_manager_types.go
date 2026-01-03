@@ -81,6 +81,8 @@ type CatalogManagerSpec struct {
 	// +optional
 	Helmrepo ObjectReference            `json:"helmrepo"`
 	Platform CatalogManagerPlatformSpec `json:"platform"`
+	// +optional
+	Distro shared.DistroSpec `json:"distro"`
 }
 
 type CatalogManagerGatewaySpec struct {
