@@ -447,7 +447,7 @@ github.com/docker/docker-credential-helpers/credentials
 ## explicit; go 1.13
 github.com/emicklei/go-restful/v3
 github.com/emicklei/go-restful/v3/log
-# github.com/envoyproxy/gateway v1.6.1
+# github.com/envoyproxy/gateway v1.6.2
 ## explicit; go 1.25.3
 github.com/envoyproxy/gateway/api/v1alpha1
 # github.com/envoyproxy/go-control-plane/envoy v1.35.1-0.20251029084203-42a4a9261f66
@@ -2327,7 +2327,7 @@ sigs.k8s.io/controller-runtime/pkg/webhook/admission/metrics
 sigs.k8s.io/controller-runtime/pkg/webhook/conversion
 sigs.k8s.io/controller-runtime/pkg/webhook/conversion/metrics
 sigs.k8s.io/controller-runtime/pkg/webhook/internal/metrics
-# sigs.k8s.io/gateway-api v1.4.0
+# sigs.k8s.io/gateway-api v1.4.1
 ## explicit; go 1.24.0
 sigs.k8s.io/gateway-api/apis/v1
 # sigs.k8s.io/json v0.0.0-20250730193827-2d320260d730
