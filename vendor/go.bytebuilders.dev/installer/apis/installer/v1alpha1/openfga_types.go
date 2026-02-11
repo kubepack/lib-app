@@ -65,67 +65,74 @@ type OpenfgaServiceSpec struct {
 
 // OpenfgaSpec is the schema for Openfga Operator values file
 type OpenfgaSpec struct {
-	ReplicaCount                              int                         `json:"replicaCount"`
-	Image                                     OpenfgaImageReference       `json:"image"`
-	ImagePullSecrets                          []core.LocalObjectReference `json:"imagePullSecrets"`
-	NameOverride                              string                      `json:"nameOverride"`
-	FullnameOverride                          string                      `json:"fullnameOverride"`
-	CommonLabels                              map[string]string           `json:"commonLabels"`
-	ServiceAccount                            OpenfgaServiceAccountSpec   `json:"serviceAccount"`
-	Annotations                               map[string]string           `json:"annotations"`
-	PodAnnotations                            map[string]string           `json:"podAnnotations"`
-	PodExtraLabels                            map[string]string           `json:"podExtraLabels"`
-	ExtraEnvVars                              []core.EnvVar               `json:"extraEnvVars"`
-	ExtraVolumes                              []core.Volume               `json:"extraVolumes"`
-	ExtraVolumeMounts                         []core.VolumeMount          `json:"extraVolumeMounts"`
-	ExtraInitContainers                       []core.Container            `json:"extraInitContainers"`
-	PodSecurityContext                        core.PodSecurityContext     `json:"podSecurityContext"`
-	SecurityContext                           core.SecurityContext        `json:"securityContext"`
-	InitContainer                             OpenfgaImageReference       `json:"initContainer"`
-	LivenessProbe                             OpenfgaProbe                `json:"livenessProbe"`
-	ReadinessProbe                            OpenfgaProbe                `json:"readinessProbe"`
-	StartupProbe                              OpenfgaProbe                `json:"startupProbe"`
-	CustomLivenessProbe                       core.Probe                  `json:"customLivenessProbe"`
-	CustomReadinessProbe                      core.Probe                  `json:"customReadinessProbe"`
-	CustomStartupProbe                        core.Probe                  `json:"customStartupProbe"`
-	Service                                   OpenfgaServiceSpec          `json:"service"`
-	Telemetry                                 OpenfgaTelemetry            `json:"telemetry"`
-	Datastore                                 OpenfgaDatastore            `json:"datastore"`
-	Postgresql                                OpenfgaPostgresql           `json:"postgresql"`
-	Mysql                                     OpenfgaMysql                `json:"mysql"`
-	Grpc                                      OpenfgaGrpc                 `json:"grpc"`
-	Http                                      OpenfgaHttp                 `json:"http"`
-	Authn                                     OpenfgaAuthn                `json:"authn"`
-	Playground                                OpenfgaPlayground           `json:"playground"`
-	Profiler                                  OpenfgaProfiler             `json:"profiler"`
-	Log                                       OpenfgaLog                  `json:"log"`
-	CheckQueryCache                           OpenfgaCheckQueryCache      `json:"checkQueryCache"`
-	Experimentals                             []string                    `json:"experimentals"`
-	MaxTuplesPerWrite                         *int                        `json:"maxTuplesPerWrite"`
-	MaxTypesPerAuthorizationModel             *int                        `json:"maxTypesPerAuthorizationModel"`
-	MaxAuthorizationModelSizeInBytes          *int                        `json:"maxAuthorizationModelSizeInBytes"`
-	MaxConcurrentReadsForCheck                *int                        `json:"maxConcurrentReadsForCheck"`
-	MaxConcurrentReadsForListObjects          *int                        `json:"maxConcurrentReadsForListObjects"`
-	ChangelogHorizonOffset                    *string                     `json:"changelogHorizonOffset"`
-	ResolveNodeLimit                          *int                        `json:"resolveNodeLimit"`
-	ResolveNodeBreadthLimit                   *int                        `json:"resolveNodeBreadthLimit"`
-	ListObjectsDeadline                       *string                     `json:"listObjectsDeadline"`
-	ListObjectsMaxResults                     *int                        `json:"listObjectsMaxResults"`
-	ListUsersDeadline                         *string                     `json:"listUsersDeadline"`
-	ListUsersMaxResults                       *int                        `json:"listUsersMaxResults"`
-	MaxConcurrentReadsForListUsers            *int                        `json:"maxConcurrentReadsForListUsers"`
-	RequestDurationDatastoreQueryCountBuckets []int                       `json:"requestDurationDatastoreQueryCountBuckets"`
-	AllowWriting10Models                      *string                     `json:"allowWriting1_0Models"`
-	AllowEvaluating10Models                   *string                     `json:"allowEvaluating1_0Models"`
-	Ingress                                   AppIngress                  `json:"ingress"`
-	Resources                                 core.ResourceRequirements   `json:"resources"`
-	Autoscaling                               AutoscalingSpec             `json:"autoscaling"`
-	NodeSelector                              map[string]string           `json:"nodeSelector"`
-	Tolerations                               []core.Toleration           `json:"tolerations"`
-	Affinity                                  core.Affinity               `json:"affinity"`
-	Sidecars                                  []core.Container            `json:"sidecars"`
-	Migrate                                   OpenfgaMigrate              `json:"migrate"`
-	ExtraObjects                              []runtime.RawExtension      `json:"extraObjects"`
+	ReplicaCount                              int                             `json:"replicaCount"`
+	Image                                     OpenfgaImageReference           `json:"image"`
+	ImagePullSecrets                          []core.LocalObjectReference     `json:"imagePullSecrets"`
+	NameOverride                              string                          `json:"nameOverride"`
+	FullnameOverride                          string                          `json:"fullnameOverride"`
+	CommonLabels                              map[string]string               `json:"commonLabels"`
+	ServiceAccount                            OpenfgaServiceAccountSpec       `json:"serviceAccount"`
+	Annotations                               map[string]string               `json:"annotations"`
+	PodAnnotations                            map[string]string               `json:"podAnnotations"`
+	PodExtraLabels                            map[string]string               `json:"podExtraLabels"`
+	ExtraEnvVars                              []core.EnvVar                   `json:"extraEnvVars"`
+	ExtraVolumes                              []core.Volume                   `json:"extraVolumes"`
+	ExtraVolumeMounts                         []core.VolumeMount              `json:"extraVolumeMounts"`
+	ExtraInitContainers                       []core.Container                `json:"extraInitContainers"`
+	PodSecurityContext                        core.PodSecurityContext         `json:"podSecurityContext"`
+	SecurityContext                           core.SecurityContext            `json:"securityContext"`
+	InitContainer                             OpenfgaImageReference           `json:"initContainer"`
+	LivenessProbe                             OpenfgaProbe                    `json:"livenessProbe"`
+	ReadinessProbe                            OpenfgaProbe                    `json:"readinessProbe"`
+	StartupProbe                              OpenfgaProbe                    `json:"startupProbe"`
+	CustomLivenessProbe                       core.Probe                      `json:"customLivenessProbe"`
+	CustomReadinessProbe                      core.Probe                      `json:"customReadinessProbe"`
+	CustomStartupProbe                        core.Probe                      `json:"customStartupProbe"`
+	Service                                   OpenfgaServiceSpec              `json:"service"`
+	Telemetry                                 OpenfgaTelemetry                `json:"telemetry"`
+	Datastore                                 OpenfgaDatastore                `json:"datastore"`
+	Postgresql                                OpenfgaPostgresql               `json:"postgresql"`
+	Mysql                                     OpenfgaMysql                    `json:"mysql"`
+	Grpc                                      OpenfgaGrpc                     `json:"grpc"`
+	Http                                      OpenfgaHttp                     `json:"http"`
+	Authn                                     OpenfgaAuthn                    `json:"authn"`
+	Playground                                OpenfgaPlayground               `json:"playground"`
+	Profiler                                  OpenfgaProfiler                 `json:"profiler"`
+	Log                                       OpenfgaLog                      `json:"log"`
+	CheckQueryCache                           OpenfgaCheckQueryCache          `json:"checkQueryCache"`
+	Experimentals                             []string                        `json:"experimentals"`
+	MaxTuplesPerWrite                         *int                            `json:"maxTuplesPerWrite"`
+	MaxTypesPerAuthorizationModel             *int                            `json:"maxTypesPerAuthorizationModel"`
+	MaxAuthorizationModelSizeInBytes          *int                            `json:"maxAuthorizationModelSizeInBytes"`
+	MaxConcurrentReadsForCheck                *int                            `json:"maxConcurrentReadsForCheck"`
+	MaxConcurrentReadsForListObjects          *int                            `json:"maxConcurrentReadsForListObjects"`
+	MaxChecksPerBatchCheck                    *int                            `json:"maxChecksPerBatchCheck"`
+	MaxConcurrentChecksPerBatchCheck          *int                            `json:"maxConcurrentChecksPerBatchCheck"`
+	ChangelogHorizonOffset                    *string                         `json:"changelogHorizonOffset"`
+	ResolveNodeLimit                          *int                            `json:"resolveNodeLimit"`
+	ResolveNodeBreadthLimit                   *int                            `json:"resolveNodeBreadthLimit"`
+	ListObjectsDeadline                       *string                         `json:"listObjectsDeadline"`
+	ListObjectsMaxResults                     *int                            `json:"listObjectsMaxResults"`
+	ListUsersDeadline                         *string                         `json:"listUsersDeadline"`
+	ListUsersMaxResults                       *int                            `json:"listUsersMaxResults"`
+	RequestTimeout                            *string                         `json:"requestTimeout"`
+	MaxConcurrentReadsForListUsers            *int                            `json:"maxConcurrentReadsForListUsers"`
+	RequestDurationDatastoreQueryCountBuckets []int                           `json:"requestDurationDatastoreQueryCountBuckets"`
+	AllowWriting10Models                      *string                         `json:"allowWriting1_0Models"`
+	AllowEvaluating10Models                   *string                         `json:"allowEvaluating1_0Models"`
+	Ingress                                   AppIngress                      `json:"ingress"`
+	Resources                                 core.ResourceRequirements       `json:"resources"`
+	Autoscaling                               AutoscalingSpec                 `json:"autoscaling"`
+	NodeSelector                              map[string]string               `json:"nodeSelector"`
+	Tolerations                               []core.Toleration               `json:"tolerations"`
+	TopologySpreadConstraints                 []core.TopologySpreadConstraint `json:"topologySpreadConstraints"`
+	Affinity                                  core.Affinity                   `json:"affinity"`
+	Lifecycle                                 core.Lifecycle                  `json:"lifecycle"`
+	Sidecars                                  []core.Container                `json:"sidecars"`
+	Migrate                                   OpenfgaMigrate                  `json:"migrate"`
+	TestContainerSpec                         *runtime.RawExtension           `json:"testContainerSpec"`
+	TestPodSpec                               *runtime.RawExtension           `json:"testPodSpec"`
+	ExtraObjects                              []runtime.RawExtension          `json:"extraObjects"`
 }
 type OpenfgaProbe struct {
 	Enabled    bool `json:"enabled"`
@@ -175,19 +182,29 @@ type OpenfgaTrace struct {
 }
 
 type OpenfgaDatastore struct {
-	Engine            string                   `json:"engine"`
-	Uri               *string                  `json:"uri"`
-	UriSecret         *string                  `json:"uriSecret"`
-	MaxCacheSize      *string                  `json:"maxCacheSize"`
-	MaxOpenConns      *string                  `json:"maxOpenConns"`
-	MaxIdleConns      *string                  `json:"maxIdleConns"`
-	ConnMaxIdleTime   *string                  `json:"connMaxIdleTime"`
-	ConnMaxLifetime   *string                  `json:"connMaxLifetime"`
-	ApplyMigrations   bool                     `json:"applyMigrations"`
-	WaitForMigrations bool                     `json:"waitForMigrations"`
-	MigrationType     string                   `json:"migrationType"`
-	Metrics           *OpenfgaDatastoreMetrics `json:"metrics,omitempty"`
-	Migrations        OpenfgaMigrations        `json:"migrations"`
+	Engine            string                     `json:"engine"`
+	Uri               *string                    `json:"uri"`
+	UriSecret         *string                    `json:"uriSecret"`
+	Username          *string                    `json:"username"`
+	Password          *string                    `json:"password"`
+	ExistingSecret    *string                    `json:"existingSecret"`
+	SecretKeys        OpenfgaDatastoreSecretKeys `json:"secretKeys"`
+	MaxCacheSize      *string                    `json:"maxCacheSize"`
+	MaxOpenConns      *string                    `json:"maxOpenConns"`
+	MaxIdleConns      *string                    `json:"maxIdleConns"`
+	ConnMaxIdleTime   *string                    `json:"connMaxIdleTime"`
+	ConnMaxLifetime   *string                    `json:"connMaxLifetime"`
+	ApplyMigrations   bool                       `json:"applyMigrations"`
+	WaitForMigrations bool                       `json:"waitForMigrations"`
+	MigrationType     string                     `json:"migrationType"`
+	Metrics           *OpenfgaDatastoreMetrics   `json:"metrics,omitempty"`
+	Migrations        OpenfgaMigrations          `json:"migrations"`
+}
+
+type OpenfgaDatastoreSecretKeys struct {
+	UriKey      *string `json:"uriKey"`
+	UsernameKey *string `json:"usernameKey"`
+	PasswordKey *string `json:"passwordKey"`
 }
 
 type OpenfgaDatastoreMetrics struct {
@@ -208,8 +225,15 @@ type OpenfgaMysql struct {
 }
 
 type OpenfgaGrpc struct {
-	Addr string     `json:"addr"`
-	Tls  OpenfgaTls `json:"tls"`
+	Addr string         `json:"addr"`
+	Tls  OpenfgaGrpcTls `json:"tls"`
+}
+
+type OpenfgaGrpcTls struct {
+	Enabled bool    `json:"enabled"`
+	Cert    *string `json:"cert"`
+	Key     *string `json:"key"`
+	CA      *string `json:"ca"`
 }
 
 type OpenfgaHttp struct {
@@ -228,7 +252,8 @@ type OpenfgaAuthn struct {
 }
 
 type OpenfgaPreshared struct {
-	Keys []string `json:"keys"`
+	Keys       []string `json:"keys"`
+	KeysSecret *string  `json:"keysSecret"`
 }
 
 type OpenfgaOidc struct {
@@ -268,6 +293,7 @@ type OpenfgaMigrate struct {
 	ExtraVolumes            []core.Volume      `json:"extraVolumes"`
 	ExtraVolumeMounts       []core.VolumeMount `json:"extraVolumeMounts"`
 	Sidecars                []core.Container   `json:"sidecars"`
+	ExtraInitContainers     []core.Container   `json:"extraInitContainers"`
 	Annotations             map[string]*string `json:"annotations"`
 	Labels                  map[string]*string `json:"labels"`
 	Timeout                 *string            `json:"timeout"`

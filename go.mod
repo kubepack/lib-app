@@ -1,6 +1,6 @@
 module kubepack.dev/lib-app
 
-go 1.25.3
+go 1.25.6
 
 require (
 	github.com/Masterminds/semver/v3 v3.4.0
@@ -16,7 +16,7 @@ require (
 	github.com/spf13/cobra v1.10.1
 	github.com/spf13/pflag v1.0.10
 	github.com/unrolled/render v1.7.0
-	go.bytebuilders.dev/installer v0.1.1-0.20260103173925-b0fc997f07d2
+	go.bytebuilders.dev/installer v0.1.1-0.20260211233032-6a2a2c1d0a0c
 	go.wandrs.dev/binding v0.0.2
 	go.wandrs.dev/http v0.0.2
 	gocloud.dev v0.41.0
@@ -111,7 +111,7 @@ require (
 	github.com/docker/distribution v2.8.3+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.9.4 // indirect
 	github.com/emicklei/go-restful/v3 v3.13.0 // indirect
-	github.com/envoyproxy/gateway v1.6.1 // indirect
+	github.com/envoyproxy/gateway v1.6.3 // indirect
 	github.com/envoyproxy/go-control-plane/envoy v1.35.1-0.20251029084203-42a4a9261f66 // indirect
 	github.com/envoyproxy/protoc-gen-validate v1.2.1 // indirect
 	github.com/evanphx/json-patch v5.9.11+incompatible // indirect
@@ -233,7 +233,7 @@ require (
 	github.com/zeebo/errs v1.4.0 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	go.appscode.dev/alerts v0.2.1-0.20250217100836-596fabefb762 // indirect
-	go.bytebuilders.dev/catalog v0.0.17 // indirect
+	go.bytebuilders.dev/catalog v0.0.19 // indirect
 	go.bytebuilders.dev/resource-model v0.4.0 // indirect
 	go.bytebuilders.dev/ui-wizards v0.30.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
@@ -246,7 +246,7 @@ require (
 	go.opentelemetry.io/otel/sdk v1.38.0 // indirect
 	go.opentelemetry.io/otel/sdk/metric v1.38.0 // indirect
 	go.opentelemetry.io/otel/trace v1.38.0 // indirect
-	go.openviz.dev/installer v0.0.0-20251229063709-2e10132c5d63 // indirect
+	go.openviz.dev/installer v0.0.0-20260104052502-5deb6915c7d6 // indirect
 	go.wandrs.dev/inject v0.0.1 // indirect
 	go.yaml.in/yaml/v2 v2.4.3 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
@@ -295,18 +295,18 @@ require (
 	kmodules.xyz/prober v0.34.0 // indirect
 	kmodules.xyz/resource-metrics v0.34.0 // indirect
 	kubeops.dev/external-dns-operator v0.3.0 // indirect
-	kubeops.dev/installer v0.0.0-20260103043813-13df341d1a2b // indirect
+	kubeops.dev/installer v0.0.0-20260211052352-61a3b8b25cdd // indirect
 	kubestash.dev/apimachinery v0.22.1-0.20251227122949-454a7470e6f2 // indirect
 	oras.land/oras-go/v2 v2.6.0 // indirect
 	sigs.k8s.io/cli-utils v0.37.2 // indirect
-	sigs.k8s.io/gateway-api v1.4.0 // indirect
+	sigs.k8s.io/gateway-api v1.4.1 // indirect
 	sigs.k8s.io/json v0.0.0-20250730193827-2d320260d730 // indirect
 	sigs.k8s.io/kustomize/api v0.20.1 // indirect
 	sigs.k8s.io/kustomize/kyaml v0.20.1 // indirect
 	sigs.k8s.io/randfill v1.0.0 // indirect
 	sigs.k8s.io/structured-merge-diff/v6 v6.3.0 // indirect
 	stash.appscode.dev/apimachinery v0.42.0 // indirect
-	voyagermesh.dev/installer v0.0.0-20251230080904-cdc0a2148b57 // indirect
+	voyagermesh.dev/installer v0.0.0-20260126155429-994b493cefc6 // indirect
 )
 
 replace github.com/imdario/mergo => github.com/imdario/mergo v0.3.6

@@ -447,8 +447,8 @@ github.com/docker/docker-credential-helpers/credentials
 ## explicit; go 1.13
 github.com/emicklei/go-restful/v3
 github.com/emicklei/go-restful/v3/log
-# github.com/envoyproxy/gateway v1.6.1
-## explicit; go 1.25.3
+# github.com/envoyproxy/gateway v1.6.3
+## explicit; go 1.25.6
 github.com/envoyproxy/gateway/api/v1alpha1
 # github.com/envoyproxy/go-control-plane/envoy v1.35.1-0.20251029084203-42a4a9261f66
 ## explicit; go 1.23.0
@@ -1042,11 +1042,11 @@ github.com/zeebo/xxh3
 ## explicit; go 1.22.0
 go.appscode.dev/alerts/apis/alerts
 go.appscode.dev/alerts/apis/alerts/v1alpha1
-# go.bytebuilders.dev/catalog v0.0.17
-## explicit; go 1.25.3
+# go.bytebuilders.dev/catalog v0.0.19
+## explicit; go 1.25.6
 go.bytebuilders.dev/catalog/api/gateway/v1alpha1
-# go.bytebuilders.dev/installer v0.1.1-0.20260103173925-b0fc997f07d2
-## explicit; go 1.25.3
+# go.bytebuilders.dev/installer v0.1.1-0.20260211233032-6a2a2c1d0a0c
+## explicit; go 1.25.6
 go.bytebuilders.dev/installer/apis/installer
 go.bytebuilders.dev/installer/apis/installer/v1alpha1
 # go.bytebuilders.dev/resource-model v0.4.0
@@ -1135,7 +1135,7 @@ go.opentelemetry.io/otel/trace
 go.opentelemetry.io/otel/trace/embedded
 go.opentelemetry.io/otel/trace/internal/telemetry
 go.opentelemetry.io/otel/trace/noop
-# go.openviz.dev/installer v0.0.0-20251229063709-2e10132c5d63
+# go.openviz.dev/installer v0.0.0-20260104052502-5deb6915c7d6
 ## explicit; go 1.24.0
 go.openviz.dev/installer/apis/installer
 go.openviz.dev/installer/apis/installer/v1alpha1
@@ -2203,8 +2203,8 @@ kmodules.xyz/sets
 ## explicit; go 1.25
 kubeops.dev/external-dns-operator/apis/external
 kubeops.dev/external-dns-operator/apis/external/v1alpha1
-# kubeops.dev/installer v0.0.0-20260103043813-13df341d1a2b
-## explicit; go 1.24.0
+# kubeops.dev/installer v0.0.0-20260211052352-61a3b8b25cdd
+## explicit; go 1.25
 kubeops.dev/installer/apis/installer
 kubeops.dev/installer/apis/installer/v1alpha1
 # kubepack.dev/chart-doc-gen v0.5.0
@@ -2327,7 +2327,7 @@ sigs.k8s.io/controller-runtime/pkg/webhook/admission/metrics
 sigs.k8s.io/controller-runtime/pkg/webhook/conversion
 sigs.k8s.io/controller-runtime/pkg/webhook/conversion/metrics
 sigs.k8s.io/controller-runtime/pkg/webhook/internal/metrics
-# sigs.k8s.io/gateway-api v1.4.0
+# sigs.k8s.io/gateway-api v1.4.1
 ## explicit; go 1.24.0
 sigs.k8s.io/gateway-api/apis/v1
 # sigs.k8s.io/json v0.0.0-20250730193827-2d320260d730
@@ -2434,8 +2434,8 @@ stash.appscode.dev/apimachinery/apis/stash
 stash.appscode.dev/apimachinery/apis/stash/v1alpha1
 stash.appscode.dev/apimachinery/apis/stash/v1beta1
 stash.appscode.dev/apimachinery/crds
-# voyagermesh.dev/installer v0.0.0-20251230080904-cdc0a2148b57
-## explicit; go 1.24.0
+# voyagermesh.dev/installer v0.0.0-20260126155429-994b493cefc6
+## explicit; go 1.25
 voyagermesh.dev/installer/apis/installer
 voyagermesh.dev/installer/apis/installer/v1alpha1
 # x-helm.dev/apimachinery v0.0.18
