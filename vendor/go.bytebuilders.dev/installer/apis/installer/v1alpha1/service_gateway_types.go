@@ -20,7 +20,6 @@ import (
 	catgwapi "go.bytebuilders.dev/catalog/api/gateway/v1alpha1"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"kmodules.xyz/resource-metadata/apis/shared"
 )
 
 const (
@@ -50,8 +49,6 @@ type ServiceGatewaySpec struct {
 	ClusterMetadata        StashClusterMetadata `json:"clusterMetadata"`
 	GatewayClass           GatewayClassSpec     `json:"gatewayClass"`
 	catgwapi.GatewayValues `json:",inline,omitempty"`
-	// +optional
-	Distro shared.DistroSpec `json:"distro"`
 }
 
 type GatewayClassSpec struct {

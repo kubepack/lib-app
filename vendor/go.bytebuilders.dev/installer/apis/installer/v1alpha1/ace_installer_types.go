@@ -57,12 +57,17 @@ type AceInstallerSpec struct {
 	shared.BootstrapPresets `json:",inline,omitempty"`
 	SelfManagement          configapi.SelfManagement `json:"selfManagement"`
 	Precheck                AceInstallerPrecheckSpec `json:"precheck"`
+	Tester                  AceInstallerPodSpec      `json:"tester"`
 	// +optional
 	Options string `json:"options"`
 }
 
 type AceInstallerPrecheckSpec struct {
-	Enabled            bool                      `json:"enabled"`
+	Enabled             bool `json:"enabled"`
+	AceInstallerPodSpec `json:",inline"`
+}
+
+type AceInstallerPodSpec struct {
 	Image              ImageReference            `json:"image"`
 	PodAnnotations     map[string]string         `json:"podAnnotations"`
 	PodSecurityContext *core.PodSecurityContext  `json:"podSecurityContext"`
