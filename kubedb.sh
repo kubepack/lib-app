@@ -169,6 +169,15 @@ go run cmd/fuse-chart/*.go \
     --resource.name=clickhouses
 
 go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/db2/sample/db2.yaml \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=db2 \
+    --resource.group=kubedb.com \
+    --resource.version=v1alpha2 \
+    --resource.name=db2s
+
+go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/druid/druid.yaml \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
@@ -189,6 +198,15 @@ go run cmd/fuse-chart/*.go \
     --resource.name=ferretdbs
 
 go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/hanadb/sample/hanadb.yaml \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=hanadb \
+    --resource.group=kubedb.com \
+    --resource.version=v1alpha2 \
+    --resource.name=hanadbs
+
+go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/hazelcast/sample.yaml \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
@@ -207,6 +225,15 @@ go run cmd/fuse-chart/*.go \
     --resource.name=ignites
 
 go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/milvus/sample/milvus.yaml \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=milvus \
+    --resource.group=kubedb.com \
+    --resource.version=v1alpha2 \
+    --resource.name=milvuses
+
+go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/mssqlserver/sqlserver-ag.yaml \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
@@ -215,6 +242,15 @@ go run cmd/fuse-chart/*.go \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
     --resource.name=mssqlservers
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/neo4j/sample/neo4j.yaml \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=neo4j \
+    --resource.group=kubedb.com \
+    --resource.version=v1alpha2 \
+    --resource.name=neo4js
 
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/oracle/sample.yaml \
@@ -234,6 +270,15 @@ go run cmd/fuse-chart/*.go \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
     --resource.name=pgpools
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/qdrant/sample/qdrant.yaml \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=qdrant \
+    --resource.group=kubedb.com \
+    --resource.version=v1alpha2 \
+    --resource.name=qdrants
 
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/rabbitmq/rabbitmq.yaml \
@@ -264,6 +309,15 @@ go run cmd/fuse-chart/*.go \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
     --resource.name=solrs
+
+go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/weaviate/sample/weaviate.yaml \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=weaviate \
+    --resource.group=kubedb.com \
+    --resource.version=v1alpha2 \
+    --resource.name=weaviates
 
 go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/zookeeper/sample.yaml \
