@@ -1223,8 +1223,8 @@ kmodules.xyz/offshoot-api v0.34.0 h1:HnOOp8FrCjTWjtNApRDo6Ahe79tOlLrJmyye4xxO4Kk
 kmodules.xyz/offshoot-api v0.34.0/go.mod h1:F+B59yYw4CZJ4uD4xu6C+mMLzIXUtuH7E+SbDICl9jE=
 kmodules.xyz/prober v0.34.0 h1:ElZkZYCjLaytAA0M8EH42To7i9gh1IIX+d0qfaIohys=
 kmodules.xyz/prober v0.34.0/go.mod h1:rsu/fxxfNxY70GDbH6Ju8G66459hi7AhWSSBoiIp8ic=
-kmodules.xyz/resource-metadata v0.45.0 h1:mSNQ8TSKKLTS5UDou7SRaCuOhUSmPGTptyplgVyM3lA=
-kmodules.xyz/resource-metadata v0.45.0/go.mod h1:2A80iHv+kkkgLBhCBbPRwsRrqhmvjnEo6UDQKFx06xA=
+kmodules.xyz/resource-metadata v0.45.1-0.20260520103029-ca51beee2e7f h1:ZKMQYSMqomgQazuk9Rm9QqSWzN33xtK2vzWOrTmOXN4=
+kmodules.xyz/resource-metadata v0.45.1-0.20260520103029-ca51beee2e7f/go.mod h1:2A80iHv+kkkgLBhCBbPRwsRrqhmvjnEo6UDQKFx06xA=
 kmodules.xyz/resource-metrics v0.34.0 h1:cqscgTx3PONxHj6PIySK3sTlKKv8iKTGzRd+S6YSwXg=
 kmodules.xyz/resource-metrics v0.34.0/go.mod h1:R34IKtp5+NqcQz7AQJheBJK6Iem0LqrCbm/55Mn+ECQ=
 kmodules.xyz/schema-checker v0.4.3 h1:LKXKNWwJ0bFOqCMbyfZk38uVJIejXsANdp7l+fkIiJQ=
