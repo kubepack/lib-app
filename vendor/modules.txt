@@ -2185,7 +2185,7 @@ kmodules.xyz/offshoot-api/api/v2
 # kmodules.xyz/prober v0.34.0
 ## explicit; go 1.24.0
 kmodules.xyz/prober/api/v1
-# kmodules.xyz/resource-metadata v0.45.1-0.20260520103029-ca51beee2e7f
+# kmodules.xyz/resource-metadata v0.45.1-0.20260521105439-47a227f184eb
 ## explicit; go 1.25
 kmodules.xyz/resource-metadata/apis/meta
 kmodules.xyz/resource-metadata/apis/meta/v1alpha1
