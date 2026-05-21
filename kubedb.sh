@@ -34,6 +34,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/kafka/custom \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
+    --form-templates=monitoring/alert.yaml \
     --sample-name=kafka \
     --resource.group=kubedb.com \
     --resource.version=v1 \
@@ -53,6 +54,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/memcached/memcached.yaml \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
+    --form-templates=monitoring/alert.yaml \
     --sample-name=memcached \
     --resource.group=kubedb.com \
     --resource.version=v1 \
@@ -92,6 +94,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/pgbouncer/custom \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
+    --form-templates=monitoring/alert.yaml \
     --sample-name=pgbouncer \
     --resource.group=kubedb.com \
     --resource.version=v1 \
@@ -200,7 +203,6 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/ferretdb/ferretdb.yaml \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
-    --form-templates=monitoring/alert.yaml \
     --sample-name=ferret \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
@@ -210,6 +212,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/hanadb/sample/hanadb.yaml \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
+    --form-templates=monitoring/alert.yaml \
     --sample-name=hanadb \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
@@ -219,6 +222,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/hazelcast/sample.yaml \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
+    --form-templates=monitoring/alert.yaml \
     --sample-name=hazelcast \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
@@ -228,6 +232,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/ignite/sample.yaml \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
+    --form-templates=monitoring/alert.yaml \
     --sample-name=ignite \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
@@ -237,6 +242,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/milvus/sample/milvus.yaml \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
+    --form-templates=monitoring/alert.yaml \
     --sample-name=milvus \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
@@ -256,6 +262,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/neo4j/sample/neo4j.yaml \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
+    --form-templates=monitoring/alert.yaml \
     --sample-name=neo4j \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
@@ -265,6 +272,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/oracle/sample.yaml \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
+    --form-templates=monitoring/alert.yaml \
     --sample-name=oracle \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
@@ -284,6 +292,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/qdrant/sample/qdrant.yaml \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
+    --form-templates=monitoring/alert.yaml \
     --sample-name=qdrant \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
