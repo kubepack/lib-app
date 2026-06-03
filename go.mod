@@ -34,7 +34,7 @@ require (
 	k8s.io/klog/v2 v2.130.1
 	k8s.io/kubectl v0.34.3
 	kmodules.xyz/client-go v0.34.3
-	kmodules.xyz/resource-metadata v0.45.1-0.20260521105439-47a227f184eb
+	kmodules.xyz/resource-metadata v0.46.0
 	kmodules.xyz/sets v0.29.0
 	kubepack.dev/chart-doc-gen v0.5.0
 	kubepack.dev/kubepack v0.34.0
@@ -232,10 +232,10 @@ require (
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
 	github.com/zeebo/errs v1.4.0 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
-	go.appscode.dev/alerts v0.2.1-0.20250217100836-596fabefb762 // indirect
+	go.appscode.dev/alerts v0.2.1-0.20260516020454-00c8e56b1991 // indirect
 	go.bytebuilders.dev/catalog v0.0.19 // indirect
 	go.bytebuilders.dev/resource-model v0.4.0 // indirect
-	go.bytebuilders.dev/ui-wizards v0.33.0 // indirect
+	go.bytebuilders.dev/ui-wizards v0.34.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 	go.opentelemetry.io/contrib/detectors/gcp v1.36.0 // indirect
