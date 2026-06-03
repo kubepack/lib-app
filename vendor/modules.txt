@@ -1038,8 +1038,8 @@ github.com/zeebo/errs
 # github.com/zeebo/xxh3 v1.0.2
 ## explicit; go 1.17
 github.com/zeebo/xxh3
-# go.appscode.dev/alerts v0.2.1-0.20250217100836-596fabefb762
-## explicit; go 1.22.0
+# go.appscode.dev/alerts v0.2.1-0.20260516020454-00c8e56b1991
+## explicit; go 1.25
 go.appscode.dev/alerts/apis/alerts
 go.appscode.dev/alerts/apis/alerts/v1alpha1
 # go.bytebuilders.dev/catalog v0.0.19
@@ -1055,7 +1055,7 @@ go.bytebuilders.dev/resource-model/apis/cloud
 go.bytebuilders.dev/resource-model/apis/cloud/v1alpha1
 go.bytebuilders.dev/resource-model/apis/config/v1alpha1
 go.bytebuilders.dev/resource-model/crds
-# go.bytebuilders.dev/ui-wizards v0.33.0
+# go.bytebuilders.dev/ui-wizards v0.34.0
 ## explicit; go 1.25
 go.bytebuilders.dev/ui-wizards/apis/wizards
 go.bytebuilders.dev/ui-wizards/apis/wizards/v1alpha1
@@ -2185,7 +2185,7 @@ kmodules.xyz/offshoot-api/api/v2
 # kmodules.xyz/prober v0.34.0
 ## explicit; go 1.24.0
 kmodules.xyz/prober/api/v1
-# kmodules.xyz/resource-metadata v0.45.1-0.20260521105439-47a227f184eb
+# kmodules.xyz/resource-metadata v0.46.0
 ## explicit; go 1.25
 kmodules.xyz/resource-metadata/apis/meta
 kmodules.xyz/resource-metadata/apis/meta/v1alpha1
