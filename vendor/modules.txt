@@ -2200,7 +2200,7 @@ kmodules.xyz/resource-metadata/crds
 kmodules.xyz/resource-metadata/hub
 kmodules.xyz/resource-metadata/hub/resourcedescriptors
 kmodules.xyz/resource-metadata/hub/resourceeditors
-# kmodules.xyz/resource-metrics v0.34.0
+# kmodules.xyz/resource-metrics v0.34.3-0.20260605022022-00425669707f
 ## explicit; go 1.24.0
 kmodules.xyz/resource-metrics/api
 # kmodules.xyz/sets v0.29.0
@@ -2210,7 +2210,7 @@ kmodules.xyz/sets
 ## explicit; go 1.25
 kubeops.dev/external-dns-operator/apis/external
 kubeops.dev/external-dns-operator/apis/external/v1alpha1
-# kubeops.dev/installer v0.0.0-20260211052352-61a3b8b25cdd
+# kubeops.dev/installer v0.0.0-20260604074414-f8eed8b7cc8b
 ## explicit; go 1.25
 kubeops.dev/installer/apis/installer
 kubeops.dev/installer/apis/installer/v1alpha1

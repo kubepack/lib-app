@@ -293,9 +293,9 @@ require (
 	kmodules.xyz/objectstore-api v0.34.0 // indirect
 	kmodules.xyz/offshoot-api v0.34.0 // indirect
 	kmodules.xyz/prober v0.34.0 // indirect
-	kmodules.xyz/resource-metrics v0.34.0 // indirect
+	kmodules.xyz/resource-metrics v0.34.3-0.20260605022022-00425669707f // indirect
 	kubeops.dev/external-dns-operator v0.3.0 // indirect
-	kubeops.dev/installer v0.0.0-20260211052352-61a3b8b25cdd // indirect
+	kubeops.dev/installer v0.0.0-20260604074414-f8eed8b7cc8b // indirect
 	kubestash.dev/apimachinery v0.28.0-rc.0 // indirect
 	oras.land/oras-go/v2 v2.6.0 // indirect
 	sigs.k8s.io/cli-utils v0.37.2 // indirect
