@@ -200,15 +200,6 @@ go run cmd/fuse-chart/*.go \
     --resource.name=druids
 
 go run cmd/fuse-chart/*.go \
-    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/ferretdb/ferretdb.yaml \
-    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
-    --chart-version=$CHART_VERSION \
-    --sample-name=ferret \
-    --resource.group=kubedb.com \
-    --resource.version=v1alpha2 \
-    --resource.name=ferretdbs
-
-go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/hanadb/sample/hanadb.yaml \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
