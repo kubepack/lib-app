@@ -1053,7 +1053,7 @@ go.bytebuilders.dev/resource-model/apis/cloud
 go.bytebuilders.dev/resource-model/apis/cloud/v1alpha1
 go.bytebuilders.dev/resource-model/apis/config/v1alpha1
 go.bytebuilders.dev/resource-model/crds
-# go.bytebuilders.dev/ui-wizards v0.34.2-0.20260605020347-b85346d6d975
+# go.bytebuilders.dev/ui-wizards v0.34.2
 ## explicit; go 1.25.0
 go.bytebuilders.dev/ui-wizards/apis/wizards
 go.bytebuilders.dev/ui-wizards/apis/wizards/v1alpha1
@@ -2189,7 +2189,7 @@ kmodules.xyz/offshoot-api/api/v2
 # kmodules.xyz/prober v0.34.0
 ## explicit; go 1.24.0
 kmodules.xyz/prober/api/v1
-# kmodules.xyz/resource-metadata v0.46.2-0.20260605015430-a94e7c6ac65e
+# kmodules.xyz/resource-metadata v0.46.2-0.20260619063228-f2d4d47e68f2
 ## explicit; go 1.25.0
 kmodules.xyz/resource-metadata/apis/meta
 kmodules.xyz/resource-metadata/apis/meta/v1alpha1
