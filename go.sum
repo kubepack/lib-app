@@ -794,8 +794,8 @@ go.bytebuilders.dev/installer v0.1.1-0.20260211233032-6a2a2c1d0a0c h1:Q8SsqjpZC3
 go.bytebuilders.dev/installer v0.1.1-0.20260211233032-6a2a2c1d0a0c/go.mod h1:AVW3R90g20NzaM4J1jbQPydprgR82iYdKx4QeMQJLM0=
 go.bytebuilders.dev/resource-model v0.4.0 h1:wDXg4SGYn3zNRuOj17gGo0qeSE//ytdzGPSxkHa8JvA=
 go.bytebuilders.dev/resource-model v0.4.0/go.mod h1:wGndjj3y+Yjh7+e8Wjc6joqzZCC16WZfKNx9adAFVkw=
-go.bytebuilders.dev/ui-wizards v0.34.2-0.20260605020347-b85346d6d975 h1:qtr0YsU2mO8eklvMmZDKolKoCV9WTXFzaPURf2ngKBk=
-go.bytebuilders.dev/ui-wizards v0.34.2-0.20260605020347-b85346d6d975/go.mod h1:iGkHV2ZwPq0GwaxBBEAKsW2AtJj6Q9McICAnDnDZKPk=
+go.bytebuilders.dev/ui-wizards v0.35.0 h1:/JFbHqPFP/n57Igsg54ShFFENGcROiJHv+ENnE4nMqM=
+go.bytebuilders.dev/ui-wizards v0.35.0/go.mod h1:iGkHV2ZwPq0GwaxBBEAKsW2AtJj6Q9McICAnDnDZKPk=
 go.etcd.io/bbolt v1.3.2/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.opencensus.io v0.21.0/go.mod h1:mSImk1erAIZhrmZN+AvHh14ztQfjbGwt4TtuofqLduU=
 go.opencensus.io v0.22.0/go.mod h1:+kGneAE2xo2IficOXnaByMWTGM9T73dGwxeWcUqIpI8=
@@ -1221,8 +1221,8 @@ kmodules.xyz/offshoot-api v0.34.0 h1:HnOOp8FrCjTWjtNApRDo6Ahe79tOlLrJmyye4xxO4Kk
 kmodules.xyz/offshoot-api v0.34.0/go.mod h1:F+B59yYw4CZJ4uD4xu6C+mMLzIXUtuH7E+SbDICl9jE=
 kmodules.xyz/prober v0.34.0 h1:ElZkZYCjLaytAA0M8EH42To7i9gh1IIX+d0qfaIohys=
 kmodules.xyz/prober v0.34.0/go.mod h1:rsu/fxxfNxY70GDbH6Ju8G66459hi7AhWSSBoiIp8ic=
-kmodules.xyz/resource-metadata v0.46.2-0.20260605015430-a94e7c6ac65e h1:g1FISo4QR3ZFI5yBzQrZ0RntwyhnQZDIxt9sK5T2FZE=
-kmodules.xyz/resource-metadata v0.46.2-0.20260605015430-a94e7c6ac65e/go.mod h1:ejz7IVjhqmj6VH8CVfprocJK/IM++OeunrfUp51ZrIw=
+kmodules.xyz/resource-metadata v0.47.0 h1:lBZrF+akK7xnwVtV5185W5HyhhFBx07ln4IzwzebFAI=
+kmodules.xyz/resource-metadata v0.47.0/go.mod h1:ejz7IVjhqmj6VH8CVfprocJK/IM++OeunrfUp51ZrIw=
 kmodules.xyz/resource-metrics v0.34.3-0.20260605022022-00425669707f h1:3geIw7O/iw6xwtpl13B/DwvWzTkliMOA5htrEtGSbas=
 kmodules.xyz/resource-metrics v0.34.3-0.20260605022022-00425669707f/go.mod h1:R34IKtp5+NqcQz7AQJheBJK6Iem0LqrCbm/55Mn+ECQ=
 kmodules.xyz/schema-checker v0.4.3 h1:LKXKNWwJ0bFOqCMbyfZk38uVJIejXsANdp7l+fkIiJQ=
