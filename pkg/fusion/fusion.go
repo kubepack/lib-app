@@ -296,7 +296,16 @@ func NewCmdFuse() *cobra.Command {
 				}
 				cp.Object["metadata"] = md
 
-				resourceValues[rsKey] = cp
+				// For fusion charts, keep only the apiVersion, kind and metadata
+				// fields in values.yaml. The rest of the fields are sourced from
+				// the resource's schema defaults.
+				resourceValues[rsKey] = &unstructured.Unstructured{
+					Object: map[string]any{
+						"apiVersion": cp.GetAPIVersion(),
+						"kind":       cp.GetKind(),
+						"metadata":   md,
+					},
+				}
 
 				// schema
 				gvr, err := registry.GVR(cp.GetObjectKind().GroupVersionKind())

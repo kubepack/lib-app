@@ -172,7 +172,7 @@ func loadEditorModel(kc client.Client, reg repo.IRegistry, chartRef releasesapi.
 		return nil, err
 	}
 
-	return EditorChartValueManifest(kc, &app, opts.Metadata, chrt.Chart.Values)
+	return EditorChartValueManifest(kc, &app, opts.Metadata, chrt.Values)
 }
 
 func EditorChartValueManifest(kc client.Client, app *driversapi.AppRelease, mt releasesapi.Metadata, values map[string]any) (*releasesapi.EditorTemplate, error) {
