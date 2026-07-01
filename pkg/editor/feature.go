@@ -21,6 +21,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"time"
 
 	v2 "github.com/fluxcd/helm-controller/api/v2"
 	"github.com/pkg/errors"
@@ -129,6 +130,13 @@ func SetChartInfo(kc client.Client, feature *uiapi.Feature, featureKey string, v
 	}
 
 	err = unstructured.SetNestedField(values, feature.Spec.Chart.CreateNamespace, "resources", featureKey, "spec", "install", "createNamespace")
+	if err != nil {
+		return err
+	}
+
+	// spec.interval is required by the Flux HelmRelease v2 API. Set a sensible
+	// default so features enabled via the editor model render a valid HelmRelease.
+	err = unstructured.SetNestedField(values, (5 * time.Minute).String(), "resources", featureKey, "spec", "interval")
 	if err != nil {
 		return err
 	}
