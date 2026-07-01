@@ -296,15 +296,20 @@ func NewCmdFuse() *cobra.Command {
 				}
 				cp.Object["metadata"] = md
 
-				// For fusion charts, keep only the apiVersion, kind and metadata
-				// fields in values.yaml. The rest of the fields are sourced from
-				// the resource's schema defaults.
-				resourceValues[rsKey] = &unstructured.Unstructured{
-					Object: map[string]any{
-						"apiVersion": cp.GetAPIVersion(),
-						"kind":       cp.GetKind(),
-						"metadata":   md,
-					},
+				if objGK.Group == "helm.toolkit.fluxcd.io" && objGK.Kind == "HelmRelease" {
+					// Keep the full HelmRelease object in values.yaml.
+					resourceValues[rsKey] = cp
+				} else {
+					// For fusion charts, keep only the apiVersion, kind and metadata
+					// fields in values.yaml. The rest of the fields are sourced from
+					// the resource's schema defaults.
+					resourceValues[rsKey] = &unstructured.Unstructured{
+						Object: map[string]any{
+							"apiVersion": cp.GetAPIVersion(),
+							"kind":       cp.GetKind(),
+							"metadata":   md,
+						},
+					}
 				}
 
 				// schema
