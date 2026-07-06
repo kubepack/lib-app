@@ -27,8 +27,8 @@ spec:
           sourceRef:
             apiGroup: source.toolkit.fluxcd.io
             kind: HelmRepository
-            name: appscode-charts-oci
-          version: v0.35.0
+            name: appscode-wizards-oci
+          version: sha256:07341f5186f92ac3d282cb176b42443af2269c7a4fa2408311d6df914db60734
         enforceQuota: false
         flow: standalone-create
         icon: qlementine-icons:version-control-16
@@ -42,8 +42,8 @@ spec:
           sourceRef:
             apiGroup: source.toolkit.fluxcd.io
             kind: HelmRepository
-            name: appscode-charts-oci
-          version: v0.35.0
+            name: appscode-wizards-oci
+          version: sha256:07341f5186f92ac3d282cb176b42443af2269c7a4fa2408311d6df914db60734
         enforceQuota: false
         flow: standalone-create
         icon: hugeicons:redo
@@ -57,8 +57,8 @@ spec:
           sourceRef:
             apiGroup: source.toolkit.fluxcd.io
             kind: HelmRepository
-            name: appscode-charts-oci
-          version: v0.35.0
+            name: appscode-wizards-oci
+          version: sha256:07341f5186f92ac3d282cb176b42443af2269c7a4fa2408311d6df914db60734
         enforceQuota: false
         flow: standalone-create
         icon: hugeicons:settings-05
@@ -81,8 +81,8 @@ spec:
           sourceRef:
             apiGroup: source.toolkit.fluxcd.io
             kind: HelmRepository
-            name: appscode-charts-oci
-          version: v0.35.0
+            name: appscode-wizards-oci
+          version: sha256:07341f5186f92ac3d282cb176b42443af2269c7a4fa2408311d6df914db60734
         enforceQuota: true
         flow: standalone-create
         icon: hugeicons:horizontal-resize
@@ -96,8 +96,8 @@ spec:
           sourceRef:
             apiGroup: source.toolkit.fluxcd.io
             kind: HelmRepository
-            name: appscode-charts-oci
-          version: v0.35.0
+            name: appscode-wizards-oci
+          version: sha256:07341f5186f92ac3d282cb176b42443af2269c7a4fa2408311d6df914db60734
         enforceQuota: true
         flow: standalone-create
         icons:
@@ -113,8 +113,8 @@ spec:
           sourceRef:
             apiGroup: source.toolkit.fluxcd.io
             kind: HelmRepository
-            name: appscode-charts-oci
-          version: v0.35.0
+            name: appscode-wizards-oci
+          version: sha256:023147fc8aedbbb9d734c33a7534a736fce5edff5c4c2d8b7c436a7045fe66a4
         enforceQuota: true
         flow: standalone-edit
         icons:
@@ -130,8 +130,8 @@ spec:
           sourceRef:
             apiGroup: source.toolkit.fluxcd.io
             kind: HelmRepository
-            name: appscode-charts-oci
-          version: v0.35.0
+            name: appscode-wizards-oci
+          version: sha256:07341f5186f92ac3d282cb176b42443af2269c7a4fa2408311d6df914db60734
         enforceQuota: false
         flow: standalone-create
         icon: hugeicons:security-check
@@ -145,8 +145,8 @@ spec:
           sourceRef:
             apiGroup: source.toolkit.fluxcd.io
             kind: HelmRepository
-            name: appscode-charts-oci
-          version: v0.35.0
+            name: appscode-wizards-oci
+          version: sha256:023147fc8aedbbb9d734c33a7534a736fce5edff5c4c2d8b7c436a7045fe66a4
         enforceQuota: false
         flow: standalone-edit
         icon: hugeicons:presentation-line-chart-01
@@ -161,16 +161,16 @@ spec:
       sourceRef:
         apiGroup: source.toolkit.fluxcd.io
         kind: HelmRepository
-        name: appscode-charts-oci
-      version: v0.35.0
+        name: appscode-wizards-oci
+      version: sha256:023147fc8aedbbb9d734c33a7534a736fce5edff5c4c2d8b7c436a7045fe66a4
     enforceQuota: false
     options:
       name: kubedbcom-memcached-editor-options
       sourceRef:
         apiGroup: source.toolkit.fluxcd.io
         kind: HelmRepository
-        name: appscode-charts-oci
-      version: v0.35.0
+        name: appscode-wizards-oci
+      version: sha256:dd0e4755cc94315d2ab793916c1cf03f8cbd326c72ae5dfe49efdd2ecf6e6c78
   variants:
   - name: default
     selector:
