@@ -153,6 +153,15 @@ go run cmd/fuse-chart/*.go \
 #################################################################################
 
 go run cmd/fuse-chart/*.go \
+    --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/aerospike/sample.yaml \
+    --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
+    --chart-version=$CHART_VERSION \
+    --sample-name=aerospike \
+    --resource.group=kubedb.com \
+    --resource.version=v1alpha2 \
+    --resource.name=aerospikes
+
+go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/cassandra/sample.yaml \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
