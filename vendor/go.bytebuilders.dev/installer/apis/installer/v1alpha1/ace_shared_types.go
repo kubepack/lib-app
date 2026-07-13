@@ -142,3 +142,20 @@ type AceHook struct {
 	HookWeight       string `json:"hookWeight"`
 	HookDeletePolicy string `json:"hookDeletePolicy"`
 }
+
+type AceAlertForm struct {
+	Alert AceAlertConfig `json:"alert,omitempty"`
+}
+
+type AceAlertConfig struct {
+	AppSuffix string         `json:"appSuffix,omitempty"`
+	Groups    AceAlertGroups `json:"groups,omitempty"`
+}
+
+type AceAlertGroups struct {
+	Stash AceStashGroup `json:"stash,omitempty"`
+}
+
+type AceStashGroup struct {
+	Enabled string `json:"enabled"`
+}

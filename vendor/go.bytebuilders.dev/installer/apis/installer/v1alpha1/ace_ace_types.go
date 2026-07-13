@@ -52,20 +52,24 @@ type Ace struct {
 
 // AceSpec is the schema for Ace Operator values file
 type AceSpec struct {
-	PlatformUi   AcePlatformUi   `json:"platform-ui"`
-	ClusterUi    AceClusterUi    `json:"cluster-ui"`
-	Grafana      AceGrafana      `json:"grafana"`
-	KubedbUi     AceKubedbUi     `json:"kubedb-ui"`
-	PlatformApi  AcePlatformApi  `json:"platform-api"`
-	IngressNginx AceIngressNginx `json:"ingress-nginx"`
-	IngressDns   AceIngressDns   `json:"ingress-dns"`
-	Nats         AceNats         `json:"nats"`
-	NatsDns      AceNatsDns      `json:"nats-dns"`
-	Trickster    AceTrickster    `json:"trickster"`
-	Openfga      AceOpenfga      `json:"openfga"`
-	S3proxy      AceS3proxy      `json:"s3proxy"`
-	PgOutbox     AcePgOutbox     `json:"pgoutbox"`
-	OutboxSyncer AceOutboxSyncer `json:"outbox-syncer"`
+	PlatformUi     AcePlatformUi     `json:"platform-ui"`
+	ClusterUi      AceClusterUi      `json:"cluster-ui"`
+	Grafana        AceGrafana        `json:"grafana"`
+	Perses         AcePerses         `json:"perses"`
+	KubedbUi       AceKubedbUi       `json:"kubedb-ui"`
+	PlatformApi    AcePlatformApi    `json:"platform-api"`
+	IngressNginx   AceIngressNginx   `json:"ingress-nginx"`
+	Gateway        AceGateway        `json:"gateway"`
+	IngressDns     AceIngressDns     `json:"ingress-dns"`
+	Nats           AceNats           `json:"nats"`
+	NatsDns        AceNatsDns        `json:"nats-dns"`
+	Trickster      AceTrickster      `json:"trickster"`
+	Openfga        AceOpenfga        `json:"openfga"`
+	S3proxy        AceS3proxy        `json:"s3proxy"`
+	PgOutbox       AcePgOutbox       `json:"pgoutbox"`
+	OutboxSyncer   AceOutboxSyncer   `json:"outbox-syncer"`
+	PostgresAlerts AcePostgresAlerts `json:"postgres-alerts"`
+	RedisAlerts    AceRedisAlerts    `json:"redis-alerts"`
 	// KubeBindServer AceKubeBindServer `json:"kube-bind-server"`
 	Global             AceGlobalValues           `json:"global"`
 	Settings           Settings                  `json:"settings"`
@@ -122,6 +126,11 @@ type AceGrafana struct {
 	*GrafanaSpec `json:",inline,omitempty"`
 }
 
+type AcePerses struct {
+	Enabled     bool `json:"enabled"`
+	*PersesSpec `json:",inline,omitempty"`
+}
+
 type AceKubedbUi struct {
 	Enabled       bool `json:"enabled"`
 	*KubedbUiSpec `json:",inline,omitempty"`
@@ -135,6 +144,11 @@ type AcePlatformApi struct {
 type AceIngressNginx struct {
 	Enabled           bool `json:"enabled"`
 	*IngressNginxSpec `json:",inline,omitempty"`
+}
+
+type AceGateway struct {
+	Enabled      bool `json:"enabled"`
+	*GatewaySpec `json:",inline,omitempty"`
 }
 
 type AceIngressDns struct {
@@ -168,9 +182,32 @@ type AceOpenfga struct {
 	*OpenfgaSpec `json:",inline,omitempty"`
 }
 
+// AceOpenfgaDatastore exposes the subset of openfga datastore connection
+// settings that can be overridden from the ace chart. It intentionally
+// shadows the inlined OpenfgaSpec.Datastore so that ace/values.yaml only
+// carries these knobs instead of the full upstream datastore schema.
+type AceOpenfgaDatastore struct {
+	// +optional
+	Engine string `json:"engine"`
+	// +optional
+	MaxOpenConns string `json:"maxOpenConns,omitempty"`
+	// +optional
+	ConnMaxIdleTime string `json:"connMaxIdleTime,omitempty"`
+}
+
 type AceS3proxy struct {
 	Enabled      bool `json:"enabled"`
 	*S3proxySpec `json:",inline,omitempty"`
+}
+
+type AcePostgresAlerts struct {
+	Enabled bool         `json:"enabled"`
+	Form    AceAlertForm `json:"form,omitempty"`
+}
+
+type AceRedisAlerts struct {
+	Enabled bool         `json:"enabled"`
+	Form    AceAlertForm `json:"form,omitempty"`
 }
 
 type AceGlobalValues struct {
@@ -195,6 +232,7 @@ type AcePlatformSettings struct {
 	Token              string         `json:"token,omitempty"`
 	OwnerID            int64          `json:"ownerID"`
 	OwnerName          string         `json:"ownerName"`
+	OfflineInstaller   bool           `json:"offlineInstaller"`
 }
 
 type HostInfo struct {
@@ -237,6 +275,54 @@ type KubeStashSpec struct {
 	RetentionPolicy  ObjectReference             `json:"retentionPolicy"`
 	EncryptionSecret ObjectReference             `json:"encryptionSecret"`
 	StorageSecret    wizardsapi.OptionalResource `json:"storageSecret"`
+}
+
+type PersesSpec struct {
+	Config         PersesConfig      `json:"config"`
+	Env            []core.EnvVar     `json:"env"`
+	PodAnnotations map[string]string `json:"podAnnotations"`
+}
+
+type PersesConfig struct {
+	APIPrefix string         `json:"api_prefix,omitempty"`
+	Security  SecurityConfig `json:"security,omitempty"`
+	Database  DatabaseConfig `json:"database,omitempty"`
+}
+
+type SecurityConfig struct {
+	EnableAuth     bool                 `json:"enable_auth,omitempty"`
+	EncryptionKey  string               `json:"encryption_key,omitempty"`
+	Authentication AuthenticationConfig `json:"authentication,omitempty"`
+	Authorization  AuthorizationConfig  `json:"authorization,omitempty"`
+}
+
+type AuthenticationConfig struct {
+	Providers AuthProviders `json:"providers,omitempty"`
+}
+
+type AuthProviders struct {
+	EnableNative bool `json:"enable_native,omitempty"`
+}
+
+type AuthorizationConfig struct {
+	GuestPermissions []Permission `json:"guest_permissions,omitempty"`
+}
+
+type Permission struct {
+	Actions []string `json:"actions,omitempty"`
+	Scopes  []string `json:"scopes,omitempty"`
+}
+
+type DatabaseConfig struct {
+	SQL SQLConfig `json:"sql,omitempty"`
+}
+
+type SQLConfig struct {
+	User                 string `json:"user,omitempty"`
+	Password             string `json:"password,omitempty"`
+	Address              string `json:"addr,omitempty"`
+	DBName               string `json:"db_name,omitempty"`
+	AllowNativePasswords bool   `json:"allow_native_passwords,omitempty"`
 }
 
 type InfraDns struct {
@@ -304,6 +390,7 @@ type Settings struct {
 	Platform    PlatformSettings    `json:"platform"`
 	Security    SecuritySettings    `json:"security"`
 	Grafana     GrafanaSettings     `json:"grafana"`
+	Perses      PersesSettings      `json:"perses"`
 	InboxServer InboxServerSettings `json:"inboxServer"`
 	Contract    ContractStorage     `json:"contract"`
 	Firebase    FirebaseSettings    `json:"firebase"`
@@ -412,6 +499,10 @@ type GrafanaSettings struct {
 	AppMode string `json:"appMode"`
 	// +optional
 	SecretKey string `json:"secretKey"`
+}
+
+type PersesSettings struct {
+	EncryptionKey string `json:"encryptionKey"`
 }
 
 type InboxServerSettings struct {

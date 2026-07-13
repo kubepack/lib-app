@@ -25,6 +25,7 @@ import (
 	configapi "go.bytebuilders.dev/resource-model/apis/config/v1alpha1"
 	wizardsapi "go.bytebuilders.dev/ui-wizards/apis/wizards/v1alpha1"
 
+	openviz_installer "go.openviz.dev/installer/apis/installer/v1alpha1"
 	core "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	store "kmodules.xyz/objectstore-api/api/v1"
@@ -57,17 +58,20 @@ type AceOptionsSpec struct {
 	Context              AceDeploymentContext            `json:"context"`
 	Release              ObjectReference                 `json:"release"`
 	Registry             RegistrySpec                    `json:"registry"`
-	Monitoring           GlobalMonitoring                `json:"monitoring"`
+	Monitoring           AceOptionsMonitoring            `json:"monitoring"`
 	Infra                AceOptionsPlatformInfra         `json:"infra"`
 	Settings             AceOptionsSettings              `json:"settings"`
 	PlatformUi           AceOptionsComponentSpec         `json:"platform-ui"`
 	ClusterUi            AceOptionsComponentSpec         `json:"cluster-ui"`
 	Grafana              AceOptionsComponentSpec         `json:"grafana"`
+	Perses               AceOptionsComponentSpec         `json:"perses"`
 	KubedbUi             AceOptionsComponentSpec         `json:"kubedb-ui"`
 	PlatformApi          AceOptionsComponentSpec         `json:"platform-api"`
 	Ingress              AceOptionsIngressNginx          `json:"ingress"`
+	Gateway              AceOptionsGateway               `json:"gateway"`
 	Nats                 AceOptionsNatsSettings          `json:"nats"`
 	Trickster            AceOptionsComponentSpec         `json:"trickster"`
+	Regcache             AceOptionsComponentSpec         `json:"regcache"`
 	Openfga              AceOptionsComponentSpec         `json:"openfga"`
 	PgOutbox             AceOptionsComponentSpec         `json:"pgoutbox"`
 	OutboxSyncer         AceOptionsComponentSpec         `json:"outbox-syncer"`
@@ -186,6 +190,7 @@ const (
 )
 
 type AceOptionsIngressNginx struct {
+	Enabled     bool              `json:"enabled"`
 	Annotations map[string]string `json:"annotations,omitempty"`
 	ExposeVia   ServiceType       `json:"exposeVia"`
 	// DNS record types that will be considered for management
@@ -195,6 +200,11 @@ type AceOptionsIngressNginx struct {
 	NodeSelector map[string]string         `json:"nodeSelector"`
 	// +optional
 	ExternalIPs []string `json:"externalIPs"`
+}
+
+type AceOptionsGateway struct {
+	Enabled     bool              `json:"enabled"`
+	Annotations map[string]string `json:"annotations,omitempty"`
 }
 
 // +kubebuilder:validation:Enum=Ingress;HostPort
@@ -213,8 +223,27 @@ type AceOptionsNatsSettings struct {
 	NodeSelector map[string]string         `json:"nodeSelector"`
 }
 
+type AceOptionsMonitoring struct {
+	Agent          string                   `json:"agent"`
+	ServiceMonitor GlobalServiceMonitor     `json:"serviceMonitor"`
+	Exporter       GlobalPrometheusExporter `json:"exporter"`
+	//+optional
+	AlertManager AceOptionsAlertManager `json:"alertManager"`
+}
+
+type AceOptionsAlertManager struct {
+	Email   openviz_installer.AlertmanagerEmailSpec `json:"email"`
+	Webhook AceOptionsAlertManagerWebhook           `json:"webhook"`
+}
+
+type AceOptionsAlertManagerWebhook struct {
+	Enabled      bool                                                    `json:"enabled"`
+	SendResolved bool                                                    `json:"sendResolved"`
+	Providers    openviz_installer.AlertmanagerWebhookRelayProvidersSpec `json:"providers"`
+}
+
 type AceOptionsPlatformInfra struct {
-	StorageClass  LocalObjectReference         `json:"storageClass"`
+	StorageClass  LocalObjectReference         `json:"storageClass,omitempty"`
 	KubeStash     KubeStashOptions             `json:"kubestash"`
 	TLS           catgwapi.InfraTLS            `json:"tls"`
 	DNS           InfraDns                     `json:"dns"`
@@ -316,7 +345,8 @@ type AceOptionsSettings struct {
 	// +optional
 	LoginURL string `json:"loginURL"`
 	// +optional
-	LogoutURL string `json:"logoutURL"`
+	LogoutURL          string `json:"logoutURL"`
+	TenantSpreadPolicy string `json:"tenantSpreadPolicy,omitempty"`
 }
 
 type AceOptionsProxy struct {
@@ -366,13 +396,18 @@ type AceOptionsCacheSettings struct {
 }
 
 type AceOptionsSMTPSettings struct {
-	Enabled    bool   `json:"enabled"`
-	Host       string `json:"host"`
-	TlsEnabled bool   `json:"tlsEnabled"`
-	From       string `json:"from"`
-	Username   string `json:"username"`
-	Password   string `json:"password"`
+	Enabled bool   `json:"enabled"`
+	Host    string `json:"host"`
+	// +optional
+	TlsEnabled bool `json:"tlsEnabled,omitempty"`
+	// +optional
+	From string `json:"from,omitempty"`
+	// +optional
+	Username string `json:"username,omitempty"`
+	// +optional
+	Password string `json:"password,omitempty"`
 	// SubjectPrefix   string `json:"subjectPrefix"`
+	// +optional
 	SendAsPlainText bool `json:"sendAsPlainText"`
 }
 
@@ -423,8 +458,19 @@ func (a AceOptionsSpec) DevDeployment() bool {
 		strings.HasSuffix(a.InitialSetup.Admin.Email, "@appscode.com")
 }
 
+// +kubebuilder:validation:Enum=Create;Reconfigure;Upgrade;PromoteToProd
+type ActionType string
+
+const (
+	ActionTypeCreate        ActionType = "Create"
+	ActionTypeReconfigure   ActionType = "Reconfigure"
+	ActionTypeUpgrade       ActionType = "Upgrade"
+	ActionTypePromoteToProd ActionType = "PromoteToProd"
+)
+
 type AceDeploymentContext struct {
 	DeploymentType DeploymentType `json:"deploymentType"`
+	ActionType     ActionType     `json:"actionType"`
 	InstallerName  string         `json:"installerName"`
 	UploadID       string         `json:"uploadID"`
 	Version        string         `json:"version"`
@@ -482,9 +528,11 @@ type GeneratedValues struct {
 	// +optional
 	JKSPassword string `json:"jksPassword"`
 	// +optional
-	GrafanaSecretKey string              `json:"grafanaSecretKey"`
-	InboxServer      InboxServerValues   `json:"inboxServer"`
-	OpenFGAServer    OpenFGAServerValues `json:"openfga"`
+	GrafanaSecretKey string `json:"grafanaSecretKey"`
+	// +optional
+	PersesEncryptionKey string              `json:"persesEncryptionKey"`
+	InboxServer         InboxServerValues   `json:"inboxServer"`
+	OpenFGAServer       OpenFGAServerValues `json:"openfga"`
 	// InstallerSecret used by hosted mode (prod and ninja)
 	// to generate and validate marketplace self-hosted installer options
 	// +optional
@@ -508,6 +556,7 @@ type CloudProviderOptions struct {
 }
 
 type ProviderAWSOptions struct {
+	AceInstallerARN  string   `json:"aceInstallerARN,omitempty"`
 	EipAllocationIDs []string `json:"eipAllocationIDs,omitempty"`
 	SubnetIDs        []string `json:"subnetIDs,omitempty"`
 }

@@ -73,6 +73,7 @@ type GhCiWebhookSpec struct {
 	// +optional
 	Affinity     *core.Affinity     `json:"affinity"`
 	Ingress      AppIngress         `json:"ingress"`
+	Gateway      AppGateway         `json:"gateway"`
 	Volumes      []core.Volume      `json:"volumes"`
 	VolumeMounts []core.VolumeMount `json:"volumeMounts"`
 	Args         []string           `json:"args"`

@@ -58,6 +58,12 @@ type AceInstallerSpec struct {
 	SelfManagement          configapi.SelfManagement `json:"selfManagement"`
 	Precheck                AceInstallerPrecheckSpec `json:"precheck"`
 	Tester                  AceInstallerPodSpec      `json:"tester"`
+	// Regcache configures the in-cluster pull-through Docker registry cache
+	// (CNCF Distribution / registry:3) deployed via the regcache subchart. When
+	// enabled, it transparently proxies images from the upstream registry
+	// (ghcr.io by default), so that ghcr.io/appscode-charts images can be served
+	// from within the cluster.
+	Regcache RegcacheSpec `json:"regcache"`
 	// +optional
 	Options string `json:"options"`
 }

@@ -79,6 +79,54 @@ type ServiceMonitorLabels struct {
 	Labels map[string]string `json:"labels"`
 }
 
+type Alertmanager struct {
+	Email   AlertmanagerEmailSpec   `json:"email"`
+	Webhook AlertmanagerWebhookSpec `json:"webhook"`
+}
+
+type AlertmanagerEmailSpec struct {
+	Enabled      bool   `json:"enabled"`
+	To           string `json:"to"`
+	From         string `json:"from"`
+	Smarthost    string `json:"smarthost"`
+	AuthUsername string `json:"authUsername"`
+	Password     string `json:"password"`
+	RequireTLS   bool   `json:"requireTLS"`
+	SendResolved bool   `json:"sendResolved"`
+}
+
+type AlertmanagerWebhookSpec struct {
+	Enabled      bool                         `json:"enabled"`
+	SendResolved bool                         `json:"sendResolved"`
+	Relay        AlertmanagerWebhookRelaySpec `json:"relay"`
+}
+
+type AlertmanagerWebhookRelaySpec struct {
+	ReplicaCount        int32                                 `json:"replicaCount"`
+	Port                int32                                 `json:"port"`
+	Image               ContianerRef                          `json:"image"`
+	Providers           AlertmanagerWebhookRelayProvidersSpec `json:"providers,omitempty"`
+	RequestTimeout      string                                `json:"requestTimeout,omitempty"`
+	DedupeCacheSize     int32                                 `json:"dedupeCacheSize,omitempty"`
+	DedupeWindowSeconds int32                                 `json:"dedupeWindowSeconds,omitempty"`
+	MaxRequestBodyBytes int64                                 `json:"maxRequestBodyBytes,omitempty"`
+}
+
+type AlertmanagerWebhookRelayProvidersSpec struct {
+	// +optional
+	GoogleChat AlertmanagerWebhookRelayProviderSpec `json:"googleChat"`
+	// +optional
+	Slack AlertmanagerWebhookRelayProviderSpec `json:"slack"`
+	// +optional
+	MsTeams AlertmanagerWebhookRelayProviderSpec `json:"msTeams"`
+	// +optional
+	Mattermost AlertmanagerWebhookRelayProviderSpec `json:"mattermost"`
+}
+
+type AlertmanagerWebhookRelayProviderSpec struct {
+	URL string `json:"url"`
+}
+
 type EASSpec struct {
 	GroupPriorityMinimum       int32              `json:"groupPriorityMinimum"`
 	VersionPriority            int32              `json:"versionPriority"`

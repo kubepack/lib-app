@@ -83,6 +83,8 @@ type CatalogManagerSpec struct {
 	Platform CatalogManagerPlatformSpec `json:"platform"`
 	// +optional
 	Distro shared.DistroSpec `json:"distro"`
+	// +optional
+	ReservedPorts string `json:"reservedPorts,omitempty"`
 }
 
 type CatalogManagerGatewaySpec struct {

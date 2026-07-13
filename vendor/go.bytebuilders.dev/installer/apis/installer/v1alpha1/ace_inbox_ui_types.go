@@ -75,6 +75,7 @@ type InboxUiSpec struct {
 	// +optional
 	Affinity *core.Affinity  `json:"affinity"`
 	Ingress  PlatformIngress `json:"ingress"`
+	Gateway  AppGateway      `json:"gateway"`
 	// +optional
 	Distro shared.DistroSpec `json:"distro"`
 }

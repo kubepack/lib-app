@@ -52,15 +52,10 @@ type LicenseProxyserverManagerSpec struct {
 	RegistryFQDN     string `json:"registryFQDN"`
 	Image            string `json:"image"`
 	// +optional
-	Tag             string `json:"tag"`
-	ImagePullPolicy string `json:"imagePullPolicy"`
-	// +optional
-	KubeconfigSecretName string `json:"kubeconfigSecretName"`
-	// +optional
-	AddonManagerNamespace string        `json:"addonManagerNamespace"`
-	Placement             PlacementSpec `json:"placement"`
-	Kubectl               DockerImage   `json:"kubectl"`
-	Platform              PlatformSpec  `json:"platform"`
+	Tag             string        `json:"tag"`
+	ImagePullPolicy string        `json:"imagePullPolicy"`
+	Placement       PlacementSpec `json:"placement"`
+	Platform        PlatformSpec  `json:"platform"`
 	//+optional
 	SecurityContext *core.SecurityContext `json:"securityContext"`
 	// List of sources to populate environment variables in the container.
