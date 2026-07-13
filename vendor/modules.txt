@@ -1040,10 +1040,10 @@ github.com/zeebo/xxh3
 ## explicit; go 1.25
 go.appscode.dev/alerts/apis/alerts
 go.appscode.dev/alerts/apis/alerts/v1alpha1
-# go.bytebuilders.dev/catalog v0.0.19
+# go.bytebuilders.dev/catalog v0.0.23
 ## explicit; go 1.25.6
 go.bytebuilders.dev/catalog/api/gateway/v1alpha1
-# go.bytebuilders.dev/installer v0.1.1-0.20260211233032-6a2a2c1d0a0c
+# go.bytebuilders.dev/installer v0.1.1-0.20260713075605-ec739356c435
 ## explicit; go 1.25.6
 go.bytebuilders.dev/installer/apis/installer
 go.bytebuilders.dev/installer/apis/installer/v1alpha1
@@ -1139,8 +1139,8 @@ go.opentelemetry.io/otel/trace
 go.opentelemetry.io/otel/trace/embedded
 go.opentelemetry.io/otel/trace/internal/telemetry
 go.opentelemetry.io/otel/trace/noop
-# go.openviz.dev/installer v0.0.0-20260104052502-5deb6915c7d6
-## explicit; go 1.24.0
+# go.openviz.dev/installer v0.0.0-20260619044110-702becd1dd97
+## explicit; go 1.25
 go.openviz.dev/installer/apis/installer
 go.openviz.dev/installer/apis/installer/v1alpha1
 # go.wandrs.dev/binding v0.0.2
@@ -2210,8 +2210,8 @@ kmodules.xyz/sets
 ## explicit; go 1.25
 kubeops.dev/external-dns-operator/apis/external
 kubeops.dev/external-dns-operator/apis/external/v1alpha1
-# kubeops.dev/installer v0.0.0-20260604074414-f8eed8b7cc8b
-## explicit; go 1.25
+# kubeops.dev/installer v0.0.0-20260712202131-29761e3b9190
+## explicit; go 1.25.0
 kubeops.dev/installer/apis/installer
 kubeops.dev/installer/apis/installer/v1alpha1
 # kubepack.dev/chart-doc-gen v0.5.0
@@ -2441,8 +2441,8 @@ stash.appscode.dev/apimachinery/apis/stash
 stash.appscode.dev/apimachinery/apis/stash/v1alpha1
 stash.appscode.dev/apimachinery/apis/stash/v1beta1
 stash.appscode.dev/apimachinery/crds
-# voyagermesh.dev/installer v0.0.0-20260126155429-994b493cefc6
-## explicit; go 1.25
+# voyagermesh.dev/installer v0.0.0-20260515120941-8ff789f06253
+## explicit; go 1.25.0
 voyagermesh.dev/installer/apis/installer
 voyagermesh.dev/installer/apis/installer/v1alpha1
 # x-helm.dev/apimachinery v0.0.18

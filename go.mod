@@ -16,7 +16,7 @@ require (
 	github.com/spf13/cobra v1.10.1
 	github.com/spf13/pflag v1.0.10
 	github.com/unrolled/render v1.7.0
-	go.bytebuilders.dev/installer v0.1.1-0.20260211233032-6a2a2c1d0a0c
+	go.bytebuilders.dev/installer v0.1.1-0.20260713075605-ec739356c435
 	go.wandrs.dev/binding v0.0.2
 	go.wandrs.dev/http v0.0.2
 	gocloud.dev v0.41.0
@@ -232,7 +232,7 @@ require (
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	go.appscode.dev/alerts v0.2.1-0.20260516020454-00c8e56b1991 // indirect
-	go.bytebuilders.dev/catalog v0.0.19 // indirect
+	go.bytebuilders.dev/catalog v0.0.23 // indirect
 	go.bytebuilders.dev/resource-model v0.4.0 // indirect
 	go.bytebuilders.dev/ui-wizards v0.36.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
@@ -246,7 +246,7 @@ require (
 	go.opentelemetry.io/otel/sdk v1.43.0 // indirect
 	go.opentelemetry.io/otel/sdk/metric v1.43.0 // indirect
 	go.opentelemetry.io/otel/trace v1.43.0 // indirect
-	go.openviz.dev/installer v0.0.0-20260104052502-5deb6915c7d6 // indirect
+	go.openviz.dev/installer v0.0.0-20260619044110-702becd1dd97 // indirect
 	go.wandrs.dev/inject v0.0.1 // indirect
 	go.yaml.in/yaml/v2 v2.4.3 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
@@ -295,7 +295,7 @@ require (
 	kmodules.xyz/prober v0.34.0 // indirect
 	kmodules.xyz/resource-metrics v0.34.3-0.20260605022022-00425669707f // indirect
 	kubeops.dev/external-dns-operator v0.3.1-0.20260706085054-ae64b822e762 // indirect
-	kubeops.dev/installer v0.0.0-20260604074414-f8eed8b7cc8b // indirect
+	kubeops.dev/installer v0.0.0-20260712202131-29761e3b9190 // indirect
 	kubestash.dev/apimachinery v0.28.0-rc.0 // indirect
 	oras.land/oras-go/v2 v2.6.0 // indirect
 	sigs.k8s.io/cli-utils v0.37.2 // indirect
@@ -306,7 +306,7 @@ require (
 	sigs.k8s.io/randfill v1.0.0 // indirect
 	sigs.k8s.io/structured-merge-diff/v6 v6.3.0 // indirect
 	stash.appscode.dev/apimachinery v0.42.1 // indirect
-	voyagermesh.dev/installer v0.0.0-20260126155429-994b493cefc6 // indirect
+	voyagermesh.dev/installer v0.0.0-20260515120941-8ff789f06253 // indirect
 )
 
 replace github.com/imdario/mergo => github.com/imdario/mergo v0.3.6

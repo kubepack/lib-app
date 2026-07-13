@@ -79,6 +79,7 @@ type SmtprelaySpec struct {
 	Affinity   *core.Affinity `json:"affinity"`
 	Monitoring Monitoring     `json:"monitoring"`
 	Ingress    AppIngress     `json:"ingress"`
+	Gateway    AppGateway     `json:"gateway"`
 	LogLevel   string         `json:"logLevel"`
 	Smtp       SMTPConfig     `json:"smtp"`
 	// +optional

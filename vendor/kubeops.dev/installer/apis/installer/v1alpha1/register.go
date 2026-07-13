@@ -53,7 +53,8 @@ func Resource(resource string) schema.GroupResource {
 
 // Adds the list of known types to api.Scheme.
 func addKnownTypes(scheme *runtime.Scheme) error {
-	scheme.AddKnownTypes(SchemeGroupVersion,
+	scheme.AddKnownTypes(
+		SchemeGroupVersion,
 		&AceUserRoles{},
 		&AceUserRolesList{},
 		&ClusterConnector{},
@@ -82,13 +83,18 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&ScannerList{},
 		&Sidekick{},
 		&SidekickList{},
+		&StorageMetricsServer{},
+		&StorageMetricsServerList{},
 		&Supervisor{},
 		&SupervisorList{},
 		&Taskqueue{},
 		&TaskqueueList{},
+		&VcdLbGc{},
+		&VcdLbGcList{},
 	)
 
-	scheme.AddKnownTypes(SchemeGroupVersion,
+	scheme.AddKnownTypes(
+		SchemeGroupVersion,
 		&metav1.Status{},
 	)
 	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)

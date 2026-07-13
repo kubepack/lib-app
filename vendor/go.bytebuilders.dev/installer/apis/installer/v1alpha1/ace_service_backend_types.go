@@ -77,6 +77,7 @@ type ServiceBackendSpec struct {
 	Volumes      []core.Volume      `json:"volumes"`
 	VolumeMounts []core.VolumeMount `json:"volumeMounts"`
 	Ingress      PlatformIngress    `json:"ingress"`
+	Gateway      AppGateway         `json:"gateway"`
 	Monitoring   Monitoring         `json:"monitoring"`
 	Server       ServerConfig       `json:"server"`
 	// +optional

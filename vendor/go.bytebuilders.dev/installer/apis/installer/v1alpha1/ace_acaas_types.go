@@ -54,6 +54,7 @@ type AcaasSpec struct {
 
 	Global  AcaasGlobalValues `json:"global"`
 	Ingress AcaasIngress      `json:"ingress"`
+	Gateway AcaasGateway      `json:"gateway"`
 }
 
 type AceBilling struct {
@@ -102,18 +103,14 @@ type AceWebsite struct {
 }
 
 type AcaasGlobalValues struct {
-	NameOverride     string                `json:"nameOverride"`
-	FullnameOverride string                `json:"fullnameOverride"`
-	Platform         AcaasPlatformSettings `json:"platform"`
-	Registry         string                `json:"registry"`
-	RegistryFQDN     string                `json:"registryFQDN"`
-	Settings         AcaasSettings         `json:"settings"`
+	NameOverride     string              `json:"nameOverride"`
+	FullnameOverride string              `json:"fullnameOverride"`
+	Platform         AcePlatformSettings `json:"platform"`
+	Registry         string              `json:"registry"`
+	RegistryFQDN     string              `json:"registryFQDN"`
+	Settings         AcaasSettings       `json:"settings"`
 	// +optional
 	Distro shared.DistroSpec `json:"distro"`
-}
-
-type AcaasPlatformSettings struct {
-	Host string `json:"host"`
 }
 
 type AcaasSettings struct {
@@ -129,6 +126,7 @@ type AcaasSettingsSecretName struct {
 }
 
 type AcaasIngress struct {
+	Enabled   bool              `json:"enabled"`
 	ClassName string            `json:"className"`
 	TLS       AcaasIngressTLS   `json:"tls"`
 	Rules     AcaasIngressRules `json:"rules"`
@@ -137,6 +135,12 @@ type AcaasIngress struct {
 type AcaasIngressTLS struct {
 	Enable bool                 `json:"enable"`
 	Secret LocalObjectReference `json:"secret"`
+}
+
+type AcaasGateway struct {
+	Enabled      bool `json:"enabled"`
+	*GatewaySpec `json:",inline,omitempty"`
+	Rules        AcaasIngressRules `json:"rules"`
 }
 
 type AcaasIngressRules struct {
