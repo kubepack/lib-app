@@ -175,6 +175,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/clickhouse/cluster-mode/clickhouse.yaml \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
+    --form-templates=monitoring/alert.yaml \
     --sample-name=clickhouse \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
@@ -332,6 +333,7 @@ go run cmd/fuse-chart/*.go \
     --sample-dir=$HOME/go/src/go.bytebuilders.dev/ui-samples/weaviate/sample/weaviate.yaml \
     --chart-dir=$HOME/go/src/go.bytebuilders.dev/ui-wizards/charts \
     --chart-version=$CHART_VERSION \
+    --form-templates=monitoring/alert.yaml \
     --sample-name=weaviate \
     --resource.group=kubedb.com \
     --resource.version=v1alpha2 \
