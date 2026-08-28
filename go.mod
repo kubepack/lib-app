@@ -23,7 +23,7 @@ require (
 	gomodules.xyz/encoding v0.0.8
 	gomodules.xyz/jsonpatch/v3 v3.0.1
 	gomodules.xyz/logs v0.0.7
-	gomodules.xyz/x v0.0.17
+	gomodules.xyz/x v0.0.18
 	gopkg.in/yaml.v3 v3.0.1
 	helm.sh/helm/v3 v3.19.4
 	k8s.io/api v0.34.3
@@ -34,7 +34,7 @@ require (
 	k8s.io/klog/v2 v2.130.1
 	k8s.io/kubectl v0.34.3
 	kmodules.xyz/client-go v0.34.3
-	kmodules.xyz/resource-metadata v0.48.0
+	kmodules.xyz/resource-metadata v0.49.0
 	kmodules.xyz/sets v0.29.0
 	kubepack.dev/chart-doc-gen v0.5.0
 	kubepack.dev/kubepack v0.34.0
@@ -231,10 +231,10 @@ require (
 	github.com/yudai/gojsondiff v1.0.0 // indirect
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
-	go.appscode.dev/alerts v0.2.1-0.20260516020454-00c8e56b1991 // indirect
+	go.appscode.dev/alerts v0.2.1-0.20260811095631-791e5af59674 // indirect
 	go.bytebuilders.dev/catalog v0.0.23 // indirect
 	go.bytebuilders.dev/resource-model v0.4.0 // indirect
-	go.bytebuilders.dev/ui-wizards v0.36.0 // indirect
+	go.bytebuilders.dev/ui-wizards v0.37.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 	go.opentelemetry.io/contrib/detectors/gcp v1.39.0 // indirect
