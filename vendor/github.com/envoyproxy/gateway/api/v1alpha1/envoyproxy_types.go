@@ -20,13 +20,17 @@ const (
 // +kubebuilder:subresource:status
 
 // EnvoyProxy is the schema for the envoyproxies API.
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 type EnvoyProxy struct {
-	metav1.TypeMeta   `json:",inline"`
+	metav1.TypeMeta `json:",inline"`
+	// +optional
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// EnvoyProxySpec defines the desired state of EnvoyProxy.
-	Spec EnvoyProxySpec `json:"spec,omitempty"`
+	Spec EnvoyProxySpec `json:"spec"`
 	// EnvoyProxyStatus defines the actual state of EnvoyProxy.
+	// +optional
 	Status EnvoyProxyStatus `json:"status,omitempty"`
 }
 
@@ -98,11 +102,15 @@ type EnvoyProxySpec struct {
 	// If unspecified, the default filter order is applied.
 	// Default filter order is:
 	//
+	// - envoy.filters.http.custom_response
+	//
 	// - envoy.filters.http.health_check
 	//
 	// - envoy.filters.http.fault
 	//
 	// - envoy.filters.http.cors
+	//
+	// - envoy.filters.http.header_mutation
 	//
 	// - envoy.filters.http.ext_authz
 	//
@@ -134,11 +142,11 @@ type EnvoyProxySpec struct {
 	//
 	// - envoy.filters.http.grpc_stats
 	//
-	// - envoy.filters.http.custom_response
-	//
 	// - envoy.filters.http.credential_injector
 	//
 	// - envoy.filters.http.compressor
+	//
+	// - envoy.filters.http.dynamic_forward_proxy
 	//
 	// - envoy.filters.http.router
 	//
@@ -240,10 +248,13 @@ type FilterPosition struct {
 }
 
 // EnvoyFilter defines the type of Envoy HTTP filter.
-// +kubebuilder:validation:Enum=envoy.filters.http.health_check;envoy.filters.http.fault;envoy.filters.http.cors;envoy.filters.http.ext_authz;envoy.filters.http.api_key_auth;envoy.filters.http.basic_auth;envoy.filters.http.oauth2;envoy.filters.http.jwt_authn;envoy.filters.http.stateful_session;envoy.filters.http.buffer;envoy.filters.http.lua;envoy.filters.http.ext_proc;envoy.filters.http.wasm;envoy.filters.http.rbac;envoy.filters.http.local_ratelimit;envoy.filters.http.ratelimit;envoy.filters.http.grpc_web;envoy.filters.http.grpc_stats;envoy.filters.http.custom_response;envoy.filters.http.credential_injector;envoy.filters.http.compressor
+// +kubebuilder:validation:Enum=envoy.filters.http.custom_response;envoy.filters.http.health_check;envoy.filters.http.fault;envoy.filters.http.cors;envoy.filters.http.header_mutation;envoy.filters.http.ext_authz;envoy.filters.http.api_key_auth;envoy.filters.http.basic_auth;envoy.filters.http.oauth2;envoy.filters.http.jwt_authn;envoy.filters.http.stateful_session;envoy.filters.http.buffer;envoy.filters.http.lua;envoy.filters.http.ext_proc;envoy.filters.http.wasm;envoy.filters.http.rbac;envoy.filters.http.local_ratelimit;envoy.filters.http.ratelimit;envoy.filters.http.grpc_web;envoy.filters.http.grpc_stats;envoy.filters.http.credential_injector;envoy.filters.http.compressor;envoy.filters.http.dynamic_forward_proxy
 type EnvoyFilter string
 
 const (
+	// EnvoyFilterCustomResponse defines the Envoy HTTP custom response filter.
+	EnvoyFilterCustomResponse EnvoyFilter = "envoy.filters.http.custom_response"
+
 	// EnvoyFilterHealthCheck defines the Envoy HTTP health check filter.
 	EnvoyFilterHealthCheck EnvoyFilter = "envoy.filters.http.health_check"
 
@@ -252,6 +263,9 @@ const (
 
 	// EnvoyFilterCORS defines the Envoy HTTP CORS filter.
 	EnvoyFilterCORS EnvoyFilter = "envoy.filters.http.cors"
+
+	// EnvoyFilterHeaderMutation defines the Envoy HTTP header mutation filter
+	EnvoyFilterHeaderMutation EnvoyFilter = "envoy.filters.http.header_mutation"
 
 	// EnvoyFilterExtAuthz defines the Envoy HTTP external authorization filter.
 	EnvoyFilterExtAuthz EnvoyFilter = "envoy.filters.http.ext_authz"
@@ -272,14 +286,17 @@ const (
 	// EnvoyFilterSessionPersistence defines the Envoy HTTP session persistence filter.
 	EnvoyFilterSessionPersistence EnvoyFilter = "envoy.filters.http.stateful_session"
 
+	// EnvoyFilterBuffer defines the Envoy HTTP buffer filter
+	EnvoyFilterBuffer EnvoyFilter = "envoy.filters.http.buffer"
+
+	// EnvoyFilterLua defines the Envoy HTTP Lua filter.
+	EnvoyFilterLua EnvoyFilter = "envoy.filters.http.lua"
+
 	// EnvoyFilterExtProc defines the Envoy HTTP external process filter.
 	EnvoyFilterExtProc EnvoyFilter = "envoy.filters.http.ext_proc"
 
 	// EnvoyFilterWasm defines the Envoy HTTP WebAssembly filter.
 	EnvoyFilterWasm EnvoyFilter = "envoy.filters.http.wasm"
-
-	// EnvoyFilterLua defines the Envoy HTTP Lua filter.
-	EnvoyFilterLua EnvoyFilter = "envoy.filters.http.lua"
 
 	// EnvoyFilterRBAC defines the Envoy RBAC filter.
 	EnvoyFilterRBAC EnvoyFilter = "envoy.filters.http.rbac"
@@ -296,23 +313,17 @@ const (
 	// EnvoyFilterGRPCStats defines the Envoy HTTP gRPC stats filter.
 	EnvoyFilterGRPCStats EnvoyFilter = "envoy.filters.http.grpc_stats"
 
-	// EnvoyFilterCustomResponse defines the Envoy HTTP custom response filter.
-	EnvoyFilterCustomResponse EnvoyFilter = "envoy.filters.http.custom_response"
-
 	// EnvoyFilterCredentialInjector defines the Envoy HTTP credential injector filter.
 	EnvoyFilterCredentialInjector EnvoyFilter = "envoy.filters.http.credential_injector"
 
 	// EnvoyFilterCompressor defines the Envoy HTTP compressor filter.
 	EnvoyFilterCompressor EnvoyFilter = "envoy.filters.http.compressor"
 
+	// EnvoyFilterDynamicForwardProxy defines the Envoy HTTP dynamic forward proxy filter.
+	EnvoyFilterDynamicForwardProxy EnvoyFilter = "envoy.filters.http.dynamic_forward_proxy"
+
 	// EnvoyFilterRouter defines the Envoy HTTP router filter.
 	EnvoyFilterRouter EnvoyFilter = "envoy.filters.http.router"
-
-	// EnvoyFilterBuffer defines the Envoy HTTP buffer filter
-	EnvoyFilterBuffer EnvoyFilter = "envoy.filters.http.buffer"
-
-	// EnvoyFilterHeaderMutation defines the Envoy HTTP header mutation filter
-	EnvoyFilterHeaderMutation EnvoyFilter = "envoy.filters.http.header_mutation"
 
 	// StatFormatterRouteName defines the Route Name formatter for stats
 	StatFormatterRouteName string = "%ROUTE_NAME%"
@@ -345,6 +356,10 @@ type ProxyTelemetry struct {
 
 	// Metrics defines metrics configuration for managed proxies.
 	Metrics *ProxyMetrics `json:"metrics,omitempty"`
+
+	// RequestID configures Envoy request ID behavior.
+	// +optional
+	RequestID *RequestIDSettings `json:"requestID,omitempty"`
 }
 
 // EnvoyProxyProviderType defines the types of providers supported by Envoy Proxy.
@@ -358,6 +373,44 @@ const (
 
 	// EnvoyProxyProviderTypeHost defines the "Host" provider.
 	EnvoyProxyProviderTypeHost EnvoyProxyProviderType = "Host"
+)
+
+// RequestIDSettings defines configuration for Envoy's UUID request ID extension.
+type RequestIDSettings struct {
+	// Tracing configures Envoy's behavior for the UUID request ID extension,
+	// including whether the trace sampling decision is packed into the UUID and
+	// whether `X-Request-ID` is used for trace sampling decisions.
+	//
+	// When omitted, the default behavior is `PackAndSample`, which alters the UUID
+	// to contain the trace sampling decision and uses `X-Request-ID` for stable
+	// trace sampling.
+	//
+	// +optional
+	Tracing *RequestIDExtensionAction `json:"tracing,omitempty"`
+}
+
+// RequestIDExtensionAction defines how the UUID request ID extension behaves
+// with respect to packing the trace reason into the UUID and using the
+// request ID for trace sampling decisions.
+//
+// +kubebuilder:validation:Enum=PackAndSample;Sample;Pack;Disable
+type RequestIDExtensionAction string
+
+const (
+	// PackAndSample enables both behaviors:
+	// - Alters the UUID to contain the trace sampling decision
+	// - Uses `X-Request-ID` for trace sampling
+	RequestIDExtensionActionPackAndSample RequestIDExtensionAction = "PackAndSample"
+	// Sample uses `X-Request-ID` for trace sampling decisions, but does NOT alter
+	// the UUID to pack the trace sampling decision.
+	RequestIDExtensionActionSample RequestIDExtensionAction = "Sample"
+	// Pack alters the UUID to contain the trace sampling decision, but does NOT
+	// use `X-Request-ID` for trace sampling decisions.
+	RequestIDExtensionActionPack RequestIDExtensionAction = "Pack"
+	// Disable disables both behaviors:
+	// - Does not alter the UUID
+	// - Does not use `X-Request-ID` for trace sampling
+	RequestIDExtensionActionDisable RequestIDExtensionAction = "Disable"
 )
 
 // EnvoyProxyProvider defines the desired state of a resource provider.
@@ -545,16 +598,48 @@ const (
 	BootstrapTypeJSONPatch BootstrapType = "JSONPatch"
 )
 
-// EnvoyProxyStatus defines the observed state of EnvoyProxy. This type is not implemented
-// until https://github.com/envoyproxy/gateway/issues/1007 is fixed.
+// EnvoyProxyStatus defines the observed state of EnvoyProxy.
 type EnvoyProxyStatus struct {
-	// INSERT ADDITIONAL STATUS FIELDS - define observed state of cluster.
-	// Important: Run "make" to regenerate code after modifying this file.
+	// Ancestors represent the status information for all the GatewayClass or Gateway
+	// reference this EnvoyProxy with ParametersReference.
+	//
+	// +optional
+	// +notImplementedHide
+	Ancestors []EnvoyProxyAncestorStatus `json:"ancestors,omitempty"`
 }
+
+type EnvoyProxyAncestorStatus struct {
+	// Conditions describes the status of the Policy with respect to the given Ancestor.
+	//
+	// +required
+	// +listType=map
+	// +listMapKey=type
+	// +optional
+	Conditions []metav1.Condition `json:"conditions,omitempty"`
+
+	// AncestorRef corresponds a GatewayClass or Gateway use this EnvoyProxy with ParametersReference.
+	// +required
+	AncestorRef gwapiv1.ParentReference `json:"ancestorRef"`
+}
+
+type EnvoyProxyConditionType string
+
+const (
+	EnvoyProxyConditionAccepted EnvoyProxyConditionType = "Accepted"
+)
+
+type EnvoyProxyConditionReason string
+
+const (
+	EnvoyProxyReasonAccepted EnvoyProxyConditionReason = "Accepted"
+
+	EnvoyProxyReasonInvalidParameters EnvoyProxyConditionReason = "InvalidParameters"
+)
 
 // +kubebuilder:object:root=true
 
 // EnvoyProxyList contains a list of EnvoyProxy
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 type EnvoyProxyList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
@@ -576,5 +661,5 @@ const (
 )
 
 func init() {
-	SchemeBuilder.Register(&EnvoyProxy{}, &EnvoyProxyList{})
+	localSchemeBuilder.Register(&EnvoyProxy{}, &EnvoyProxyList{})
 }
