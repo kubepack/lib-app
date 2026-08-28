@@ -17,6 +17,7 @@ limitations under the License.
 package v1alpha1
 
 import (
+	alerts "go.appscode.dev/alerts/apis/alerts/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	api "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 )
@@ -37,6 +38,7 @@ type KubedbcomWeaviateEditorOptions struct {
 type KubedbcomWeaviateEditorOptionsSpec struct {
 	api.Metadata `json:"metadata,omitempty"`
 	Spec         KubedbcomWeaviateEditorOptionsSpecSpec `json:"spec"`
+	Form         WeaviateAlertsSpecForm                 `json:"form"`
 }
 
 type KubedbcomWeaviateEditorOptionsSpecSpec struct {
@@ -51,7 +53,7 @@ type KubedbcomWeaviateEditorOptionsSpecSpec struct {
 	HealthChecker  *WeaviateHealthChecker `json:"healthChecker,omitempty"`
 	Persistence    Persistence            `json:"persistence"`
 	PodResources   PodResources           `json:"podResources"`
-	AuthSecret     AuthSecret             `json:"authSecret"`
+	AuthSecret     WeaviateAuthSecret     `json:"authSecret"`
 	DeletionPolicy DeletionPolicy         `json:"deletionPolicy"`
 	Configuration  string                 `json:"configuration"`
 	Admin          AdminOptions           `json:"admin"`
@@ -61,10 +63,23 @@ type KubedbcomWeaviateEditorOptionsSpecSpec struct {
 	Openshift Openshift `json:"openshift"`
 }
 
+type WeaviateAuthSecret struct {
+	// +optional
+	Name string `json:"name"`
+	// +optional
+	// +kubebuilder:validation:Format:=password
+	// Comma separated api keys, stored as the AUTHENTICATION_APIKEY_ALLOWED_KEYS secret key.
+	AllowedKeys string `json:"allowedKeys"`
+}
+
 type WeaviateHealthChecker struct {
 	PeriodSeconds    int32 `json:"periodSeconds"`
 	TimeoutSeconds   int32 `json:"timeoutSeconds"`
 	FailureThreshold int32 `json:"failureThreshold"`
+}
+
+type WeaviateAlertsSpecForm struct {
+	Alert alerts.WeaviateAlert `json:"alert"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

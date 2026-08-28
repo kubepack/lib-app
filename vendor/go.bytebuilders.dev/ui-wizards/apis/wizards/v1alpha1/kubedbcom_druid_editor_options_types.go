@@ -75,6 +75,7 @@ type DruidTopology struct {
 	MiddleManagers *DruidDataNode `json:"middleManagers"`
 	Historicals    *DruidDataNode `json:"historicals"`
 	Brokers        *DruidNode     `json:"brokers"`
+	Routers        *DruidNode     `json:"routers"`
 }
 
 type DruidDeepStorage struct {
@@ -85,7 +86,7 @@ type DruidDeepStorage struct {
 // +kubebuilder:validation:Enum=s3;google;azure;hdfs
 type DruidDeepStorageType string
 
-// +kubebuilder:validation:Enum=MySQL;Postgres
+// +kubebuilder:validation:Enum=MySQL;PostgreSQL
 type DruidMetadataStorageType string
 
 type DruidMetadataStorage struct {
