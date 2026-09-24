@@ -119,23 +119,25 @@ func SetChartInfo(kc client.Client, feature *uiapi.Feature, featureKey string, v
 		}
 	}
 
-	err = unstructured.SetNestedField(values, feature.Spec.Chart.Namespace, "resources", featureKey, "spec", "targetNamespace")
-	if err != nil {
-		return err
-	}
-	err = unstructured.SetNestedField(values, feature.Spec.Chart.Namespace, "resources", featureKey, "spec", "storageNamespace")
-	if err != nil {
-		return err
-	}
+	targetNamespace := feature.Spec.Chart.Namespace
+	storageNamespace := feature.Spec.Chart.Namespace
+	createNamespace := feature.Spec.Chart.CreateNamespace
 
-	err = unstructured.SetNestedField(values, feature.Spec.Chart.CreateNamespace, "resources", featureKey, "spec", "install", "createNamespace")
+	hrNamespace, found, err := unstructured.NestedString(values, "resources", featureKey, "metadata", "namespace")
 	if err != nil {
 		return err
+	}
+	if !found || hrNamespace == "" {
+		hrNamespace = hub.BootstrapHelmRepositoryNamespace()
 	}
 
 	var hr v2.HelmRelease
-	err = kc.Get(context.Background(), types.NamespacedName{Name: feature.Name, Namespace: hub.BootstrapHelmRepositoryNamespace()}, &hr)
+	err = kc.Get(context.Background(), types.NamespacedName{Name: feature.Name, Namespace: hrNamespace}, &hr)
 	if err == nil {
+		// A changed target or storage namespace makes helm-controller uninstall and reinstall the release.
+		targetNamespace = hr.GetReleaseNamespace()
+		storageNamespace = hr.GetStorageNamespace()
+		createNamespace = hr.GetInstall().CreateNamespace
 		if hr.Spec.Values != nil {
 			if err = setFeatureValues(values, hr.Spec.Values.Raw, featureKey); err != nil {
 				return err
@@ -148,6 +150,19 @@ func SetChartInfo(kc client.Client, feature *uiapi.Feature, featureKey string, v
 			}
 		}
 	} else {
+		return err
+	}
+
+	err = unstructured.SetNestedField(values, targetNamespace, "resources", featureKey, "spec", "targetNamespace")
+	if err != nil {
+		return err
+	}
+	err = unstructured.SetNestedField(values, storageNamespace, "resources", featureKey, "spec", "storageNamespace")
+	if err != nil {
+		return err
+	}
+	err = unstructured.SetNestedField(values, createNamespace, "resources", featureKey, "spec", "install", "createNamespace")
+	if err != nil {
 		return err
 	}
 
