@@ -894,7 +894,7 @@ github.com/munnerz/goautoneg
 # github.com/mxk/go-flowrate v0.0.0-20140419014527-cca7078d478f
 ## explicit
 github.com/mxk/go-flowrate/flowrate
-# github.com/onsi/gomega v1.38.2
+# github.com/onsi/gomega v1.38.3
 ## explicit; go 1.23.0
 github.com/onsi/gomega
 github.com/onsi/gomega/format
@@ -995,14 +995,14 @@ github.com/sergi/go-diff/diffmatchpatch
 # github.com/shopspring/decimal v1.4.0
 ## explicit; go 1.10
 github.com/shopspring/decimal
-# github.com/sirupsen/logrus v1.9.3
-## explicit; go 1.13
+# github.com/sirupsen/logrus v1.9.4
+## explicit; go 1.17
 github.com/sirupsen/logrus
 # github.com/spf13/cast v1.10.0
 ## explicit; go 1.21.0
 github.com/spf13/cast
 github.com/spf13/cast/internal
-# github.com/spf13/cobra v1.10.1
+# github.com/spf13/cobra v1.10.2
 ## explicit; go 1.15
 github.com/spf13/cobra
 # github.com/spf13/pflag v1.0.10
@@ -1045,14 +1045,14 @@ github.com/zeebo/xxh3
 ## explicit; go 1.25
 go.appscode.dev/alerts/apis/alerts
 go.appscode.dev/alerts/apis/alerts/v1alpha1
-# go.bytebuilders.dev/catalog v0.0.23
+# go.bytebuilders.dev/catalog v0.1.2-0.20261006105413-f96363d5bf8d
 ## explicit; go 1.25.6
 go.bytebuilders.dev/catalog/api/gateway/v1alpha1
-# go.bytebuilders.dev/installer v0.1.1-0.20260713075605-ec739356c435
+# go.bytebuilders.dev/installer v0.1.1-0.20261017112147-8c782e3b60f0
 ## explicit; go 1.25.6
 go.bytebuilders.dev/installer/apis/installer
 go.bytebuilders.dev/installer/apis/installer/v1alpha1
-# go.bytebuilders.dev/resource-model v0.4.0
+# go.bytebuilders.dev/resource-model v0.4.1-0.20260908050049-ce9aabf9ad5c
 ## explicit; go 1.25
 go.bytebuilders.dev/resource-model/apis/cloud
 go.bytebuilders.dev/resource-model/apis/cloud/v1alpha1
@@ -1625,7 +1625,7 @@ helm.sh/helm/v3/pkg/strvals
 helm.sh/helm/v3/pkg/time
 helm.sh/helm/v3/pkg/time/ctime
 helm.sh/helm/v3/pkg/uploader
-# k8s.io/api v0.34.3
+# k8s.io/api v0.34.8
 ## explicit; go 1.24.0
 k8s.io/api/admission/v1
 k8s.io/api/admission/v1beta1
@@ -1687,7 +1687,7 @@ k8s.io/api/storage/v1
 k8s.io/api/storage/v1alpha1
 k8s.io/api/storage/v1beta1
 k8s.io/api/storagemigration/v1alpha1
-# k8s.io/apiextensions-apiserver v0.34.3
+# k8s.io/apiextensions-apiserver v0.34.8
 ## explicit; go 1.24.0
 k8s.io/apiextensions-apiserver/pkg/apis/apiextensions
 k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1
@@ -1698,7 +1698,7 @@ k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset
 k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/scheme
 k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/typed/apiextensions/v1
 k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/typed/apiextensions/v1beta1
-# k8s.io/apimachinery v0.34.3
+# k8s.io/apimachinery v0.34.8
 ## explicit; go 1.24.0
 k8s.io/apimachinery/pkg/api/equality
 k8s.io/apimachinery/pkg/api/errors
@@ -1771,7 +1771,7 @@ k8s.io/apimachinery/pkg/watch
 k8s.io/apimachinery/third_party/forked/golang/json
 k8s.io/apimachinery/third_party/forked/golang/netutil
 k8s.io/apimachinery/third_party/forked/golang/reflect
-# k8s.io/apiserver v0.34.3
+# k8s.io/apiserver v0.34.8
 ## explicit; go 1.24.0
 k8s.io/apiserver/pkg/authentication/user
 k8s.io/apiserver/pkg/endpoints/deprecation
@@ -1784,7 +1784,7 @@ k8s.io/cli-runtime/pkg/genericclioptions
 k8s.io/cli-runtime/pkg/genericiooptions
 k8s.io/cli-runtime/pkg/printers
 k8s.io/cli-runtime/pkg/resource
-# k8s.io/client-go v0.34.3
+# k8s.io/client-go v0.34.8
 ## explicit; go 1.24.0
 k8s.io/client-go/applyconfigurations/admissionregistration/v1
 k8s.io/client-go/applyconfigurations/admissionregistration/v1alpha1
@@ -2083,7 +2083,7 @@ k8s.io/client-go/util/jsonpath
 k8s.io/client-go/util/keyutil
 k8s.io/client-go/util/retry
 k8s.io/client-go/util/workqueue
-# k8s.io/component-base v0.34.3
+# k8s.io/component-base v0.34.8
 ## explicit; go 1.24.0
 k8s.io/component-base/version
 # k8s.io/component-helpers v0.34.3
@@ -2162,7 +2162,7 @@ kmodules.xyz/apiversion
 # kmodules.xyz/apply v0.34.0
 ## explicit; go 1.24.0
 kmodules.xyz/apply
-# kmodules.xyz/client-go v0.34.6
+# kmodules.xyz/client-go v0.34.7-0.20260916091548-45e2a0e7782d
 ## explicit; go 1.25.0
 kmodules.xyz/client-go
 kmodules.xyz/client-go/api/v1
@@ -2218,11 +2218,11 @@ kmodules.xyz/resource-metrics/api
 # kmodules.xyz/sets v0.29.0
 ## explicit; go 1.21.5
 kmodules.xyz/sets
-# kubeops.dev/external-dns-operator v0.3.1-0.20260706085054-ae64b822e762
-## explicit; go 1.25
+# kubeops.dev/external-dns-operator v0.4.1-0.20260711084336-46e45f490d84
+## explicit; go 1.25.0
 kubeops.dev/external-dns-operator/apis/external
 kubeops.dev/external-dns-operator/apis/external/v1alpha1
-# kubeops.dev/installer v0.0.0-20260712202131-29761e3b9190
+# kubeops.dev/installer v0.0.0-20261017111602-ec2b982d67b8
 ## explicit; go 1.25.0
 kubeops.dev/installer/apis/installer
 kubeops.dev/installer/apis/installer/v1alpha1
@@ -2300,7 +2300,7 @@ sigs.k8s.io/cli-utils/pkg/kstatus/polling/event
 sigs.k8s.io/cli-utils/pkg/kstatus/polling/statusreaders
 sigs.k8s.io/cli-utils/pkg/kstatus/status
 sigs.k8s.io/cli-utils/pkg/object
-# sigs.k8s.io/controller-runtime v0.22.4
+# sigs.k8s.io/controller-runtime v0.22.5
 ## explicit; go 1.24.0
 sigs.k8s.io/controller-runtime
 sigs.k8s.io/controller-runtime/pkg/builder
@@ -2453,7 +2453,7 @@ stash.appscode.dev/apimachinery/apis/stash
 stash.appscode.dev/apimachinery/apis/stash/v1alpha1
 stash.appscode.dev/apimachinery/apis/stash/v1beta1
 stash.appscode.dev/apimachinery/crds
-# voyagermesh.dev/installer v0.0.0-20260515120941-8ff789f06253
+# voyagermesh.dev/installer v0.0.0-20261006102643-3da5e1900dff
 ## explicit; go 1.25.0
 voyagermesh.dev/installer/apis/installer
 voyagermesh.dev/installer/apis/installer/v1alpha1

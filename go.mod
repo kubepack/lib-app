@@ -13,10 +13,10 @@ require (
 	github.com/google/go-containerregistry v0.20.7
 	github.com/google/uuid v1.6.0
 	github.com/pkg/errors v0.9.1
-	github.com/spf13/cobra v1.10.1
+	github.com/spf13/cobra v1.10.2
 	github.com/spf13/pflag v1.0.10
 	github.com/unrolled/render v1.7.0
-	go.bytebuilders.dev/installer v0.1.1-0.20260713075605-ec739356c435
+	go.bytebuilders.dev/installer v0.1.1-0.20261017112147-8c782e3b60f0
 	go.wandrs.dev/binding v0.0.2
 	go.wandrs.dev/http v0.0.2
 	gocloud.dev v0.41.0
@@ -26,20 +26,20 @@ require (
 	gomodules.xyz/x v0.0.18
 	gopkg.in/yaml.v3 v3.0.1
 	helm.sh/helm/v3 v3.19.4
-	k8s.io/api v0.34.3
-	k8s.io/apiextensions-apiserver v0.34.3
-	k8s.io/apimachinery v0.34.3
+	k8s.io/api v0.34.8
+	k8s.io/apiextensions-apiserver v0.34.8
+	k8s.io/apimachinery v0.34.8
 	k8s.io/cli-runtime v0.34.3
-	k8s.io/client-go v0.34.3
+	k8s.io/client-go v0.34.8
 	k8s.io/klog/v2 v2.130.1
 	k8s.io/kubectl v0.34.3
-	kmodules.xyz/client-go v0.34.6
+	kmodules.xyz/client-go v0.34.7-0.20260916091548-45e2a0e7782d
 	kmodules.xyz/resource-metadata v0.51.0
 	kmodules.xyz/sets v0.29.0
 	kubepack.dev/chart-doc-gen v0.5.0
 	kubepack.dev/kubepack v0.34.0
 	kubepack.dev/lib-helm v0.34.0
-	sigs.k8s.io/controller-runtime v0.22.4
+	sigs.k8s.io/controller-runtime v0.22.5
 	sigs.k8s.io/yaml v1.6.0
 	x-helm.dev/apimachinery v0.0.18
 )
@@ -201,7 +201,7 @@ require (
 	github.com/monochromegane/go-gitignore v0.0.0-20200626010858-205db1a8cc00 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/mxk/go-flowrate v0.0.0-20140419014527-cca7078d478f // indirect
-	github.com/onsi/gomega v1.38.2 // indirect
+	github.com/onsi/gomega v1.38.3 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opencontainers/image-spec v1.1.1 // indirect
 	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
@@ -222,7 +222,7 @@ require (
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.2 // indirect
 	github.com/sergi/go-diff v1.3.1 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
-	github.com/sirupsen/logrus v1.9.3 // indirect
+	github.com/sirupsen/logrus v1.9.4 // indirect
 	github.com/spf13/cast v1.10.0 // indirect
 	github.com/spiffe/go-spiffe/v2 v2.7.0 // indirect
 	github.com/vbatts/tar-split v0.12.2 // indirect
@@ -232,8 +232,8 @@ require (
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	go.appscode.dev/alerts v0.2.1-0.20260811095631-791e5af59674 // indirect
-	go.bytebuilders.dev/catalog v0.0.23 // indirect
-	go.bytebuilders.dev/resource-model v0.4.0 // indirect
+	go.bytebuilders.dev/catalog v0.1.2-0.20261006105413-f96363d5bf8d // indirect
+	go.bytebuilders.dev/resource-model v0.4.1-0.20260908050049-ce9aabf9ad5c // indirect
 	go.bytebuilders.dev/ui-wizards v0.39.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
@@ -278,9 +278,9 @@ require (
 	gopkg.in/evanphx/json-patch.v4 v4.13.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	k8s.io/apiserver v0.34.3 // indirect
+	k8s.io/apiserver v0.34.8 // indirect
 	k8s.io/autoscaler/vertical-pod-autoscaler v1.0.0 // indirect
-	k8s.io/component-base v0.34.3 // indirect
+	k8s.io/component-base v0.34.8 // indirect
 	k8s.io/component-helpers v0.34.3 // indirect
 	k8s.io/kube-aggregator v0.34.3 // indirect
 	k8s.io/kube-openapi v0.0.0-20250910181357-589584f1c912 // indirect
@@ -294,8 +294,8 @@ require (
 	kmodules.xyz/offshoot-api v0.34.0 // indirect
 	kmodules.xyz/prober v0.34.0 // indirect
 	kmodules.xyz/resource-metrics v0.34.3-0.20260605022022-00425669707f // indirect
-	kubeops.dev/external-dns-operator v0.3.1-0.20260706085054-ae64b822e762 // indirect
-	kubeops.dev/installer v0.0.0-20260712202131-29761e3b9190 // indirect
+	kubeops.dev/external-dns-operator v0.4.1-0.20260711084336-46e45f490d84 // indirect
+	kubeops.dev/installer v0.0.0-20261017111602-ec2b982d67b8 // indirect
 	kubestash.dev/apimachinery v0.28.0-rc.0 // indirect
 	oras.land/oras-go/v2 v2.6.0 // indirect
 	sigs.k8s.io/cli-utils v0.37.2 // indirect
@@ -306,7 +306,7 @@ require (
 	sigs.k8s.io/randfill v1.0.0 // indirect
 	sigs.k8s.io/structured-merge-diff/v6 v6.3.0 // indirect
 	stash.appscode.dev/apimachinery v0.42.1 // indirect
-	voyagermesh.dev/installer v0.0.0-20260515120941-8ff789f06253 // indirect
+	voyagermesh.dev/installer v0.0.0-20261006102643-3da5e1900dff // indirect
 )
 
 replace github.com/imdario/mergo => github.com/imdario/mergo v0.3.6

@@ -75,6 +75,8 @@ type LicenseServerSpec struct {
 	BaseURL string `json:"baseURL"`
 	// +optional
 	Token string `json:"token"`
+	// +optional
+	CABundle string `json:"caBundle"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

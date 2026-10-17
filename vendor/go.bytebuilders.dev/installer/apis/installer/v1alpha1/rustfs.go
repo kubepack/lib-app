@@ -23,12 +23,12 @@ import (
 )
 
 const (
-	ResourceKindMinio = "Minio"
-	ResourceMinio     = "minio"
-	ResourceMinios    = "minios"
+	ResourceKindRustfs = "Rustfs"
+	ResourceRustfs     = "rustfs"
+	ResourceRustfss    = "rustfss"
 )
 
-// Minio defines the schama for Minio Installer.
+// Rustfs defines the schama for Rustfs Installer.
 
 // +genclient
 // +genclient:skipVerbs=updateStatus
@@ -36,15 +36,15 @@ const (
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // +kubebuilder:object:root=true
-// +kubebuilder:resource:path=minios,singular=minio,categories={kubeops,appscode}
-type Minio struct {
+// +kubebuilder:resource:path=rustfss,singular=rustfs,categories={kubeops,appscode}
+type Rustfs struct {
 	metav1.TypeMeta   `json:",inline,omitempty"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              MinioSpec `json:"spec,omitempty"`
+	Spec              RustfsSpec `json:"spec,omitempty"`
 }
 
-// MinioSpec is the schema for Minio Operator values file
-type MinioSpec struct {
+// RustfsSpec is the schema for Rustfs Operator values file
+type RustfsSpec struct {
 	ReplicaCount int `json:"replicaCount"`
 	//+optional
 	RegistryFQDN string         `json:"registryFQDN"`
@@ -74,31 +74,31 @@ type MinioSpec struct {
 	Affinity     *core.Affinity       `json:"affinity"`
 	Persistence  PersistenceSpec      `json:"persistence"`
 	StorageClass LocalObjectReference `json:"storageClass"`
-	Ingress      MinioIngress         `json:"ingress"`
+	Ingress      RustfsIngress        `json:"ingress"`
 	Gateway      AppGateway           `json:"gateway"`
-	Minio        MinioConfig          `json:"minio"`
+	Rustfs       RustfsConfig         `json:"rustfs"`
 	// +optional
 	Distro shared.DistroSpec `json:"distro"`
 }
 
-type MinioIngress struct {
+type RustfsIngress struct {
 	Enabled     bool              `json:"enabled"`
 	ClassName   string            `json:"className"`
 	Annotations map[string]string `json:"annotations"`
 	Domain      string            `json:"domain"`
 }
 
-type MinioConfig struct {
-	Auth MinioAuth `json:"auth"`
-	TLS  MinioTLS  `json:"tls"`
+type RustfsConfig struct {
+	Auth RustfsAuth `json:"auth"`
+	TLS  RustfsTLS  `json:"tls"`
 }
 
-type MinioAuth struct {
+type RustfsAuth struct {
 	AccessKeyId     string `json:"accessKeyId"`
 	SecretAccessKey string `json:"secretAccessKey"`
 }
 
-type MinioTLS struct {
+type RustfsTLS struct {
 	Enable bool                 `json:"enable"`
 	Mount  bool                 `json:"mount"`
 	Issuer CertificateIssuerRef `json:"issuer"`
@@ -112,10 +112,10 @@ type CertificateIssuerRef struct {
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// MinioList is a list of Minios
-type MinioList struct {
+// RustfsList is a list of Rustfss
+type RustfsList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	// Items is a list of Minio CRD objects
-	Items []Minio `json:"items,omitempty"`
+	// Items is a list of Rustfs CRD objects
+	Items []Rustfs `json:"items,omitempty"`
 }

@@ -76,6 +76,7 @@ type AceOptionsSpec struct {
 	PgOutbox             AceOptionsComponentSpec         `json:"pgoutbox"`
 	OutboxSyncer         AceOptionsComponentSpec         `json:"outbox-syncer"`
 	S3proxy              AceOptionsComponentSpec         `json:"s3proxy"`
+	SecretManagement     AceOptionsSecretManagement      `json:"secretManagement"`
 	Branding             AceBrandingSpec                 `json:"branding"`
 	CloudProviderOptions CloudProviderOptions            `json:"cloudProviderOptions"`
 	InitialSetup         configapi.AceSetupInlineOptions `json:"initialSetup"`
@@ -158,6 +159,10 @@ type HelmRepositories struct {
 	AppscodeChartsOci string `json:"appscode-charts-oci"`
 }
 
+type AceOptionsSecretManagement struct {
+	Vault AceOptionsComponentSpec `json:"vault"`
+}
+
 type AceOptionsComponentSpec struct {
 	Enabled bool `json:"enabled"`
 	//+optional
@@ -205,6 +210,9 @@ type AceOptionsIngressNginx struct {
 type AceOptionsGateway struct {
 	Enabled     bool              `json:"enabled"`
 	Annotations map[string]string `json:"annotations,omitempty"`
+	ExposeVia   ServiceType       `json:"exposeVia"`
+	// +optional
+	ExternalIPs []string `json:"externalIPs"`
 }
 
 // +kubebuilder:validation:Enum=Ingress;HostPort
@@ -229,6 +237,8 @@ type AceOptionsMonitoring struct {
 	Exporter       GlobalPrometheusExporter `json:"exporter"`
 	//+optional
 	AlertManager AceOptionsAlertManager `json:"alertManager"`
+	// +optional
+	CentralizedOTEL bool `json:"centralizedOTEL"`
 }
 
 type AceOptionsAlertManager struct {

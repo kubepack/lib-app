@@ -54,8 +54,8 @@ type BillingSpec struct {
 	//+optional
 	NameOverride string `json:"nameOverride"`
 	//+optional
-	FullnameOverride string               `json:"fullnameOverride"`
-	ServiceAccount   LocalObjectReference `json:"serviceAccount"`
+	FullnameOverride string             `json:"fullnameOverride"`
+	ServiceAccount   ServiceAccountSpec `json:"serviceAccount"`
 	//+optional
 	PodAnnotations map[string]string `json:"podAnnotations"`
 	//+optional

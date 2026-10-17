@@ -19,6 +19,8 @@ package v1alpha1
 import (
 	catgwapi "go.bytebuilders.dev/catalog/api/gateway/v1alpha1"
 
+	core "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"kmodules.xyz/resource-metadata/apis/shared"
 )
@@ -47,12 +49,57 @@ type ServiceVault struct {
 type ServiceVaultSpec struct {
 	NameOverride     string                        `json:"nameOverride"`
 	FullnameOverride string                        `json:"fullnameOverride"`
+	Global           ServiceVaultGlobalValues      `json:"global"`
+	ClusterMetadata  StashClusterMetadata          `json:"clusterMetadata"`
 	Infra            catgwapi.ServiceProviderInfra `json:"infra"`
 	GatewayDns       catgwapi.ServiceGatewayDns    `json:"gateway-dns"`
 	// +optional
-	VaultServer LocalObjectReference `json:"vaultServer"`
+	VaultServer VaultServerSpec `json:"vaultServer"`
 	// +optional
 	Distro shared.DistroSpec `json:"distro"`
+}
+
+type ServiceVaultGlobalValues struct {
+	License           string   `json:"license"`
+	LicenseSecretName string   `json:"licenseSecretName"`
+	Registry          string   `json:"registry"`
+	RegistryFQDN      string   `json:"registryFQDN"`
+	ImagePullSecrets  []string `json:"imagePullSecrets"`
+	// +optional
+	Distro shared.DistroSpec `json:"distro"`
+}
+
+type VaultServerSpec struct {
+	Name              string               `json:"name"`
+	Version           string               `json:"version"`
+	Replicas          int32                `json:"replicas"`
+	IsolateTenants    bool                 `json:"isolateTenants"`
+	ServiceType       core.ServiceType     `json:"serviceType"`
+	TerminationPolicy string               `json:"terminationPolicy"`
+	Persistence       VaultPersistenceSpec `json:"persistence"`
+	Unsealer          VaultUnsealerSpec    `json:"unsealer"`
+	TLS               VaultTLSSpec         `json:"tls"`
+	Relay             VaultRelaySpec       `json:"relay"`
+}
+
+type VaultPersistenceSpec struct {
+	StorageClassName string            `json:"storageClassName"`
+	Size             resource.Quantity `json:"size"`
+}
+
+type VaultUnsealerSpec struct {
+	SecretShares    int32 `json:"secretShares"`
+	SecretThreshold int32 `json:"secretThreshold"`
+}
+
+type VaultTLSSpec struct {
+	CASecretName string `json:"caSecretName"`
+}
+
+type VaultRelaySpec struct {
+	ClusterSet        string `json:"clusterSet"`
+	Namespace         string `json:"namespace"`
+	BootstrapTokenTTL string `json:"bootstrapTokenTTL"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
