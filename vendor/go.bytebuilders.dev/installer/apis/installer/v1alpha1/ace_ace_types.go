@@ -278,9 +278,28 @@ type KubeStashSpec struct {
 }
 
 type PersesSpec struct {
-	Config         PersesConfig      `json:"config"`
-	Env            []core.EnvVar     `json:"env"`
-	PodAnnotations map[string]string `json:"podAnnotations"`
+	Image          *PersesImage         `json:"image,omitempty"`
+	InitContainer  *PersesInitContainer `json:"initContainer,omitempty"`
+	Config         PersesConfig         `json:"config"`
+	Env            []core.EnvVar        `json:"env"`
+	PodAnnotations map[string]string    `json:"podAnnotations"`
+}
+
+type PersesImage struct {
+	Name       string `json:"name,omitempty"`
+	Version    string `json:"version,omitempty"`
+	PullPolicy string `json:"pullPolicy,omitempty"`
+}
+
+type PersesInitContainer struct {
+	Enabled bool                     `json:"enabled"`
+	Image   PersesInitContainerImage `json:"image"`
+}
+
+type PersesInitContainerImage struct {
+	Repository string `json:"repository,omitempty"`
+	Tag        string `json:"tag,omitempty"`
+	PullPolicy string `json:"pullPolicy,omitempty"`
 }
 
 type PersesConfig struct {
@@ -396,6 +415,16 @@ type Settings struct {
 	Firebase    FirebaseSettings    `json:"firebase"`
 	// +optional
 	Marketplace *MarketplaceSettings `json:"marketplace,omitempty"`
+	// +optional
+	PgPool *PgPoolSettings `json:"pgpool,omitempty"`
+}
+
+type PgPoolSettings struct {
+	Enabled   bool                      `json:"enabled"`
+	Replicas  int                       `json:"replicas"`
+	Resources core.ResourceRequirements `json:"resources"`
+	// +optional
+	Config map[string]string `json:"config,omitempty"`
 }
 
 type DBSettings struct {
@@ -470,8 +499,10 @@ type PlatformSettings struct {
 	ServiceEnableCaptcha         bool    `json:"serviceEnableCaptcha"`
 	ServiceRegisterEmailConfirm  bool    `json:"serviceRegisterEmailConfirm"`
 	ServiceDisableRegistration   bool    `json:"serviceDisableRegistration"`
-	ServiceRequireSignInView     bool    `json:"serviceRequireSignInView"`
-	ServiceEnableNotifyMail      bool    `json:"serviceEnableNotifyMail"`
+	// +optional
+	DisableRegularOrgCreation *bool `json:"disableRegularOrgCreation"`
+	ServiceRequireSignInView  bool  `json:"serviceRequireSignInView"`
+	ServiceEnableNotifyMail   bool  `json:"serviceEnableNotifyMail"`
 	// +optional
 	ServiceDomainWhiteList          []string `json:"serviceDomainWhiteList"`
 	CookieName                      string   `json:"cookieName"`

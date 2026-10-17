@@ -381,6 +381,11 @@ func (in *CrdManagerSpec) DeepCopyInto(out *CrdManagerSpec) {
 			(*out)[key] = val
 		}
 	}
+	if in.UpdateExistingCRDs != nil {
+		in, out := &in.UpdateExistingCRDs, &out.UpdateExistingCRDs
+		*out = new(bool)
+		**out = **in
+	}
 	out.Distro = in.Distro
 	return
 }

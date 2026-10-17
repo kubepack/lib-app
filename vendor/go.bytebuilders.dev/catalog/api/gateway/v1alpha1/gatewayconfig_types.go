@@ -107,9 +107,9 @@ type TLSData struct {
 
 type Keystore struct {
 	// +optional
-	Truststore []byte `json:"truststore"`
+	Truststore []byte `json:"truststore,omitempty"`
 	// +optional
-	Keystore []byte `json:"keystore"`
+	Keystore []byte `json:"keystore,omitempty"`
 	Password string `json:"password"`
 }
 
@@ -219,6 +219,10 @@ type EnvoySpec struct {
 	Image           string          `json:"image"`
 	Tag             string          `json:"tag"`
 	//+optional
+	Replicas *int32 `json:"replicas,omitempty"`
+	//+optional
+	Resources core.ResourceRequirements `json:"resources,omitempty"`
+	//+optional
 	NodeSelector map[string]string `json:"nodeSelector"`
 	//+optional
 	SecurityContext *core.SecurityContext `json:"securityContext"`
@@ -237,6 +241,10 @@ type EnvoyValues struct {
 	ProvisionerType ProvisionerType `json:"provisionerType"`
 	Image           string          `json:"image"`
 	Tag             string          `json:"tag"`
+	//+optional
+	Replicas *int32 `json:"replicas,omitempty"`
+	//+optional
+	Resources core.ResourceRequirements `json:"resources,omitempty"`
 	//+optional
 	NodeSelector map[string]string `json:"nodeSelector"`
 	//+optional
