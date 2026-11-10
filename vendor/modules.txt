@@ -812,7 +812,7 @@ github.com/jonboulle/clockwork
 # github.com/json-iterator/go v1.1.12
 ## explicit; go 1.12
 github.com/json-iterator/go
-# github.com/klauspost/compress v1.18.5
+# github.com/klauspost/compress v1.18.7
 ## explicit; go 1.24
 github.com/klauspost/compress
 github.com/klauspost/compress/fse
@@ -1048,11 +1048,11 @@ go.appscode.dev/alerts/apis/alerts/v1alpha1
 # go.bytebuilders.dev/catalog v0.1.2-0.20261006105413-f96363d5bf8d
 ## explicit; go 1.25.6
 go.bytebuilders.dev/catalog/api/gateway/v1alpha1
-# go.bytebuilders.dev/installer v0.1.1-0.20261017112147-8c782e3b60f0
+# go.bytebuilders.dev/installer v0.1.1-0.20261110213202-e52a7d8d8a07
 ## explicit; go 1.25.6
 go.bytebuilders.dev/installer/apis/installer
-go.bytebuilders.dev/installer/apis/installer/v1alpha1
-# go.bytebuilders.dev/resource-model v0.4.1-0.20260908050049-ce9aabf9ad5c
+go.bytebuilders.dev/installer/apis/installer/v1
+# go.bytebuilders.dev/resource-model v0.4.1-0.20261104051707-a20a8ea03ba7
 ## explicit; go 1.25
 go.bytebuilders.dev/resource-model/apis/cloud
 go.bytebuilders.dev/resource-model/apis/cloud/v1alpha1
@@ -2222,7 +2222,7 @@ kmodules.xyz/sets
 ## explicit; go 1.25.0
 kubeops.dev/external-dns-operator/apis/external
 kubeops.dev/external-dns-operator/apis/external/v1alpha1
-# kubeops.dev/installer v0.0.0-20261017111602-ec2b982d67b8
+# kubeops.dev/installer v0.0.0-20261110203049-1f7b43557c9e
 ## explicit; go 1.25.0
 kubeops.dev/installer/apis/installer
 kubeops.dev/installer/apis/installer/v1alpha1

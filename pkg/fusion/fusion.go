@@ -39,7 +39,7 @@ import (
 	fluxsrc "github.com/fluxcd/source-controller/api/v1"
 	"github.com/google/go-containerregistry/pkg/crane"
 	"github.com/spf13/cobra"
-	installer "go.bytebuilders.dev/installer/apis/installer/v1alpha1"
+	installer "go.bytebuilders.dev/installer/apis/installer/v1"
 	ioutilz "gomodules.xyz/x/ioutil"
 	y3 "gopkg.in/yaml.v3"
 	"helm.sh/helm/v3/pkg/chart"

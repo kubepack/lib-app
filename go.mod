@@ -16,7 +16,7 @@ require (
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/pflag v1.0.10
 	github.com/unrolled/render v1.7.0
-	go.bytebuilders.dev/installer v0.1.1-0.20261017112147-8c782e3b60f0
+	go.bytebuilders.dev/installer v0.1.1-0.20261110213202-e52a7d8d8a07
 	go.wandrs.dev/binding v0.0.2
 	go.wandrs.dev/http v0.0.2
 	gocloud.dev v0.41.0
@@ -178,7 +178,7 @@ require (
 	github.com/jmoiron/sqlx v1.4.0 // indirect
 	github.com/jonboulle/clockwork v0.5.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/klauspost/compress v1.18.5 // indirect
+	github.com/klauspost/compress v1.18.7 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.7 // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/lann/builder v0.0.0-20180802200727-47ae307949d0 // indirect
@@ -233,7 +233,7 @@ require (
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	go.appscode.dev/alerts v0.2.1-0.20260811095631-791e5af59674 // indirect
 	go.bytebuilders.dev/catalog v0.1.2-0.20261006105413-f96363d5bf8d // indirect
-	go.bytebuilders.dev/resource-model v0.4.1-0.20260908050049-ce9aabf9ad5c // indirect
+	go.bytebuilders.dev/resource-model v0.4.1-0.20261104051707-a20a8ea03ba7 // indirect
 	go.bytebuilders.dev/ui-wizards v0.40.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
@@ -295,7 +295,7 @@ require (
 	kmodules.xyz/prober v0.34.0 // indirect
 	kmodules.xyz/resource-metrics v0.34.3-0.20260605022022-00425669707f // indirect
 	kubeops.dev/external-dns-operator v0.4.1-0.20260711084336-46e45f490d84 // indirect
-	kubeops.dev/installer v0.0.0-20261017111602-ec2b982d67b8 // indirect
+	kubeops.dev/installer v0.0.0-20261110203049-1f7b43557c9e // indirect
 	kubestash.dev/apimachinery v0.28.0-rc.0 // indirect
 	oras.land/oras-go/v2 v2.6.0 // indirect
 	sigs.k8s.io/cli-utils v0.37.2 // indirect
