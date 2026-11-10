@@ -34,7 +34,7 @@ require (
 	k8s.io/klog/v2 v2.130.1
 	k8s.io/kubectl v0.34.3
 	kmodules.xyz/client-go v0.34.7-0.20260916091548-45e2a0e7782d
-	kmodules.xyz/resource-metadata v0.51.0
+	kmodules.xyz/resource-metadata v0.52.0
 	kmodules.xyz/sets v0.29.0
 	kubepack.dev/chart-doc-gen v0.5.0
 	kubepack.dev/kubepack v0.34.0
@@ -234,7 +234,7 @@ require (
 	go.appscode.dev/alerts v0.2.1-0.20260811095631-791e5af59674 // indirect
 	go.bytebuilders.dev/catalog v0.1.2-0.20261006105413-f96363d5bf8d // indirect
 	go.bytebuilders.dev/resource-model v0.4.1-0.20260908050049-ce9aabf9ad5c // indirect
-	go.bytebuilders.dev/ui-wizards v0.39.0 // indirect
+	go.bytebuilders.dev/ui-wizards v0.40.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 	go.opentelemetry.io/contrib/detectors/gcp v1.44.0 // indirect
