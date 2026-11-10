@@ -188,9 +188,25 @@ type ArgoCDOptions struct {
 	// +optional
 	Enabled bool `json:"enabled,omitempty"`
 	// +optional
+	ManagedArgo *ManagedArgo `json:"managedArgo,omitempty"`
+	// +optional
+	InClusterArgo *InClusterArgo `json:"inClusterArgo,omitempty"`
+}
+
+type ManagedArgo struct {
+	// +optional
 	ExistingKubeconfig string `json:"existingKubeconfig,omitempty"`
+	// Name this cluster is registered as inside the existing Argo CD
+	// +optional
+	ArgoCDClusterName string `json:"argoCDClusterName,omitempty"`
+	// +optional
+	Namespace string `json:"namespace,omitempty"`
+}
+
+type InClusterArgo struct {
 	// +optional
 	DeployPrincipal bool `json:"deployPrincipal,omitempty"`
+	// +kubebuilder:validation:Enum=LoadBalancer;NodePort
 	// +optional
 	PrincipalServiceType string `json:"principalServiceType,omitempty"`
 }
